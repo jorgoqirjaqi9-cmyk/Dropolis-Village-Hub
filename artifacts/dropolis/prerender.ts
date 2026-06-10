@@ -10,7 +10,7 @@
  * If dist/public/index.html does not exist yet (build not run), exits silently.
  */
 
-import { db, articlesTable, villagesTable } from "@workspace/db";
+import { db, pool, articlesTable, villagesTable } from "@workspace/db";
 import { desc } from "drizzle-orm";
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
@@ -191,6 +191,17 @@ ${villageEntries.join("\n")}
 
 async function main() {
   console.log("[prerender] Starting...");
+
+  // Run schema migrations so production DB is always up to date before querying
+  const client = await pool.connect();
+  try {
+    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS source_url text`);
+    await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS articles_source_url_unique ON articles(source_url) WHERE source_url IS NOT NULL`);
+  } catch (err) {
+    console.warn("[prerender] Migration warning:", err);
+  } finally {
+    client.release();
+  }
 
   const [articles, villages] = await Promise.all([
     db.select().from(articlesTable).orderBy(desc(articlesTable.createdAt)),
