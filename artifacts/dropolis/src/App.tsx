@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/Layout";
+import { CookieConsent } from "@/components/CookieConsent";
 import NotFound from "@/pages/not-found";
 
 import Home from "@/pages/Home";
@@ -13,6 +14,12 @@ import VillageDetail from "@/pages/VillageDetail";
 import Photos from "@/pages/Photos";
 import Videos from "@/pages/Videos";
 import Chat from "@/pages/Chat";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import Privacy from "@/pages/Privacy";
+import Terms from "@/pages/Terms";
+import CookiePolicy from "@/pages/CookiePolicy";
+import Disclaimer from "@/pages/Disclaimer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +42,12 @@ function Router() {
         <Route path="/photos" component={Photos} />
         <Route path="/videos" component={Videos} />
         <Route path="/chat" component={Chat} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/privacy" component={Privacy} />
+        <Route path="/terms" component={Terms} />
+        <Route path="/cookie-policy" component={CookiePolicy} />
+        <Route path="/disclaimer" component={Disclaimer} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
@@ -47,6 +60,7 @@ function App() {
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <Router />
+          <CookieConsent />
         </WouterRouter>
         <Toaster />
       </TooltipProvider>

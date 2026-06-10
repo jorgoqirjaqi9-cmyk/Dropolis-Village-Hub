@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home } from "lucide-react";
+import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "Αρχική", icon: Home },
@@ -8,7 +8,15 @@ const navItems = [
   { href: "/villages", label: "Χωριά", icon: Mountain },
   { href: "/photos", label: "Φωτογραφίες", icon: Image },
   { href: "/videos", label: "Βίντεο", icon: Video },
-  { href: "/chat", label: "Συζήτηση", icon: MessageSquare },
+  { href: "/chat", label: "Κοινότητα", icon: MessageSquare },
+  { href: "/about", label: "Σχετικά", icon: Info },
+];
+
+const legalLinks = [
+  { href: "/privacy", label: "Πολιτική Απορρήτου" },
+  { href: "/terms", label: "Όροι Χρήσης" },
+  { href: "/cookie-policy", label: "Cookies" },
+  { href: "/disclaimer", label: "Αποποίηση Ευθύνης" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -93,6 +101,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-2">
+            <Link
+              href="/contact"
+              className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                scrolled
+                  ? "bg-secondary text-secondary-foreground hover:bg-secondary/90"
+                  : "bg-secondary/80 text-secondary-foreground hover:bg-secondary"
+              }`}
+            >
+              <Mail size={14} /> Επικοινωνία
+            </Link>
             <button
               onClick={() => setIsDark(!isDark)}
               aria-label="Εναλλαγή σκοτεινής λειτουργίας"
@@ -139,6 +157,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </Link>
                 );
               })}
+              <div className="border-t border-border/50 mt-1 pt-1">
+                <Link
+                  href="/contact"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-muted transition-all"
+                >
+                  <Mail size={16} /> Επικοινωνία
+                </Link>
+              </div>
             </nav>
           </div>
         )}
@@ -151,17 +177,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <footer className="bg-foreground text-background mt-16">
         <div className="container mx-auto px-4 pt-14 pb-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+            {/* Brand */}
             <div>
               <h3 className="font-serif text-2xl font-bold text-secondary mb-3">Δρόπολη</h3>
               <p className="text-sm text-background/60 leading-relaxed mb-4">
-                Η ψηφιακή πλατεία της ελληνικής μειονότητας. Ειδήσεις, ιστορία και πολιτισμός από τα χωριά της Β. Ηπείρου.
+                Η ψηφιακή πλατεία της ελληνικής μειονότητας. Ειδήσεις, ιστορία και πολιτισμός από τα 42 χωριά της Β. Ηπείρου.
               </p>
               <div className="flex gap-3">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">f</a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">▶</a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-sm font-bold">
+                  f
+                </a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                  aria-label="YouTube"
+                  className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                  ▶
+                </a>
+                <a href="mailto:info@dropolis.gr"
+                  aria-label="Email"
+                  className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                  @
+                </a>
               </div>
             </div>
 
+            {/* Navigation */}
             <div>
               <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Πλοήγηση</h4>
               <ul className="space-y-2">
@@ -172,31 +213,50 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <Link href="/contact" className="text-sm text-background/60 hover:text-secondary transition-colors">Επικοινωνία</Link>
+                </li>
               </ul>
             </div>
 
+            {/* Δημοτικές Ενότητες */}
             <div>
               <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Δημοτικές Ενότητες</h4>
               <ul className="space-y-2 text-sm text-background/60">
-                <li>
-                  <Link href="/villages" className="hover:text-secondary transition-colors">Δρόπολη</Link>
-                </li>
-                <li>
-                  <Link href="/villages" className="hover:text-secondary transition-colors">Άνω Δρόπολη</Link>
-                </li>
-                <li>
-                  <Link href="/villages" className="hover:text-secondary transition-colors">Πωγώνι</Link>
-                </li>
+                <li><Link href="/villages?unit=Δρόπολης" className="hover:text-secondary transition-colors">Δρόπολη</Link></li>
+                <li><Link href="/villages?unit=Άνω+Δρόπολης" className="hover:text-secondary transition-colors">Άνω Δρόπολη</Link></li>
+                <li><Link href="/villages?unit=Πωγωνίου" className="hover:text-secondary transition-colors">Πωγώνι</Link></li>
               </ul>
+              <div className="mt-6">
+                <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Κατηγορίες</h4>
+                <ul className="space-y-2 text-sm text-background/60">
+                  {["Τοπικά Νέα", "Πολιτισμός", "Τουρισμός", "Ιστορία"].map(c => (
+                    <li key={c}>
+                      <Link href={`/news?category=${encodeURIComponent(c)}`} className="hover:text-secondary transition-colors">{c}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
+            {/* Legal & Info */}
             <div>
-              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Σχετικά</h4>
-              <p className="text-sm text-background/60 leading-relaxed">
-                Δήμος Δρόπολης<br />
-                Νομός Αργυροκάστρου<br />
-                Αλβανία — Β. Ήπειρος
-              </p>
+              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Νομικές Πληροφορίες</h4>
+              <ul className="space-y-2">
+                {legalLinks.map(({ href, label }) => (
+                  <li key={href}>
+                    <Link href={href} className="text-sm text-background/60 hover:text-secondary transition-colors">{label}</Link>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 space-y-1 text-xs text-background/40">
+                <p>Δήμος Δρόπολης</p>
+                <p>Νομός Αργυροκάστρου</p>
+                <p>Αλβανία — Β. Ήπειρος</p>
+                <p className="mt-2">
+                  <a href="mailto:info@dropolis.gr" className="hover:text-secondary transition-colors">info@dropolis.gr</a>
+                </p>
+              </div>
             </div>
           </div>
 
@@ -204,6 +264,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-background/40">
             <span>&copy; {new Date().getFullYear()} Dropolis. Με επιφύλαξη παντός δικαιώματος.</span>
+            <div className="flex items-center gap-4">
+              {legalLinks.map(({ href, label }) => (
+                <Link key={href} href={href} className="hover:text-secondary transition-colors">{label}</Link>
+              ))}
+            </div>
             <span className="font-serif italic text-secondary/50">Η φωνή της Δρόπολης</span>
           </div>
         </div>

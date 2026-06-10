@@ -1,0 +1,186 @@
+Transform the Dropolis Village website into a fully Google AdSense approved, SEO-optimized, high-authority tourism website.
+
+GOAL:
+The website must comply with all Google AdSense policies, modern SEO standards, Google Search requirements, AI Overviews optimization, and Core Web Vitals.
+
+MAIN OBJECTIVE:
+Prepare the website for:
+- Google indexing
+- High Google rankings
+- AdSense approval
+- Organic traffic growth
+- Trust and authority signals
+
+REQUIRED IMPROVEMENTS:
+
+========================
+1. GOOGLE ADSENSE COMPLIANCE
+========================
+
+Create all required legal and trust pages:
+- About Us
+- Contact Us
+- Privacy Policy
+- Terms & Conditions
+- Cookie Policy
+- Disclaimer
+
+Add:
+- professional footer
+- navigation menu
+- GDPR cookie consent
+- contact form
+- business information
+- social media links
+
+The website must look like a real professional tourism business.
+
+========================
+2. SEO OPTIMIZATION
+========================
+
+Implement:
+- dynamic meta titles
+- dynamic meta descriptions
+- canonical URLs
+- XML sitemap
+- robots.txt
+- Open Graph tags
+- Twitter Cards
+- JSON-LD structured data
+- FAQ schema
+- Breadcrumb schema
+- Tourism schema
+- Article schema
+
+Each page must contain:
+- H1 heading
+- multiple H2 sections
+- optimized keyword placement
+- internal linking
+- image alt text
+- semantic SEO keywords
+- FAQ section
+
+Optimize for keywords such as:
+- Dropolis Village
+- Tourism in Dropolis
+- Visit Dropolis Greece
+- Greek mountain villages
+- Cultural tourism Greece
+- Historical villages Greece
+- Travel guide Dropolis
+
+========================
+3. CONTENT REQUIREMENTS
+========================
+
+Generate high-quality original content for all pages.
+
+Each page should contain:
+- minimum 1000 words
+- useful tourism information
+- engaging writing
+- human-like content
+- no duplicate text
+- no AI spam patterns
+
+Create blog articles for:
+- travel guides
+- local culture
+- food
+- traditions
+- history
+- hiking
+- tourism tips
+- hidden destinations
+
+Create at least:
+- 20 SEO optimized articles
+
+========================
+4. PERFORMANCE & CORE WEB VITALS
+========================
+
+Optimize for:
+- Lighthouse score 95+
+- SEO score 100
+- Accessibility 100
+- Best Practices 100
+
+Improve:
+- lazy loading
+- image optimization
+- code splitting
+- caching
+- responsive images
+- fast page speed
+- mobile-first optimization
+
+========================
+5. GOOGLE INDEXING
+========================
+
+Ensure:
+- all pages are crawlable
+- no broken links
+- no duplicate pages
+- proper heading hierarchy
+- clean URLs
+- internal linking structure
+
+Generate:
+- sitemap.xml
+- robots.txt
+
+========================
+6. TRUST & AUTHORITY
+========================
+
+Add:
+- testimonials
+- visitor reviews
+- trust signals
+- business information
+- author sections
+- update dates
+- professional branding
+
+========================
+7. UI/UX IMPROVEMENTS
+========================
+
+Create:
+- premium tourism design
+- responsive layout
+- elegant animations
+- luxury visual style
+- modern typography
+- interactive sections
+- image galleries
+- call-to-action buttons
+
+========================
+8. TECH STACK
+========================
+
+Use:
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Server-side rendering
+- SEO optimized architecture
+
+========================
+9. FINAL REQUIREMENT
+========================
+
+The final website must:
+- look like an official tourism organization website
+- be fully optimized for Google Search
+- be eligible for Google AdSense approval
+- pass modern SEO audits
+- be optimized for AI search engines and Google AI Overviews
+- be production-ready
+- contain realistic tourism content and high-quality images
