@@ -45,6 +45,7 @@ function formatVillage(v: typeof villagesTable.$inferSelect) {
     name: v.name,
     nameEl: v.nameEl,
     description: v.description,
+    municipalUnit: v.municipalUnit,
     population: v.population,
     elevation: v.elevation,
     imageUrl: v.imageUrl,

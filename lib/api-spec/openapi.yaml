@@ -493,6 +493,8 @@ components:
           type: string
         description:
           type: string
+        municipalUnit:
+          type: ["string", "null"]
         population:
           type: ["integer", "null"]
         elevation:
@@ -515,6 +517,8 @@ components:
         nameEl:
           type: string
         description:
+          type: string
+        municipalUnit:
           type: string
         population:
           type: integer

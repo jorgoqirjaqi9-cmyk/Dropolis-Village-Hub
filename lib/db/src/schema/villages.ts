@@ -7,6 +7,7 @@ export const villagesTable = pgTable("villages", {
   name: text("name").notNull(),
   nameEl: text("name_el").notNull(),
   description: text("description").notNull(),
+  municipalUnit: text("municipal_unit"),
   population: integer("population"),
   elevation: integer("elevation"),
   imageUrl: text("image_url"),

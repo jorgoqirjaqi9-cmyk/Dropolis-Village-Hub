@@ -12,6 +12,8 @@ export interface Village {
   nameEl: string;
   description: string;
   /** @nullable */
+  municipalUnit?: string | null;
+  /** @nullable */
   population: number | null;
   /** @nullable */
   elevation?: number | null;

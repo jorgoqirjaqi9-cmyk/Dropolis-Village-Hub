@@ -1,79 +1,146 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
 import { useListVillages } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { MapPin, Users, Mountain } from "lucide-react";
+import { Users, Mountain } from "lucide-react";
+
+const UNITS = [
+  { key: "all", label: "Όλα τα Χωριά" },
+  { key: "Δημοτική Ενότητα Δρόπολης", label: "Δρόπολη" },
+  { key: "Δημοτική Ενότητα Άνω Δρόπολης", label: "Άνω Δρόπολη" },
+  { key: "Δημοτική Ενότητα Πωγωνίου", label: "Πωγώνι" },
+];
 
 export default function Villages() {
   const { data: villages, isLoading } = useListVillages();
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeUnit, setActiveUnit] = useState("all");
 
-  const filteredVillages = villages?.filter(v => 
-    v.nameEl.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    v.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = villages?.filter(v => {
+    const matchesSearch =
+      v.nameEl.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      v.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesUnit = activeUnit === "all" || v.municipalUnit === activeUnit;
+    return matchesSearch && matchesUnit;
+  });
+
+  const countForUnit = (key: string) =>
+    key === "all"
+      ? (villages?.length ?? 0)
+      : (villages?.filter(v => v.municipalUnit === key).length ?? 0);
 
   return (
     <div className="space-y-8">
-      <SEO title="Τα Χωριά της Δρόπολης" description="Ανακαλύψτε τα ιστορικά χωριά της Δρόπολης. Πληροφορίες, πληθυσμός και τοποθεσίες." />
-      
+      <SEO
+        title="Τα Χωριά της Δρόπολης"
+        description="Ανακαλύψτε και τα 42 ιστορικά χωριά της Δρόπολης, Άνω Δρόπολης και Πωγωνίου."
+      />
+
+      {/* Hero header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-card p-6 md:p-10 rounded-2xl shadow-sm border border-card-border overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
         <div className="relative z-10 max-w-2xl">
-          <h1 className="text-3xl md:text-5xl font-serif font-bold text-foreground mb-4">Τα Χωριά μας</h1>
+          <h1 className="text-3xl md:text-5xl font-serif font-bold text-foreground mb-4">
+            Τα Χωριά μας
+          </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Η Δρόπολη αποτελείται από δεκάδες ιστορικά χωριά, το καθένα με τη δική του μοναδική ομορφιά, 
-            παράδοση και συμβολή στην ιστορία της Ελληνικής Μειονότητας.
+            42 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Δρόπολης, Άνω Δρόπολης και Πωγωνίου.
+            Το καθένα με τη δική του μοναδική ομορφιά και παράδοση.
           </p>
         </div>
-        
         <div className="w-full md:w-72 relative z-10">
-          <Input 
-            placeholder="Αναζήτηση χωριού..." 
+          <Input
+            placeholder="Αναζήτηση χωριού..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             className="bg-background border-input w-full"
+            data-testid="input-village-search"
           />
         </div>
       </div>
 
+      {/* Unit tabs */}
+      <div className="flex flex-wrap gap-2" data-testid="tabs-municipal-units">
+        {UNITS.map(u => (
+          <button
+            key={u.key}
+            data-testid={`tab-unit-${u.key}`}
+            onClick={() => setActiveUnit(u.key)}
+            className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 ${
+              activeUnit === u.key
+                ? "bg-primary text-primary-foreground border-primary shadow"
+                : "bg-card text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
+            }`}
+          >
+            {u.label}
+            <span className={`ml-2 text-xs rounded-full px-1.5 py-0.5 ${activeUnit === u.key ? "bg-white/20" : "bg-muted"}`}>
+              {countForUnit(u.key)}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Unit subtitle */}
+      {activeUnit !== "all" && (
+        <p className="text-sm text-muted-foreground -mt-4 pl-1">
+          {activeUnit}
+        </p>
+      )}
+
+      {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading ? (
           Array(9).fill(0).map((_, i) => (
             <Skeleton key={i} className="h-[300px] w-full rounded-xl" />
           ))
-        ) : filteredVillages && filteredVillages.length > 0 ? (
-          filteredVillages.map((village) => (
+        ) : filtered && filtered.length > 0 ? (
+          filtered.map(village => (
             <Link key={village.id} href={`/villages/${village.id}`}>
-              <div className="group bg-card rounded-xl overflow-hidden shadow-sm border border-card-border hover:shadow-xl hover:border-primary/40 transition-all duration-300 h-full flex flex-col cursor-pointer">
+              <div
+                data-testid={`card-village-${village.id}`}
+                className="group bg-card rounded-xl overflow-hidden shadow-sm border border-card-border hover:shadow-xl hover:border-primary/40 transition-all duration-300 h-full flex flex-col cursor-pointer"
+              >
                 <div className="aspect-[4/3] overflow-hidden relative bg-muted">
-                  <img 
-                    src={village.imageUrl || "https://placehold.co/600x450/4a5568/ffffff?text=" + encodeURIComponent(village.nameEl)} 
-                    alt={village.nameEl}
+                  <img
+                    src={village.imageUrl || `https://placehold.co/600x450/1e3a5f/ffffff?text=${encodeURIComponent(village.nameEl)}`}
+                    alt={`Χωριό ${village.nameEl}`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {village.municipalUnit && (
+                    <div className="absolute top-3 left-3 bg-primary/90 text-primary-foreground text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
+                      {village.municipalUnit === "Δημοτική Ενότητα Δρόπολης"
+                        ? "Δρόπολη"
+                        : village.municipalUnit === "Δημοτική Ενότητα Άνω Δρόπολης"
+                        ? "Άνω Δρόπολη"
+                        : "Πωγώνι"}
+                    </div>
+                  )}
                 </div>
                 <div className="p-5 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-2xl font-serif font-bold group-hover:text-primary transition-colors">{village.nameEl}</h2>
-                    <span className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{village.name}</span>
+                    <h2 className="text-xl font-serif font-bold group-hover:text-primary transition-colors">
+                      {village.nameEl}
+                    </h2>
+                    <span className="text-xs text-muted-foreground uppercase tracking-wider mt-1 ml-2 shrink-0">
+                      {village.name}
+                    </span>
                   </div>
-                  
+
                   <p className="text-muted-foreground text-sm line-clamp-2 mb-4 flex-grow">
                     {village.description}
                   </p>
-                  
+
                   <div className="flex items-center gap-4 text-xs font-medium text-foreground/70 border-t border-border pt-4 mt-auto">
-                    {village.population !== null && (
+                    {village.population != null && (
                       <div className="flex items-center gap-1" title="Πληθυσμός">
                         <Users className="w-3.5 h-3.5 text-primary" />
                         <span>{village.population}</span>
                       </div>
                     )}
-                    {village.elevation !== null && (
+                    {village.elevation != null && (
                       <div className="flex items-center gap-1" title="Υψόμετρο">
                         <Mountain className="w-3.5 h-3.5 text-primary" />
                         <span>{village.elevation}m</span>
@@ -89,7 +156,9 @@ export default function Villages() {
           ))
         ) : (
           <div className="col-span-full text-center py-12 text-muted-foreground bg-card rounded-xl border border-dashed border-border">
-            Δεν βρέθηκαν χωριά με το όνομα "{searchTerm}".
+            {searchTerm
+              ? `Δεν βρέθηκαν χωριά με το όνομα "${searchTerm}".`
+              : "Δεν βρέθηκαν χωριά."}
           </div>
         )}
       </div>

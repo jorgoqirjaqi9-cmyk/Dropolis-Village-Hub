@@ -67,6 +67,8 @@ export interface Village {
   nameEl: string;
   description: string;
   /** @nullable */
+  municipalUnit?: string | null;
+  /** @nullable */
   population: number | null;
   /** @nullable */
   elevation?: number | null;
@@ -83,6 +85,7 @@ export interface VillageInput {
   name: string;
   nameEl: string;
   description: string;
+  municipalUnit?: string;
   population?: number;
   elevation?: number;
   imageUrl?: string;

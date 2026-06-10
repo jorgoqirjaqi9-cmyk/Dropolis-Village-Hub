@@ -10,6 +10,7 @@ export interface VillageInput {
   name: string;
   nameEl: string;
   description: string;
+  municipalUnit?: string;
   population?: number;
   elevation?: number;
   imageUrl?: string;
