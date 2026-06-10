@@ -1,0 +1,117 @@
+Create a world-class tourism website for Dropolis Village, Greece.
+
+The website must look premium, modern, and authentic, similar to high-end tourism websites used by luxury destinations and travel organizations.
+
+GOAL:
+Promote Dropolis Village as a cultural, historical, and tourism destination and attract visitors from Greece, Europe, the UK, and the USA.
+
+DESIGN REQUIREMENTS:
+- Modern luxury design
+- Full responsive layout (mobile, tablet, desktop)
+- Fast loading speed
+- Glassmorphism and subtle animations
+- Large hero section with full-screen village photography
+- Smooth scrolling effects
+- Professional typography
+- Light and dark mode
+- WCAG accessibility compliance
+
+COLOR PALETTE:
+- Deep blue
+- White
+- Gold accents
+- Natural green tones
+
+PAGES:
+1. Home
+2. About Dropolis
+3. History & Heritage
+4. Attractions
+5. Villages of Dropolis
+6. Nature & Hiking
+7. Local Culture
+8. Traditional Food
+9. Gallery
+10. Travel Guide
+11. Blog
+12. Contact
+
+HOME PAGE:
+- Hero section with breathtaking village background
+- Call-to-action buttons:
+  - Explore Dropolis
+  - Plan Your Visit
+- Featured attractions
+- Interactive map
+- Visitor testimonials
+- Latest articles
+- Image gallery preview
+
+FEATURES:
+- Interactive map of Dropolis
+- Weather widget
+- Image gallery with lightbox
+- Search functionality
+- Multi-language support (English, Greek, Albanian)
+- Newsletter subscription
+- Social media integration
+- FAQ section
+
+SEO REQUIREMENTS:
+- Perfect technical SEO
+- Dynamic meta titles
+- Dynamic meta descriptions
+- Open Graph tags
+- Twitter Cards
+- Canonical URLs
+- XML sitemap
+- Robots.txt
+- Structured Schema.org markup
+- Breadcrumb schema
+- Tourism destination schema
+- Article schema for blog posts
+- FAQ schema
+
+CONTENT REQUIREMENTS:
+Generate SEO-optimized content for:
+- History of Dropolis
+- Tourist attractions
+- Villages
+- Hiking routes
+- Traditional cuisine
+- Local culture
+- Travel tips
+
+Every page should contain:
+- H1
+- H2 sections
+- FAQ section
+- Internal links
+- Optimized headings
+- Rich snippets support
+
+BLOG:
+Create a travel blog structure with categories:
+- Travel Guides
+- History
+- Nature
+- Culture
+- Food
+- Events
+
+PERFORMANCE:
+- Lighthouse score 95+
+- SEO score 100
+- Accessibility score 100
+- Best Practices score 100
+
+TECH STACK:
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- SEO optimization
+- Server-side rendering
+- Structured data JSON-LD
+
+Create a stunning homepage first and then generate all remaining pages with realistic tourism content for Dropolis Village.
