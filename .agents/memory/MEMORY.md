@@ -1,0 +1,1 @@
+- [Crawler SEO Architecture](crawler-seo.md) — Vite dev plugin + build-time prerender; no proxy routing change needed.
