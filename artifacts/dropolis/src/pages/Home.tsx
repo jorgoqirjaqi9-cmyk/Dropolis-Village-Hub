@@ -8,6 +8,7 @@ import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X } from "lucide-react";
+import { WeatherWidget } from "@/components/WeatherWidget";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80";
 
@@ -156,6 +157,11 @@ export default function Home() {
             </Link>
           </motion.div>
         </motion.div>
+
+        {/* Weather overlay — bottom left */}
+        <div className="absolute bottom-8 left-6 z-10">
+          <WeatherWidget />
+        </div>
 
         <button
           onClick={scrollToContent}
