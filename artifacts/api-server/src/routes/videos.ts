@@ -15,7 +15,7 @@ router.get("/videos", async (req, res) => {
   if (query.village_id) {
     q = q.where(eq(videosTable.villageId, query.village_id)) as typeof q;
   }
-  const videos = await q.orderBy(videosTable.createdAt).limit(query.limit ?? 20);
+  const videos = await q.orderBy(videosTable.createdAt).limit(query.limit ?? 200);
   res.json(videos.map(formatVideo));
 });
 

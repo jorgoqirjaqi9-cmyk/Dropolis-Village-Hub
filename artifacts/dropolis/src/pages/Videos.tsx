@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Play, MapPin, Clock } from "lucide-react";
 
 export default function Videos() {
-  const { data: videos, isLoading } = useListVideos();
+  const { data: videos, isLoading } = useListVideos({ limit: 200 });
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
