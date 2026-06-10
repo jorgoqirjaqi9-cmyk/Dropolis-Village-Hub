@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail } from "lucide-react";
+import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail, Download, Share } from "lucide-react";
+import { usePWAInstall } from "../hooks/use-pwa-install";
 
 const navItems = [
   { href: "/", label: "Αρχική", icon: Home },
@@ -30,6 +31,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showIOSHint, setShowIOSHint] = useState(false);
+  const { canInstall, isIOS, install } = usePWAInstall();
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== "undefined") {
       return document.documentElement.classList.contains("dark");
@@ -118,6 +121,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
             >
               <Mail size={14} /> Επικοινωνία
             </Link>
+
+            {canInstall && (
+              <button
+                onClick={() => isIOS ? setShowIOSHint(true) : install()}
+                aria-label="Εγκατάσταση εφαρμογής"
+                title="Εγκατάσταση εφαρμογής"
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                  scrolled
+                    ? "text-primary border border-primary/30 hover:bg-primary/10"
+                    : "text-white border border-white/30 hover:bg-white/15"
+                }`}
+              >
+                <Download size={15} />
+                <span className="hidden sm:inline">Εγκατάσταση</span>
+              </button>
+            )}
+
             <button
               onClick={() => setIsDark(!isDark)}
               aria-label="Εναλλαγή σκοτεινής λειτουργίας"
@@ -171,11 +191,55 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 >
                   <Mail size={16} /> Επικοινωνία
                 </Link>
+                {canInstall && (
+                  <button
+                    onClick={() => { setMobileOpen(false); isIOS ? setShowIOSHint(true) : install(); }}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-primary hover:bg-primary/10 transition-all"
+                  >
+                    <Download size={16} /> Εγκατάσταση εφαρμογής
+                  </button>
+                )}
               </div>
             </nav>
           </div>
         )}
       </header>
+
+      {showIOSHint && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/60 flex items-end justify-center p-4"
+          onClick={() => setShowIOSHint(false)}
+        >
+          <div
+            className="bg-background rounded-2xl shadow-2xl p-6 w-full max-w-sm"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-serif text-lg font-bold text-foreground">Εγκατάσταση στο iPhone</h3>
+              <button onClick={() => setShowIOSHint(false)} className="p-1 rounded-full hover:bg-muted">
+                <X size={18} />
+              </button>
+            </div>
+            <ol className="space-y-3 text-sm text-muted-foreground">
+              <li className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                <span>Πάτα το κουμπί κοινής χρήσης <Share size={14} className="inline" /> στο κάτω μέρος του Safari</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                <span>Κύλισε κάτω και επίλεξε <strong className="text-foreground">«Προσθήκη στην οθόνη Αφετηρίας»</strong></span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                <span>Πάτα <strong className="text-foreground">«Προσθήκη»</strong> — η εφαρμογή θα εμφανιστεί στην αρχική οθόνη σου</span>
+              </li>
+            </ol>
+            <p className="text-xs text-muted-foreground mt-4 p-3 bg-muted rounded-lg">
+              💡 Λειτουργεί μόνο από τον <strong>Safari</strong>. Αν χρησιμοποιείς Chrome ή Firefox, άνοιξε τη σελίδα στο Safari.
+            </p>
+          </div>
+        </div>
+      )}
 
       <main className="flex-grow">
         {children}
