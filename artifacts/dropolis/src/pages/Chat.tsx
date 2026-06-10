@@ -71,7 +71,11 @@ export default function Chat() {
     return (
       <div className="container mx-auto px-4 py-8">
       <div className="max-w-md mx-auto mt-10 p-8 glass-card rounded-2xl shadow-xl text-center">
-        <SEO title="Συζήτηση" description="Συνδεθείτε με την κοινότητα της Δρόπολης." />
+        <SEO
+          title="Κοινότητα — Ζωντανή Συζήτηση"
+          description="Συνδεθείτε ζωντανά με την κοινότητα της Δρόπολης. Chat για Έλληνες της Βόρειας Ηπείρου."
+          noindex={true}
+        />
         <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
           <Users className="w-8 h-8 text-primary" />
         </div>
@@ -98,7 +102,7 @@ export default function Chat() {
   return (
     <div className="container mx-auto px-4 py-8">
     <div className="max-w-4xl mx-auto h-[80vh] flex flex-col glass-card rounded-2xl shadow-xl overflow-hidden">
-      <SEO title="Συζήτηση - Δρόπολη" />
+      <SEO title="Ζωντανή Συζήτηση" description="Ζωντανή συζήτηση κοινότητας Δρόπολης." noindex={true} />
       
       {/* Header */}
       <header className="bg-primary text-primary-foreground p-4 flex items-center justify-between z-10 shadow-sm">

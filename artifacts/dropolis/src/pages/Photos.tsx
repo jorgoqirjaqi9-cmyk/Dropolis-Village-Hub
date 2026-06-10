@@ -11,7 +11,19 @@ export default function Photos() {
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
-      <SEO title="Φωτογραφίες" description="Πλούσιο φωτογραφικό υλικό από τα χωριά, τις εκδηλώσεις και τους ανθρώπους της Δρόπολης." />
+      <SEO
+        title="Φωτογραφικό Αρχείο"
+        description="Πλούσιο φωτογραφικό αρχείο από τα χωριά, τις εκδηλώσεις και τους ανθρώπους της Δρόπολης, Βόρεια Ήπειρος."
+        breadcrumbs={[{ name: "Φωτογραφίες", url: "/photos" }]}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ImageGallery",
+          name: "Φωτογραφικό Αρχείο — Δρόπολη",
+          description: "Φωτογραφίες από τα χωριά της Δρόπολης.",
+          url: "https://dropolis.replit.app/photos",
+          inLanguage: "el",
+        }}
+      />
 
       <div className="relative rounded-2xl overflow-hidden bg-primary text-primary-foreground p-8 md:p-12 shadow-lg text-center">
         <div className="absolute inset-0 opacity-10"

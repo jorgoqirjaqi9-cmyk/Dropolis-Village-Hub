@@ -48,7 +48,30 @@ export default function VillageDetail() {
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-12">
-      <SEO title={`${village.nameEl} - Δρόπολη`} description={village.description} />
+      <SEO
+        title={`${village.nameEl} - Δρόπολη`}
+        description={village.description || `Ανακαλύψτε το χωριό ${village.nameEl} στη Δρόπολη, Βόρεια Ήπειρος.`}
+        image={village.imageUrl || undefined}
+        breadcrumbs={[
+          { name: "Χωριά", url: "/villages" },
+          { name: village.nameEl, url: `/villages/${village.id}` },
+        ]}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Place",
+          name: village.nameEl,
+          alternateName: village.name,
+          description: village.description,
+          image: village.imageUrl || undefined,
+          containedInPlace: {
+            "@type": "AdministrativeArea",
+            name: "Δήμος Δρόπολης",
+            containedInPlace: { "@type": "Country", name: "Αλβανία" },
+          },
+          ...(village.population ? { maximumAttendeeCapacity: village.population } : {}),
+          ...(village.elevation ? { elevation: village.elevation } : {}),
+        }}
+      />
       
       <Link href="/villages" className="inline-flex items-center gap-2 text-primary hover:text-secondary text-sm font-medium transition-colors mb-4">
         <ArrowLeft className="w-4 h-4" /> Πίσω στα χωριά

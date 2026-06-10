@@ -23,7 +23,19 @@ export default function News() {
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
-      <SEO title="Ειδήσεις" description="Όλες οι ειδήσεις και τα νέα από τη Δρόπολη και τα χωριά της." />
+      <SEO
+        title="Ειδήσεις"
+        description="Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου."
+        breadcrumbs={[{ name: "Ειδήσεις", url: "/news" }]}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Ειδήσεις — Δρόπολη",
+          description: "Τελευταία νέα και ρεπορτάζ από τη Δρόπολη.",
+          url: "https://dropolis.replit.app/news",
+          inLanguage: "el",
+        }}
+      />
 
       {/* Page header */}
       <div className="relative rounded-2xl overflow-hidden bg-primary text-primary-foreground p-8 md:p-12 shadow-lg">

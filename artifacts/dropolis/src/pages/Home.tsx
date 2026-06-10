@@ -36,6 +36,22 @@ export default function Home() {
       <SEO
         title="Αρχική"
         description="Η ψηφιακή πλατεία της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://dropolis.replit.app/#webpage",
+          name: "Δρόπολη — Portal Ειδήσεων & Κοινότητας",
+          description: "Η ψηφιακή πλατεία της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης.",
+          url: "https://dropolis.replit.app/",
+          inLanguage: "el",
+          isPartOf: { "@id": "https://dropolis.replit.app/#website" },
+          about: {
+            "@type": "AdministrativeArea",
+            name: "Δήμος Δρόπολης",
+            alternateName: "Municipality of Dropull",
+            containedInPlace: { "@type": "Country", name: "Αλβανία" },
+          },
+        }}
       />
 
       {/* ── HERO ───────────────────────────────────────────────────── */}

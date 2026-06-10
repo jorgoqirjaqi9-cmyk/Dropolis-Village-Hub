@@ -2,31 +2,98 @@
 <html lang="el">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
     <title>Δρόπολη — Portal Ειδήσεων & Κοινότητας</title>
-    <meta name="description" content="Dropolis — Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος)." />
-    <meta name="robots" content="index, follow" />
+
+    <!-- Primary Meta -->
+    <meta name="description" content="Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος)." />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="language" content="el" />
+    <meta name="author" content="Dropolis (Δρόπολη)" />
+    <meta name="keywords" content="Δρόπολη, Dropolis, Βόρεια Ήπειρος, ελληνική μειονότητα, Αλβανία, Αργυρόκαστρο, χωριά, ειδήσεις" />
+    <meta name="geo.region" content="AL" />
+    <meta name="geo.placename" content="Δρόπολη, Αλβανία" />
+
+    <!-- Open Graph -->
     <meta property="og:title" content="Δρόπολη — Portal Ειδήσεων & Κοινότητας" />
     <meta property="og:description" content="Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος)." />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dropolis.replit.app/" />
+    <meta property="og:image" content="https://dropolis.replit.app/opengraph.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Δρόπολη — Portal Ειδήσεων & Κοινότητας" />
+    <meta property="og:site_name" content="Δρόπολη" />
     <meta property="og:locale" content="el_GR" />
+
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Δρόπολη — Portal Ειδήσεων & Κοινότητας" />
     <meta name="twitter:description" content="Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης." />
+    <meta name="twitter:image" content="https://dropolis.replit.app/opengraph.jpg" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://dropolis.replit.app/" />
+
+    <!-- Icons & PWA -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0d2560" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#080f24" media="(prefers-color-scheme: dark)" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Dark mode init (no-flash) -->
     <script>
       (function() {
-        var theme = localStorage.getItem('dropolis-theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (theme === 'dark' || (!theme && prefersDark)) {
-          document.documentElement.classList.add('dark');
-        }
+        var t = localStorage.getItem('dropolis-theme');
+        var d = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (t === 'dark' || (!t && d)) document.documentElement.classList.add('dark');
       })();
     </script>
+
+    <!-- Base JSON-LD (site-level) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://dropolis.replit.app/#website",
+      "name": "Δρόπολη (Dropolis)",
+      "url": "https://dropolis.replit.app",
+      "description": "Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης.",
+      "inLanguage": "el",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://dropolis.replit.app/news?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://dropolis.replit.app/#organization",
+      "name": "Δρόπολη (Dropolis)",
+      "url": "https://dropolis.replit.app",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://dropolis.replit.app/favicon.svg"
+      },
+      "description": "Portal ειδήσεων και κοινότητας για την ελληνική μειονότητα της Δρόπολης, Β. Ήπειρος.",
+      "areaServed": {
+        "@type": "Place",
+        "name": "Δρόπολη, Αλβανία"
+      }
+    }
+    </script>
+
+    <!-- AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3960290713410584" crossorigin="anonymous"></script>
   </head>
   <body>

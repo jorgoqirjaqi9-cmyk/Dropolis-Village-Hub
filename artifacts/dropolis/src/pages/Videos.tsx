@@ -9,7 +9,19 @@ export default function Videos() {
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
-      <SEO title="Βίντεο" description="Βίντεο, ρεπορτάζ και αφιερώματα από τη Δρόπολη." />
+      <SEO
+        title="Βίντεο & Ρεπορτάζ"
+        description="Ντοκιμαντέρ, ρεπορτάζ και βίντεο από τα χωριά της Δρόπολης, Βόρεια Ήπειρος. YouTube βίντεο για την ελληνική μειονότητα."
+        breadcrumbs={[{ name: "Βίντεο", url: "/videos" }]}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Βίντεο & Ρεπορτάζ — Δρόπολη",
+          description: "Βίντεο και ρεπορτάζ από τη Δρόπολη.",
+          url: "https://dropolis.replit.app/videos",
+          inLanguage: "el",
+        }}
+      />
 
       <div className="relative rounded-2xl overflow-hidden bg-primary text-primary-foreground p-8 md:p-12 text-center shadow-lg">
         <div className="absolute inset-0 opacity-10"

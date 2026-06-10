@@ -51,11 +51,44 @@ export default function NewsDetail() {
   // Split content by paragraphs to insert ad after 2nd paragraph
   const paragraphs = article.content.split('\n\n').filter(p => p.trim() !== '');
 
+  const BASE = typeof window !== "undefined" ? window.location.origin : "https://dropolis.replit.app";
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title,
+    description: article.excerpt || "",
+    image: article.imageUrl ? [article.imageUrl] : [],
+    datePublished: article.createdAt,
+    dateModified: article.createdAt,
+    author: { "@type": "Person", name: article.author || "Dropolis" },
+    publisher: {
+      "@type": "Organization",
+      name: "Δρόπολη (Dropolis)",
+      logo: { "@type": "ImageObject", url: `${BASE}/favicon.svg` },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE}/news/${article.id}` },
+    articleSection: article.category,
+    inLanguage: "el",
+  };
+
   return (
     <article className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-12">
-      <SEO 
-        title={article.title} 
-        description={article.excerpt || `Διαβάστε το άρθρο: ${article.title}`} 
+      <SEO
+        title={article.title}
+        description={article.excerpt || `Διαβάστε το άρθρο: ${article.title}`}
+        image={article.imageUrl || undefined}
+        type="article"
+        article={{
+          author: article.author || undefined,
+          publishedTime: article.createdAt,
+          modifiedTime: article.createdAt,
+          section: article.category,
+        }}
+        breadcrumbs={[
+          { name: "Ειδήσεις", url: "/news" },
+          { name: article.title, url: `/news/${article.id}` },
+        ]}
+        jsonLd={articleSchema}
       />
       
       {/* Main Content */}

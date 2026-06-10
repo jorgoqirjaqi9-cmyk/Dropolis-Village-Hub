@@ -35,7 +35,17 @@ export default function Villages() {
     <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO
         title="Τα Χωριά της Δρόπολης"
-        description="Ανακαλύψτε και τα 42 ιστορικά χωριά της Δρόπολης, Άνω Δρόπολης και Πωγωνίου."
+        description="Ανακαλύψτε και τα 42 ιστορικά χωριά της Δρόπολης, Άνω Δρόπολης και Πωγωνίου. Πληθυσμός, ιστορία και παραδόσεις."
+        breadcrumbs={[{ name: "Χωριά", url: "/villages" }]}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Τα Χωριά της Δρόπολης",
+          description: "42 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Δρόπολης, Άνω Δρόπολης και Πωγωνίου.",
+          url: "https://dropolis.replit.app/villages",
+          inLanguage: "el",
+          numberOfItems: 42,
+        }}
       />
 
       {/* Hero header */}
