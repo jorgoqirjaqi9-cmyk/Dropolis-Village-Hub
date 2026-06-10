@@ -1,4 +1,4 @@
-const CACHE = "dropolis-v1";
+const CACHE = "dropolis-v2";
 const OFFLINE_URL = "/";
 
 const PRECACHE = [
