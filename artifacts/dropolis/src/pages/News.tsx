@@ -82,9 +82,10 @@ export default function News() {
               <Link href={`/news/${article.id}`} className="group flex flex-col md:flex-row gap-6 glass-card rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
                 <div className="md:w-1/3 lg:w-1/4 aspect-video rounded-lg overflow-hidden shrink-0">
                   <img 
-                    src={article.imageUrl || "https://placehold.co/400x300/2a4365/ffffff?text=Dropolis"} 
+                    src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"} 
                     alt={article.title}
                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                    onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"; }}
                   />
                 </div>
                 <div className="flex flex-col flex-grow">

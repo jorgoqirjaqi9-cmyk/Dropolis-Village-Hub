@@ -375,6 +375,7 @@ export default function Home() {
                           src={featuredArticles[0].imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=70"}
                           alt={featuredArticles[0].title}
                           className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                          onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=70"; }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
@@ -408,6 +409,7 @@ export default function Home() {
                                 src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"}
                                 alt={article.title}
                                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                                onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"; }}
                               />
                             </div>
                             <div className="p-4 flex flex-col flex-grow">
@@ -462,6 +464,7 @@ export default function Home() {
                               src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70"}
                               alt={article.title}
                               className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                              onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70"; }}
                             />
                           </div>
                           <div className="flex flex-col flex-grow justify-center">
