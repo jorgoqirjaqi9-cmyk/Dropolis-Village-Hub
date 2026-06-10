@@ -63,7 +63,7 @@ export default function Contact() {
 
           <div className="space-y-4">
             {[
-              { icon: Mail, label: "Email", value: "info@dropolis.gr", href: "mailto:info@dropolis.gr" },
+              { icon: Mail, label: "Email", value: "dropolis9@gmail.com", href: "mailto:dropolis9@gmail.com" },
               { icon: Phone, label: "Τηλέφωνο", value: "+30 26530 00000", href: "tel:+302653000000" },
               { icon: MapPin, label: "Τοποθεσία", value: "Δρόπολη, Νομός Αργυροκάστρου, Αλβανία", href: undefined },
             ].map(({ icon: Icon, label, value, href }) => (

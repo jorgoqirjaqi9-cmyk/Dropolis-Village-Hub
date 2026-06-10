@@ -265,7 +265,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
                   ▶
                 </a>
-                <a href="mailto:info@dropolis.gr"
+                <a href="mailto:dropolis9@gmail.com"
                   aria-label="Email"
                   className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
                   @
@@ -330,7 +330,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </ul>
               <div className="mt-5 space-y-1 text-xs text-background/40">
                 <p className="mt-2">
-                  <a href="mailto:info@dropolis.gr" className="hover:text-secondary transition-colors">info@dropolis.gr</a>
+                  <a href="mailto:dropolis9@gmail.com" className="hover:text-secondary transition-colors">dropolis9@gmail.com</a>
                 </p>
               </div>
             </div>

@@ -41,7 +41,7 @@ const sections = [
   },
   {
     title: "10. Επικοινωνία",
-    content: "Για ερωτήσεις σχετικά με τους Όρους Χρήσης: info@dropolis.gr",
+    content: "Για ερωτήσεις σχετικά με τους Όρους Χρήσης: dropolis9@gmail.com",
   },
 ];
 
