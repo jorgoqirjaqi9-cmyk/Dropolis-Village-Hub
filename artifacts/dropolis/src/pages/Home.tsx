@@ -72,9 +72,9 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="flex justify-center my-8">
-        <AdSenseSlot width={728} height={90} className="hidden md:flex rounded-lg shadow-sm" />
-        <AdSenseSlot width={320} height={100} className="md:hidden rounded-lg shadow-sm" />
+      <div className="my-8">
+        <AdSenseSlot adSlot="1234567890" adFormat="horizontal" className="hidden md:block rounded-lg shadow-sm" />
+        <AdSenseSlot adSlot="1234567890" adFormat="horizontal" className="md:hidden rounded-lg shadow-sm" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -201,7 +201,7 @@ export default function Home() {
           </div>
 
           <div className="sticky top-24">
-            <AdSenseSlot width={300} height={250} className="mx-auto rounded-lg shadow-sm bg-white" />
+            <AdSenseSlot adSlot="0987654321" adFormat="rectangle" className="rounded-lg shadow-sm" />
           </div>
         </div>
       </div>

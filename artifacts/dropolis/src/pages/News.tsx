@@ -91,9 +91,9 @@ export default function News() {
               
               {/* Inject AdSense every 5 articles */}
               {(index + 1) % 5 === 0 && index !== articles.length - 1 && (
-                <div className="flex justify-center py-4">
-                  <AdSenseSlot width={728} height={90} className="hidden md:flex rounded-lg shadow-sm" />
-                  <AdSenseSlot width={300} height={250} className="md:hidden rounded-lg shadow-sm" />
+                <div className="py-4">
+                  <AdSenseSlot adSlot="1234567890" adFormat="horizontal" className="hidden md:block rounded-lg shadow-sm" />
+                  <AdSenseSlot adSlot="0987654321" adFormat="rectangle" className="md:hidden rounded-lg shadow-sm" />
                 </div>
               )}
             </React.Fragment>

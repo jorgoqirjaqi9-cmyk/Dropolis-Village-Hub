@@ -20,8 +20,8 @@ export default function Chat() {
 
   // Poll for messages every 5 seconds
   const { data: messages, isLoading } = useListChatMessages(
-    { limit: 100 }, 
-    { query: { refetchInterval: 5000 } }
+    { limit: 100 },
+    { query: { refetchInterval: 5000, queryKey: getListChatMessagesQueryKey({ limit: 100 }) } }
   );
 
   const sendMessage = useSendChatMessage();

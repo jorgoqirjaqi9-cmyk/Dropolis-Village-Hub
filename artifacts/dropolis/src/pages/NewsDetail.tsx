@@ -2,7 +2,7 @@ import React from "react";
 import { useRoute, Link } from "wouter";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
-import { useGetArticle, getGetArticleQueryKey, useListArticles } from "@workspace/api-client-react";
+import { useGetArticle, getGetArticleQueryKey, useListArticles, getListArticlesQueryKey } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,12 +16,10 @@ export default function NewsDetail() {
     query: { enabled: !!id, queryKey: getGetArticleQueryKey(id) } 
   });
   
-  const { data: relatedArticles } = useListArticles({ 
-    category: article?.category,
-    limit: 4 
-  }, { 
-    query: { enabled: !!article?.category } 
-  });
+  const { data: relatedArticles } = useListArticles(
+    { category: article?.category, limit: 4 },
+    { query: { enabled: !!article?.category, queryKey: getListArticlesQueryKey({ category: article?.category, limit: 4 }) } }
+  );
 
   const displayRelated = relatedArticles?.filter(a => a.id !== id).slice(0, 3);
 
@@ -122,9 +120,9 @@ export default function NewsDetail() {
             <React.Fragment key={idx}>
               <p className="mb-6 whitespace-pre-wrap">{paragraph}</p>
               {idx === 1 && (
-                <div className="my-8 flex justify-center">
-                  <AdSenseSlot width={728} height={90} className="hidden sm:flex rounded shadow-sm bg-muted/50" />
-                  <AdSenseSlot width={300} height={250} className="sm:hidden rounded shadow-sm bg-muted/50" />
+                <div className="my-8">
+                  <AdSenseSlot adSlot="1234567890" adFormat="horizontal" className="hidden sm:block rounded shadow-sm" />
+                  <AdSenseSlot adSlot="0987654321" adFormat="rectangle" className="sm:hidden rounded shadow-sm" />
                 </div>
               )}
             </React.Fragment>
@@ -146,7 +144,7 @@ export default function NewsDetail() {
       {/* Sidebar */}
       <aside className="lg:col-span-1 space-y-8">
         <div className="sticky top-24 space-y-8">
-          <AdSenseSlot width={300} height={250} className="mx-auto rounded-lg shadow-sm" />
+          <AdSenseSlot adSlot="0987654321" adFormat="rectangle" className="rounded-lg shadow-sm" />
           
           {displayRelated && displayRelated.length > 0 && (
             <div className="bg-card rounded-xl p-5 shadow-sm border border-card-border">
@@ -173,7 +171,7 @@ export default function NewsDetail() {
             </div>
           )}
           
-          <AdSenseSlot width={300} height={600} className="mx-auto rounded-lg shadow-sm hidden lg:flex" />
+          <AdSenseSlot adSlot="1122334455" adFormat="vertical" className="rounded-lg shadow-sm hidden lg:block" />
         </div>
       </aside>
     </article>

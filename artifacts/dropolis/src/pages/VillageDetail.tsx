@@ -1,6 +1,6 @@
 import React from "react";
 import { useRoute, Link } from "wouter";
-import { useGetVillage, getGetVillageQueryKey, useListArticles, useListPhotos } from "@workspace/api-client-react";
+import { useGetVillage, getGetVillageQueryKey, useListArticles, getListArticlesQueryKey, useListPhotos, getListPhotosQueryKey } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin } from "lucide-react";
@@ -15,8 +15,14 @@ export default function VillageDetail() {
     query: { enabled: !!id, queryKey: getGetVillageQueryKey(id) } 
   });
   
-  const { data: news } = useListArticles({ village: village?.nameEl, limit: 3 }, { query: { enabled: !!village?.nameEl } });
-  const { data: photos } = useListPhotos({ village_id: id, limit: 6 }, { query: { enabled: !!id } });
+  const { data: news } = useListArticles(
+    { village: village?.nameEl, limit: 3 },
+    { query: { enabled: !!village?.nameEl, queryKey: getListArticlesQueryKey({ village: village?.nameEl, limit: 3 }) } }
+  );
+  const { data: photos } = useListPhotos(
+    { village_id: id, limit: 6 },
+    { query: { enabled: !!id, queryKey: getListPhotosQueryKey({ village_id: id, limit: 6 }) } }
+  );
 
   if (isError) {
     return (

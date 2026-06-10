@@ -1,13 +1,50 @@
-import React from 'react';
+import { useEffect, useRef } from "react";
 
-export function AdSenseSlot({ width, height, className = "" }: { width: number | string; height: number | string; className?: string }) {
+interface AdSenseSlotProps {
+  adSlot: string;
+  adFormat?: "auto" | "rectangle" | "vertical" | "horizontal";
+  fullWidthResponsive?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+declare global {
+  interface Window {
+    adsbygoogle: unknown[];
+  }
+}
+
+export function AdSenseSlot({
+  adSlot,
+  adFormat = "auto",
+  fullWidthResponsive = true,
+  className = "",
+  style,
+}: AdSenseSlotProps) {
+  const ref = useRef<HTMLModElement>(null);
+  const pushed = useRef(false);
+
+  useEffect(() => {
+    if (pushed.current) return;
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      pushed.current = true;
+    } catch {
+      // silently ignore push errors (e.g. adblock)
+    }
+  }, []);
+
   return (
-    <div 
-      className={`bg-muted border border-dashed border-border flex flex-col items-center justify-center text-muted-foreground ${className}`}
-      style={{ width, height, maxWidth: '100%' }}
-    >
-      <span className="text-xs font-semibold uppercase tracking-wider mb-1">Διαφήμιση</span>
-      <span className="text-sm opacity-50">{width} × {height}</span>
+    <div className={`overflow-hidden ${className}`} style={style}>
+      <ins
+        ref={ref}
+        className="adsbygoogle"
+        style={{ display: "block" }}
+        data-ad-client="ca-pub-3960290713410584"
+        data-ad-slot={adSlot}
+        data-ad-format={adFormat}
+        data-full-width-responsive={fullWidthResponsive ? "true" : "false"}
+      />
     </div>
   );
 }
