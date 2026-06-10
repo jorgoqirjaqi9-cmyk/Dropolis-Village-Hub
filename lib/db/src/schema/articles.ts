@@ -12,6 +12,7 @@ export const articlesTable = pgTable("articles", {
   imageUrl: text("image_url"),
   villageName: text("village_name"),
   tags: text("tags"),
+  sourceUrl: text("source_url").unique(),
   viewCount: integer("view_count").notNull().default(0),
   published: boolean("published").notNull().default(true),
   featured: boolean("featured").notNull().default(false),
