@@ -372,7 +372,7 @@ export default function Home() {
                     <Link href={`/news/${featuredArticles[0].id}`}>
                       <div className="group relative rounded-2xl overflow-hidden shadow-xl aspect-video md:aspect-[21/9] cursor-pointer">
                         <img
-                          src={featuredArticles[0].imageUrl || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=70"}
+                          src={featuredArticles[0].imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=70"}
                           alt={featuredArticles[0].title}
                           className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                         />
@@ -405,7 +405,7 @@ export default function Home() {
                           <div className="group rounded-2xl overflow-hidden shadow-md glass-card flex flex-col h-full cursor-pointer hover:shadow-xl transition-all duration-300">
                             <div className="aspect-video overflow-hidden">
                               <img
-                                src={article.imageUrl || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=70"}
+                                src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"}
                                 alt={article.title}
                                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                               />
@@ -459,7 +459,7 @@ export default function Home() {
                         >
                           <div className="sm:w-32 md:w-40 aspect-video sm:aspect-square rounded-lg overflow-hidden shrink-0">
                             <img
-                              src={article.imageUrl || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&q=70"}
+                              src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70"}
                               alt={article.title}
                               className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                             />
