@@ -77,7 +77,13 @@ export function SEO({
     document.title = fullTitle;
 
     setMeta('meta[name="description"]', "content", metaDesc);
-    setMeta('meta[name="robots"]', "content", noindex ? "noindex,nofollow" : "index,follow");
+    setMeta(
+      'meta[name="robots"]',
+      "content",
+      noindex
+        ? "noindex, nofollow"
+        : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    );
 
     setLink("canonical", canonicalUrl);
 

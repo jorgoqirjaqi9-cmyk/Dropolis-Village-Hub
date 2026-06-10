@@ -7,11 +7,13 @@ import videosRouter from "./videos";
 import chatRouter from "./chat";
 import statsRouter from "./stats";
 import sitemapRouter from "./sitemap";
+import indexNowRouter from "./indexnow";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
 router.use(sitemapRouter);
+router.use(indexNowRouter);
 router.use(articlesRouter);
 router.use(villagesRouter);
 router.use(photosRouter);
