@@ -9,7 +9,7 @@ const navItems = [
   { href: "/villages", label: "Χωριά", icon: Mountain },
   { href: "/photos", label: "Φωτογραφίες", icon: Image },
   { href: "/videos", label: "Βίντεο", icon: Video },
-  { href: "/chat", label: "Κοινότητα", icon: MessageSquare },
+  { href: "/chat", label: "Ζωντανή Συζήτηση", icon: MessageSquare },
   { href: "/about", label: "Σχετικά", icon: Info },
 ];
 

@@ -79,7 +79,7 @@ export default function Chat() {
         <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
           <Users className="w-8 h-8 text-primary" />
         </div>
-        <h1 className="text-3xl font-serif font-bold text-foreground mb-2">Κοινότητα</h1>
+        <h1 className="text-3xl font-serif font-bold text-foreground mb-2">Ζωντανή Συζήτηση</h1>
         <p className="text-muted-foreground mb-8">Επιλέξτε ένα όνομα για να συμμετάσχετε στη ζωντανή συζήτηση με άλλους συμπατριώτες.</p>
         
         <form onSubmit={handleJoin} className="space-y-4">
