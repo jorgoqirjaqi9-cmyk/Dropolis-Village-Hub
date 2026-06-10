@@ -1,22 +1,33 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Dropolis API - Portal for Dropolë villages
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: articles
+    description: News articles
+  - name: villages
+    description: Villages of Dropolë
+  - name: photos
+    description: Photo gallery
+  - name: videos
+    description: Video gallery
+  - name: chat
+    description: Live chat
+  - name: stats
+    description: Dashboard stats
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +35,351 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /articles:
+    get:
+      operationId: listArticles
+      tags: [articles]
+      summary: List articles
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: village
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Article"
+    post:
+      operationId: createArticle
+      tags: [articles]
+      summary: Create article
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticleInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+
+  /articles/featured:
+    get:
+      operationId: getFeaturedArticles
+      tags: [articles]
+      summary: Get featured articles for homepage
+      responses:
+        "200":
+          description: Featured articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Article"
+
+  /articles/categories:
+    get:
+      operationId: listCategories
+      tags: [articles]
+      summary: List article categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+  /articles/{id}:
+    get:
+      operationId: getArticle
+      tags: [articles]
+      summary: Get article by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateArticle
+      tags: [articles]
+      summary: Update article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticleUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+    delete:
+      operationId: deleteArticle
+      tags: [articles]
+      summary: Delete article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /villages:
+    get:
+      operationId: listVillages
+      tags: [villages]
+      summary: List all villages
+      responses:
+        "200":
+          description: List of villages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Village"
+    post:
+      operationId: createVillage
+      tags: [villages]
+      summary: Create a village
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VillageInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Village"
+
+  /villages/{id}:
+    get:
+      operationId: getVillage
+      tags: [villages]
+      summary: Get village by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Village
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Village"
+        "404":
+          description: Not found
+
+  /photos:
+    get:
+      operationId: listPhotos
+      tags: [photos]
+      summary: List photos
+      parameters:
+        - name: village_id
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of photos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Photo"
+    post:
+      operationId: createPhoto
+      tags: [photos]
+      summary: Add a photo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PhotoInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Photo"
+
+  /photos/{id}:
+    get:
+      operationId: getPhoto
+      tags: [photos]
+      summary: Get photo by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Photo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Photo"
+
+  /videos:
+    get:
+      operationId: listVideos
+      tags: [videos]
+      summary: List videos
+      parameters:
+        - name: village_id
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of videos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Video"
+    post:
+      operationId: createVideo
+      tags: [videos]
+      summary: Add a video
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VideoInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Video"
+
+  /chat/messages:
+    get:
+      operationId: listChatMessages
+      tags: [chat]
+      summary: Get chat messages
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Chat messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+    post:
+      operationId: sendChatMessage
+      tags: [chat]
+      summary: Send a chat message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatMessageInput"
+      responses:
+        "201":
+          description: Sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatMessage"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [stats]
+      summary: Get site statistics
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteStats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +390,260 @@ components:
       required:
         - status
 
+    Article:
+      type: object
+      required: [id, title, content, category, author, createdAt, published]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        excerpt:
+          type: ["string", "null"]
+        content:
+          type: string
+        category:
+          type: string
+        author:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        villageName:
+          type: ["string", "null"]
+        tags:
+          type: ["string", "null"]
+        viewCount:
+          type: integer
+        published:
+          type: boolean
+        featured:
+          type: boolean
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    ArticleInput:
+      type: object
+      required: [title, content, category, author]
+      properties:
+        title:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        author:
+          type: string
+        imageUrl:
+          type: string
+        villageName:
+          type: string
+        tags:
+          type: string
+        published:
+          type: boolean
+        featured:
+          type: boolean
+
+    ArticleUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        author:
+          type: string
+        imageUrl:
+          type: string
+        villageName:
+          type: string
+        tags:
+          type: string
+        published:
+          type: boolean
+        featured:
+          type: boolean
+
+    Category:
+      type: object
+      required: [name, count]
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+
+    Village:
+      type: object
+      required: [id, name, nameEl, description, population]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        nameEl:
+          type: string
+        description:
+          type: string
+        population:
+          type: ["integer", "null"]
+        elevation:
+          type: ["integer", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        latitude:
+          type: ["number", "null"]
+        longitude:
+          type: ["number", "null"]
+        createdAt:
+          type: string
+
+    VillageInput:
+      type: object
+      required: [name, nameEl, description]
+      properties:
+        name:
+          type: string
+        nameEl:
+          type: string
+        description:
+          type: string
+        population:
+          type: integer
+        elevation:
+          type: integer
+        imageUrl:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+
+    Photo:
+      type: object
+      required: [id, title, url, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        url:
+          type: string
+        thumbnailUrl:
+          type: ["string", "null"]
+        villageId:
+          type: ["integer", "null"]
+        villageName:
+          type: ["string", "null"]
+        photographer:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    PhotoInput:
+      type: object
+      required: [title, url]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        thumbnailUrl:
+          type: string
+        villageId:
+          type: integer
+        photographer:
+          type: string
+
+    Video:
+      type: object
+      required: [id, title, youtubeId, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        youtubeId:
+          type: string
+        villageId:
+          type: ["integer", "null"]
+        villageName:
+          type: ["string", "null"]
+        duration:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    VideoInput:
+      type: object
+      required: [title, youtubeId]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        youtubeId:
+          type: string
+        villageId:
+          type: integer
+        duration:
+          type: string
+
+    ChatMessage:
+      type: object
+      required: [id, username, message, createdAt]
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        message:
+          type: string
+        avatar:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    ChatMessageInput:
+      type: object
+      required: [username, message]
+      properties:
+        username:
+          type: string
+        message:
+          type: string
+        avatar:
+          type: string
+
+    SiteStats:
+      type: object
+      required: [totalArticles, totalVillages, totalPhotos, totalVideos, totalMessages]
+      properties:
+        totalArticles:
+          type: integer
+        totalVillages:
+          type: integer
+        totalPhotos:
+          type: integer
+        totalVideos:
+          type: integer
+        totalMessages:
+          type: integer
+        recentArticles:
+          type: integer
+        featuredCount:
+          type: integer
