@@ -10,12 +10,17 @@ export default function Photos() {
   const { data: photos, isLoading } = useListPhotos();
 
   return (
-    <div className="space-y-8">
+    <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO title="Φωτογραφίες" description="Πλούσιο φωτογραφικό υλικό από τα χωριά, τις εκδηλώσεις και τους ανθρώπους της Δρόπολης." />
-      
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <h1 className="text-4xl font-serif font-bold text-foreground mb-4">Φωτογραφικό Αρχείο</h1>
-        <p className="text-muted-foreground">Αποτυπώνοντας την ομορφιά, την παράδοση και την καθημερινότητα στα χωριά της Δρόπολης.</p>
+
+      <div className="relative rounded-2xl overflow-hidden bg-primary text-primary-foreground p-8 md:p-12 shadow-lg text-center">
+        <div className="absolute inset-0 opacity-10"
+          style={{ backgroundImage: "radial-gradient(circle at 50% 50%, white 0%, transparent 60%)" }} />
+        <div className="relative z-10">
+          <Camera className="w-10 h-10 mx-auto mb-4 text-secondary" />
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-3">Φωτογραφικό Αρχείο</h1>
+          <p className="text-primary-foreground/70 max-w-xl mx-auto">Αποτυπώνοντας την ομορφιά, την παράδοση και την καθημερινότητα στα χωριά της Δρόπολης.</p>
+        </div>
       </div>
 
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
@@ -25,7 +30,7 @@ export default function Photos() {
           ))
         ) : photos && photos.length > 0 ? (
           photos.map(photo => (
-            <div key={photo.id} className="break-inside-avoid relative group rounded-xl overflow-hidden bg-card shadow-sm border border-card-border mb-4">
+            <div key={photo.id} className="break-inside-avoid relative group rounded-2xl overflow-hidden shadow-md mb-4 bg-card">
               <img 
                 src={photo.url} 
                 alt={photo.title} 

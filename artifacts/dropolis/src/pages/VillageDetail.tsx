@@ -26,7 +26,7 @@ export default function VillageDetail() {
 
   if (isError) {
     return (
-      <div className="text-center py-24">
+      <div className="container mx-auto px-4 py-8 text-center py-24">
         <h2 className="text-2xl font-bold text-destructive mb-2">Σφάλμα</h2>
         <p className="text-muted-foreground">Το χωριό δεν βρέθηκε.</p>
         <Link href="/villages" className="text-primary hover:underline mt-4 inline-flex items-center gap-2">
@@ -38,7 +38,7 @@ export default function VillageDetail() {
 
   if (isLoading || !village) {
     return (
-      <div className="space-y-8">
+      <div className="container mx-auto px-4 py-8 space-y-8">
         <Skeleton className="h-[400px] w-full rounded-2xl" />
         <Skeleton className="h-12 w-1/3" />
         <Skeleton className="h-32 w-full" />
@@ -47,7 +47,7 @@ export default function VillageDetail() {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="container mx-auto px-4 py-8 space-y-12">
       <SEO title={`${village.nameEl} - Δρόπολη`} description={village.description} />
       
       <Link href="/villages" className="inline-flex items-center gap-2 text-primary hover:text-secondary text-sm font-medium transition-colors mb-4">

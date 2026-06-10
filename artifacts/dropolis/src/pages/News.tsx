@@ -22,34 +22,40 @@ export default function News() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO title="Ειδήσεις" description="Όλες οι ειδήσεις και τα νέα από τη Δρόπολη και τα χωριά της." />
-      
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <h1 className="text-3xl font-serif font-bold text-foreground border-b-2 border-primary inline-block pb-2">Ειδήσεις</h1>
-        
-        <div className="flex flex-wrap gap-2">
-          <select 
-            className="bg-card border-card-border text-sm rounded-md px-3 py-2 shadow-sm focus:ring-primary focus:border-primary"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">Όλες οι Κατηγορίες</option>
-            {categories?.map(c => (
-              <option key={c.name} value={c.name}>{c.name} ({c.count})</option>
-            ))}
-          </select>
-          
-          <select 
-            className="bg-card border-card-border text-sm rounded-md px-3 py-2 shadow-sm focus:ring-primary focus:border-primary"
-            value={village}
-            onChange={(e) => setVillage(e.target.value)}
-          >
-            <option value="">Όλα τα Χωριά</option>
-            {villages?.map(v => (
-              <option key={v.id} value={v.nameEl}>{v.nameEl}</option>
-            ))}
-          </select>
+
+      {/* Page header */}
+      <div className="relative rounded-2xl overflow-hidden bg-primary text-primary-foreground p-8 md:p-12 shadow-lg">
+        <div className="absolute inset-0 opacity-10"
+          style={{ backgroundImage: "radial-gradient(circle at 70% 50%, white 0%, transparent 60%)" }} />
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-2">Ειδήσεις</h1>
+            <p className="text-primary-foreground/70">Τελευταία νέα και ρεπορτάζ από τη Δρόπολη.</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <select
+              className="bg-white/15 border border-white/20 text-primary-foreground text-sm rounded-xl px-4 py-2.5 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-secondary"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="" className="text-foreground bg-background">Όλες οι Κατηγορίες</option>
+              {categories?.map(c => (
+                <option key={c.name} value={c.name} className="text-foreground bg-background">{c.name} ({c.count})</option>
+              ))}
+            </select>
+            <select
+              className="bg-white/15 border border-white/20 text-primary-foreground text-sm rounded-xl px-4 py-2.5 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-secondary"
+              value={village}
+              onChange={(e) => setVillage(e.target.value)}
+            >
+              <option value="" className="text-foreground bg-background">Όλα τα Χωριά</option>
+              {villages?.map(v => (
+                <option key={v.id} value={v.nameEl} className="text-foreground bg-background">{v.nameEl}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -61,7 +67,7 @@ export default function News() {
         ) : articles && articles.length > 0 ? (
           articles.map((article, index) => (
             <React.Fragment key={article.id}>
-              <Link href={`/news/${article.id}`} className="group flex flex-col md:flex-row gap-6 bg-card rounded-xl p-6 shadow-sm border border-card-border hover:shadow-md transition-all">
+              <Link href={`/news/${article.id}`} className="group flex flex-col md:flex-row gap-6 glass-card rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
                 <div className="md:w-1/3 lg:w-1/4 aspect-video rounded-lg overflow-hidden shrink-0">
                   <img 
                     src={article.imageUrl || "https://placehold.co/400x300/2a4365/ffffff?text=Dropolis"} 

@@ -69,7 +69,8 @@ export default function Chat() {
 
   if (!isJoined) {
     return (
-      <div className="max-w-md mx-auto mt-20 p-8 bg-card rounded-2xl shadow-lg border border-card-border text-center">
+      <div className="container mx-auto px-4 py-8">
+      <div className="max-w-md mx-auto mt-10 p-8 glass-card rounded-2xl shadow-xl text-center">
         <SEO title="Συζήτηση" description="Συνδεθείτε με την κοινότητα της Δρόπολης." />
         <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
           <Users className="w-8 h-8 text-primary" />
@@ -90,11 +91,13 @@ export default function Chat() {
           </Button>
         </form>
       </div>
+      </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto h-[80vh] flex flex-col bg-card rounded-2xl shadow-lg border border-card-border overflow-hidden">
+    <div className="container mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto h-[80vh] flex flex-col glass-card rounded-2xl shadow-xl overflow-hidden">
       <SEO title="Συζήτηση - Δρόπολη" />
       
       {/* Header */}
@@ -176,8 +179,8 @@ export default function Chat() {
             className="flex-grow bg-background border-input"
             disabled={sendMessage.isPending}
           />
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             disabled={!message.trim() || sendMessage.isPending}
             className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground px-6"
           >
@@ -186,6 +189,7 @@ export default function Chat() {
           </Button>
         </form>
       </div>
+    </div>
     </div>
   );
 }

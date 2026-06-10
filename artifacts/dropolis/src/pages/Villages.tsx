@@ -32,20 +32,21 @@ export default function Villages() {
       : (villages?.filter(v => v.municipalUnit === key).length ?? 0);
 
   return (
-    <div className="space-y-8">
+    <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO
         title="Τα Χωριά της Δρόπολης"
         description="Ανακαλύψτε και τα 42 ιστορικά χωριά της Δρόπολης, Άνω Δρόπολης και Πωγωνίου."
       />
 
       {/* Hero header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-card p-6 md:p-10 rounded-2xl shadow-sm border border-card-border overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-primary text-primary-foreground p-6 md:p-10 rounded-2xl shadow-lg overflow-hidden relative">
+        <div className="absolute inset-0 opacity-10"
+          style={{ backgroundImage: "radial-gradient(circle at 70% 50%, white 0%, transparent 60%)" }} />
         <div className="relative z-10 max-w-2xl">
-          <h1 className="text-3xl md:text-5xl font-serif font-bold text-foreground mb-4">
+          <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4">
             Τα Χωριά μας
           </h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-lg text-primary-foreground/75 leading-relaxed">
             42 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Δρόπολης, Άνω Δρόπολης και Πωγωνίου.
             Το καθένα με τη δική του μοναδική ομορφιά και παράδοση.
           </p>
@@ -55,7 +56,7 @@ export default function Villages() {
             placeholder="Αναζήτηση χωριού..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="bg-background border-input w-full"
+            className="bg-white/15 border-white/20 text-white placeholder:text-white/50 w-full focus-visible:ring-secondary"
             data-testid="input-village-search"
           />
         </div>
@@ -100,7 +101,7 @@ export default function Villages() {
             <Link key={village.id} href={`/villages/${village.id}`}>
               <div
                 data-testid={`card-village-${village.id}`}
-                className="group bg-card rounded-xl overflow-hidden shadow-sm border border-card-border hover:shadow-xl hover:border-primary/40 transition-all duration-300 h-full flex flex-col cursor-pointer"
+                className="group glass-card rounded-2xl overflow-hidden hover:shadow-xl hover:border-primary/40 transition-all duration-300 h-full flex flex-col cursor-pointer"
               >
                 <div className="aspect-[4/3] overflow-hidden relative bg-muted">
                   <img

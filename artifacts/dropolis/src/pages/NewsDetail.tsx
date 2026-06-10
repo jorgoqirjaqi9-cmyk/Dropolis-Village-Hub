@@ -25,7 +25,7 @@ export default function NewsDetail() {
 
   if (isError) {
     return (
-      <div className="text-center py-24">
+      <div className="container mx-auto px-4 py-8 text-center py-24">
         <h2 className="text-2xl font-bold text-destructive mb-2">Σφάλμα</h2>
         <p className="text-muted-foreground">Το άρθρο δεν βρέθηκε ή διεγράφη.</p>
         <Link href="/news" className="text-primary hover:underline mt-4 inline-block">Επιστροφή στις ειδήσεις</Link>
@@ -35,7 +35,7 @@ export default function NewsDetail() {
 
   if (isLoading || !article) {
     return (
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="container mx-auto px-4 py-8 max-w-4xl space-y-6">
         <Skeleton className="h-8 w-3/4 rounded" />
         <Skeleton className="h-4 w-1/4 rounded" />
         <Skeleton className="h-[400px] w-full rounded-xl" />
@@ -52,7 +52,7 @@ export default function NewsDetail() {
   const paragraphs = article.content.split('\n\n').filter(p => p.trim() !== '');
 
   return (
-    <article className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+    <article className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-12">
       <SEO 
         title={article.title} 
         description={article.excerpt || `Διαβάστε το άρθρο: ${article.title}`} 

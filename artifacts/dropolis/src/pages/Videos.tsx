@@ -8,16 +8,17 @@ export default function Videos() {
   const { data: videos, isLoading } = useListVideos();
 
   return (
-    <div className="space-y-8">
+    <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO title="Βίντεο" description="Βίντεο, ρεπορτάζ και αφιερώματα από τη Δρόπολη." />
-      
-      <div className="bg-primary text-primary-foreground rounded-2xl p-8 md:p-12 text-center relative overflow-hidden shadow-lg border border-primary-border mb-12">
-        <div className="absolute inset-0 bg-[url('https://placehold.co/1000x400/222/222?text=texture')] opacity-10 mix-blend-overlay"></div>
+
+      <div className="relative rounded-2xl overflow-hidden bg-primary text-primary-foreground p-8 md:p-12 text-center shadow-lg">
+        <div className="absolute inset-0 opacity-10"
+          style={{ backgroundImage: "radial-gradient(circle at 50% 50%, white 0%, transparent 60%)" }} />
         <div className="relative z-10">
-          <Play className="w-12 h-12 mx-auto mb-4 text-secondary" />
-          <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4">Βίντεο & Ρεπορτάζ</h1>
-          <p className="text-primary-foreground/80 max-w-2xl mx-auto text-lg">
-            Δείτε ντοκιμαντέρ, εκδηλώσεις και ειδησεογραφικά ρεπορτάζ από τα χωριά της Δερόπολης.
+          <Play className="w-10 h-10 mx-auto mb-4 text-secondary" />
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-3">Βίντεο & Ρεπορτάζ</h1>
+          <p className="text-primary-foreground/70 max-w-2xl mx-auto">
+            Ντοκιμαντέρ, εκδηλώσεις και ειδησεογραφικά ρεπορτάζ από τα χωριά της Δρόπολης.
           </p>
         </div>
       </div>
@@ -33,7 +34,7 @@ export default function Videos() {
           ))
         ) : videos && videos.length > 0 ? (
           videos.map(video => (
-            <div key={video.id} className="group bg-card rounded-xl overflow-hidden shadow-sm border border-card-border hover:shadow-md transition-shadow flex flex-col h-full">
+            <div key={video.id} className="group glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full">
               <div className="aspect-video w-full relative bg-black">
                 <iframe 
                   src={`https://www.youtube.com/embed/${video.youtubeId}?rel=0`} 
