@@ -11,8 +11,9 @@
  */
 
 import { db, articlesTable, villagesTable } from "@workspace/db";
+import { desc } from "drizzle-orm";
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
+import { resolve } from "node:path";
 
 const BASE_URL = "https://dropolis.replit.app";
 const DEFAULT_IMG = `${BASE_URL}/opengraph.jpg`;
@@ -101,6 +102,90 @@ function writeRoute(routePath: string, html: string) {
 }
 
 // ---------------------------------------------------------------------------
+// Sitemap generation
+// ---------------------------------------------------------------------------
+
+function escXml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function urlEntry(
+  loc: string,
+  lastmod: string,
+  changefreq: string,
+  priority: string,
+): string {
+  return `  <url>
+    <loc>${escXml(loc)}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+}
+
+const STATIC_ROUTES: Array<{ loc: string; changefreq: string; priority: string }> = [
+  { loc: "/",             changefreq: "daily",   priority: "1.0" },
+  { loc: "/news",         changefreq: "hourly",  priority: "0.9" },
+  { loc: "/villages",     changefreq: "weekly",  priority: "0.8" },
+  { loc: "/photos",       changefreq: "weekly",  priority: "0.7" },
+  { loc: "/videos",       changefreq: "weekly",  priority: "0.7" },
+  { loc: "/about",        changefreq: "monthly", priority: "0.8" },
+  { loc: "/contact",      changefreq: "monthly", priority: "0.7" },
+  { loc: "/press",        changefreq: "monthly", priority: "0.6" },
+  { loc: "/help",         changefreq: "monthly", priority: "0.5" },
+  { loc: "/privacy",      changefreq: "yearly",  priority: "0.4" },
+  { loc: "/terms",        changefreq: "yearly",  priority: "0.4" },
+  { loc: "/cookie-policy",changefreq: "yearly",  priority: "0.3" },
+  { loc: "/disclaimer",   changefreq: "yearly",  priority: "0.3" },
+];
+
+function buildSitemap(
+  articles: Array<{ id: number; createdAt: Date }>,
+  villages: Array<{ id: number; createdAt: Date }>,
+): string {
+  const today = new Date().toISOString().slice(0, 10);
+
+  const staticEntries = STATIC_ROUTES.map((r) =>
+    urlEntry(`${BASE_URL}${r.loc}`, today, r.changefreq, r.priority),
+  );
+
+  const articleEntries = articles.map((a) => {
+    const lastmod = a.createdAt
+      ? new Date(a.createdAt).toISOString().slice(0, 10)
+      : today;
+    return urlEntry(`${BASE_URL}/news/${a.id}`, lastmod, "monthly", "0.8");
+  });
+
+  const villageEntries = villages.map((v) => {
+    const lastmod = v.createdAt
+      ? new Date(v.createdAt).toISOString().slice(0, 10)
+      : today;
+    return urlEntry(`${BASE_URL}/villages/${v.id}`, lastmod, "monthly", "0.7");
+  });
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Static routes -->
+${staticEntries.join("\n")}
+
+  <!-- Article pages (${articles.length}) -->
+${articleEntries.join("\n")}
+
+  <!-- Village pages (${villages.length}) -->
+${villageEntries.join("\n")}
+
+</urlset>`;
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -108,8 +193,8 @@ async function main() {
   console.log("[prerender] Starting...");
 
   const [articles, villages] = await Promise.all([
-    db.select().from(articlesTable),
-    db.select().from(villagesTable),
+    db.select().from(articlesTable).orderBy(desc(articlesTable.createdAt)),
+    db.select().from(villagesTable).orderBy(villagesTable.id),
   ]);
 
   let count = 0;
@@ -192,6 +277,14 @@ async function main() {
     writeRoute(`/villages/${v.id}`, injectMeta(meta));
     count++;
   }
+
+  // Generate fresh sitemap.xml with real lastmod dates from DB
+  const sitemapXml = buildSitemap(
+    articles.map((a) => ({ id: a.id, createdAt: a.createdAt })),
+    villages.map((v) => ({ id: v.id, createdAt: v.createdAt })),
+  );
+  writeFileSync(resolve(DIST, "sitemap.xml"), sitemapXml, "utf-8");
+  console.log(`[prerender] sitemap.xml written (${articles.length + villages.length + STATIC_ROUTES.length} URLs).`);
 
   console.log(`[prerender] Done. Generated ${count} pages (${articles.length} articles, ${villages.length} villages).`);
   process.exit(0);

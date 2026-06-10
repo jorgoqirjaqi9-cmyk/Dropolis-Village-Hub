@@ -74,6 +74,7 @@
     "wouter": "^3.3.5",
     "zod": "catalog:",
     "@workspace/db": "workspace:*",
+    "drizzle-orm": "catalog:",
     "tsx": "catalog:"
   }
 }

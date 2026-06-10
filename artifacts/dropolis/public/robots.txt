@@ -21,6 +21,5 @@ Allow: /disclaimer
 # Disallow real-time/user-specific pages
 Disallow: /chat
 
-# Sitemaps — static (production) + dynamic (auto-updated from database)
+# Sitemap (generated at build time with live database dates)
 Sitemap: https://dropolis.replit.app/sitemap.xml
-Sitemap: https://dropolis.replit.app/api/sitemap.xml
