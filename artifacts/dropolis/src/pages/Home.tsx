@@ -1,13 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "wouter";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useGetStats, useGetFeaturedArticles, useListArticles } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight } from "lucide-react";
+import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X } from "lucide-react";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80";
 
@@ -20,8 +20,41 @@ const stagger = {
   show: { transition: { staggerChildren: 0.12 } },
 };
 
+// PWA install prompt hook
+function usePWAInstall() {
+  const [prompt, setPrompt] = useState<Event | null>(null);
+  const [installed, setInstalled] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: Event) => { e.preventDefault(); setPrompt(e); };
+    window.addEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", () => setInstalled(true));
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const install = async () => {
+    if (!prompt) return;
+    (prompt as any).prompt();
+    const { outcome } = await (prompt as any).userChoice;
+    if (outcome === "accepted") setInstalled(true);
+    setPrompt(null);
+  };
+
+  return { canInstall: !!prompt && !installed, install };
+}
+
+const mediaMentions = [
+  { name: "Greek Reporter", url: "https://greekreporter.com", abbr: "GR" },
+  { name: "Keep Talking Greece", url: "https://keeptalkinggreece.com", abbr: "KTG" },
+  { name: "Ethnos.gr", url: "https://ethnos.gr", abbr: "ETH" },
+  { name: "Αλβανία Νέα", url: "#", abbr: "ΑΝ" },
+  { name: "Ομογένεια", url: "#", abbr: "ΟΜ" },
+];
+
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const { canInstall, install } = usePWAInstall();
+  const [showInstallBanner, setShowInstallBanner] = useState(true);
   const { data: stats, isLoading: statsLoading } = useGetStats();
   const { data: featuredArticles, isLoading: featuredLoading } = useGetFeaturedArticles();
   const { data: recentArticles, isLoading: recentLoading } = useListArticles({ limit: 6 });
@@ -188,6 +221,107 @@ export default function Home() {
                 <span className="text-3xl font-bold font-serif text-secondary">{stat.value ?? 0}</span>
               )}
               <span className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* PWA Install Banner */}
+        <AnimatePresence>
+          {canInstall && showInstallBanner && (
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              className="relative bg-primary text-primary-foreground rounded-2xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-lg border border-primary/20"
+            >
+              <div className="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center shrink-0">
+                <Smartphone size={20} className="text-secondary" />
+              </div>
+              <div className="flex-grow">
+                <p className="font-semibold text-sm">Εγκαταστήστε το Dropolis στη συσκευή σας</p>
+                <p className="text-primary-foreground/60 text-xs mt-0.5">Γρήγορη πρόσβαση στις ειδήσεις — χωρίς browser</p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={install}
+                  className="flex items-center gap-1.5 bg-secondary text-secondary-foreground text-sm font-semibold px-4 py-2 rounded-full hover:bg-secondary/90 transition-colors shadow-md"
+                >
+                  <Download size={14} /> Εγκατάσταση
+                </button>
+                <button
+                  onClick={() => setShowInstallBanner(false)}
+                  className="p-1.5 rounded-full hover:bg-white/10 transition-colors text-primary-foreground/50"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Media Mentions Bar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="glass-card rounded-2xl px-6 py-5"
+        >
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap shrink-0">
+              Αναφέρθηκε σε
+            </span>
+            <div className="w-px h-6 bg-border hidden sm:block shrink-0" />
+            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-x-6 gap-y-2">
+              {mediaMentions.map((m) => (
+                <a
+                  key={m.name}
+                  href={m.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={m.name}
+                  className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {m.name}
+                </a>
+              ))}
+            </div>
+            <div className="sm:ml-auto shrink-0">
+              <Link href="/press">
+                <span className="text-xs text-primary dark:text-secondary hover:opacity-80 transition-opacity cursor-pointer flex items-center gap-1">
+                  Τύπος & Νέα <ArrowRight size={12} />
+                </span>
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Trust Badges */}
+        <motion.div
+          className="grid grid-cols-2 md:grid-cols-4 gap-3"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={stagger}
+        >
+          {[
+            { icon: Shield, title: "GDPR Συμμόρφωση", desc: "Πλήρης προστασία δεδομένων", color: "text-accent" },
+            { icon: Globe, title: "Β. Ήπειρος", desc: "42 χωριά — πλήρης κάλυψη", color: "text-secondary" },
+            { icon: Smartphone, title: "PWA Εφαρμογή", desc: "Εγκαταστήστε στο κινητό", color: "text-primary dark:text-secondary" },
+            { icon: Newspaper, title: "Δωρεάν Πρόσβαση", desc: "Πάντα δωρεάν για όλους", color: "text-accent" },
+          ].map((badge, i) => (
+            <motion.div
+              key={i}
+              variants={fadeUp}
+              className="glass-card rounded-xl p-4 flex items-start gap-3"
+            >
+              <div className="w-8 h-8 rounded-lg bg-current/5 flex items-center justify-center shrink-0 mt-0.5">
+                <badge.icon size={16} className={badge.color} />
+              </div>
+              <div>
+                <p className="text-xs font-bold leading-tight">{badge.title}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 leading-tight">{badge.desc}</p>
+              </div>
             </motion.div>
           ))}
         </motion.div>

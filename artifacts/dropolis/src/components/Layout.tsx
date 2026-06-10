@@ -19,6 +19,13 @@ const legalLinks = [
   { href: "/disclaimer", label: "Αποποίηση Ευθύνης" },
 ];
 
+const resourceLinks = [
+  { href: "/press", label: "Τύπος & Νέα" },
+  { href: "/help", label: "Κέντρο Βοήθειας" },
+  { href: "/about", label: "Σχετικά με εμάς" },
+  { href: "/contact", label: "Επικοινωνία" },
+];
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -239,9 +246,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
 
-            {/* Legal & Info */}
+            {/* Resources & Legal */}
             <div>
-              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Νομικές Πληροφορίες</h4>
+              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Πληροφορίες</h4>
+              <ul className="space-y-2 mb-6">
+                {resourceLinks.map(({ href, label }) => (
+                  <li key={href}>
+                    <Link href={href} className="text-sm text-background/60 hover:text-secondary transition-colors">{label}</Link>
+                  </li>
+                ))}
+              </ul>
+              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-3">Νομικά</h4>
               <ul className="space-y-2">
                 {legalLinks.map(({ href, label }) => (
                   <li key={href}>
@@ -249,10 +264,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </li>
                 ))}
               </ul>
-              <div className="mt-6 space-y-1 text-xs text-background/40">
-                <p>Δήμος Δρόπολης</p>
-                <p>Νομός Αργυροκάστρου</p>
-                <p>Αλβανία — Β. Ήπειρος</p>
+              <div className="mt-5 space-y-1 text-xs text-background/40">
                 <p className="mt-2">
                   <a href="mailto:info@dropolis.gr" className="hover:text-secondary transition-colors">info@dropolis.gr</a>
                 </p>

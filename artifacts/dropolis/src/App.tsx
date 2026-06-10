@@ -20,6 +20,8 @@ import Privacy from "@/pages/Privacy";
 import Terms from "@/pages/Terms";
 import CookiePolicy from "@/pages/CookiePolicy";
 import Disclaimer from "@/pages/Disclaimer";
+import Press from "@/pages/Press";
+import Help from "@/pages/Help";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,6 +50,8 @@ function Router() {
         <Route path="/terms" component={Terms} />
         <Route path="/cookie-policy" component={CookiePolicy} />
         <Route path="/disclaimer" component={Disclaimer} />
+        <Route path="/press" component={Press} />
+        <Route path="/help" component={Help} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

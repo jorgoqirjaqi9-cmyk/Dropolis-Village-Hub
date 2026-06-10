@@ -1,0 +1,60 @@
+{
+  "name": "Δρόπολη — Portal Ειδήσεων & Κοινότητας",
+  "short_name": "Δρόπολη",
+  "description": "Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος).",
+  "lang": "el",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d2560",
+  "theme_color": "#0d2560",
+  "categories": ["news", "social", "local"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/opengraph.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Dropolis — αρχική σελίδα"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ειδήσεις",
+      "short_name": "Νέα",
+      "description": "Τελευταίες ειδήσεις από τη Δρόπολη",
+      "url": "/news",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Χωριά",
+      "short_name": "Χωριά",
+      "description": "Κατάλογος χωριών",
+      "url": "/villages",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=app.dropolis",
+      "id": "app.dropolis"
+    }
+  ],
+  "prefer_related_applications": false
+}
