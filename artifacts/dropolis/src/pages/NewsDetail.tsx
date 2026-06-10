@@ -121,8 +121,8 @@ export default function NewsDetail() {
               <p className="mb-6 whitespace-pre-wrap">{paragraph}</p>
               {idx === 1 && (
                 <div className="my-8">
-                  <AdSenseSlot adSlot="1234567890" adFormat="horizontal" className="hidden sm:block rounded shadow-sm" />
-                  <AdSenseSlot adSlot="0987654321" adFormat="rectangle" className="sm:hidden rounded shadow-sm" />
+                  <AdSenseSlot adSlot="7994234180" adFormat="horizontal" className="hidden sm:block rounded shadow-sm" />
+                  <AdSenseSlot adSlot="7994234180" adFormat="rectangle" className="sm:hidden rounded shadow-sm" />
                 </div>
               )}
             </React.Fragment>
@@ -144,7 +144,7 @@ export default function NewsDetail() {
       {/* Sidebar */}
       <aside className="lg:col-span-1 space-y-8">
         <div className="sticky top-24 space-y-8">
-          <AdSenseSlot adSlot="0987654321" adFormat="rectangle" className="rounded-lg shadow-sm" />
+          <AdSenseSlot adSlot="7994234180" adFormat="rectangle" className="rounded-lg shadow-sm" />
           
           {displayRelated && displayRelated.length > 0 && (
             <div className="bg-card rounded-xl p-5 shadow-sm border border-card-border">
@@ -171,7 +171,7 @@ export default function NewsDetail() {
             </div>
           )}
           
-          <AdSenseSlot adSlot="1122334455" adFormat="vertical" className="rounded-lg shadow-sm hidden lg:block" />
+          <AdSenseSlot adSlot="7994234180" adFormat="vertical" className="rounded-lg shadow-sm hidden lg:block" />
         </div>
       </aside>
     </article>
