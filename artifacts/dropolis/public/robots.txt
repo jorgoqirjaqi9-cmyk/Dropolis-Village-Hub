@@ -1,13 +1,25 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dropolis.replit.app/sitemap.xml
-
 # Disallow admin/API routes
 Disallow: /api/
 
-# Allow all crawlable content
+# Allow all indexable content
 Allow: /news
 Allow: /villages
 Allow: /photos
 Allow: /videos
+Allow: /about
+Allow: /contact
+Allow: /press
+Allow: /help
+Allow: /privacy
+Allow: /terms
+Allow: /cookie-policy
+Allow: /disclaimer
+
+# Disallow real-time/user-specific pages
+Disallow: /chat
+
+# Sitemaps
+Sitemap: https://dropolis.replit.app/sitemap.xml

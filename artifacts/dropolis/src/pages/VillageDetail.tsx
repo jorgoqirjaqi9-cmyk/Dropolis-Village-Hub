@@ -56,21 +56,56 @@ export default function VillageDetail() {
           { name: "Χωριά", url: "/villages" },
           { name: village.nameEl, url: `/villages/${village.id}` },
         ]}
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "Place",
-          name: village.nameEl,
-          alternateName: village.name,
-          description: village.description,
-          image: village.imageUrl || undefined,
-          containedInPlace: {
-            "@type": "AdministrativeArea",
-            name: "Δήμος Δρόπολης",
-            containedInPlace: { "@type": "Country", name: "Αλβανία" },
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "City",
+            "@id": `https://dropolis.replit.app/villages/${village.id}`,
+            name: village.nameEl,
+            alternateName: village.name,
+            description: village.description,
+            image: village.imageUrl || undefined,
+            url: `https://dropolis.replit.app/villages/${village.id}`,
+            inLanguage: "el",
+            containedInPlace: {
+              "@type": "AdministrativeArea",
+              name: "Δήμος Δρόπολης",
+              containedInPlace: {
+                "@type": "Country",
+                name: "Αλβανία",
+                sameAs: "https://www.wikidata.org/wiki/Q222",
+              },
+            },
+            ...(village.population ? { population: village.population } : {}),
+            ...(village.elevation ? { elevation: `${village.elevation} m` } : {}),
+            ...(village.latitude && village.longitude
+              ? {
+                  geo: {
+                    "@type": "GeoCoordinates",
+                    latitude: village.latitude,
+                    longitude: village.longitude,
+                  },
+                }
+              : {}),
           },
-          ...(village.population ? { maximumAttendeeCapacity: village.population } : {}),
-          ...(village.elevation ? { elevation: village.elevation } : {}),
-        }}
+          {
+            "@context": "https://schema.org",
+            "@type": "TouristAttraction",
+            name: village.nameEl,
+            description: village.description,
+            image: village.imageUrl || undefined,
+            url: `https://dropolis.replit.app/villages/${village.id}`,
+            touristType: [
+              { "@type": "Audience", audienceType: "Cultural tourists" },
+              { "@type": "Audience", audienceType: "Greek diaspora" },
+            ],
+            containedInPlace: {
+              "@type": "TouristDestination",
+              name: "Δρόπολη",
+              url: "https://dropolis.replit.app",
+            },
+          },
+        ]}
       />
       
       <Link href="/villages" className="inline-flex items-center gap-2 text-primary hover:text-secondary text-sm font-medium transition-colors mb-4">

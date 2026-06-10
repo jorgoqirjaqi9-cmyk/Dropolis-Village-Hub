@@ -32,8 +32,8 @@
     <meta name="twitter:description" content="Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης." />
     <meta name="twitter:image" content="https://dropolis.replit.app/opengraph.jpg" />
 
-    <!-- Canonical -->
-    <link rel="canonical" href="https://dropolis.replit.app/" />
+    <!-- Canonical (overridden per-page by SEO component) -->
+    <link rel="canonical" href="https://dropolis.replit.app/" id="canonical-url" />
 
     <!-- Icons & PWA -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -90,12 +90,74 @@
       "url": "https://dropolis.replit.app",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://dropolis.replit.app/favicon.svg"
+        "url": "https://dropolis.replit.app/favicon.svg",
+        "width": 512,
+        "height": 512
       },
       "description": "Portal ειδήσεων και κοινότητας για την ελληνική μειονότητα της Δρόπολης, Β. Ήπειρος.",
+      "foundingDate": "2026",
+      "inLanguage": "el",
       "areaServed": {
-        "@type": "Place",
-        "name": "Δρόπολη, Αλβανία"
+        "@type": "AdministrativeArea",
+        "name": "Δήμος Δρόπολης, Αλβανία"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "editorial",
+        "email": "info@dropolis.gr",
+        "availableLanguage": ["Greek", "Albanian"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/dropolis",
+        "https://www.youtube.com/@dropolis"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsMediaOrganization",
+      "@id": "https://dropolis.replit.app/#newsorg",
+      "name": "Δρόπολη (Dropolis)",
+      "url": "https://dropolis.replit.app",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://dropolis.replit.app/favicon.svg"
+      },
+      "masthead": "https://dropolis.replit.app/about",
+      "diversityPolicy": "https://dropolis.replit.app/about",
+      "ethicsPolicy": "https://dropolis.replit.app/about",
+      "missionCoveragePrioritiesPolicy": "https://dropolis.replit.app/about",
+      "coverageStartsAt": "2026-01-01",
+      "publishingPrinciples": "https://dropolis.replit.app/about",
+      "noBylinesPolicy": "https://dropolis.replit.app/about",
+      "verificationFactCheckingPolicy": "https://dropolis.replit.app/about"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TouristDestination",
+      "@id": "https://dropolis.replit.app/#destination",
+      "name": "Δρόπολη (Dropolis)",
+      "alternateName": "Dropolis, Dropull",
+      "description": "Ο Δήμος Δρόπολης βρίσκεται στη Νότια Αλβανία (Βόρεια Ήπειρος) και αποτελεί το κέντρο της ελληνικής μειονότητας. Περιλαμβάνει 42 χωριά με πλούσια ιστορία, βυζαντινές εκκλησίες και παραδοσιακή αρχιτεκτονική.",
+      "url": "https://dropolis.replit.app",
+      "image": "https://dropolis.replit.app/opengraph.jpg",
+      "touristType": [
+        {"@type": "Audience", "audienceType": "Cultural tourists"},
+        {"@type": "Audience", "audienceType": "Heritage tourists"},
+        {"@type": "Audience", "audienceType": "Greek diaspora"}
+      ],
+      "includesAttraction": [
+        {"@type": "TouristAttraction", "name": "Αντιγόνεια (αρχαιολογικός χώρος)"},
+        {"@type": "TouristAttraction", "name": "Βυζαντινές εκκλησίες Δρόπολης"},
+        {"@type": "TouristAttraction", "name": "Πανηγύρι Αγίου Γεωργίου Δερβιτσιάνης"}
+      ],
+      "containedInPlace": {
+        "@type": "Country",
+        "name": "Αλβανία",
+        "sameAs": "https://www.wikidata.org/wiki/Q222"
       }
     }
     </script>

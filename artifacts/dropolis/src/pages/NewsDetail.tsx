@@ -6,7 +6,7 @@ import { useGetArticle, getGetArticleQueryKey, useListArticles, getListArticlesQ
 import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Clock, User, MapPin, Tag } from "lucide-react";
+import { Clock, User, MapPin, Tag, BookOpen } from "lucide-react";
 
 export default function NewsDetail() {
   const [, params] = useRoute("/news/:id");
@@ -47,6 +47,10 @@ export default function NewsDetail() {
       </div>
     );
   }
+
+  // Reading time estimate
+  const wordCount = article.content.split(/\s+/).filter(Boolean).length;
+  const readingMinutes = Math.max(1, Math.ceil(wordCount / 180));
 
   // Split content by paragraphs to insert ad after 2nd paragraph
   const paragraphs = article.content.split('\n\n').filter(p => p.trim() !== '');
@@ -129,6 +133,10 @@ export default function NewsDetail() {
               <time dateTime={article.createdAt}>
                 {format(new Date(article.createdAt), "d MMMM yyyy, HH:mm", { locale: el })}
               </time>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <BookOpen className="w-4 h-4" />
+              <span>{readingMinutes} λεπτά ανάγνωση</span>
             </div>
             {article.viewCount !== undefined && (
               <div className="text-xs ml-auto">

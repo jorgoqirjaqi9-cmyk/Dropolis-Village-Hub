@@ -6,10 +6,12 @@ import photosRouter from "./photos";
 import videosRouter from "./videos";
 import chatRouter from "./chat";
 import statsRouter from "./stats";
+import sitemapRouter from "./sitemap";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
+router.use(sitemapRouter);
 router.use(articlesRouter);
 router.use(villagesRouter);
 router.use(photosRouter);

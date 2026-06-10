@@ -109,7 +109,7 @@ export default function Chat() {
         <div className="flex items-center gap-3">
           <MessageSquare className="w-6 h-6 text-secondary" />
           <div>
-            <h1 className="font-bold text-lg leading-tight font-serif">Ζωντανή Συζήτηση</h1>
+            <h2 className="font-bold text-lg leading-tight font-serif">Ζωντανή Συζήτηση</h2>
             <span className="text-xs text-primary-foreground/70 flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online
             </span>
