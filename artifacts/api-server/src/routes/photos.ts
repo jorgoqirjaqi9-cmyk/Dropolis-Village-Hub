@@ -18,7 +18,7 @@ router.get("/photos", async (req, res) => {
   }
   const photos = await q
     .orderBy(photosTable.createdAt)
-    .limit(query.limit ?? 50)
+    .limit(query.limit ?? 500)
     .offset(query.offset ?? 0);
   res.json(photos.map(formatPhoto));
 });
