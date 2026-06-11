@@ -1,7 +1,7 @@
 import Parser from "rss-parser";
 import { GoogleGenAI } from "@google/genai";
 import { db, articlesTable } from "@workspace/db";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, like, or } from "drizzle-orm";
 import { logger } from "./lib/logger.js";
 
 const parser = new Parser({ timeout: 10000, headers: { "User-Agent": "Dropolis/1.0 RSS Reader" } });
@@ -133,57 +133,97 @@ async function fetchFeed(source: FeedSource): Promise<number> {
   }
 }
 
-async function translateWithGemini(
+function isGreek(text: string): boolean {
+  return /[\u0370-\u03FF\u1F00-\u1FFF]/.test(text);
+}
+
+interface ArticleInput {
+  title: string;
+  content: string;
+  link: string;
+  imageUrl: string | null;
+}
+
+interface ArticleTranslated {
+  title: string;
+  excerpt: string;
+  content: string;
+}
+
+// Batch translate all articles for a feed in a SINGLE Gemini call to stay within rate limits
+async function batchTranslateWithGemini(
   ai: GoogleGenAI,
-  title: string,
-  content: string
-): Promise<{ title: string; excerpt: string; content: string }> {
-  const prompt = `Μετάφρασε τα παρακάτω στα Ελληνικά. Επέστρεψε ΜΟΝΟ JSON με τα πεδία "title", "excerpt" (1-2 προτάσεις), "content".
+  articles: ArticleInput[]
+): Promise<ArticleTranslated[]> {
+  if (articles.length === 0) return [];
 
-Τίτλος: ${title}
-Κείμενο: ${content.slice(0, 2000)}
+  const articleList = articles
+    .map((a, i) => `[${i}] Title: ${a.title}\nText: ${a.content.slice(0, 800)}`)
+    .join("\n\n---\n\n");
 
-JSON:`;
+  const prompt = `You are a professional translator. Translate ALL of the following news articles into Modern Greek (Νέα Ελληνικά / el-GR). The output language MUST be Greek — do not return the original language.
+
+Return ONLY a raw JSON array (no markdown, no code fences) with one object per article in the same order, each with: "title" (Greek headline), "excerpt" (1-2 sentence Greek summary), "content" (full Greek translation).
+
+Articles to translate:
+
+${articleList}`;
 
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
-      config: { responseMimeType: "application/json", maxOutputTokens: 8192 },
+      config: { responseMimeType: "application/json", maxOutputTokens: 16384 },
     });
-    const raw = response.text ?? "{}";
-    const parsed = JSON.parse(raw);
-    return {
-      title: (parsed.title as string) ?? title,
-      excerpt: (parsed.excerpt as string) ?? "",
-      content: (parsed.content as string) ?? content,
-    };
-  } catch {
-    return { title, excerpt: "", content };
+    const raw = (response.text ?? "[]")
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/\s*```\s*$/i, "")
+      .trim();
+    const parsed = JSON.parse(raw) as ArticleTranslated[];
+    if (!Array.isArray(parsed)) throw new Error("Expected JSON array from Gemini");
+    return parsed;
+  } catch (err) {
+    logger.warn({ err }, "Batch Gemini translation error");
+    return articles.map((a) => ({ title: a.title, excerpt: "", content: a.content }));
   }
 }
 
 async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promise<number> {
   try {
     const feed = await parser.parseURL(source.url);
-    const items = (feed.items ?? []).slice(0, MAX_PER_TRANSLATION_FEED);
+    const allItems = (feed.items ?? []).slice(0, MAX_PER_TRANSLATION_FEED);
+
+    // Filter to new articles only (not already in DB)
+    const articleInputs: ArticleInput[] = [];
+    const itemsByLink: Map<string, Parser.Item> = new Map();
+
+    for (const item of allItems) {
+      if (!item.title || !item.link) continue;
+      const rawContent = item.contentSnippet ?? item.content ?? item.summary ?? "";
+      articleInputs.push({
+        title: item.title,
+        content: stripHtml(rawContent) || item.title,
+        link: item.link,
+        imageUrl: extractImage(item as Parser.Item & Record<string, unknown>),
+      });
+      itemsByLink.set(item.link, item);
+    }
+
+    if (articleInputs.length === 0) return 0;
+
+    // ONE Gemini call for all articles in this feed
+    const translations = await batchTranslateWithGemini(ai, articleInputs);
     let inserted = 0;
 
-    for (const item of items) {
-      if (!item.title || !item.link) continue;
+    for (let i = 0; i < articleInputs.length; i++) {
+      const input = articleInputs[i];
+      const translated = translations[i] ?? { title: input.title, excerpt: "", content: input.content };
 
-      const rawContent = item.contentSnippet ?? item.content ?? item.summary ?? item.title;
-      const imageUrl = extractImage(item as Parser.Item & Record<string, unknown>);
-
-      let translated: { title: string; excerpt: string; content: string };
-      try {
-        translated = await translateWithGemini(ai, item.title, stripHtml(rawContent));
-      } catch (err) {
-        logger.warn({ err, url: item.link }, "Translation failed, storing original");
-        translated = { title: item.title, excerpt: "", content: stripHtml(rawContent) };
+      // Skip if not translated to Greek — will retry on next run
+      if (!translated.title || !isGreek(translated.title)) {
+        logger.warn({ url: input.link, title: translated.title }, "Translation did not produce Greek — skipping");
+        continue;
       }
-
-      if (!translated.title || translated.title.trim().length < 3) continue;
 
       const result = await db.insert(articlesTable).values({
         title: translated.title.slice(0, 500),
@@ -191,19 +231,16 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
         content: translated.content || translated.title,
         category: source.defaultCategory,
         author: source.name,
-        imageUrl,
+        imageUrl: input.imageUrl,
         published: true,
         featured: false,
-        sourceUrl: item.link,
+        sourceUrl: input.link,
       }).onConflictDoNothing();
 
       if ((result.rowCount ?? 0) > 0) {
         inserted++;
-        logger.info({ url: item.link, title: translated.title }, "Translated article imported");
+        logger.info({ url: input.link, title: translated.title }, "Translated article imported");
       }
-
-      // Respect Gemini rate limits
-      await new Promise((r) => setTimeout(r, 2000));
     }
 
     return inserted;
@@ -235,6 +272,66 @@ export async function fetchAllFeeds(): Promise<void> {
   }
 
   logger.info({ total }, "RSS fetch complete");
+}
+
+export async function retranslateEnglishArticles(): Promise<number> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    logger.warn("GEMINI_API_KEY not set — cannot retranslate");
+    return 0;
+  }
+  const ai = new GoogleGenAI({ apiKey });
+
+  // Find Google News articles whose titles are not Greek
+  const rows = await db
+    .select({ id: articlesTable.id, title: articlesTable.title, content: articlesTable.content, excerpt: articlesTable.excerpt })
+    .from(articlesTable)
+    .where(like(articlesTable.author, "Google News%"));
+
+  const toRetranslate = rows.filter((r) => !isGreek(r.title));
+  logger.info({ count: toRetranslate.length }, "Articles pending retranslation");
+  if (toRetranslate.length === 0) return 0;
+
+  // Batch in groups of 5 to avoid token limits
+  const BATCH_SIZE = 5;
+  let fixed = 0;
+
+  for (let i = 0; i < toRetranslate.length; i += BATCH_SIZE) {
+    const batch = toRetranslate.slice(i, i + BATCH_SIZE);
+    const inputs: ArticleInput[] = batch.map((r) => ({
+      title: r.title,
+      content: r.content ?? r.excerpt ?? r.title,
+      link: String(r.id),
+      imageUrl: null,
+    }));
+
+    const translations = await batchTranslateWithGemini(ai, inputs);
+
+    for (let j = 0; j < batch.length; j++) {
+      const row = batch[j];
+      const translated = translations[j] ?? { title: row.title, excerpt: "", content: row.content ?? "" };
+
+      if (!translated.title || !isGreek(translated.title)) {
+        logger.warn({ id: row.id, title: translated.title }, "Retranslation still not Greek — skipping");
+        continue;
+      }
+      await db.update(articlesTable).set({
+        title: translated.title.slice(0, 500),
+        excerpt: translated.excerpt || row.excerpt,
+        content: translated.content || row.content,
+      }).where(eq(articlesTable.id, row.id));
+      fixed++;
+      logger.info({ id: row.id, title: translated.title }, "Article retranslated to Greek");
+    }
+
+    // Pause between batches to respect rate limits
+    if (i + BATCH_SIZE < toRetranslate.length) {
+      await new Promise((r) => setTimeout(r, 3000));
+    }
+  }
+
+  logger.info({ fixed }, "Retranslation complete");
+  return fixed;
 }
 
 export function startRssFetcher(): void {
