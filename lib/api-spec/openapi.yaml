@@ -420,6 +420,36 @@ paths:
               schema:
                 $ref: "#/components/schemas/ChatMessage"
 
+  /chat/presence:
+    get:
+      operationId: getChatPresence
+      tags: [chat]
+      summary: Get number of online users
+      responses:
+        "200":
+          description: Online user count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatPresence"
+    post:
+      operationId: pingChatPresence
+      tags: [chat]
+      summary: Register as online
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatPresenceInput"
+      responses:
+        "200":
+          description: Online user count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatPresence"
+
   /stats:
     get:
       operationId: getStats
@@ -435,6 +465,20 @@ paths:
 
 components:
   schemas:
+    ChatPresence:
+      type: object
+      required: [online]
+      properties:
+        online:
+          type: integer
+
+    ChatPresenceInput:
+      type: object
+      required: [username]
+      properties:
+        username:
+          type: string
+
     HealthStatus:
       type: object
       properties:

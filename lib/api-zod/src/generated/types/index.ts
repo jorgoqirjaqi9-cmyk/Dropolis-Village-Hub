@@ -12,6 +12,8 @@ export * from './articleUpdate';
 export * from './category';
 export * from './chatMessage';
 export * from './chatMessageInput';
+export * from './chatPresence';
+export * from './chatPresenceInput';
 export * from './healthStatus';
 export * from './listArticlesParams';
 export * from './listChatMessagesParams';

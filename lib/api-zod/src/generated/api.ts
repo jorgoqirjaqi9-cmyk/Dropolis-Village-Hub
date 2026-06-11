@@ -389,6 +389,26 @@ export const SendChatMessageBody = zod.object({
 
 
 /**
+ * @summary Get number of online users
+ */
+export const GetChatPresenceResponse = zod.object({
+  "online": zod.number()
+})
+
+
+/**
+ * @summary Register as online
+ */
+export const PingChatPresenceBody = zod.object({
+  "username": zod.string()
+})
+
+export const PingChatPresenceResponse = zod.object({
+  "online": zod.number()
+})
+
+
+/**
  * @summary Get site statistics
  */
 export const GetStatsResponse = zod.object({

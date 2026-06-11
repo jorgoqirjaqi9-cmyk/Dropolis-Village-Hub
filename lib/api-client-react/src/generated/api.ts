@@ -26,6 +26,8 @@ import type {
   Category,
   ChatMessage,
   ChatMessageInput,
+  ChatPresence,
+  ChatPresenceInput,
   HealthStatus,
   ListArticlesParams,
   ListChatMessagesParams,
@@ -1635,6 +1637,154 @@ export const useSendChatMessage = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getSendChatMessageMutationOptions(options));
+    }
+
+export const getGetChatPresenceUrl = () => {
+
+
+
+
+  return `/api/chat/presence`
+}
+
+/**
+ * @summary Get number of online users
+ */
+export const getChatPresence = async ( options?: RequestInit): Promise<ChatPresence> => {
+
+  return customFetch<ChatPresence>(getGetChatPresenceUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetChatPresenceQueryKey = () => {
+    return [
+    `/api/chat/presence`
+    ] as const;
+    }
+
+
+export const getGetChatPresenceQueryOptions = <TData = Awaited<ReturnType<typeof getChatPresence>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getChatPresence>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetChatPresenceQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getChatPresence>>> = ({ signal }) => getChatPresence({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getChatPresence>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetChatPresenceQueryResult = NonNullable<Awaited<ReturnType<typeof getChatPresence>>>
+export type GetChatPresenceQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get number of online users
+ */
+
+export function useGetChatPresence<TData = Awaited<ReturnType<typeof getChatPresence>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getChatPresence>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetChatPresenceQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getPingChatPresenceUrl = () => {
+
+
+
+
+  return `/api/chat/presence`
+}
+
+/**
+ * @summary Register as online
+ */
+export const pingChatPresence = async (chatPresenceInput: ChatPresenceInput, options?: RequestInit): Promise<ChatPresence> => {
+
+  return customFetch<ChatPresence>(getPingChatPresenceUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      chatPresenceInput,)
+  }
+);}
+
+
+
+
+export const getPingChatPresenceMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof pingChatPresence>>, TError,{data: BodyType<ChatPresenceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof pingChatPresence>>, TError,{data: BodyType<ChatPresenceInput>}, TContext> => {
+
+const mutationKey = ['pingChatPresence'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof pingChatPresence>>, {data: BodyType<ChatPresenceInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  pingChatPresence(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PingChatPresenceMutationResult = NonNullable<Awaited<ReturnType<typeof pingChatPresence>>>
+    export type PingChatPresenceMutationBody = BodyType<ChatPresenceInput>
+    export type PingChatPresenceMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Register as online
+ */
+export const usePingChatPresence = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof pingChatPresence>>, TError,{data: BodyType<ChatPresenceInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof pingChatPresence>>,
+        TError,
+        {data: BodyType<ChatPresenceInput>},
+        TContext
+      > => {
+      return useMutation(getPingChatPresenceMutationOptions(options));
     }
 
 export const getGetStatsUrl = () => {

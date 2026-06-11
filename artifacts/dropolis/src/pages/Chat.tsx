@@ -1,7 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
-import { useListChatMessages, useSendChatMessage, getListChatMessagesQueryKey } from "@workspace/api-client-react";
+import {
+  useListChatMessages,
+  useSendChatMessage,
+  getListChatMessagesQueryKey,
+  useGetChatPresence,
+  usePingChatPresence,
+} from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -23,6 +29,23 @@ export default function Chat() {
     { limit: 100 },
     { query: { refetchInterval: 5000, queryKey: getListChatMessagesQueryKey({ limit: 100 }) } }
   );
+
+  // Poll online count every 30 seconds
+  const { data: presenceData } = useGetChatPresence({
+    query: { refetchInterval: 30_000, enabled: isJoined },
+  });
+
+  const pingPresence = usePingChatPresence();
+
+  // Ping presence every 30 seconds while joined
+  useEffect(() => {
+    if (!isJoined || !username) return;
+    const ping = () => pingPresence.mutate({ data: { username } });
+    ping();
+    const id = setInterval(ping, 30_000);
+    return () => clearInterval(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isJoined, username]);
 
   const sendMessage = useSendChatMessage();
 
@@ -67,6 +90,8 @@ export default function Chat() {
     return colors[index];
   };
 
+  const onlineCount = presenceData?.online ?? null;
+
   if (!isJoined) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -110,8 +135,14 @@ export default function Chat() {
           <MessageSquare className="w-6 h-6 text-secondary" />
           <div>
             <h2 className="font-bold text-lg leading-tight font-serif">Ζωντανή Συζήτηση</h2>
-            <span className="text-xs text-primary-foreground/70 flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online
+            <span className="text-xs text-primary-foreground/70 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+              Online
+              {onlineCount !== null && (
+                <span className="ml-0.5 bg-green-400/20 text-green-300 font-semibold px-1.5 py-0.5 rounded-full text-[10px]">
+                  {onlineCount}
+                </span>
+              )}
             </span>
           </div>
         </div>

@@ -5,6 +5,14 @@
  * Dropolis API - Portal for Dropolë villages
  * OpenAPI spec version: 0.1.0
  */
+export interface ChatPresence {
+  online: number;
+}
+
+export interface ChatPresenceInput {
+  username: string;
+}
+
 export interface HealthStatus {
   status: string;
 }
