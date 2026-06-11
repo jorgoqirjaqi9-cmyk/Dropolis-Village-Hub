@@ -150,7 +150,53 @@ interface ArticleTranslated {
   content: string;
 }
 
+// Free Google Translate fallback — no API key, no daily quota
+async function googleTranslateFree(text: string, retries = 2): Promise<string> {
+  if (!text || text.trim().length === 0) return text;
+  const encoded = encodeURIComponent(text.slice(0, 4800));
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=el&dt=t&q=${encoded}`;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json() as unknown[][];
+      return (data[0] as unknown[][]).map((chunk) => (chunk as unknown[])[0] as string).join("");
+    } catch (err) {
+      if (attempt < retries) await new Promise(r => setTimeout(r, 1000));
+      else throw err;
+    }
+  }
+  return text;
+}
+
+async function translateArticleWithGoogle(article: ArticleInput): Promise<ArticleTranslated> {
+  const title = await googleTranslateFree(article.title);
+  await new Promise(r => setTimeout(r, 300));
+  // Translate content in chunks if long
+  const chunks: string[] = [];
+  const sentences = article.content.split(/(?<=[.!?])\s+/);
+  let current = "";
+  for (const s of sentences) {
+    if ((current + s).length > 4000) {
+      if (current) chunks.push(current);
+      current = s;
+    } else {
+      current += (current ? " " : "") + s;
+    }
+  }
+  if (current) chunks.push(current);
+  const translatedChunks: string[] = [];
+  for (const chunk of chunks) {
+    translatedChunks.push(await googleTranslateFree(chunk));
+    await new Promise(r => setTimeout(r, 300));
+  }
+  const content = translatedChunks.join(" ");
+  const excerpt = content.split(/[.!?]/)[0]?.trim() || title;
+  return { title, excerpt, content };
+}
+
 // Batch translate all articles for a feed in a SINGLE Gemini call to stay within rate limits
+// Falls back to free Google Translate if Gemini quota is exhausted
 async function batchTranslateWithGemini(
   ai: GoogleGenAI,
   articles: ArticleInput[]
@@ -183,8 +229,18 @@ ${articleList}`;
     if (!Array.isArray(parsed)) throw new Error("Expected JSON array from Gemini");
     return parsed;
   } catch (err) {
-    logger.warn({ err }, "Batch Gemini translation error");
-    return articles.map((a) => ({ title: a.title, excerpt: "", content: a.content }));
+    logger.warn({ err }, "Gemini translation failed — falling back to Google Translate");
+    // Fallback: translate each article individually via free Google Translate
+    const results: ArticleTranslated[] = [];
+    for (const article of articles) {
+      try {
+        results.push(await translateArticleWithGoogle(article));
+      } catch (fallbackErr) {
+        logger.warn({ fallbackErr, title: article.title }, "Google Translate fallback also failed — skipping");
+        results.push({ title: "", excerpt: "", content: "" });
+      }
+    }
+    return results;
   }
 }
 
