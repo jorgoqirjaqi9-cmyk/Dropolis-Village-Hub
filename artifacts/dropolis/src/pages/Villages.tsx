@@ -8,7 +8,7 @@ import { Users, Mountain } from "lucide-react";
 
 const UNITS = [
   { key: "all", label: "Όλα τα Χωριά" },
-  { key: "Δημοτική Ενότητα Δρόπολης", label: "Δρόπολη" },
+  { key: "Δημοτική Ενότητα Κάτω Δρόπολης", label: "Κάτω Δρόπολη" },
   { key: "Δημοτική Ενότητα Άνω Δρόπολης", label: "Άνω Δρόπολη" },
   { key: "Δημοτική Ενότητα Πωγωνίου", label: "Πωγώνι" },
 ];
@@ -35,16 +35,16 @@ export default function Villages() {
     <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO
         title="Τα Χωριά της Δρόπολης"
-        description="Ανακαλύψτε και τα 42 ιστορικά χωριά της Δρόπολης, Άνω Δρόπολης και Πωγωνίου. Πληθυσμός, ιστορία και παραδόσεις."
+        description="Ανακαλύψτε και τα 41 ιστορικά χωριά της Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου. Πληθυσμός, ιστορία και παραδόσεις."
         breadcrumbs={[{ name: "Χωριά", url: "/villages" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Τα Χωριά της Δρόπολης",
-          description: "42 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Δρόπολης, Άνω Δρόπολης και Πωγωνίου.",
+          description: "41 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου.",
           url: "https://dropolis.replit.app/villages",
           inLanguage: "el",
-          numberOfItems: 42,
+          numberOfItems: 41,
         }}
       />
 
@@ -57,7 +57,7 @@ export default function Villages() {
             Τα Χωριά μας
           </h1>
           <p className="text-lg text-primary-foreground/75 leading-relaxed">
-            42 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Δρόπολης, Άνω Δρόπολης και Πωγωνίου.
+            41 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου.
             Το καθένα με τη δική του μοναδική ομορφιά και παράδοση.
           </p>
         </div>
@@ -122,8 +122,8 @@ export default function Villages() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   {village.municipalUnit && (
                     <div className="absolute top-3 left-3 bg-primary/90 text-primary-foreground text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
-                      {village.municipalUnit === "Δημοτική Ενότητα Δρόπολης"
-                        ? "Δρόπολη"
+                      {village.municipalUnit === "Δημοτική Ενότητα Κάτω Δρόπολης"
+                        ? "Κάτω Δρόπολη"
                         : village.municipalUnit === "Δημοτική Ενότητα Άνω Δρόπολης"
                         ? "Άνω Δρόπολη"
                         : "Πωγώνι"}
