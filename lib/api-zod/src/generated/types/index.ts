@@ -24,3 +24,4 @@ export * from './video';
 export * from './videoInput';
 export * from './village';
 export * from './villageInput';
+export * from './villageUpdateInput';

@@ -37,7 +37,8 @@ import type {
   Video,
   VideoInput,
   Village,
-  VillageInput
+  VillageInput,
+  VillageUpdateInput
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -881,6 +882,78 @@ export function useGetVillage<TData = Awaited<ReturnType<typeof getVillage>>, TE
 
 
 
+
+export const getUpdateVillageUrl = (id: number,) => {
+
+
+
+
+  return `/api/villages/${id}`
+}
+
+/**
+ * @summary Update a village
+ */
+export const updateVillage = async (id: number,
+    villageUpdateInput: VillageUpdateInput, options?: RequestInit): Promise<Village> => {
+
+  return customFetch<Village>(getUpdateVillageUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      villageUpdateInput,)
+  }
+);}
+
+
+
+
+export const getUpdateVillageMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateVillage>>, TError,{id: number;data: BodyType<VillageUpdateInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateVillage>>, TError,{id: number;data: BodyType<VillageUpdateInput>}, TContext> => {
+
+const mutationKey = ['updateVillage'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateVillage>>, {id: number;data: BodyType<VillageUpdateInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateVillage(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateVillageMutationResult = NonNullable<Awaited<ReturnType<typeof updateVillage>>>
+    export type UpdateVillageMutationBody = BodyType<VillageUpdateInput>
+    export type UpdateVillageMutationError = ErrorType<void>
+
+    /**
+ * @summary Update a village
+ */
+export const useUpdateVillage = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateVillage>>, TError,{id: number;data: BodyType<VillageUpdateInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateVillage>>,
+        TError,
+        {id: number;data: BodyType<VillageUpdateInput>},
+        TContext
+      > => {
+      return useMutation(getUpdateVillageMutationOptions(options));
+    }
 
 export const getListPhotosUrl = (params?: ListPhotosParams,) => {
   const normalizedParams = new URLSearchParams();

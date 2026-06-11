@@ -224,6 +224,31 @@ paths:
                 $ref: "#/components/schemas/Village"
         "404":
           description: Not found
+    patch:
+      operationId: updateVillage
+      tags: [villages]
+      summary: Update a village
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VillageUpdateInput"
+      responses:
+        "200":
+          description: Updated village
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Village"
+        "404":
+          description: Not found
 
   /photos:
     get:
@@ -539,6 +564,29 @@ components:
           type: integer
         imageUrl:
           type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+
+    VillageUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        nameEl:
+          type: string
+        description:
+          type: string
+        municipalUnit:
+          type: string
+        population:
+          type: integer
+        elevation:
+          type: integer
+        imageUrl:
+          type: string
+          nullable: true
         latitude:
           type: number
         longitude:

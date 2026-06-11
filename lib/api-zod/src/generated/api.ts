@@ -223,6 +223,40 @@ export const GetVillageResponse = zod.object({
 
 
 /**
+ * @summary Update a village
+ */
+export const UpdateVillageParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateVillageBody = zod.object({
+  "name": zod.string().optional(),
+  "nameEl": zod.string().optional(),
+  "description": zod.string().optional(),
+  "municipalUnit": zod.string().optional(),
+  "population": zod.number().optional(),
+  "elevation": zod.number().optional(),
+  "imageUrl": zod.string().nullish(),
+  "latitude": zod.number().optional(),
+  "longitude": zod.number().optional()
+})
+
+export const UpdateVillageResponse = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "nameEl": zod.string(),
+  "description": zod.string(),
+  "municipalUnit": zod.string().nullish(),
+  "population": zod.number().nullable(),
+  "elevation": zod.number().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "latitude": zod.number().nullish(),
+  "longitude": zod.number().nullish(),
+  "createdAt": zod.string().optional()
+})
+
+
+/**
  * @summary List photos
  */
 export const ListPhotosQueryParams = zod.object({

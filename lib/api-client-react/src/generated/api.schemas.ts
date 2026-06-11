@@ -93,6 +93,18 @@ export interface VillageInput {
   longitude?: number;
 }
 
+export interface VillageUpdateInput {
+  name?: string;
+  nameEl?: string;
+  description?: string;
+  municipalUnit?: string;
+  population?: number;
+  elevation?: number;
+  imageUrl?: string | null;
+  latitude?: number;
+  longitude?: number;
+}
+
 export interface Photo {
   id: number;
   title: string;
