@@ -21,6 +21,7 @@ const STATIC_ROUTES = [
   { loc: "/terms", changefreq: "yearly", priority: "0.4" },
   { loc: "/cookie-policy", changefreq: "yearly", priority: "0.3" },
   { loc: "/disclaimer", changefreq: "yearly", priority: "0.3" },
+  { loc: "/sitemap", changefreq: "monthly", priority: "0.3" },
 ];
 
 function escapeXml(str: string): string {

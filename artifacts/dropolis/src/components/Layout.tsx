@@ -26,6 +26,7 @@ const resourceLinks = [
   { href: "/help", label: "Κέντρο Βοήθειας" },
   { href: "/about", label: "Σχετικά με εμάς" },
   { href: "/contact", label: "Επικοινωνία" },
+  { href: "/sitemap", label: "Χάρτης Ιστοτόπου" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

@@ -22,6 +22,7 @@ import CookiePolicy from "@/pages/CookiePolicy";
 import Disclaimer from "@/pages/Disclaimer";
 import Press from "@/pages/Press";
 import Help from "@/pages/Help";
+import Sitemap from "@/pages/Sitemap";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,6 +59,7 @@ function Router() {
         <Route path="/disclaimer" component={Disclaimer} />
         <Route path="/press" component={Press} />
         <Route path="/help" component={Help} />
+        <Route path="/sitemap" component={Sitemap} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
