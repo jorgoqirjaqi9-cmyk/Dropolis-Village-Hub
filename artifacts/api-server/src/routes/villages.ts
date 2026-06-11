@@ -43,6 +43,7 @@ router.patch("/villages/:id", async (req, res) => {
     ...(body.name !== undefined && { name: body.name }),
     ...(body.nameEl !== undefined && { nameEl: body.nameEl }),
     ...(body.description !== undefined && { description: body.description }),
+    ...(body.municipalUnit !== undefined && { municipalUnit: body.municipalUnit }),
     ...(body.population !== undefined && { population: body.population }),
     ...(body.elevation !== undefined && { elevation: body.elevation }),
     ...("imageUrl" in body && { imageUrl: body.imageUrl ?? null }),
