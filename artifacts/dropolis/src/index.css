@@ -253,90 +253,9 @@
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
 
-/* ─── GTranslate widget overrides ─────────────────────────────── */
-.gt-header-widget { position: relative; display: flex; align-items: center; }
-
-/* The generated dropdown wrapper */
-.gt-header-widget .gt_switcher_wrapper,
-.gt-header-widget .gt_switcher {
-  position: relative !important;
-  float: none !important;
-}
-
-/* Selected language button */
-.gt-header-widget .gt_switcher a.gt_selected {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  white-space: nowrap;
-  border: 1px solid rgba(255,255,255,0.3);
-  color: rgba(255,255,255,0.85);
-  background: rgba(255,255,255,0.08);
-  transition: background 0.2s, color 0.2s;
-  text-decoration: none;
-}
-.gt-header-widget .gt_switcher a.gt_selected:hover {
-  background: rgba(255,255,255,0.18);
-  color: #fff;
-}
-
-/* Scrolled state — dark text on light/glass background */
-.gt-header-widget.gt-scrolled .gt_switcher a.gt_selected {
-  border-color: hsl(var(--border));
-  color: hsl(var(--foreground) / 0.8);
-  background: transparent;
-}
-.gt-header-widget.gt-scrolled .gt_switcher a.gt_selected:hover {
-  background: hsl(var(--muted));
-  color: hsl(var(--foreground));
-}
-
-/* Dropdown panel */
-.gt-header-widget .gt_switcher .gt_option {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 4px);
-  min-width: 130px;
-  background: hsl(var(--popover));
-  border: 1px solid hsl(var(--border));
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  z-index: 9999;
-  overflow: hidden;
-}
-.gt-header-widget .gt_switcher .gt_option a {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  font-size: 0.8125rem;
-  color: hsl(var(--foreground));
-  text-decoration: none;
-  transition: background 0.15s;
-}
-.gt-header-widget .gt_switcher .gt_option a:hover {
-  background: hsl(var(--muted));
-}
-
-/* Hide the "Powered by" branding link */
-.gt-header-widget .gt_switcher .gt_option a[href*="gtranslate"] {
-  display: none !important;
-}
-
-/* Arrow on selected button */
-.gt-header-widget .gt_switcher a.gt_selected::after {
-  content: "▾";
-  font-size: 0.65rem;
-  margin-left: 2px;
-  opacity: 0.7;
-}
-
-/* Mobile: ensure it's visible and not clipped */
-@media (max-width: 767px) {
-  .gt-header-widget { order: -1; }
-  .gt-header-widget .gt_switcher .gt_option { right: auto; left: 0; }
-}
+/* ─── Google Translate — hide injected banner & highlights ───── */
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt               { display: none !important; }
+.goog-text-highlight      { background: none !important; box-shadow: none !important; }
+body                      { top: 0 !important; }

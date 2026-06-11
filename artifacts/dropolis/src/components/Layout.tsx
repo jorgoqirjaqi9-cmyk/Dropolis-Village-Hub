@@ -1,8 +1,88 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail, Download, Share } from "lucide-react";
+import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail, Download, Share, ChevronDown } from "lucide-react";
 import { usePWAInstall } from "../hooks/use-pwa-install";
 import { RadioPlayer } from "./RadioPlayer";
+
+const LANGUAGES = [
+  { code: "el", label: "Ελληνικά", flag: "🇬🇷" },
+  { code: "sq", label: "Shqip",    flag: "🇦🇱" },
+  { code: "en", label: "English",  flag: "🇺🇸" },
+];
+
+function LanguageSwitcher({ scrolled }: { scrolled: boolean }) {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("el");
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onOutside);
+    return () => document.removeEventListener("mousedown", onOutside);
+  }, []);
+
+  function switchLang(code: string) {
+    setActive(code);
+    setOpen(false);
+    if (code === "el") {
+      // Restore original — click the Google Translate "show original" button if present
+      const restore = document.querySelector<HTMLElement>(".goog-te-menu-value span");
+      const frame = document.querySelector<HTMLIFrameElement>(".goog-te-banner-frame");
+      if (frame) {
+        const btn = frame.contentDocument?.querySelector<HTMLElement>("a.goog-close-link");
+        btn?.click();
+      }
+      const sel = document.querySelector<HTMLSelectElement>("select.goog-te-combo");
+      if (sel) { sel.value = ""; sel.dispatchEvent(new Event("change")); }
+      return;
+    }
+    const sel = document.querySelector<HTMLSelectElement>("select.goog-te-combo");
+    if (sel) {
+      sel.value = code;
+      sel.dispatchEvent(new Event("change"));
+    }
+  }
+
+  const current = LANGUAGES.find(l => l.code === active) ?? LANGUAGES[0];
+
+  const btnBase = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-200 border";
+  const btnLight = "border-white/30 text-white/85 hover:bg-white/15 hover:text-white";
+  const btnDark  = "border-border text-foreground/75 hover:bg-muted hover:text-foreground";
+
+  return (
+    <div ref={ref} className="relative notranslate" style={{ zIndex: 60 }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        aria-label="Επιλογή γλώσσας"
+        className={`${btnBase} ${scrolled ? btnDark : btnLight}`}
+      >
+        <span>{current.flag}</span>
+        <span className="hidden sm:inline">{current.label}</span>
+        <ChevronDown size={12} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 top-[calc(100%+6px)] min-w-[140px] rounded-lg border border-border bg-popover shadow-xl overflow-hidden">
+          {LANGUAGES.map(lang => (
+            <button
+              key={lang.code}
+              onClick={() => switchLang(lang.code)}
+              className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-colors text-left
+                ${active === lang.code
+                  ? "bg-primary/10 text-primary font-medium"
+                  : "text-foreground hover:bg-muted"}`}
+            >
+              <span>{lang.flag}</span>
+              <span>{lang.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const navItems = [
   { href: "/", label: "Αρχική", icon: Home },
@@ -113,10 +193,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-2">
-            {/* GTranslate language selector */}
-            <div
-              className={`gtranslate_wrapper notranslate gt-header-widget ${scrolled ? "gt-scrolled" : "gt-top"}`}
-            />
+            <LanguageSwitcher scrolled={scrolled} />
 
             <Link
               href="/contact"

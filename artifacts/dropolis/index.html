@@ -208,18 +208,25 @@
       }
     </script>
 
-    <!-- GTranslate: el / sq / en -->
-    <script>
-      window.gtranslateSettings = {
-        default_language: "el",
-        detect_browser_language: false,
-        languages: ["el", "sq", "en"],
-        wrapper_selector: ".gtranslate_wrapper",
-        flag_style: "3d",
-        flag_size: 16,
-        alt_flags: { en: "usa" }
-      };
+    <!-- Google Translate Widget -->
+    <div id="google_translate_element" style="display:none;"></div>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'el',
+          includedLanguages: 'el,sq,en',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+      }
     </script>
-    <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <style>
+      body { top: 0px !important; }
+      .goog-te-banner-frame { display: none !important; }
+      .goog-te-balloon-frame { display: none !important; }
+      #goog-gt-tt { display: none !important; }
+      .goog-text-highlight { background: none !important; box-shadow: none !important; }
+    </style>
   </body>
 </html>
