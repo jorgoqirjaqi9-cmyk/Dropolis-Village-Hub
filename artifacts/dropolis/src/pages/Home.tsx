@@ -69,13 +69,13 @@ export default function Home() {
     <div>
       <SEO
         title="Αρχική"
-        description="Η ψηφιακή πλατεία της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης."
+        description="Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης."
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",
           "@id": "https://dropolis.replit.app/#webpage",
           name: "Δρόπολη — Portal Ειδήσεων & Κοινότητας",
-          description: "Η ψηφιακή πλατεία της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης.",
+          description: "Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης.",
           url: "https://dropolis.replit.app/",
           inLanguage: "el",
           isPartOf: { "@id": "https://dropolis.replit.app/#website" },
@@ -123,7 +123,7 @@ export default function Home() {
             variants={fadeUp}
             className="text-xl sm:text-2xl text-white/80 font-light text-shadow-hero mb-3 font-serif italic"
           >
-            Η ψηφιακή πλατεία της ελληνικής μειονότητας
+            Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας
           </motion.p>
 
           <motion.p

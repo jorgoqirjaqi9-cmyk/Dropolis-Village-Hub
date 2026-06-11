@@ -252,7 +252,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h3 className="font-serif text-2xl font-bold text-secondary mb-3">Δρόπολη</h3>
               <p className="text-sm text-background/60 leading-relaxed mb-4">
-                Η ψηφιακή πλατεία της ελληνικής μειονότητας. Ειδήσεις, ιστορία και πολιτισμός από τα 41 χωριά της Β. Ηπείρου.
+                Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, ιστορία και πολιτισμός από τα 41 χωριά της Β. Ηπείρου.
               </p>
               <div className="flex gap-3">
                 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
