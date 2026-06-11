@@ -198,6 +198,39 @@
     </script>
   </head>
   <body>
+    <!-- 1. Cookie για αυτόματη μετάφραση: Αλβανικά → Ελληνικά -->
+    <script type="text/javascript">
+      function setCookie(key, value, expiry) {
+        var expires = new Date();
+        expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+      }
+      setCookie('googtrans', '/sq/el', 1);
+    </script>
+
+    <!-- 2. Κρυφό widget Google Translate -->
+    <div id="google_translate_element" style="display:none;"></div>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'sq',
+          includedLanguages: 'el',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+      }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- 3. Κρύβουμε τις μπάρες της Google -->
+    <style>
+      body { top: 0px !important; position: static !important; }
+      .goog-te-banner-frame, .goog-te-banner, .skiptranslate { display: none !important; }
+      iframe.goog-te-banner-frame { display: none !important; }
+      #goog-gt-tt { display: none !important; }
+      .goog-text-highlight { background: none !important; box-shadow: none !important; }
+    </style>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
