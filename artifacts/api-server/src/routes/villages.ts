@@ -22,6 +22,7 @@ router.post("/villages", async (req, res) => {
     name: body.name,
     nameEl: body.nameEl,
     description: body.description,
+    municipalUnit: body.municipalUnit ?? null,
     population: body.population ?? null,
     elevation: body.elevation ?? null,
     imageUrl: body.imageUrl ?? null,
