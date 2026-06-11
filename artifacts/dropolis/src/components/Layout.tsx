@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail, Download, Share } from "lucide-react";
 import { usePWAInstall } from "../hooks/use-pwa-install";
+import { RadioPlayer } from "./RadioPlayer";
 
 const navItems = [
   { href: "/", label: "Αρχική", icon: Home },
@@ -349,6 +350,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+      <RadioPlayer />
     </div>
   );
 }
