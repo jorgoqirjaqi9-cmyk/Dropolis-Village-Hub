@@ -10,10 +10,30 @@ const LANGUAGES = [
   { code: "en", label: "English",  flag: "🇺🇸" },
 ];
 
+const SITE_URL = "https://dropolis.net";
+
+function switchLanguage(code: string) {
+  if (code === "el") {
+    // If we're on the Google Translate proxy, go back to original
+    if (window.location.hostname.includes("translate.goog")) {
+      window.location.href = SITE_URL + window.location.pathname + window.location.search;
+    }
+    return;
+  }
+  // Build the Google Translate proxy URL for the current page
+  const currentPath = window.location.pathname + window.location.search + window.location.hash;
+  const targetUrl = `https://dropolis-net.translate.goog${currentPath}?_x_tr_sl=el&_x_tr_tl=${code}&_x_tr_hl=${code}&_x_tr_pto=wapp`;
+  window.location.href = targetUrl;
+}
+
 function LanguageSwitcher({ scrolled }: { scrolled: boolean }) {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("el");
   const ref = useRef<HTMLDivElement>(null);
+
+  // Detect active language from hostname
+  const isProxy = typeof window !== "undefined" && window.location.hostname.includes("translate.goog");
+  const params = isProxy ? new URLSearchParams(window.location.search) : null;
+  const activeLang = isProxy ? (params?.get("_x_tr_tl") ?? "el") : "el";
 
   useEffect(() => {
     function onOutside(e: MouseEvent) {
@@ -23,36 +43,14 @@ function LanguageSwitcher({ scrolled }: { scrolled: boolean }) {
     return () => document.removeEventListener("mousedown", onOutside);
   }, []);
 
-  function switchLang(code: string) {
-    setActive(code);
-    setOpen(false);
-    if (code === "el") {
-      // Restore original — click the Google Translate "show original" button if present
-      const restore = document.querySelector<HTMLElement>(".goog-te-menu-value span");
-      const frame = document.querySelector<HTMLIFrameElement>(".goog-te-banner-frame");
-      if (frame) {
-        const btn = frame.contentDocument?.querySelector<HTMLElement>("a.goog-close-link");
-        btn?.click();
-      }
-      const sel = document.querySelector<HTMLSelectElement>("select.goog-te-combo");
-      if (sel) { sel.value = ""; sel.dispatchEvent(new Event("change")); }
-      return;
-    }
-    const sel = document.querySelector<HTMLSelectElement>("select.goog-te-combo");
-    if (sel) {
-      sel.value = code;
-      sel.dispatchEvent(new Event("change"));
-    }
-  }
-
-  const current = LANGUAGES.find(l => l.code === active) ?? LANGUAGES[0];
+  const current = LANGUAGES.find(l => l.code === activeLang) ?? LANGUAGES[0];
 
   const btnBase = "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-200 border";
   const btnLight = "border-white/30 text-white/85 hover:bg-white/15 hover:text-white";
   const btnDark  = "border-border text-foreground/75 hover:bg-muted hover:text-foreground";
 
   return (
-    <div ref={ref} className="relative notranslate" style={{ zIndex: 60 }}>
+    <div ref={ref} className="relative" style={{ zIndex: 60 }}>
       <button
         onClick={() => setOpen(o => !o)}
         aria-label="Επιλογή γλώσσας"
@@ -68,9 +66,9 @@ function LanguageSwitcher({ scrolled }: { scrolled: boolean }) {
           {LANGUAGES.map(lang => (
             <button
               key={lang.code}
-              onClick={() => switchLang(lang.code)}
+              onClick={() => { setOpen(false); switchLanguage(lang.code); }}
               className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-colors text-left
-                ${active === lang.code
+                ${activeLang === lang.code
                   ? "bg-primary/10 text-primary font-medium"
                   : "text-foreground hover:bg-muted"}`}
             >
