@@ -44,7 +44,7 @@ export default function News() {
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-2">Ειδήσεις</h1>
-            <p className="text-primary-foreground/70">Τελευταία νέα και ρεπορτάζ από τη Δρόπολη.</p>
+            <p className="text-primary-foreground/70">Τελευταία νέα και ρεπορτάζ.</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <select
