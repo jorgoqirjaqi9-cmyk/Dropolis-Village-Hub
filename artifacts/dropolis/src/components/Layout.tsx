@@ -113,6 +113,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-2">
+            {/* GTranslate language selector */}
+            <div
+              className={`gtranslate_wrapper notranslate gt-header-widget ${scrolled ? "gt-scrolled" : "gt-top"}`}
+            />
+
             <Link
               href="/contact"
               className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
