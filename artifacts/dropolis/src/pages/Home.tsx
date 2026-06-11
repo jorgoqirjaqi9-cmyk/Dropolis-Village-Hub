@@ -107,6 +107,21 @@ export default function Home() {
           animate="show"
           variants={stagger}
         >
+          {/* PLAY LIVE radio button */}
+          <motion.div variants={fadeUp} className="mb-5">
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("radio-play"))}
+              className="group inline-flex items-center gap-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/25 text-white px-5 py-2 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
+            >
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
+              </span>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase">Play Live</span>
+              <svg className="w-3.5 h-3.5 fill-white opacity-80" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </motion.div>
+
           <motion.div variants={fadeUp} className="mb-4">
             <span className="inline-block text-xs font-semibold tracking-[0.3em] uppercase text-secondary/90 bg-secondary/10 border border-secondary/30 px-4 py-1.5 rounded-full backdrop-blur-sm">
               Βόρεια Ήπειρος · Αλβανία

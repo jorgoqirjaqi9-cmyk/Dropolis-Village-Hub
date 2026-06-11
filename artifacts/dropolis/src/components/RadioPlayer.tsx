@@ -18,6 +18,21 @@ export function RadioPlayer() {
     audio.volume = volume;
   }, [volume]);
 
+  useEffect(() => {
+    const handler = () => {
+      setIsOpen(true);
+      const audio = audioRef.current;
+      if (!audio || isPlaying) return;
+      setIsLoading(true);
+      audio.src = STREAM_URL;
+      audio.play()
+        .then(() => { setIsPlaying(true); setIsLoading(false); })
+        .catch(() => { setIsLoading(false); });
+    };
+    window.addEventListener("radio-play", handler);
+    return () => window.removeEventListener("radio-play", handler);
+  }, [isPlaying]);
+
   const togglePlay = () => {
     const audio = audioRef.current;
     if (!audio) return;
