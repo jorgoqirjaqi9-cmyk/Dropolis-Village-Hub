@@ -8,6 +8,7 @@ import chatRouter from "./chat";
 import statsRouter from "./stats";
 import sitemapRouter from "./sitemap";
 import indexNowRouter from "./indexnow";
+import rssRouter from "./rss";
 
 const router: IRouter = Router();
 
@@ -20,5 +21,6 @@ router.use(photosRouter);
 router.use(videosRouter);
 router.use(chatRouter);
 router.use(statsRouter);
+router.use(rssRouter);
 
 export default router;
