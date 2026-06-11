@@ -1,7 +1,10 @@
 User-agent: *
 Allow: /
 
-# Disallow admin/API routes
+# Allow sitemap endpoint explicitly before API block
+Allow: /api/sitemap.xml
+
+# Disallow all other API routes
 Disallow: /api/
 
 # Allow all indexable content
