@@ -420,6 +420,30 @@ paths:
               schema:
                 $ref: "#/components/schemas/ChatMessage"
 
+  /chat/messages/{id}:
+    delete:
+      operationId: deleteChatMessage
+      tags: [chat]
+      summary: Delete a chat message (own messages only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+        "403":
+          description: Not your message
+        "404":
+          description: Not found
+
   /chat/presence:
     get:
       operationId: getChatPresence

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
 import { chatMessagesTable } from "@workspace/db";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { ListChatMessagesQueryParams, SendChatMessageBody, PingChatPresenceBody } from "@workspace/api-zod";
 
 const router = Router();
@@ -36,6 +36,19 @@ router.post("/chat/messages", async (req, res) => {
     avatar: body.avatar ?? null,
   }).returning();
   res.status(201).json(formatMessage(message));
+});
+
+router.delete("/chat/messages/:id", async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const username = req.query.username as string;
+  if (!id || !username) { res.status(400).json({ error: "Missing id or username" }); return; }
+
+  const [msg] = await db.select().from(chatMessagesTable).where(eq(chatMessagesTable.id, id));
+  if (!msg) { res.status(404).json({ error: "Not found" }); return; }
+  if (msg.username !== username) { res.status(403).json({ error: "Not your message" }); return; }
+
+  await db.delete(chatMessagesTable).where(eq(chatMessagesTable.id, id));
+  res.status(204).end();
 });
 
 router.get("/chat/presence", (req, res) => {

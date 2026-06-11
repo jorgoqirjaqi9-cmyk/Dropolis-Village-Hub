@@ -209,3 +209,7 @@ export type ListChatMessagesParams = {
 limit?: number;
 };
 
+export type DeleteChatMessageParams = {
+username: string;
+};
+

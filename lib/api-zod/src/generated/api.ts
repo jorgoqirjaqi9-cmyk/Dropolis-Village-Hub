@@ -389,6 +389,18 @@ export const SendChatMessageBody = zod.object({
 
 
 /**
+ * @summary Delete a chat message (own messages only)
+ */
+export const DeleteChatMessageParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteChatMessageQueryParams = zod.object({
+  "username": zod.coerce.string()
+})
+
+
+/**
  * @summary Get number of online users
  */
 export const GetChatPresenceResponse = zod.object({

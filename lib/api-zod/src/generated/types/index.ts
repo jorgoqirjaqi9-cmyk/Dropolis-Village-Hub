@@ -14,6 +14,7 @@ export * from './chatMessage';
 export * from './chatMessageInput';
 export * from './chatPresence';
 export * from './chatPresenceInput';
+export * from './deleteChatMessageParams';
 export * from './healthStatus';
 export * from './listArticlesParams';
 export * from './listChatMessagesParams';

@@ -7,13 +7,14 @@ import {
   getListChatMessagesQueryKey,
   useGetChatPresence,
   usePingChatPresence,
+  useDeleteChatMessage,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Send, Users, MessageSquare } from "lucide-react";
+import { Send, Users, MessageSquare, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Chat() {
@@ -32,7 +33,7 @@ export default function Chat() {
 
   // Poll online count every 30 seconds
   const { data: presenceData } = useGetChatPresence({
-    query: { refetchInterval: 30_000, enabled: isJoined },
+    query: { refetchInterval: 30_000, enabled: isJoined, queryKey: ["getChatPresence"] },
   });
 
   const pingPresence = usePingChatPresence();
@@ -48,6 +49,21 @@ export default function Chat() {
   }, [isJoined, username]);
 
   const sendMessage = useSendChatMessage();
+  const deleteMessage = useDeleteChatMessage();
+
+  const handleDelete = (id: number) => {
+    deleteMessage.mutate(
+      { id, params: { username } },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: getListChatMessagesQueryKey() });
+        },
+        onError: () => {
+          toast({ title: "Σφάλμα", description: "Δεν ήταν δυνατή η διαγραφή.", variant: "destructive" });
+        }
+      }
+    );
+  };
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -179,14 +195,26 @@ export default function Chat() {
                   {!isMe && showHeader && (
                     <span className="text-xs font-medium text-muted-foreground mb-1 ml-1">{msg.username}</span>
                   )}
-                  <div 
-                    className={`px-4 py-2.5 rounded-2xl shadow-sm ${
-                      isMe 
-                        ? 'bg-primary text-primary-foreground rounded-tr-sm' 
-                        : 'bg-card border border-card-border text-foreground rounded-tl-sm'
-                    }`}
-                  >
-                    <p className="whitespace-pre-wrap break-words text-sm md:text-base leading-relaxed">{msg.message}</p>
+                  <div className={`flex items-end gap-1.5 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div 
+                      className={`px-4 py-2.5 rounded-2xl shadow-sm ${
+                        isMe 
+                          ? 'bg-primary text-primary-foreground rounded-tr-sm' 
+                          : 'bg-card border border-card-border text-foreground rounded-tl-sm'
+                      }`}
+                    >
+                      <p className="whitespace-pre-wrap break-words text-sm md:text-base leading-relaxed">{msg.message}</p>
+                    </div>
+                    {isMe && (
+                      <button
+                        onClick={() => handleDelete(msg.id)}
+                        disabled={deleteMessage.isPending}
+                        className="text-muted-foreground/40 hover:text-destructive transition-colors mb-1 shrink-0"
+                        title="Διαγραφή μηνύματος"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
                   <span className="text-[10px] text-muted-foreground/60 mt-1 mx-1">
                     {format(new Date(msg.createdAt), "HH:mm", { locale: el })}
