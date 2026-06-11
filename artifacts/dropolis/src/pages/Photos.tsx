@@ -31,7 +31,7 @@ export default function Photos() {
         <div className="relative z-10">
           <Camera className="w-10 h-10 mx-auto mb-4 text-secondary" />
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-3">Φωτογραφικό Αρχείο</h1>
-          <p className="text-primary-foreground/70 max-w-xl mx-auto">Αποτυπώνοντας την ομορφιά, την παράδοση και την καθημερινότητα στα χωριά της Δρόπολης.</p>
+          <p className="text-primary-foreground/70 max-w-xl mx-auto">Αποτυπώνοντας την ομορφιά, την παράδοση και την καθημερινότητα</p>
         </div>
       </div>
 
