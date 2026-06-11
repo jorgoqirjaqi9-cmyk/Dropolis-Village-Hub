@@ -23,6 +23,8 @@ export interface SEOProps {
   jsonLd?: object | object[];
   breadcrumbs?: Array<{ name: string; url: string }>;
   noindex?: boolean;
+  /** When true, use title as-is without appending site name (for homepage) */
+  standalone?: boolean;
 }
 
 function setMeta(selector: string, attr: string, value: string) {
@@ -66,10 +68,11 @@ export function SEO({
   jsonLd,
   breadcrumbs,
   noindex = false,
+  standalone = false,
 }: SEOProps) {
   const [location] = useLocation();
   const canonicalUrl = `${BASE_URL}${location === "/" ? "" : location}`;
-  const fullTitle = `${title} | ${SITE_NAME} (${SITE_NAME_EN})`;
+  const fullTitle = standalone ? title : `${title} | ${SITE_NAME} (${SITE_NAME_EN})`;
   const metaDesc = description || DEFAULT_DESCRIPTION;
   const ogImage = image ? (image.startsWith("http") ? image : `${BASE_URL}${image}`) : `${BASE_URL}${DEFAULT_IMAGE}`;
 

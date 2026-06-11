@@ -33,40 +33,96 @@ function escapeXml(str: string): string {
     .replace(/'/g, "&apos;");
 }
 
-function urlEntry(loc: string, lastmod: string, changefreq: string, priority: string): string {
+function urlEntry(
+  loc: string,
+  lastmod: string,
+  changefreq: string,
+  priority: string,
+  extras?: string
+): string {
   return `  <url>
     <loc>${escapeXml(loc)}</loc>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
-    <lastmod>${lastmod}</lastmod>
+    <lastmod>${lastmod}</lastmod>${extras ? `\n${extras}` : ""}
   </url>`;
 }
 
 router.get("/sitemap.xml", async (req, res) => {
   try {
     const today = new Date().toISOString().slice(0, 10);
+    const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
 
     const [articles, villages] = await Promise.all([
-      db.select({ id: articlesTable.id, createdAt: articlesTable.createdAt })
+      db
+        .select({
+          id: articlesTable.id,
+          title: articlesTable.title,
+          imageUrl: articlesTable.imageUrl,
+          createdAt: articlesTable.createdAt,
+          updatedAt: articlesTable.updatedAt,
+        })
         .from(articlesTable)
         .orderBy(desc(articlesTable.createdAt)),
-      db.select({ id: villagesTable.id, createdAt: villagesTable.createdAt })
+      db
+        .select({ id: villagesTable.id, createdAt: villagesTable.createdAt })
         .from(villagesTable)
         .orderBy(villagesTable.id),
     ]);
 
-    const staticEntries = STATIC_ROUTES.map(r =>
+    const staticEntries = STATIC_ROUTES.map((r) =>
       urlEntry(`${BASE_URL}${r.loc}`, today, r.changefreq, r.priority)
     );
 
-    const articleEntries = articles.map(a => {
-      const lastmod = a.createdAt ? new Date(a.createdAt).toISOString().slice(0, 10) : today;
-      return urlEntry(`${BASE_URL}/news/${a.id}`, lastmod, "monthly", "0.8");
+    const articleEntries = articles.map((a) => {
+      const articleDate = a.updatedAt ?? a.createdAt;
+      const lastmod = articleDate
+        ? new Date(articleDate).toISOString().slice(0, 10)
+        : today;
+      const isRecent = a.createdAt ? new Date(a.createdAt) > twoDaysAgo : false;
+
+      const parts: string[] = [];
+
+      if (isRecent && a.title) {
+        const pubDate = a.createdAt
+          ? new Date(a.createdAt).toISOString()
+          : new Date().toISOString();
+        parts.push(`    <news:news>
+      <news:publication>
+        <news:name>Δρόπολη</news:name>
+        <news:language>el</news:language>
+      </news:publication>
+      <news:publication_date>${pubDate}</news:publication_date>
+      <news:title>${escapeXml(a.title)}</news:title>
+    </news:news>`);
+      }
+
+      if (a.imageUrl && a.title) {
+        parts.push(`    <image:image>
+      <image:loc>${escapeXml(a.imageUrl)}</image:loc>
+      <image:title>${escapeXml(a.title)}</image:title>
+    </image:image>`);
+      }
+
+      return urlEntry(
+        `${BASE_URL}/news/${a.id}`,
+        lastmod,
+        "monthly",
+        "0.8",
+        parts.join("\n")
+      );
     });
 
-    const villageEntries = villages.map(v => {
-      const lastmod = v.createdAt ? new Date(v.createdAt).toISOString().slice(0, 10) : today;
-      return urlEntry(`${BASE_URL}/villages/${v.id}`, lastmod, "monthly", "0.7");
+    const villageEntries = villages.map((v) => {
+      const lastmod = v.createdAt
+        ? new Date(v.createdAt).toISOString().slice(0, 10)
+        : today;
+      return urlEntry(
+        `${BASE_URL}/villages/${v.id}`,
+        lastmod,
+        "monthly",
+        "0.7"
+      );
     });
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>

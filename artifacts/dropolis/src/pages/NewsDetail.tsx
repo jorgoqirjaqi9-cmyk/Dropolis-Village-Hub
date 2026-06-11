@@ -59,20 +59,33 @@ export default function NewsDetail() {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
+    "@id": `${BASE}/news/${article.id}`,
     headline: article.title,
     description: article.excerpt || "",
     image: article.imageUrl ? [article.imageUrl] : [],
     datePublished: article.createdAt,
-    dateModified: article.createdAt,
-    author: { "@type": "Person", name: article.author || "Dropolis" },
+    dateModified: article.updatedAt ?? article.createdAt,
+    url: `${BASE}/news/${article.id}`,
+    author: {
+      "@type": "Person",
+      name: article.author || "Dropolis",
+    },
     publisher: {
       "@type": "Organization",
+      "@id": `${BASE}/#organization`,
       name: "Δρόπολη (Dropolis)",
-      logo: { "@type": "ImageObject", url: `${BASE}/favicon.svg` },
+      logo: {
+        "@type": "ImageObject",
+        url: `${BASE}/favicon.svg`,
+        width: 512,
+        height: 512,
+      },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE}/news/${article.id}` },
+    isPartOf: { "@id": `${BASE}/#website` },
     articleSection: article.category,
     inLanguage: "el",
+    keywords: article.tags || article.category,
   };
 
   return (

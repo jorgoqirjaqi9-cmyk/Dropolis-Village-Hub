@@ -54,7 +54,6 @@ export default function Privacy() {
         title="Πολιτική Απορρήτου"
         description="Πολιτική Απορρήτου του Dropolis. Πληροφορίες για τη συλλογή, χρήση και προστασία των προσωπικών δεδομένων σας."
         breadcrumbs={[{ name: "Πολιτική Απορρήτου", url: "/privacy" }]}
-        noindex={false}
       />
 
       <motion.header initial="hidden" animate="show" variants={fade}

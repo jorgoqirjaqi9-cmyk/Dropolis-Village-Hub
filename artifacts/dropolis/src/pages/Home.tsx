@@ -68,7 +68,8 @@ export default function Home() {
   return (
     <div>
       <SEO
-        title="Αρχική"
+        title="Δρόπολη — Portal Ειδήσεων & Κοινότητας"
+        standalone={true}
         description="Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης."
         jsonLd={{
           "@context": "https://schema.org",

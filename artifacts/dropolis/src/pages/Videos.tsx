@@ -15,11 +15,29 @@ export default function Videos() {
         breadcrumbs={[{ name: "Βίντεο", url: "/videos" }]}
         jsonLd={{
           "@context": "https://schema.org",
-          "@type": "CollectionPage",
+          "@type": "ItemList",
           name: "Βίντεο & Ρεπορτάζ — Δρόπολη",
           description: "Βίντεο και ρεπορτάζ από τη Δρόπολη.",
           url: "https://dropolis.net/videos",
           inLanguage: "el",
+          numberOfItems: videos?.length ?? 0,
+          ...(videos && videos.length > 0
+            ? {
+                itemListElement: videos.slice(0, 30).map((v, i) => ({
+                  "@type": "ListItem",
+                  position: i + 1,
+                  item: {
+                    "@type": "VideoObject",
+                    name: v.title,
+                    description: v.description ?? "",
+                    thumbnailUrl: `https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`,
+                    embedUrl: `https://www.youtube.com/embed/${v.youtubeId}`,
+                    url: `https://www.youtube.com/watch?v=${v.youtubeId}`,
+                    inLanguage: "el",
+                  },
+                })),
+              }
+            : {}),
         }}
       />
 
