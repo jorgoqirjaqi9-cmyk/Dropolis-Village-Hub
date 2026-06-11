@@ -1114,6 +1114,76 @@ export function useGetPhoto<TData = Awaited<ReturnType<typeof getPhoto>>, TError
 
 
 
+export const getDeletePhotoUrl = (id: number,) => {
+
+
+
+
+  return `/api/photos/${id}`
+}
+
+/**
+ * @summary Delete a photo
+ */
+export const deletePhoto = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeletePhotoUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeletePhotoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deletePhoto>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deletePhoto'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deletePhoto>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deletePhoto(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeletePhotoMutationResult = NonNullable<Awaited<ReturnType<typeof deletePhoto>>>
+
+    export type DeletePhotoMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Delete a photo
+ */
+export const useDeletePhoto = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deletePhoto>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeletePhotoMutationOptions(options));
+    }
+
 export const getListVideosUrl = (params?: ListVideosParams,) => {
   const normalizedParams = new URLSearchParams();
 

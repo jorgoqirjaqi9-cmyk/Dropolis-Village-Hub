@@ -6,6 +6,7 @@ import {
   ListPhotosQueryParams,
   CreatePhotoBody,
   GetPhotoParams,
+  DeletePhotoParams,
 } from "@workspace/api-zod";
 
 const router = Router();
@@ -44,6 +45,12 @@ router.get("/photos/:id", async (req, res) => {
     return;
   }
   res.json(formatPhoto(photo));
+});
+
+router.delete("/photos/:id", async (req, res) => {
+  const { id } = DeletePhotoParams.parse({ id: Number(req.params.id) });
+  await db.delete(photosTable).where(eq(photosTable.id, id));
+  res.status(204).end();
 });
 
 function formatPhoto(p: typeof photosTable.$inferSelect) {

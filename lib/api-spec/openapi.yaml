@@ -288,6 +288,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Photo"
+    delete:
+      operationId: deletePhoto
+      tags: [photos]
+      summary: Delete a photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
 
   /videos:
     get:

@@ -279,6 +279,14 @@ export const GetPhotoResponse = zod.object({
 
 
 /**
+ * @summary Delete a photo
+ */
+export const DeletePhotoParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
  * @summary List videos
  */
 export const ListVideosQueryParams = zod.object({
