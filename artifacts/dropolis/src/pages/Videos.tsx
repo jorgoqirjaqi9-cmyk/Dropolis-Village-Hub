@@ -18,7 +18,7 @@ export default function Videos() {
           "@type": "CollectionPage",
           name: "Βίντεο & Ρεπορτάζ — Δρόπολη",
           description: "Βίντεο και ρεπορτάζ από τη Δρόπολη.",
-          url: "https://dropolis.replit.app/videos",
+          url: "https://dropolis.net/videos",
           inLanguage: "el",
         }}
       />

@@ -25,7 +25,7 @@ export default function About() {
     "@type": "AboutPage",
     name: "Σχετικά με το Dropolis",
     description: "Portal ειδήσεων και κοινότητας για τα χωριά της Δρόπολης, Βόρεια Ήπειρος.",
-    url: "https://dropolis.replit.app/about",
+    url: "https://dropolis.net/about",
     mainEntity: {
       "@type": "Organization",
       name: "Dropolis (Δρόπολη)",

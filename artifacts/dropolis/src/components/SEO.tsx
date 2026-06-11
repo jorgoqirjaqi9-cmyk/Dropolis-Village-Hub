@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 
 const SITE_NAME = "Δρόπολη";
 const SITE_NAME_EN = "Dropolis";
-const BASE_URL = typeof window !== "undefined" ? window.location.origin : "https://dropolis.replit.app";
+const BASE_URL = typeof window !== "undefined" ? window.location.origin : "https://dropolis.net";
 const DEFAULT_IMAGE = "/opengraph.jpg";
 const DEFAULT_DESCRIPTION =
   "Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος).";

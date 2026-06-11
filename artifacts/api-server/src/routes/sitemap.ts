@@ -5,7 +5,7 @@ import { desc } from "drizzle-orm";
 
 const router = Router();
 
-const BASE_URL = "https://dropolis.replit.app";
+const BASE_URL = "https://dropolis.net";
 
 const STATIC_ROUTES = [
   { loc: "/", changefreq: "daily", priority: "1.0" },

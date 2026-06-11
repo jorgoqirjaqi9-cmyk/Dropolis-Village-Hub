@@ -3,7 +3,7 @@ import { Router } from "express";
 const router = Router();
 
 const INDEXNOW_KEY = "4a7c1b9d2e5f8a0c3b6e9d2f5a8c1b4e";
-const HOST = "dropolis.replit.app";
+const HOST = "dropolis.net";
 const KEY_LOCATION = `https://${HOST}/${INDEXNOW_KEY}.txt`;
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/IndexNow";
 
@@ -15,9 +15,9 @@ const INDEXNOW_ENDPOINT = "https://api.indexnow.org/IndexNow";
  * Call this after publishing new articles or updating village data.
  *
  * Example:
- *   curl -X POST https://dropolis.replit.app/api/indexnow/submit \
+ *   curl -X POST https://dropolis.net/api/indexnow/submit \
  *     -H "Content-Type: application/json" \
- *     -d '{"urls":["https://dropolis.replit.app/news/27"]}'
+ *     -d '{"urls":["https://dropolis.net/news/27"]}'
  */
 router.post("/indexnow/submit", async (req, res) => {
   const { urls } = req.body as { urls?: unknown };

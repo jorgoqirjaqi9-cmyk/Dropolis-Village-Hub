@@ -15,7 +15,7 @@ import { desc } from "drizzle-orm";
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
-const BASE_URL = "https://dropolis.replit.app";
+const BASE_URL = "https://dropolis.net";
 const DEFAULT_IMG = `${BASE_URL}/opengraph.jpg`;
 const SITE_NAME = "Δρόπολη (Dropolis)";
 

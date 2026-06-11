@@ -1,1 +1,2 @@
 - [Crawler SEO Architecture](crawler-seo.md) — Vite dev plugin + build-time prerender; no proxy routing change needed.
+- [Canonical domain](domain-migration.md) — Production domain is dropolis.net; all BASE_URL constants must use this, never dropolis.replit.app. Affects: SEO.tsx, prerender.ts, seo-crawler.ts plugin, sitemap.ts, indexnow.ts, sitemap.xml, robots.txt, index.html, all page JSON-LD, dist/ prerendered HTML.

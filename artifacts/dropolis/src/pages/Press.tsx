@@ -64,7 +64,7 @@ export default function Press() {
           "@type": "WebPage",
           name: "Τύπος & Νέα — Dropolis",
           description: "Ανακοινώσεις τύπου, media kit και επικοινωνία για δημοσιογράφους.",
-          url: "https://dropolis.replit.app/press",
+          url: "https://dropolis.net/press",
           inLanguage: "el",
         }}
       />

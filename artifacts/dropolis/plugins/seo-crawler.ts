@@ -10,7 +10,7 @@ import { resolve } from "node:path";
 const CRAWLER_UA =
   /googlebot|bingbot|yandex|duckduckbot|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slackbot|whatsapp|telegram|discordbot|claudebot|gptbot|perplexitybot|applebot|ia_archiver|embedly|outbrain|pinterest/i;
 
-const BASE_URL = "https://dropolis.replit.app";
+const BASE_URL = "https://dropolis.net";
 const DEFAULT_IMG = `${BASE_URL}/opengraph.jpg`;
 const SITE_NAME = "Δρόπολη (Dropolis)";
 

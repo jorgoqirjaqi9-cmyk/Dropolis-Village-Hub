@@ -141,7 +141,7 @@ export default function Help() {
           "@context": "https://schema.org",
           "@type": "FAQPage",
           name: "Κέντρο Βοήθειας — Dropolis",
-          url: "https://dropolis.replit.app/help",
+          url: "https://dropolis.net/help",
           mainEntity: faqs.map((f) => ({
             "@type": "Question",
             name: f.q,

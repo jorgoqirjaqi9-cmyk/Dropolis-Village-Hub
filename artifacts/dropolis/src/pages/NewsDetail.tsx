@@ -55,7 +55,7 @@ export default function NewsDetail() {
   // Split content by paragraphs to insert ad after 2nd paragraph
   const paragraphs = article.content.split('\n\n').filter(p => p.trim() !== '');
 
-  const BASE = typeof window !== "undefined" ? window.location.origin : "https://dropolis.replit.app";
+  const BASE = typeof window !== "undefined" ? window.location.origin : "https://dropolis.net";
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",

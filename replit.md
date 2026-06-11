@@ -66,7 +66,7 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Search Engine Setup
 
-> Complete these steps **after** the site is deployed and accessible at `https://dropolis.replit.app`.
+> Complete these steps **after** the site is deployed and accessible at `https://dropolis.net`.
 
 ### Sitemaps
 
@@ -74,8 +74,8 @@ The site exposes two sitemaps:
 
 | URL | Type | Use |
 |-----|------|-----|
-| `https://dropolis.replit.app/sitemap.xml` | Static XML | Built into the production bundle |
-| `https://dropolis.replit.app/api/sitemap.xml` | Dynamic XML | Auto-generated from the database with real `lastmod` dates |
+| `https://dropolis.net/sitemap.xml` | Static XML | Built into the production bundle |
+| `https://dropolis.net/api/sitemap.xml` | Dynamic XML | Auto-generated from the database with real `lastmod` dates |
 
 Submit **both** to search engines. The dynamic one is preferred because it reflects actual content dates.
 
@@ -86,7 +86,7 @@ Submit **both** to search engines. The dynamic one is preferred because it refle
 **Step-by-step setup:**
 
 1. Go to <https://search.google.com/search-console>
-2. Click **Add property** → choose **URL prefix** → enter `https://dropolis.replit.app`
+2. Click **Add property** → choose **URL prefix** → enter `https://dropolis.net`
 3. Under **Verify ownership**, choose **HTML tag**
 4. You will receive a meta tag like:
    ```html
@@ -118,7 +118,7 @@ After verification is confirmed:
 
 1. Go to <https://www.bing.com/webmasters>
 2. Sign in with a Microsoft account
-3. Click **Add a site** → enter `https://dropolis.replit.app` → click **Add**
+3. Click **Add a site** → enter `https://dropolis.net` → click **Add**
 4. Choose **Meta tag** verification method
 5. You will receive a meta tag like:
    ```html
@@ -139,8 +139,8 @@ After verification is confirmed:
 
 1. In the left sidebar, go to **Sitemaps**
 2. Click **Submit sitemap**
-3. Enter `https://dropolis.replit.app/api/sitemap.xml` → click **Submit**
-4. Also submit `https://dropolis.replit.app/sitemap.xml`
+3. Enter `https://dropolis.net/api/sitemap.xml` → click **Submit**
+4. Also submit `https://dropolis.net/sitemap.xml`
 
 ---
 
@@ -149,27 +149,27 @@ After verification is confirmed:
 IndexNow is a protocol that notifies search engines instantly when content changes, eliminating the wait for their crawlers to discover new pages. **The key file is already deployed** at:
 
 ```
-https://dropolis.replit.app/4a7c1b9d2e5f8a0c3b6e9d2f5a8c1b4e.txt
+https://dropolis.net/4a7c1b9d2e5f8a0c3b6e9d2f5a8c1b4e.txt
 ```
 
 **To notify search engines after publishing a new article** (e.g., article ID 27):
 
 ```bash
-curl -X POST https://dropolis.replit.app/api/indexnow/submit \
+curl -X POST https://dropolis.net/api/indexnow/submit \
   -H "Content-Type: application/json" \
-  -d '{"urls":["https://dropolis.replit.app/news/27"]}'
+  -d '{"urls":["https://dropolis.net/news/27"]}'
 ```
 
 **To submit multiple URLs at once:**
 
 ```bash
-curl -X POST https://dropolis.replit.app/api/indexnow/submit \
+curl -X POST https://dropolis.net/api/indexnow/submit \
   -H "Content-Type: application/json" \
   -d '{
     "urls": [
-      "https://dropolis.replit.app/news/27",
-      "https://dropolis.replit.app/news/28",
-      "https://dropolis.replit.app/villages/93"
+      "https://dropolis.net/news/27",
+      "https://dropolis.net/news/28",
+      "https://dropolis.net/villages/93"
     ]
   }'
 ```
@@ -183,7 +183,7 @@ Bing will typically crawl and index submitted URLs within minutes to hours.
 
 **To check the current key metadata:**
 ```bash
-curl https://dropolis.replit.app/api/indexnow/key
+curl https://dropolis.net/api/indexnow/key
 ```
 
 > Note: IndexNow submissions are not automatic — call the endpoint manually (or from a script/webhook) after publishing new content.

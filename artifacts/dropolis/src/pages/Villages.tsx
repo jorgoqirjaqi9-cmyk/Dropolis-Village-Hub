@@ -42,7 +42,7 @@ export default function Villages() {
           "@type": "CollectionPage",
           name: "Τα Χωριά της Δρόπολης",
           description: "41 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου.",
-          url: "https://dropolis.replit.app/villages",
+          url: "https://dropolis.net/villages",
           inLanguage: "el",
           numberOfItems: 41,
         }}

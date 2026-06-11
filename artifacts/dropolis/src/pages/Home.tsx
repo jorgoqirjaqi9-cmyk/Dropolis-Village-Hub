@@ -73,12 +73,12 @@ export default function Home() {
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://dropolis.replit.app/#webpage",
+          "@id": "https://dropolis.net/#webpage",
           name: "Δρόπολη — Portal Ειδήσεων & Κοινότητας",
           description: "Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης.",
-          url: "https://dropolis.replit.app/",
+          url: "https://dropolis.net/",
           inLanguage: "el",
-          isPartOf: { "@id": "https://dropolis.replit.app/#website" },
+          isPartOf: { "@id": "https://dropolis.net/#website" },
           about: {
             "@type": "AdministrativeArea",
             name: "Δήμος Δρόπολης",

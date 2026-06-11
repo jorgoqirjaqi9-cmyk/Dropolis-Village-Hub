@@ -60,12 +60,12 @@ export default function VillageDetail() {
           {
             "@context": "https://schema.org",
             "@type": "City",
-            "@id": `https://dropolis.replit.app/villages/${village.id}`,
+            "@id": `https://dropolis.net/villages/${village.id}`,
             name: village.nameEl,
             alternateName: village.name,
             description: village.description,
             image: village.imageUrl || undefined,
-            url: `https://dropolis.replit.app/villages/${village.id}`,
+            url: `https://dropolis.net/villages/${village.id}`,
             inLanguage: "el",
             containedInPlace: {
               "@type": "AdministrativeArea",
@@ -94,7 +94,7 @@ export default function VillageDetail() {
             name: village.nameEl,
             description: village.description,
             image: village.imageUrl || undefined,
-            url: `https://dropolis.replit.app/villages/${village.id}`,
+            url: `https://dropolis.net/villages/${village.id}`,
             touristType: [
               { "@type": "Audience", audienceType: "Cultural tourists" },
               { "@type": "Audience", audienceType: "Greek diaspora" },
@@ -102,7 +102,7 @@ export default function VillageDetail() {
             containedInPlace: {
               "@type": "TouristDestination",
               name: "Δρόπολη",
-              url: "https://dropolis.replit.app",
+              url: "https://dropolis.net",
             },
           },
         ]}

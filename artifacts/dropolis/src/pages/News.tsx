@@ -32,7 +32,7 @@ export default function News() {
           "@type": "CollectionPage",
           name: "Ειδήσεις — Δρόπολη",
           description: "Τελευταία νέα και ρεπορτάζ από τη Δρόπολη.",
-          url: "https://dropolis.replit.app/news",
+          url: "https://dropolis.net/news",
           inLanguage: "el",
         }}
       />

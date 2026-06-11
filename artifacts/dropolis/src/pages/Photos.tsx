@@ -20,7 +20,7 @@ export default function Photos() {
           "@type": "ImageGallery",
           name: "Φωτογραφικό Αρχείο — Δρόπολη",
           description: "Φωτογραφίες από τα χωριά της Δρόπολης.",
-          url: "https://dropolis.replit.app/photos",
+          url: "https://dropolis.net/photos",
           inLanguage: "el",
         }}
       />
