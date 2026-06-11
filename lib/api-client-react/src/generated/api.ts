@@ -883,6 +883,76 @@ export function useGetVillage<TData = Awaited<ReturnType<typeof getVillage>>, TE
 
 
 
+export const getDeleteVillageUrl = (id: number,) => {
+
+
+
+
+  return `/api/villages/${id}`
+}
+
+/**
+ * @summary Delete a village
+ */
+export const deleteVillage = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteVillageUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteVillageMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteVillage>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteVillage>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteVillage'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteVillage>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteVillage(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteVillageMutationResult = NonNullable<Awaited<ReturnType<typeof deleteVillage>>>
+
+    export type DeleteVillageMutationError = ErrorType<void>
+
+    /**
+ * @summary Delete a village
+ */
+export const useDeleteVillage = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteVillage>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteVillage>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteVillageMutationOptions(options));
+    }
+
 export const getUpdateVillageUrl = (id: number,) => {
 
 

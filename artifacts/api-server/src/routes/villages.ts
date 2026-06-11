@@ -4,6 +4,7 @@ import { villagesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import {
   CreateVillageBody,
+  DeleteVillageParams,
   GetVillageParams,
   UpdateVillageBody,
 } from "@workspace/api-zod";
@@ -49,6 +50,17 @@ router.patch("/villages/:id", async (req, res) => {
     ...(body.longitude !== undefined && { longitude: body.longitude }),
   }).where(eq(villagesTable.id, id)).returning();
   res.json(formatVillage(updated));
+});
+
+router.delete("/villages/:id", async (req, res) => {
+  const { id } = DeleteVillageParams.parse({ id: Number(req.params.id) });
+  const [existing] = await db.select().from(villagesTable).where(eq(villagesTable.id, id));
+  if (!existing) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+  await db.delete(villagesTable).where(eq(villagesTable.id, id));
+  res.status(204).end();
 });
 
 router.get("/villages/:id", async (req, res) => {

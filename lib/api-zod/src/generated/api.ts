@@ -223,6 +223,14 @@ export const GetVillageResponse = zod.object({
 
 
 /**
+ * @summary Delete a village
+ */
+export const DeleteVillageParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
  * @summary Update a village
  */
 export const UpdateVillageParams = zod.object({
