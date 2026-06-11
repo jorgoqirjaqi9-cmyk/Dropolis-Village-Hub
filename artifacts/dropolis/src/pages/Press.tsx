@@ -10,12 +10,12 @@ const pressReleases = [
   {
     date: "Ιούνιος 2026",
     title: "Εγκαινιάζεται το Dropolis — το πρώτο ψηφιακό portal για τη Δρόπολη",
-    excerpt: "Το Dropolis αποτελεί πλέον την κύρια ψηφιακή πλατεία ειδήσεων, φωτογραφιών και κοινότητας για τα 42 χωριά της ελληνικής μειονότητας στη Βόρεια Ήπειρο.",
+    excerpt: "Το Dropolis αποτελεί πλέον την κύρια ψηφιακή πλατεία ειδήσεων, φωτογραφιών και κοινότητας για τα 41 χωριά της ελληνικής μειονότητας στη Βόρεια Ήπειρο.",
     tag: "Εγκαίνια",
   },
   {
     date: "Μάιος 2026",
-    title: "42 χωριά, μία ψηφιακή φωνή — η ιστορία της Δρόπολης online",
+    title: "41 χωριά, μία ψηφιακή φωνή — η ιστορία της Δρόπολης online",
     excerpt: "Η Δρόπολη αποκτά παρουσία στο internet με πλήρη χαρτογράφηση των χωριών, αρχείο ειδήσεων και ζωντανό chat κοινότητας.",
     tag: "Ανακοίνωση",
   },
@@ -183,7 +183,7 @@ export default function Press() {
             <div className="glass-card rounded-2xl p-6 min-w-[220px] space-y-3 shrink-0">
               <h4 className="font-semibold text-sm uppercase tracking-widest text-muted-foreground mb-4">Σε αριθμούς</h4>
               {[
-                { label: "Χωριά", value: "42" },
+                { label: "Χωριά", value: "41" },
                 { label: "Δημοσιεύσεις", value: "19+" },
                 { label: "Ετη ιστορίας", value: "2.000+" },
                 { label: "Κατηγορίες", value: "5" },

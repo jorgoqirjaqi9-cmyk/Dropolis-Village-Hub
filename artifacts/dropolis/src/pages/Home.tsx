@@ -131,7 +131,7 @@ export default function Home() {
             className="text-white/60 text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed"
           >
             Ειδήσεις, ιστορία, φωτογραφίες και κοινότητα για τα{" "}
-            <span className="text-secondary font-semibold">42 χωριά</span> του Δήμου Δρόπολης.
+            <span className="text-secondary font-semibold">41 χωριά</span> του Δήμου Δρόπολης.
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-wrap gap-4 justify-center">
@@ -312,7 +312,7 @@ export default function Home() {
         >
           {[
             { icon: Shield, title: "GDPR Συμμόρφωση", desc: "Πλήρης προστασία δεδομένων", color: "text-accent" },
-            { icon: Globe, title: "Β. Ήπειρος", desc: "42 χωριά — πλήρης κάλυψη", color: "text-secondary" },
+            { icon: Globe, title: "Β. Ήπειρος", desc: "41 χωριά — πλήρης κάλυψη", color: "text-secondary" },
             { icon: Smartphone, title: "PWA Εφαρμογή", desc: "Εγκαταστήστε στο κινητό", color: "text-primary dark:text-secondary" },
             { icon: Newspaper, title: "Δωρεάν Πρόσβαση", desc: "Πάντα δωρεάν για όλους", color: "text-accent" },
           ].map((badge, i) => (
@@ -504,7 +504,7 @@ export default function Home() {
                 {[
                   { label: "Δήμος", value: "Δρόπολης" },
                   { label: "Νομός", value: "Αργυροκάστρου" },
-                  { label: "Χωριά", value: "42+" },
+                  { label: "Χωριά", value: "41" },
                   { label: "Περιοχή", value: "Β. Ήπειρος" },
                 ].map((item) => (
                   <div key={item.label} className="bg-muted/50 rounded-lg p-2.5 text-center">
