@@ -73,6 +73,14 @@ function staticExtraSchemas(m: Meta): object[] {
   ];
 }
 
+function buildBodyFallback(m: Meta): string {
+  const rawTitle = `${m.title} | ${SITE_NAME}`.slice(0, 150);
+  const rawDesc = String(m.description || "").slice(0, 240);
+  const title = esc(rawTitle);
+  const desc = esc(rawDesc);
+  return `<main class="seo-prerender-content" aria-label="${title}">\n    <h1>${title}</h1>\n    <p>${desc}</p>\n  </main>`;
+}
+
 function buildSeoTags(m: Meta): string {
   const title = esc(`${m.title} | ${SITE_NAME}`);
   const desc = esc(m.description.slice(0, 160));
@@ -143,7 +151,9 @@ function injectMeta(template: string, m: Meta): string {
     .replace(/<meta\s+property="og:url"[^>]*>/gi, "")
     .replace(/<meta\s+property="og:image(?::\w+)?"[^>]*>/gi, "")
     .replace(/<meta\s+name="twitter:[^"]*"[^>]*>/gi, "");
-  return html.replace("<head>", `<head>\n  ${buildSeoTags(m)}`);
+  html = html.replace("<head>", `<head>\n  ${buildSeoTags(m)}`);
+  html = html.replace(/<div id="root">[^]*?<\/div>/, `<div id="root">\n  ${buildBodyFallback(m)}\n</div>`);
+  return html;
 }
 
 async function fetchMeta(urlPath: string, apiPort: number): Promise<Meta | null> {

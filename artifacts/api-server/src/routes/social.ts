@@ -8,7 +8,7 @@ import { requireAdmin } from "../lib/admin-auth.js";
 const router = Router();
 
 router.post("/social/publish/:id", requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(String(req.params.id), 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Μη έγκυρο αναγνωριστικό" });
     return;
