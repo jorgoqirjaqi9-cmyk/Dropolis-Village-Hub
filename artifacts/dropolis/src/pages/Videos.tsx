@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 import { useListVideos } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -85,11 +86,17 @@ export default function Videos() {
                 )}
                 
                 <div className="flex items-center gap-4 text-xs text-muted-foreground pt-4 border-t border-border mt-auto">
-                  {video.villageName && (
+                  {video.villageId && video.villageName ? (
+                    <Link href={`/villages/${video.villageId}`}>
+                      <span className="flex items-center gap-1 bg-accent/10 text-accent px-2 py-1 rounded font-medium hover:bg-accent/20 transition-colors">
+                        <MapPin className="w-3 h-3" /> {video.villageName}
+                      </span>
+                    </Link>
+                  ) : video.villageName ? (
                     <span className="flex items-center gap-1 bg-accent/10 text-accent px-2 py-1 rounded font-medium">
                       <MapPin className="w-3 h-3" /> {video.villageName}
                     </span>
-                  )}
+                  ) : null}
                   {video.duration && (
                     <span className="flex items-center gap-1 ml-auto font-mono">
                       <Clock className="w-3 h-3" /> {video.duration}

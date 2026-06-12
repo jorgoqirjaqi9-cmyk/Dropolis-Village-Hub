@@ -376,9 +376,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Δημοτικές Ενότητες</h4>
               <ul className="space-y-2 text-sm text-background/60">
-                <li><Link href="/villages?unit=Δρόπολης" className="hover:text-secondary transition-colors">Δρόπολη</Link></li>
-                <li><Link href="/villages?unit=Άνω+Δρόπολης" className="hover:text-secondary transition-colors">Άνω Δρόπολη</Link></li>
-                <li><Link href="/villages?unit=Πωγωνίου" className="hover:text-secondary transition-colors">Πωγώνι</Link></li>
+                <li><Link href={`/villages?unit=${encodeURIComponent("Δημοτική Ενότητα Κάτω Δρόπολης")}`} className="hover:text-secondary transition-colors">Κάτω Δρόπολη</Link></li>
+                <li><Link href={`/villages?unit=${encodeURIComponent("Δημοτική Ενότητα Άνω Δρόπολης")}`} className="hover:text-secondary transition-colors">Άνω Δρόπολη</Link></li>
+                <li><Link href={`/villages?unit=${encodeURIComponent("Δημοτική Ενότητα Πωγωνίου")}`} className="hover:text-secondary transition-colors">Πωγώνι</Link></li>
               </ul>
               <div className="mt-6">
                 <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Κατηγορίες</h4>

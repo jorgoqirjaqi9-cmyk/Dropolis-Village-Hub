@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 import { useListPhotos } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -52,11 +53,17 @@ export default function Photos() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                 <h3 className="text-white font-bold text-lg leading-tight mb-1">{photo.title}</h3>
                 <div className="flex flex-wrap items-center gap-3 text-white/80 text-xs">
-                  {photo.villageName && (
+                  {photo.villageId && photo.villageName ? (
+                    <Link href={`/villages/${photo.villageId}`} onClick={e => e.stopPropagation()}>
+                      <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm hover:bg-primary transition-colors">
+                        <MapPin className="w-3 h-3" /> {photo.villageName}
+                      </span>
+                    </Link>
+                  ) : photo.villageName ? (
                     <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm">
                       <MapPin className="w-3 h-3" /> {photo.villageName}
                     </span>
-                  )}
+                  ) : null}
                   {photo.photographer && (
                     <span className="flex items-center gap-1">
                       <Camera className="w-3 h-3" /> {photo.photographer}

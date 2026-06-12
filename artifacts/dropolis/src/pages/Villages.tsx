@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useListVillages } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
@@ -15,8 +15,36 @@ const UNITS = [
 
 export default function Villages() {
   const { data: villages, isLoading } = useListVillages();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [activeUnit, setActiveUnit] = useState("all");
+  const [searchTerm, setSearchTerm] = useState(() => {
+    if (typeof window !== "undefined") {
+      return new URLSearchParams(window.location.search).get("search") ?? "";
+    }
+    return "";
+  });
+  const [activeUnit, setActiveUnit] = useState(() => {
+    if (typeof window !== "undefined") {
+      const unit = new URLSearchParams(window.location.search).get("unit");
+      return unit ?? "all";
+    }
+    return "all";
+  });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlSearch = params.get("search") ?? "";
+    const urlUnit = params.get("unit") ?? "";
+    if (urlSearch) setSearchTerm(urlSearch);
+    if (urlUnit) setActiveUnit(urlUnit);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (searchTerm) params.set("search", searchTerm);
+    if (activeUnit && activeUnit !== "all") params.set("unit", activeUnit);
+    const qs = params.toString();
+    const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [searchTerm, activeUnit]);
 
   const filtered = villages?.filter(v => {
     const matchesSearch =

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
@@ -9,9 +9,36 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
 export default function News() {
-  const [category, setCategory] = useState<string>("");
-  const [village, setVillage] = useState<string>("");
-  
+  const [category, setCategory] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return new URLSearchParams(window.location.search).get("category") ?? "";
+    }
+    return "";
+  });
+  const [village, setVillage] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return new URLSearchParams(window.location.search).get("village") ?? "";
+    }
+    return "";
+  });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlCategory = params.get("category") ?? "";
+    const urlVillage = params.get("village") ?? "";
+    if (urlCategory) setCategory(urlCategory);
+    if (urlVillage) setVillage(urlVillage);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (category) params.set("category", category);
+    if (village) params.set("village", village);
+    const qs = params.toString();
+    const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [category, village]);
+
   const { data: categories } = useListCategories();
   const { data: villages } = useListVillages();
   
