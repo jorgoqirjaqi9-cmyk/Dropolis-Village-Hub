@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail, Download, Share, ChevronDown } from "lucide-react";
 import { usePWAInstall } from "../hooks/use-pwa-install";
 import { RadioPlayer } from "./RadioPlayer";
+import { CookieConsent } from "./CookieConsent";
 
 const LANGUAGES = [
   { code: "el", label: "Ελληνικά", flag: "🇬🇷" },
@@ -432,6 +433,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
       <RadioPlayer />
+      <CookieConsent />
     </div>
   );
 }

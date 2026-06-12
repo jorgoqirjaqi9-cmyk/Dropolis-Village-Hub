@@ -181,11 +181,12 @@ export default function Chat() {
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
         {isLoading && !messages ? (
           <div className="text-center text-muted-foreground italic py-10">Φόρτωση μηνυμάτων...</div>
-        ) : messages && messages.length > 0 ? (
-          messages.slice().reverse().map((msg, i) => {
+        ) : messages && messages.length > 0 ? (() => {
+          const ordered = messages.slice().reverse();
+          return ordered.map((msg, i) => {
             const isMe = msg.username === username;
             const isBot = msg.isBot || msg.username === BOT_USERNAME;
-            const showHeader = i === 0 || messages[messages.length - i]?.username !== msg.username;
+            const showHeader = i === 0 || ordered[i - 1]?.username !== msg.username;
 
             if (isBot) {
               return (
@@ -250,8 +251,8 @@ export default function Chat() {
                 </div>
               </div>
             );
-          })
-        ) : (
+          });
+        })() : (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground opacity-50 py-20">
             <MessageSquare className="w-12 h-12 mb-4" />
             <p>Δεν υπάρχουν μηνύματα. Κάντε την αρχή!</p>

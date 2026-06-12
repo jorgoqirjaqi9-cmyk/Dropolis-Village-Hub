@@ -22,30 +22,12 @@ const SYSTEM_PROMPT = `Είσαι ο βοηθός του Dropolis (dropolis.net)
 - Αν σε ρωτάνε για ειδήσεις, παρέπεμψε στο /news
 - Αν σε ρωτάνε για χωριά, παρέπεμψε στο /villages`;
 
-function shouldRespond(message: string, username: string): boolean {
-  if (username === BOT_USERNAME) return false;
-
-  const lower = message.toLowerCase().trim();
-
-  // Always respond to direct mentions
-  if (lower.includes("bot") || lower.includes("δρόπολη bot") || lower.includes("dropolis bot")) return true;
-
-  // Always respond to questions
-  if (message.includes("?") || lower.includes("ποιος") || lower.includes("πού") ||
-      lower.includes("πως") || lower.includes("πώς") || lower.includes("τι ") ||
-      lower.includes("γιατί") || lower.includes("πότε") || lower.includes("πόσο")) return true;
-
-  // Respond to greetings
-  if (lower.match(/^(γεια|καλημ|καλησπ|χαίρε|hello|hi |hey|καλωσ)/)) return true;
-
-  // Respond to thanks
-  if (lower.includes("ευχαριστ") || lower.includes("μπράβο")) return true;
-
-  return false;
+function shouldRespond(username: string): boolean {
+  return username !== BOT_USERNAME;
 }
 
 export async function maybeRespondToMessage(userMessage: string, username: string): Promise<void> {
-  if (!shouldRespond(userMessage, username)) return;
+  if (!shouldRespond(username)) return;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
