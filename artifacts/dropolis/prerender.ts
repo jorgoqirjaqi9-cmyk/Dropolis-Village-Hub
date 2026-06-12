@@ -2,10 +2,11 @@
  * Build-time prerender script.
  * Run with: tsx prerender.ts  (from artifacts/dropolis/ directory)
  *
- * For every article and village, generates a pre-populated index.html inside
- * dist/public/<path>/index.html so Replit's static server (try_files semantics)
- * serves correct OG / JSON-LD head tags to social bots and AI crawlers WITHOUT
- * needing any server-side rendering in production.
+ * For every article, village, and known static route, generates a
+ * pre-populated index.html inside dist/public/<path>/index.html so Replit's
+ * static server (try_files semantics) serves correct OG / JSON-LD head tags
+ * to social bots and AI crawlers WITHOUT needing any server-side rendering in
+ * production.
  *
  * If dist/public/index.html does not exist yet (build not run), exits silently.
  */
@@ -41,13 +42,22 @@ function esc(s: unknown): string {
     .replace(/"/g, "&quot;");
 }
 
+type ArticleMeta = {
+  publishedTime?: string | null;
+  modifiedTime?: string | null;
+  author?: string | null;
+  section?: string | null;
+};
+
 type Meta = {
   title: string;
   description: string;
   image?: string | null;
   url: string;
   type?: string;
+  article?: ArticleMeta;
   jsonLd?: object;
+  breadcrumbs?: Array<{ name: string; item: string }>;
 };
 
 function buildSeoTags(m: Meta): string {
@@ -56,6 +66,33 @@ function buildSeoTags(m: Meta): string {
   const img = esc(m.image || DEFAULT_IMG);
   const url = esc(m.url);
   const type = m.type || "website";
+
+  const articleTags: string[] = [];
+  if (m.article) {
+    if (m.article.publishedTime) articleTags.push(`<meta property="article:published_time" content="${esc(m.article.publishedTime)}" />`);
+    if (m.article.modifiedTime) articleTags.push(`<meta property="article:modified_time" content="${esc(m.article.modifiedTime)}" />`);
+    if (m.article.author) articleTags.push(`<meta property="article:author" content="${esc(m.article.author)}" />`);
+    if (m.article.section) articleTags.push(`<meta property="article:section" content="${esc(m.article.section)}" />`);
+  }
+
+  const breadcrumbLd = m.breadcrumbs && m.breadcrumbs.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Αρχική", item: BASE_URL },
+          ...m.breadcrumbs.map((crumb, i) => ({
+            "@type": "ListItem",
+            position: i + 2,
+            name: crumb.name,
+            item: crumb.item,
+          })),
+        ],
+      }
+    : null;
+
+  const schemas = [m.jsonLd, breadcrumbLd].filter(Boolean);
+
   return [
     `<title>${title}</title>`,
     `<meta name="description" content="${desc}" />`,
@@ -73,8 +110,9 @@ function buildSeoTags(m: Meta): string {
     `<meta name="twitter:title" content="${title}" />`,
     `<meta name="twitter:description" content="${desc}" />`,
     `<meta name="twitter:image" content="${img}" />`,
-    m.jsonLd
-      ? `<script type="application/ld+json">${JSON.stringify(m.jsonLd)}</script>`
+    ...articleTags,
+    schemas.length > 0
+      ? `<script type="application/ld+json">${JSON.stringify(schemas.length === 1 ? schemas[0] : schemas)}</script>`
       : "",
   ]
     .filter(Boolean)
@@ -142,6 +180,128 @@ const STATIC_ROUTES: Array<{ loc: string; changefreq: string; priority: string }
   { loc: "/terms",        changefreq: "yearly",  priority: "0.4" },
   { loc: "/cookie-policy",changefreq: "yearly",  priority: "0.3" },
   { loc: "/disclaimer",   changefreq: "yearly",  priority: "0.3" },
+];
+
+// Static routes with their own metadata for prerendering
+const STATIC_PRERENDER: Array<Meta & { path: string }> = [
+  {
+    path: "/news",
+    title: "Ειδήσεις",
+    description: "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου.",
+    url: `${BASE_URL}/news`,
+    breadcrumbs: [{ name: "Ειδήσεις", item: `${BASE_URL}/news` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Ειδήσεις — Δρόπολη",
+      description: "Τελευταία νέα και ρεπορτάζ από τη Δρόπολη.",
+      url: `${BASE_URL}/news`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/villages",
+    title: "Τα Χωριά της Δρόπολης",
+    description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου. Πληθυσμός, ιστορία και παραδόσεις.",
+    url: `${BASE_URL}/villages`,
+    breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Τα Χωριά της Δρόπολης",
+      description: "41 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου.",
+      url: `${BASE_URL}/villages`,
+      inLanguage: "el",
+      numberOfItems: 41,
+    },
+  },
+  {
+    path: "/photos",
+    title: "Φωτογραφικό Αρχείο",
+    description: "Φωτογραφίες από τα χωριά της Δρόπολης — τοπία, παραδοσιακά κτίρια, πολιτιστικές εκδηλώσεις.",
+    url: `${BASE_URL}/photos`,
+    breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Φωτογραφικό Αρχείο — Δρόπολη",
+      description: "Φωτογραφίες από τα χωριά της Δρόπολης.",
+      url: `${BASE_URL}/photos`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/videos",
+    title: "Βίντεο",
+    description: "Βίντεο από τη Δρόπολη — εκδηλώσεις, πολιτισμός, τουρισμός και ζωή στα χωριά της Βόρειας Ηπείρου.",
+    url: `${BASE_URL}/videos`,
+    breadcrumbs: [{ name: "Βίντεο", item: `${BASE_URL}/videos` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Βίντεο — Δρόπολη",
+      description: "Βίντεο από τα χωριά της Δρόπολης.",
+      url: `${BASE_URL}/videos`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/about",
+    title: "Σχετικά με το Dropolis",
+    description: "Μάθετε για το Dropolis — το portal ειδήσεων, φωτογραφιών και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος, Αλβανία).",
+    url: `${BASE_URL}/about`,
+    breadcrumbs: [{ name: "Σχετικά", item: `${BASE_URL}/about` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      name: "Σχετικά με το Dropolis",
+      description: "Portal ειδήσεων και κοινότητας για τα χωριά της Δρόπολης, Βόρεια Ήπειρος.",
+      url: `${BASE_URL}/about`,
+    },
+  },
+  {
+    path: "/contact",
+    title: "Επικοινωνία",
+    description: "Επικοινωνήστε με το Dropolis. Υποβολή άρθρων, φωτογραφιών, ερωτήσεων και συνεργασιών για το portal της Δρόπολης.",
+    url: `${BASE_URL}/contact`,
+    breadcrumbs: [{ name: "Επικοινωνία", item: `${BASE_URL}/contact` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      name: "Επικοινωνία — Dropolis",
+      description: "Επικοινωνήστε με το Dropolis.",
+      url: `${BASE_URL}/contact`,
+    },
+  },
+  {
+    path: "/press",
+    title: "Τύπος & Νέα",
+    description: "Δελτία τύπου, media kit και επικοινωνία τύπου για το Dropolis — portal ειδήσεων της Δρόπολης.",
+    url: `${BASE_URL}/press`,
+    breadcrumbs: [{ name: "Τύπος", item: `${BASE_URL}/press` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Τύπος & Νέα — Dropolis",
+      description: "Ανακοινώσεις τύπου, media kit και επικοινωνία για δημοσιογράφους.",
+      url: `${BASE_URL}/press`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/help",
+    title: "Κέντρο Βοήθειας",
+    description: "Απαντήσεις σε συχνές ερωτήσεις για το Dropolis — portal ειδήσεων και κοινότητας της Δρόπολης.",
+    url: `${BASE_URL}/help`,
+    breadcrumbs: [{ name: "Βοήθεια", item: `${BASE_URL}/help` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Κέντρο Βοήθειας — Dropolis",
+      url: `${BASE_URL}/help`,
+      inLanguage: "el",
+    },
+  },
 ];
 
 function buildSitemap(
@@ -225,6 +385,14 @@ async function main() {
 
   let count = 0;
 
+  // Static routes — prerender with route-specific metadata
+  for (const route of STATIC_PRERENDER) {
+    const { path, ...meta } = route;
+    writeRoute(path, injectMeta(meta));
+    count++;
+  }
+  console.log(`[prerender] Static routes: ${STATIC_PRERENDER.length} pages written.`);
+
   // Articles
   for (const a of articles) {
     const description =
@@ -237,6 +405,20 @@ async function main() {
       image: a.imageUrl,
       url: `${BASE_URL}/news/${a.id}`,
       type: "article",
+      article: {
+        publishedTime: a.createdAt ? new Date(a.createdAt).toISOString() : null,
+        modifiedTime: a.updatedAt
+          ? new Date(a.updatedAt).toISOString()
+          : a.createdAt
+            ? new Date(a.createdAt).toISOString()
+            : null,
+        author: a.author,
+        section: a.category,
+      },
+      breadcrumbs: [
+        { name: "Ειδήσεις", item: `${BASE_URL}/news` },
+        { name: a.title, item: `${BASE_URL}/news/${a.id}` },
+      ],
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "NewsArticle",
@@ -244,7 +426,7 @@ async function main() {
         description: a.excerpt || "",
         image: a.imageUrl ? [a.imageUrl] : [],
         datePublished: a.createdAt,
-        dateModified: a.updatedAt,
+        dateModified: a.updatedAt ?? a.createdAt,
         author: { "@type": "Person", name: a.author || "Dropolis" },
         publisher: {
           "@type": "Organization",
@@ -276,6 +458,10 @@ async function main() {
       description,
       image: v.imageUrl,
       url: `${BASE_URL}/villages/${v.id}`,
+      breadcrumbs: [
+        { name: "Χωριά", item: `${BASE_URL}/villages` },
+        { name: v.nameEl, item: `${BASE_URL}/villages/${v.id}` },
+      ],
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "City",
@@ -312,7 +498,7 @@ async function main() {
   writeFileSync(resolve(DIST, "sitemap.xml"), sitemapXml, "utf-8");
   console.log(`[prerender] sitemap.xml written (${articles.length + villages.length + STATIC_ROUTES.length} URLs).`);
 
-  console.log(`[prerender] Done. Generated ${count} pages (${articles.length} articles, ${villages.length} villages).`);
+  console.log(`[prerender] Done. Generated ${count} pages (${STATIC_PRERENDER.length} static, ${articles.length} articles, ${villages.length} villages).`);
   process.exit(0);
 }
 

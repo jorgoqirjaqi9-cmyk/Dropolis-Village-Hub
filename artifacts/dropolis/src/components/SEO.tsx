@@ -27,15 +27,15 @@ export interface SEOProps {
   standalone?: boolean;
 }
 
-function setMeta(selector: string, attr: string, value: string) {
+function setMeta(kind: "name" | "property", key: string, value: string) {
+  const selector = `meta[${kind}="${key}"]`;
   let el = document.head.querySelector(selector) as HTMLMetaElement | null;
   if (!el) {
     el = document.createElement("meta");
-    const [attrName, attrValue] = selector.replace("[", "").replace("]", "").replace(/"/g, "").split("=");
-    el.setAttribute(attrName, attrValue);
+    el.setAttribute(kind, key);
     document.head.appendChild(el);
   }
-  el.setAttribute(attr, value);
+  el.setAttribute("content", value);
 }
 
 function setLink(rel: string, href: string) {
@@ -79,10 +79,10 @@ export function SEO({
   useEffect(() => {
     document.title = fullTitle;
 
-    setMeta('meta[name="description"]', "content", metaDesc);
+    setMeta("name", "description", metaDesc);
     setMeta(
-      'meta[name="robots"]',
-      "content",
+      "name",
+      "robots",
       noindex
         ? "noindex, nofollow"
         : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
@@ -90,24 +90,24 @@ export function SEO({
 
     setLink("canonical", canonicalUrl);
 
-    setMeta('meta[property="og:title"]', "content", fullTitle);
-    setMeta('meta[property="og:description"]', "content", metaDesc);
-    setMeta('meta[property="og:type"]', "content", type);
-    setMeta('meta[property="og:url"]', "content", canonicalUrl);
-    setMeta('meta[property="og:image"]', "content", ogImage);
-    setMeta('meta[property="og:site_name"]', "content", SITE_NAME);
-    setMeta('meta[property="og:locale"]', "content", "el_GR");
+    setMeta("property", "og:title", fullTitle);
+    setMeta("property", "og:description", metaDesc);
+    setMeta("property", "og:type", type);
+    setMeta("property", "og:url", canonicalUrl);
+    setMeta("property", "og:image", ogImage);
+    setMeta("property", "og:site_name", SITE_NAME);
+    setMeta("property", "og:locale", "el_GR");
 
-    setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
-    setMeta('meta[name="twitter:title"]', "content", fullTitle);
-    setMeta('meta[name="twitter:description"]', "content", metaDesc);
-    setMeta('meta[name="twitter:image"]', "content", ogImage);
+    setMeta("name", "twitter:card", "summary_large_image");
+    setMeta("name", "twitter:title", fullTitle);
+    setMeta("name", "twitter:description", metaDesc);
+    setMeta("name", "twitter:image", ogImage);
 
     if (type === "article" && article) {
-      if (article.publishedTime) setMeta('meta[property="article:published_time"]', "content", article.publishedTime);
-      if (article.modifiedTime) setMeta('meta[property="article:modified_time"]', "content", article.modifiedTime);
-      if (article.author) setMeta('meta[property="article:author"]', "content", article.author);
-      if (article.section) setMeta('meta[property="article:section"]', "content", article.section);
+      if (article.publishedTime) setMeta("property", "article:published_time", article.publishedTime);
+      if (article.modifiedTime) setMeta("property", "article:modified_time", article.modifiedTime);
+      if (article.author) setMeta("property", "article:author", article.author);
+      if (article.section) setMeta("property", "article:section", article.section);
     }
   }, [fullTitle, metaDesc, canonicalUrl, ogImage, type, noindex]);
 
