@@ -31,6 +31,13 @@ export interface Article {
   villageName?: string | null;
   /** @nullable */
   tags?: string | null;
+  /** @nullable */
+  seoTitle?: string | null;
+  /** @nullable */
+  metaDescription?: string | null;
+  /** @nullable */
+  slug?: string | null;
+  score?: number;
   viewCount?: number;
   published: boolean;
   featured?: boolean;
@@ -47,6 +54,9 @@ export interface ArticleInput {
   imageUrl?: string;
   villageName?: string;
   tags?: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  slug?: string;
   published?: boolean;
   featured?: boolean;
 }
@@ -60,8 +70,20 @@ export interface ArticleUpdate {
   imageUrl?: string;
   villageName?: string;
   tags?: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  slug?: string;
+  score?: number;
   published?: boolean;
   featured?: boolean;
+}
+
+export interface SocialPost {
+  articleId: number;
+  articleTitle: string;
+  fbPost: string;
+  shortCaption: string;
+  hashtags: string[];
 }
 
 export interface Category {
@@ -192,6 +214,15 @@ category?: string;
 village?: string;
 limit?: number;
 offset?: number;
+};
+
+export type GetTrendingArticlesParams = {
+limit?: number;
+};
+
+export type RecalculateArticleScores200 = {
+  ok: boolean;
+  updated: number;
 };
 
 export type ListPhotosParams = {

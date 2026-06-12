@@ -89,6 +89,35 @@ function extractImage(item: Parser.Item & Record<string, unknown>): string | nul
   return null;
 }
 
+// Greek → Latin transliteration for SEO-friendly slugs
+const GREEK_TO_LATIN: Record<string, string> = {
+  α: "a", ά: "a", β: "v", γ: "g", δ: "d", ε: "e", έ: "e",
+  ζ: "z", η: "i", ή: "i", θ: "th", ι: "i", ί: "i", ϊ: "i", ΐ: "i",
+  κ: "k", λ: "l", μ: "m", ν: "n", ξ: "x", ο: "o", ό: "o",
+  π: "p", ρ: "r", σ: "s", ς: "s", τ: "t", υ: "y", ύ: "y", ϋ: "y", ΰ: "y",
+  φ: "f", χ: "ch", ψ: "ps", ω: "o", ώ: "o",
+};
+
+function toSlug(title: string, id: number): string {
+  const base = title
+    .toLowerCase()
+    .split("")
+    .map(c => GREEK_TO_LATIN[c] ?? c)
+    .join("")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 70);
+  return `${base}-${id}`;
+}
+
+function calcScore(hasImage: boolean, contentLength: number, viewCount = 0): number {
+  return (
+    viewCount * 2 +
+    (hasImage ? 20 : 0) +
+    Math.min(Math.floor(contentLength / 100), 20)
+  );
+}
+
 async function fetchFeed(source: FeedSource): Promise<number> {
   try {
     // Fetch manually so Node's built-in decompression handles gzip/brotli responses
@@ -121,7 +150,7 @@ async function fetchFeed(source: FeedSource): Promise<number> {
       const category = mapCategory(cats, item.title, source.defaultCategory);
       const imageUrl = item.enclosure?.url ?? null;
 
-      const result = await db.insert(articlesTable).values({
+      const returned = await db.insert(articlesTable).values({
         title: item.title.slice(0, 500),
         excerpt,
         content: fullContent,
@@ -131,10 +160,24 @@ async function fetchFeed(source: FeedSource): Promise<number> {
         published: true,
         featured: false,
         sourceUrl: item.link,
-      }).onConflictDoNothing();
+      }).onConflictDoNothing().returning({
+        id: articlesTable.id,
+        title: articlesTable.title,
+        imageUrl: articlesTable.imageUrl,
+        content: articlesTable.content,
+      });
 
-      if ((result.rowCount ?? 0) > 0) {
+      if (returned.length > 0) {
         inserted++;
+        const art = returned[0];
+        const slug = toSlug(art.title, art.id);
+        const score = calcScore(!!art.imageUrl, art.content.length);
+        await db.update(articlesTable).set({
+          slug,
+          score,
+          seoTitle: art.title.slice(0, 60),
+          metaDescription: excerpt.slice(0, 155),
+        }).where(eq(articlesTable.id, art.id));
       }
     }
 
@@ -163,6 +206,8 @@ interface ArticleTranslated {
   title: string;
   excerpt: string;
   content: string;
+  seoTitle?: string;
+  metaDescription?: string;
 }
 
 // Free Google Translate fallback — no API key, no daily quota
@@ -187,6 +232,7 @@ async function googleTranslateFree(text: string, retries = 2): Promise<string> {
 async function translateArticleWithGoogle(article: ArticleInput): Promise<ArticleTranslated> {
   const title = await googleTranslateFree(article.title);
   await new Promise(r => setTimeout(r, 300));
+
   // Translate content in chunks if long
   const chunks: string[] = [];
   const sentences = article.content.split(/(?<=[.!?])\s+/);
@@ -210,8 +256,9 @@ async function translateArticleWithGoogle(article: ArticleInput): Promise<Articl
   return { title, excerpt, content };
 }
 
-// Batch translate all articles for a feed in a SINGLE Gemini call to stay within rate limits
-// Falls back to free Google Translate if Gemini quota is exhausted
+// Batch translate all articles for a feed in a SINGLE Gemini call to stay within rate limits.
+// Also generates SEO fields (seoTitle, metaDescription) in the same call — no extra quota used.
+// Falls back to free Google Translate if Gemini quota is exhausted.
 async function batchTranslateWithGemini(
   ai: GoogleGenAI,
   articles: ArticleInput[]
@@ -222,9 +269,14 @@ async function batchTranslateWithGemini(
     .map((a, i) => `[${i}] Title: ${a.title}\nText: ${a.content.slice(0, 800)}`)
     .join("\n\n---\n\n");
 
-  const prompt = `You are a professional translator. Translate ALL of the following news articles into Modern Greek (Νέα Ελληνικά / el-GR). The output language MUST be Greek — do not return the original language.
+  const prompt = `You are a professional translator and SEO expert. Translate ALL of the following news articles into Modern Greek (Νέα Ελληνικά / el-GR). The output language MUST be Greek — do not return the original language.
 
-Return ONLY a raw JSON array (no markdown, no code fences) with one object per article in the same order, each with: "title" (Greek headline), "excerpt" (1-2 sentence Greek summary), "content" (full Greek translation).
+Return ONLY a raw JSON array (no markdown, no code fences) with one object per article in the same order, each with:
+- "title": Greek headline (the translated title)
+- "excerpt": 1-2 sentence Greek summary
+- "content": full Greek translation
+- "seoTitle": SEO-optimized Greek title for Google search (max 60 characters, keyword-rich)
+- "metaDescription": compelling Greek meta description for search results (120-155 characters)
 
 Articles to translate:
 
@@ -282,7 +334,7 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
 
     if (articleInputs.length === 0) return 0;
 
-    // ONE Gemini call for all articles in this feed
+    // ONE Gemini call for all articles in this feed (includes seoTitle + metaDescription)
     const translations = await batchTranslateWithGemini(ai, articleInputs);
     let inserted = 0;
 
@@ -296,7 +348,7 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
         continue;
       }
 
-      const result = await db.insert(articlesTable).values({
+      const returned = await db.insert(articlesTable).values({
         title: translated.title.slice(0, 500),
         excerpt: translated.excerpt || null,
         content: translated.content || translated.title,
@@ -306,10 +358,21 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
         published: true,
         featured: false,
         sourceUrl: input.link,
-      }).onConflictDoNothing();
+        seoTitle: (translated.seoTitle ?? translated.title).slice(0, 60) || null,
+        metaDescription: translated.metaDescription?.slice(0, 155) || null,
+      }).onConflictDoNothing().returning({
+        id: articlesTable.id,
+        title: articlesTable.title,
+        imageUrl: articlesTable.imageUrl,
+        content: articlesTable.content,
+      });
 
-      if ((result.rowCount ?? 0) > 0) {
+      if (returned.length > 0) {
         inserted++;
+        const art = returned[0];
+        const slug = toSlug(art.title, art.id);
+        const score = calcScore(!!art.imageUrl, art.content.length);
+        await db.update(articlesTable).set({ slug, score }).where(eq(articlesTable.id, art.id));
         logger.info({ url: input.link, title: translated.title }, "Translated article imported");
       }
     }
@@ -340,6 +403,23 @@ export async function fetchAllFeeds(): Promise<void> {
     }
   } else {
     logger.warn("GEMINI_API_KEY not set — skipping Google News translation feeds");
+  }
+
+  // Recalculate scores after every fetch run
+  if (total > 0) {
+    try {
+      await db.execute(sql`
+        UPDATE articles
+        SET score = GREATEST(0,
+          view_count * 2
+          + CASE WHEN image_url IS NOT NULL THEN 20 ELSE 0 END
+          + LEAST(CHAR_LENGTH(content) / 100, 20)
+        )
+        WHERE score = 0 AND view_count > 0
+      `);
+    } catch (scoreErr) {
+      logger.warn({ scoreErr }, "Score recalculation after fetch failed (non-fatal)");
+    }
   }
 
   logger.info({ total }, "RSS fetch complete");
@@ -390,6 +470,8 @@ export async function retranslateEnglishArticles(): Promise<number> {
         title: translated.title.slice(0, 500),
         excerpt: translated.excerpt || row.excerpt,
         content: translated.content || row.content,
+        seoTitle: (translated.seoTitle ?? translated.title).slice(0, 60) || null,
+        metaDescription: translated.metaDescription?.slice(0, 155) || null,
       }).where(eq(articlesTable.id, row.id));
       fixed++;
       logger.info({ id: row.id, title: translated.title }, "Article retranslated to Greek");

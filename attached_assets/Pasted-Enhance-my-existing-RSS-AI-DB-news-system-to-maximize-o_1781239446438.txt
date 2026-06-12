@@ -1,0 +1,125 @@
+Enhance my existing RSS → AI → DB news system to maximize organic traffic (SEO + social distribution).
+
+GOAL:
+Not just publish articles, but generate traffic from Google, Discover, and social media.
+
+==================================================
+SEO ENGINE (REQUIRED)
+==================================================
+
+For every article:
+
+- Generate SEO title (optimized for Google search intent)
+- Generate meta description
+- Generate SEO-friendly slug
+- Generate keywords/tags
+- Add structured internal linking between articles
+- Optimize headings (H1, H2, H3 structure)
+- Ensure article is readable and not duplicate content
+
+Add OpenGraph tags:
+- og:title
+- og:description
+- og:image
+- og:url
+
+==================================================
+CONTENT QUALITY LAYER
+==================================================
+
+Before publishing:
+
+- Rewrite RSS content into unique article (AI mandatory)
+- Remove duplication from source
+- Expand content with AI (not copy-paste)
+- Add summary section
+- Add "related articles" section automatically
+
+==================================================
+GOOGLE INDEXING SYSTEM
+==================================================
+
+- Auto-generate sitemap.xml
+- Auto-update sitemap on new article
+- Add robots.txt configuration
+- Ping Google Indexing API when new article is published
+
+==================================================
+SOCIAL DISTRIBUTION SYSTEM
+==================================================
+
+For every published article:
+
+Generate:
+
+- Facebook post text (click-optimized)
+- Short caption (viral style)
+- Optional hashtags
+
+Create endpoint:
+
+POST /api/social/publish
+
+This will prepare posts for manual or automatic sharing.
+
+==================================================
+HOMEPAGE TRAFFIC BOOSTER
+==================================================
+
+- Automatically push trending articles to homepage
+- Implement "Featured Articles" logic
+- Add "Most Popular" based on views
+- Add internal recommendation system
+
+==================================================
+ANALYTICS TRACKING
+==================================================
+
+Track:
+
+- article views
+- time on page
+- scroll depth
+- referral source
+
+Store in database.
+
+==================================================
+DATABASE ADDITIONS
+==================================================
+
+Add fields to articles table:
+
+- seoTitle
+- metaDescription
+- views
+- slug
+- featured
+- score (for ranking)
+
+==================================================
+TRAFFIC OPTIMIZATION RULES
+==================================================
+
+- prioritize unique rewritten content
+- avoid duplicate or thin content
+- ensure every article is SEO optimized
+- ensure internal linking exists between articles
+- ensure fast loading pages
+
+==================================================
+OUTPUT
+==================================================
+
+Generate:
+
+1. SEO service module
+2. OpenGraph generator
+3. Sitemap generator
+4. Social post generator
+5. Article ranking algorithm
+6. Updated API routes
+7. Database schema updates
+8. Integration with existing RSS pipeline
+
+System goal: maximize organic traffic from Google and social media.

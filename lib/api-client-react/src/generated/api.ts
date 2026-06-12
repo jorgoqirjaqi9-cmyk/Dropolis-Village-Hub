@@ -29,6 +29,7 @@ import type {
   ChatPresence,
   ChatPresenceInput,
   DeleteChatMessageParams,
+  GetTrendingArticlesParams,
   HealthStatus,
   ListArticlesParams,
   ListChatMessagesParams,
@@ -36,7 +37,9 @@ import type {
   ListVideosParams,
   Photo,
   PhotoInput,
+  RecalculateArticleScores200,
   SiteStats,
+  SocialPost,
   Video,
   VideoInput,
   Village,
@@ -364,6 +367,160 @@ export function useGetFeaturedArticles<TData = Awaited<ReturnType<typeof getFeat
 
 
 
+
+export const getGetTrendingArticlesUrl = (params?: GetTrendingArticlesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/articles/trending?${stringifiedParams}` : `/api/articles/trending`
+}
+
+/**
+ * @summary Get trending articles by score
+ */
+export const getTrendingArticles = async (params?: GetTrendingArticlesParams, options?: RequestInit): Promise<Article[]> => {
+
+  return customFetch<Article[]>(getGetTrendingArticlesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetTrendingArticlesQueryKey = (params?: GetTrendingArticlesParams,) => {
+    return [
+    `/api/articles/trending`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetTrendingArticlesQueryOptions = <TData = Awaited<ReturnType<typeof getTrendingArticles>>, TError = ErrorType<unknown>>(params?: GetTrendingArticlesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTrendingArticles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTrendingArticlesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTrendingArticles>>> = ({ signal }) => getTrendingArticles(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTrendingArticles>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTrendingArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof getTrendingArticles>>>
+export type GetTrendingArticlesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get trending articles by score
+ */
+
+export function useGetTrendingArticles<TData = Awaited<ReturnType<typeof getTrendingArticles>>, TError = ErrorType<unknown>>(
+ params?: GetTrendingArticlesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTrendingArticles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTrendingArticlesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getRecalculateArticleScoresUrl = () => {
+
+
+
+
+  return `/api/articles/recalculate-scores`
+}
+
+/**
+ * @summary Recalculate scores for all articles
+ */
+export const recalculateArticleScores = async ( options?: RequestInit): Promise<RecalculateArticleScores200> => {
+
+  return customFetch<RecalculateArticleScores200>(getRecalculateArticleScoresUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getRecalculateArticleScoresMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recalculateArticleScores>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof recalculateArticleScores>>, TError,void, TContext> => {
+
+const mutationKey = ['recalculateArticleScores'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof recalculateArticleScores>>, void> = () => {
+
+
+          return  recalculateArticleScores(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RecalculateArticleScoresMutationResult = NonNullable<Awaited<ReturnType<typeof recalculateArticleScores>>>
+
+    export type RecalculateArticleScoresMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Recalculate scores for all articles
+ */
+export const useRecalculateArticleScores = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recalculateArticleScores>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof recalculateArticleScores>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getRecalculateArticleScoresMutationOptions(options));
+    }
 
 export const getListCategoriesUrl = () => {
 
@@ -1865,6 +2022,76 @@ export const usePingChatPresence = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getPingChatPresenceMutationOptions(options));
+    }
+
+export const getPublishSocialPostUrl = (id: number,) => {
+
+
+
+
+  return `/api/social/publish/${id}`
+}
+
+/**
+ * @summary Generate social media post content for an article
+ */
+export const publishSocialPost = async (id: number, options?: RequestInit): Promise<SocialPost> => {
+
+  return customFetch<SocialPost>(getPublishSocialPostUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getPublishSocialPostMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof publishSocialPost>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof publishSocialPost>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['publishSocialPost'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof publishSocialPost>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  publishSocialPost(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PublishSocialPostMutationResult = NonNullable<Awaited<ReturnType<typeof publishSocialPost>>>
+
+    export type PublishSocialPostMutationError = ErrorType<void>
+
+    /**
+ * @summary Generate social media post content for an article
+ */
+export const usePublishSocialPost = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof publishSocialPost>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof publishSocialPost>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getPublishSocialPostMutationOptions(options));
     }
 
 export const getGetStatsUrl = () => {

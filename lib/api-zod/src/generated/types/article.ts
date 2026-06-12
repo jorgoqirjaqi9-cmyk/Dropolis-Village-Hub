@@ -20,6 +20,13 @@ export interface Article {
   villageName?: string | null;
   /** @nullable */
   tags?: string | null;
+  /** @nullable */
+  seoTitle?: string | null;
+  /** @nullable */
+  metaDescription?: string | null;
+  /** @nullable */
+  slug?: string | null;
+  score?: number;
   viewCount?: number;
   published: boolean;
   featured?: boolean;

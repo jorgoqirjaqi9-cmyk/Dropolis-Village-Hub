@@ -15,6 +15,9 @@ export interface ArticleInput {
   imageUrl?: string;
   villageName?: string;
   tags?: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  slug?: string;
   published?: boolean;
   featured?: boolean;
 }

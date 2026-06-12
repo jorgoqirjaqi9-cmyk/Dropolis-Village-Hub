@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
 import { articlesTable } from "@workspace/db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, sql } from "drizzle-orm";
 import {
   ListArticlesQueryParams,
   CreateArticleBody,
@@ -41,6 +41,9 @@ router.post("/articles", async (req, res) => {
     imageUrl: body.imageUrl ?? null,
     villageName: body.villageName ?? null,
     tags: body.tags ?? null,
+    seoTitle: body.seoTitle ?? null,
+    metaDescription: body.metaDescription ?? null,
+    slug: body.slug ?? null,
     published: body.published ?? true,
     featured: body.featured ?? false,
   }).returning();
@@ -55,6 +58,30 @@ router.get("/articles/featured", async (req, res) => {
     .orderBy(desc(articlesTable.createdAt))
     .limit(6);
   res.json(articles.map(formatArticle));
+});
+
+router.get("/articles/trending", async (req, res) => {
+  const limit = Math.min(Number(req.query.limit) || 10, 30);
+  const articles = await db
+    .select()
+    .from(articlesTable)
+    .where(eq(articlesTable.published, true))
+    .orderBy(desc(articlesTable.score), desc(articlesTable.viewCount))
+    .limit(limit);
+  res.json(articles.map(formatArticle));
+});
+
+router.post("/articles/recalculate-scores", async (req, res) => {
+  await db.execute(sql`
+    UPDATE articles
+    SET score = GREATEST(0,
+      view_count * 2
+      + CASE WHEN image_url IS NOT NULL THEN 20 ELSE 0 END
+      + LEAST(CHAR_LENGTH(content) / 100, 20)
+    )
+  `);
+  const [result] = await db.select({ count: sql<number>`COUNT(*)::int` }).from(articlesTable);
+  res.json({ ok: true, updated: result?.count ?? 0 });
 });
 
 router.get("/articles/categories", async (req, res) => {
@@ -110,6 +137,10 @@ function formatArticle(a: typeof articlesTable.$inferSelect) {
     imageUrl: a.imageUrl,
     villageName: a.villageName,
     tags: a.tags,
+    seoTitle: a.seoTitle,
+    metaDescription: a.metaDescription,
+    slug: a.slug,
+    score: a.score,
     viewCount: a.viewCount,
     published: a.published,
     featured: a.featured,

@@ -91,8 +91,8 @@ export default function NewsDetail() {
   return (
     <article className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-12">
       <SEO
-        title={article.title}
-        description={article.excerpt || `Διαβάστε το άρθρο: ${article.title}`}
+        title={article.seoTitle || article.title}
+        description={article.metaDescription || article.excerpt || `Διαβάστε το άρθρο: ${article.title}`}
         image={article.imageUrl || undefined}
         type="article"
         article={{

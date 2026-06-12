@@ -15,6 +15,10 @@ export interface ArticleUpdate {
   imageUrl?: string;
   villageName?: string;
   tags?: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  slug?: string;
+  score?: number;
   published?: boolean;
   featured?: boolean;
 }

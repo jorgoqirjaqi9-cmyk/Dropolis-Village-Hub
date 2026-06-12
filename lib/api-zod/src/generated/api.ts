@@ -36,6 +36,10 @@ export const ListArticlesResponseItem = zod.object({
   "imageUrl": zod.string().nullish(),
   "villageName": zod.string().nullish(),
   "tags": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "metaDescription": zod.string().nullish(),
+  "slug": zod.string().nullish(),
+  "score": zod.number().optional(),
   "viewCount": zod.number().optional(),
   "published": zod.boolean(),
   "featured": zod.boolean().optional(),
@@ -57,6 +61,9 @@ export const CreateArticleBody = zod.object({
   "imageUrl": zod.string().optional(),
   "villageName": zod.string().optional(),
   "tags": zod.string().optional(),
+  "seoTitle": zod.string().optional(),
+  "metaDescription": zod.string().optional(),
+  "slug": zod.string().optional(),
   "published": zod.boolean().optional(),
   "featured": zod.boolean().optional()
 })
@@ -75,6 +82,10 @@ export const GetFeaturedArticlesResponseItem = zod.object({
   "imageUrl": zod.string().nullish(),
   "villageName": zod.string().nullish(),
   "tags": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "metaDescription": zod.string().nullish(),
+  "slug": zod.string().nullish(),
+  "score": zod.number().optional(),
   "viewCount": zod.number().optional(),
   "published": zod.boolean(),
   "featured": zod.boolean().optional(),
@@ -82,6 +93,45 @@ export const GetFeaturedArticlesResponseItem = zod.object({
   "updatedAt": zod.string().optional()
 })
 export const GetFeaturedArticlesResponse = zod.array(GetFeaturedArticlesResponseItem)
+
+
+/**
+ * @summary Get trending articles by score
+ */
+export const GetTrendingArticlesQueryParams = zod.object({
+  "limit": zod.coerce.number().optional()
+})
+
+export const GetTrendingArticlesResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "excerpt": zod.string().nullish(),
+  "content": zod.string(),
+  "category": zod.string(),
+  "author": zod.string(),
+  "imageUrl": zod.string().nullish(),
+  "villageName": zod.string().nullish(),
+  "tags": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "metaDescription": zod.string().nullish(),
+  "slug": zod.string().nullish(),
+  "score": zod.number().optional(),
+  "viewCount": zod.number().optional(),
+  "published": zod.boolean(),
+  "featured": zod.boolean().optional(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string().optional()
+})
+export const GetTrendingArticlesResponse = zod.array(GetTrendingArticlesResponseItem)
+
+
+/**
+ * @summary Recalculate scores for all articles
+ */
+export const RecalculateArticleScoresResponse = zod.object({
+  "ok": zod.boolean(),
+  "updated": zod.number()
+})
 
 
 /**
@@ -111,6 +161,10 @@ export const GetArticleResponse = zod.object({
   "imageUrl": zod.string().nullish(),
   "villageName": zod.string().nullish(),
   "tags": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "metaDescription": zod.string().nullish(),
+  "slug": zod.string().nullish(),
+  "score": zod.number().optional(),
   "viewCount": zod.number().optional(),
   "published": zod.boolean(),
   "featured": zod.boolean().optional(),
@@ -135,6 +189,10 @@ export const UpdateArticleBody = zod.object({
   "imageUrl": zod.string().optional(),
   "villageName": zod.string().optional(),
   "tags": zod.string().optional(),
+  "seoTitle": zod.string().optional(),
+  "metaDescription": zod.string().optional(),
+  "slug": zod.string().optional(),
+  "score": zod.number().optional(),
   "published": zod.boolean().optional(),
   "featured": zod.boolean().optional()
 })
@@ -149,6 +207,10 @@ export const UpdateArticleResponse = zod.object({
   "imageUrl": zod.string().nullish(),
   "villageName": zod.string().nullish(),
   "tags": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "metaDescription": zod.string().nullish(),
+  "slug": zod.string().nullish(),
+  "score": zod.number().optional(),
   "viewCount": zod.number().optional(),
   "published": zod.boolean(),
   "featured": zod.boolean().optional(),
@@ -417,6 +479,22 @@ export const PingChatPresenceBody = zod.object({
 
 export const PingChatPresenceResponse = zod.object({
   "online": zod.number()
+})
+
+
+/**
+ * @summary Generate social media post content for an article
+ */
+export const PublishSocialPostParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const PublishSocialPostResponse = zod.object({
+  "articleId": zod.number(),
+  "articleTitle": zod.string(),
+  "fbPost": zod.string(),
+  "shortCaption": zod.string(),
+  "hashtags": zod.array(zod.string())
 })
 
 
