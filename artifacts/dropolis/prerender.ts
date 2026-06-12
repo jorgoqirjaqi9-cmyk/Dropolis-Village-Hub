@@ -8,6 +8,12 @@
  * to social bots and AI crawlers WITHOUT needing any server-side rendering in
  * production.
  *
+ * Also writes dist/public/prerender-manifest.json — a machine-readable record
+ * of every article ID and village ID for which a prerendered HTML file was
+ * successfully published in this build. The API server's live sitemap and
+ * IndexNow submission pipeline read this manifest so they only advertise or
+ * notify crawlers about URLs whose HTML already exists in the deployed build.
+ *
  * If dist/public/index.html does not exist yet (build not run), exits silently.
  */
 
@@ -15,8 +21,14 @@ import { db, pool, articlesTable, villagesTable } from "@workspace/db";
 import { desc } from "drizzle-orm";
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
+import {
+  BASE_URL,
+  STATIC_ROUTES,
+  STATIC_PRERENDER,
+  CRAWLER_REDIRECTS,
+  type Meta,
+} from "./src/route-manifest.js";
 
-const BASE_URL = "https://dropolis.net";
 const DEFAULT_IMG = `${BASE_URL}/opengraph.jpg`;
 const SITE_NAME = "Δρόπολη (Dropolis)";
 
@@ -41,24 +53,6 @@ function esc(s: unknown): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
-
-type ArticleMeta = {
-  publishedTime?: string | null;
-  modifiedTime?: string | null;
-  author?: string | null;
-  section?: string | null;
-};
-
-type Meta = {
-  title: string;
-  description: string;
-  image?: string | null;
-  url: string;
-  type?: string;
-  article?: ArticleMeta;
-  jsonLd?: object;
-  breadcrumbs?: Array<{ name: string; item: string }>;
-};
 
 function buildSeoTags(m: Meta): string {
   const title = esc(`${m.title} | ${SITE_NAME}`);
@@ -166,144 +160,6 @@ function urlEntry(
   </url>`;
 }
 
-const STATIC_ROUTES: Array<{ loc: string; changefreq: string; priority: string }> = [
-  { loc: "/",             changefreq: "daily",   priority: "1.0" },
-  { loc: "/news",         changefreq: "hourly",  priority: "0.9" },
-  { loc: "/villages",     changefreq: "weekly",  priority: "0.8" },
-  { loc: "/photos",       changefreq: "weekly",  priority: "0.7" },
-  { loc: "/videos",       changefreq: "weekly",  priority: "0.7" },
-  { loc: "/about",        changefreq: "monthly", priority: "0.8" },
-  { loc: "/contact",      changefreq: "monthly", priority: "0.7" },
-  { loc: "/press",        changefreq: "monthly", priority: "0.6" },
-  { loc: "/help",         changefreq: "monthly", priority: "0.5" },
-  { loc: "/privacy",      changefreq: "yearly",  priority: "0.4" },
-  { loc: "/terms",        changefreq: "yearly",  priority: "0.4" },
-  { loc: "/cookie-policy",changefreq: "yearly",  priority: "0.3" },
-  { loc: "/disclaimer",   changefreq: "yearly",  priority: "0.3" },
-];
-
-// Static routes with their own metadata for prerendering
-const STATIC_PRERENDER: Array<Meta & { path: string }> = [
-  {
-    path: "/news",
-    title: "Ειδήσεις",
-    description: "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου.",
-    url: `${BASE_URL}/news`,
-    breadcrumbs: [{ name: "Ειδήσεις", item: `${BASE_URL}/news` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      name: "Ειδήσεις — Δρόπολη",
-      description: "Τελευταία νέα και ρεπορτάζ από τη Δρόπολη.",
-      url: `${BASE_URL}/news`,
-      inLanguage: "el",
-    },
-  },
-  {
-    path: "/villages",
-    title: "Τα Χωριά της Δρόπολης",
-    description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου. Πληθυσμός, ιστορία και παραδόσεις.",
-    url: `${BASE_URL}/villages`,
-    breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      name: "Τα Χωριά της Δρόπολης",
-      description: "41 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου.",
-      url: `${BASE_URL}/villages`,
-      inLanguage: "el",
-      numberOfItems: 41,
-    },
-  },
-  {
-    path: "/photos",
-    title: "Φωτογραφικό Αρχείο",
-    description: "Φωτογραφίες από τα χωριά της Δρόπολης — τοπία, παραδοσιακά κτίρια, πολιτιστικές εκδηλώσεις.",
-    url: `${BASE_URL}/photos`,
-    breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      name: "Φωτογραφικό Αρχείο — Δρόπολη",
-      description: "Φωτογραφίες από τα χωριά της Δρόπολης.",
-      url: `${BASE_URL}/photos`,
-      inLanguage: "el",
-    },
-  },
-  {
-    path: "/videos",
-    title: "Βίντεο",
-    description: "Βίντεο από τη Δρόπολη — εκδηλώσεις, πολιτισμός, τουρισμός και ζωή στα χωριά της Βόρειας Ηπείρου.",
-    url: `${BASE_URL}/videos`,
-    breadcrumbs: [{ name: "Βίντεο", item: `${BASE_URL}/videos` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      name: "Βίντεο — Δρόπολη",
-      description: "Βίντεο από τα χωριά της Δρόπολης.",
-      url: `${BASE_URL}/videos`,
-      inLanguage: "el",
-    },
-  },
-  {
-    path: "/about",
-    title: "Σχετικά με το Dropolis",
-    description: "Μάθετε για το Dropolis — το portal ειδήσεων, φωτογραφιών και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος, Αλβανία).",
-    url: `${BASE_URL}/about`,
-    breadcrumbs: [{ name: "Σχετικά", item: `${BASE_URL}/about` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "AboutPage",
-      name: "Σχετικά με το Dropolis",
-      description: "Portal ειδήσεων και κοινότητας για τα χωριά της Δρόπολης, Βόρεια Ήπειρος.",
-      url: `${BASE_URL}/about`,
-    },
-  },
-  {
-    path: "/contact",
-    title: "Επικοινωνία",
-    description: "Επικοινωνήστε με το Dropolis. Υποβολή άρθρων, φωτογραφιών, ερωτήσεων και συνεργασιών για το portal της Δρόπολης.",
-    url: `${BASE_URL}/contact`,
-    breadcrumbs: [{ name: "Επικοινωνία", item: `${BASE_URL}/contact` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "ContactPage",
-      name: "Επικοινωνία — Dropolis",
-      description: "Επικοινωνήστε με το Dropolis.",
-      url: `${BASE_URL}/contact`,
-    },
-  },
-  {
-    path: "/press",
-    title: "Τύπος & Νέα",
-    description: "Δελτία τύπου, media kit και επικοινωνία τύπου για το Dropolis — portal ειδήσεων της Δρόπολης.",
-    url: `${BASE_URL}/press`,
-    breadcrumbs: [{ name: "Τύπος", item: `${BASE_URL}/press` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      name: "Τύπος & Νέα — Dropolis",
-      description: "Ανακοινώσεις τύπου, media kit και επικοινωνία για δημοσιογράφους.",
-      url: `${BASE_URL}/press`,
-      inLanguage: "el",
-    },
-  },
-  {
-    path: "/help",
-    title: "Κέντρο Βοήθειας",
-    description: "Απαντήσεις σε συχνές ερωτήσεις για το Dropolis — portal ειδήσεων και κοινότητας της Δρόπολης.",
-    url: `${BASE_URL}/help`,
-    breadcrumbs: [{ name: "Βοήθεια", item: `${BASE_URL}/help` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      name: "Κέντρο Βοήθειας — Dropolis",
-      url: `${BASE_URL}/help`,
-      inLanguage: "el",
-    },
-  },
-];
-
 function buildSitemap(
   articles: Array<{ id: number; createdAt: Date }>,
   villages: Array<{ id: number; createdAt: Date }>,
@@ -385,13 +241,39 @@ async function main() {
 
   let count = 0;
 
-  // Static routes — prerender with route-specific metadata
+  // Static routes — prerender with route-specific metadata (from centralized
+  // route-manifest so prerender.ts, seo-crawler.ts, and sitemap.ts stay in sync)
   for (const route of STATIC_PRERENDER) {
     const { path, ...meta } = route;
     writeRoute(path, injectMeta(meta));
     count++;
   }
   console.log(`[prerender] Static routes: ${STATIC_PRERENDER.length} pages written.`);
+
+  // Legacy redirect stubs — these paths are aliased in the client router but
+  // bots receive a 200 SPA shell rather than a clean redirect. The Express API
+  // server handles genuine HTTP 301s for these paths in production (via the
+  // /privacy-policy and /terms-of-service paths in artifact.toml). These stubs
+  // are a belt-and-suspenders fallback: any bot that somehow reaches the static
+  // server directly gets a canonical link + meta refresh so it still signals
+  // the correct canonical URL.
+  for (const [from, to] of Object.entries(CRAWLER_REDIRECTS)) {
+    const redirectHtml = `<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="canonical" href="${to}" />
+  <meta http-equiv="refresh" content="0; url=${to}" />
+  <title>Μετανάστευση — Dropolis</title>
+</head>
+<body>
+  <p>Μεταφορά στη σελίδα <a href="${to}">${to}</a>…</p>
+</body>
+</html>`;
+    writeRoute(from, redirectHtml);
+    count++;
+  }
+  console.log(`[prerender] Redirect stubs: ${Object.keys(CRAWLER_REDIRECTS).length} pages written.`);
 
   // Articles
   for (const a of articles) {
@@ -490,7 +372,9 @@ async function main() {
     count++;
   }
 
-  // Generate fresh sitemap.xml with real lastmod dates from DB
+  // Generate fresh sitemap.xml with real lastmod dates from DB.
+  // This sitemap only contains URLs for which prerendered HTML now exists,
+  // since it is generated in the same run that produces the HTML files.
   const sitemapXml = buildSitemap(
     articles.map((a) => ({ id: a.id, createdAt: a.createdAt })),
     villages.map((v) => ({ id: v.id, createdAt: v.createdAt })),
@@ -498,7 +382,27 @@ async function main() {
   writeFileSync(resolve(DIST, "sitemap.xml"), sitemapXml, "utf-8");
   console.log(`[prerender] sitemap.xml written (${articles.length + villages.length + STATIC_ROUTES.length} URLs).`);
 
-  console.log(`[prerender] Done. Generated ${count} pages (${STATIC_PRERENDER.length} static, ${articles.length} articles, ${villages.length} villages).`);
+  // Write the prerender manifest — a machine-readable record of every article
+  // and village ID whose HTML file was successfully published in this build,
+  // together with the timestamp of when each page was prerendered.
+  //
+  // Format: { generatedAt, articles: { "id": "ISO timestamp" }, villages: {...} }
+  //
+  // The API server's live sitemap (/api/sitemap.xml) uses these per-item
+  // timestamps to detect staleness: if article.updatedAt > manifest.articles[id],
+  // the prerendered HTML is older than the content — the article is withheld
+  // from the sitemap until the next prerender run (build-time or on-demand).
+  // The IndexNow pipeline uses the same logic before submitting to crawlers.
+  const prerenderTs = new Date().toISOString();
+  const manifest = {
+    generatedAt: prerenderTs,
+    articles: Object.fromEntries(articles.map((a) => [String(a.id), prerenderTs])),
+    villages: Object.fromEntries(villages.map((v) => [String(v.id), prerenderTs])),
+  };
+  writeFileSync(resolve(DIST, "prerender-manifest.json"), JSON.stringify(manifest), "utf-8");
+  console.log(`[prerender] prerender-manifest.json written (${articles.length} articles, ${villages.length} villages).`);
+
+  console.log(`[prerender] Done. Generated ${count} pages (${STATIC_PRERENDER.length} static, ${articles.length} articles, ${villages.length} villages, ${Object.keys(CRAWLER_REDIRECTS).length} redirect stubs).`);
   process.exit(0);
 }
 

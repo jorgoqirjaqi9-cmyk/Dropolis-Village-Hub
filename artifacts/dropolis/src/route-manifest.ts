@@ -1,0 +1,272 @@
+/**
+ * Canonical static route inventory for Dropolis.
+ *
+ * This is the single source of truth consumed by:
+ *   - prerender.ts       (build-time HTML generation + sitemap.xml)
+ *   - plugins/seo-crawler.ts  (Vite dev crawler middleware)
+ *
+ * The API server's sitemap.ts maintains its own copy of STATIC_ROUTES because
+ * it lives in a different package, but it must be kept in sync with this file.
+ */
+
+export const BASE_URL = "https://dropolis.net";
+
+export type StaticRoute = {
+  loc: string;
+  changefreq: string;
+  priority: string;
+};
+
+export type ArticleMeta = {
+  publishedTime?: string | null;
+  modifiedTime?: string | null;
+  author?: string | null;
+  section?: string | null;
+};
+
+export type Meta = {
+  title: string;
+  description: string;
+  image?: string | null;
+  url: string;
+  type?: string;
+  article?: ArticleMeta;
+  jsonLd?: object;
+  breadcrumbs?: Array<{ name: string; item: string }>;
+};
+
+export type StaticPrerender = Meta & { path: string };
+
+/**
+ * All public static routes included in the sitemap.
+ * Keep in sync with STATIC_ROUTES in artifacts/api-server/src/routes/sitemap.ts.
+ */
+export const STATIC_ROUTES: StaticRoute[] = [
+  { loc: "/",             changefreq: "daily",   priority: "1.0" },
+  { loc: "/news",         changefreq: "hourly",  priority: "0.9" },
+  { loc: "/villages",     changefreq: "weekly",  priority: "0.8" },
+  { loc: "/photos",       changefreq: "weekly",  priority: "0.7" },
+  { loc: "/videos",       changefreq: "weekly",  priority: "0.7" },
+  { loc: "/about",        changefreq: "monthly", priority: "0.8" },
+  { loc: "/contact",      changefreq: "monthly", priority: "0.7" },
+  { loc: "/press",        changefreq: "monthly", priority: "0.6" },
+  { loc: "/help",         changefreq: "monthly", priority: "0.5" },
+  { loc: "/privacy",      changefreq: "yearly",  priority: "0.4" },
+  { loc: "/terms",        changefreq: "yearly",  priority: "0.4" },
+  { loc: "/cookie-policy",changefreq: "yearly",  priority: "0.3" },
+  { loc: "/disclaimer",   changefreq: "yearly",  priority: "0.3" },
+  { loc: "/sitemap",      changefreq: "monthly", priority: "0.3" },
+];
+
+/**
+ * Static pages that get their own prerendered HTML with correct OG / JSON-LD.
+ * Every entry here must also be reachable via the client-side router (App.tsx).
+ */
+export const STATIC_PRERENDER: StaticPrerender[] = [
+  {
+    path: "/news",
+    title: "Ειδήσεις",
+    description: "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου.",
+    url: `${BASE_URL}/news`,
+    breadcrumbs: [{ name: "Ειδήσεις", item: `${BASE_URL}/news` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Ειδήσεις — Δρόπολη",
+      description: "Τελευταία νέα και ρεπορτάζ από τη Δρόπολη.",
+      url: `${BASE_URL}/news`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/villages",
+    title: "Τα Χωριά της Δρόπολης",
+    description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου. Πληθυσμός, ιστορία και παραδόσεις.",
+    url: `${BASE_URL}/villages`,
+    breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Τα Χωριά της Δρόπολης",
+      description: "41 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου.",
+      url: `${BASE_URL}/villages`,
+      inLanguage: "el",
+      numberOfItems: 41,
+    },
+  },
+  {
+    path: "/photos",
+    title: "Φωτογραφικό Αρχείο",
+    description: "Φωτογραφίες από τα χωριά της Δρόπολης — τοπία, παραδοσιακά κτίρια, πολιτιστικές εκδηλώσεις.",
+    url: `${BASE_URL}/photos`,
+    breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Φωτογραφικό Αρχείο — Δρόπολη",
+      description: "Φωτογραφίες από τα χωριά της Δρόπολης.",
+      url: `${BASE_URL}/photos`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/videos",
+    title: "Βίντεο",
+    description: "Βίντεο από τη Δρόπολη — εκδηλώσεις, πολιτισμός, τουρισμός και ζωή στα χωριά της Βόρειας Ηπείρου.",
+    url: `${BASE_URL}/videos`,
+    breadcrumbs: [{ name: "Βίντεο", item: `${BASE_URL}/videos` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Βίντεο — Δρόπολη",
+      description: "Βίντεο από τα χωριά της Δρόπολης.",
+      url: `${BASE_URL}/videos`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/about",
+    title: "Σχετικά με το Dropolis",
+    description: "Μάθετε για το Dropolis — το portal ειδήσεων, φωτογραφιών και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος, Αλβανία).",
+    url: `${BASE_URL}/about`,
+    breadcrumbs: [{ name: "Σχετικά", item: `${BASE_URL}/about` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      name: "Σχετικά με το Dropolis",
+      description: "Portal ειδήσεων και κοινότητας για τα χωριά της Δρόπολης, Βόρεια Ήπειρος.",
+      url: `${BASE_URL}/about`,
+    },
+  },
+  {
+    path: "/contact",
+    title: "Επικοινωνία",
+    description: "Επικοινωνήστε με το Dropolis. Υποβολή άρθρων, φωτογραφιών, ερωτήσεων και συνεργασιών για το portal της Δρόπολης.",
+    url: `${BASE_URL}/contact`,
+    breadcrumbs: [{ name: "Επικοινωνία", item: `${BASE_URL}/contact` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      name: "Επικοινωνία — Dropolis",
+      description: "Επικοινωνήστε με το Dropolis.",
+      url: `${BASE_URL}/contact`,
+    },
+  },
+  {
+    path: "/press",
+    title: "Τύπος & Νέα",
+    description: "Δελτία τύπου, media kit και επικοινωνία τύπου για το Dropolis — portal ειδήσεων της Δρόπολης.",
+    url: `${BASE_URL}/press`,
+    breadcrumbs: [{ name: "Τύπος", item: `${BASE_URL}/press` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Τύπος & Νέα — Dropolis",
+      description: "Ανακοινώσεις τύπου, media kit και επικοινωνία για δημοσιογράφους.",
+      url: `${BASE_URL}/press`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/help",
+    title: "Κέντρο Βοήθειας",
+    description: "Απαντήσεις σε συχνές ερωτήσεις για το Dropolis — portal ειδήσεων και κοινότητας της Δρόπολης.",
+    url: `${BASE_URL}/help`,
+    breadcrumbs: [{ name: "Βοήθεια", item: `${BASE_URL}/help` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Κέντρο Βοήθειας — Dropolis",
+      url: `${BASE_URL}/help`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/privacy",
+    title: "Πολιτική Απορρήτου",
+    description: "Πολιτική Απορρήτου του Dropolis. Πληροφορίες για τη συλλογή, χρήση και προστασία των προσωπικών δεδομένων σας.",
+    url: `${BASE_URL}/privacy`,
+    breadcrumbs: [{ name: "Πολιτική Απορρήτου", item: `${BASE_URL}/privacy` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Πολιτική Απορρήτου — Dropolis",
+      url: `${BASE_URL}/privacy`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/terms",
+    title: "Όροι Χρήσης",
+    description: "Όροι Χρήσης του Dropolis. Πληροφορίες για τη χρήση του portal ειδήσεων και κοινότητας της Δρόπολης.",
+    url: `${BASE_URL}/terms`,
+    breadcrumbs: [{ name: "Όροι Χρήσης", item: `${BASE_URL}/terms` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Όροι Χρήσης — Dropolis",
+      url: `${BASE_URL}/terms`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/cookie-policy",
+    title: "Πολιτική Cookies",
+    description: "Πολιτική Cookies του Dropolis. Πληροφορίες για τη χρήση cookies και τεχνολογιών παρακολούθησης.",
+    url: `${BASE_URL}/cookie-policy`,
+    breadcrumbs: [{ name: "Πολιτική Cookies", item: `${BASE_URL}/cookie-policy` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Πολιτική Cookies — Dropolis",
+      url: `${BASE_URL}/cookie-policy`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/disclaimer",
+    title: "Αποποίηση Ευθύνης",
+    description: "Αποποίηση Ευθύνης του Dropolis. Πληροφορίες για τα όρια ευθύνης του ιστότοπου.",
+    url: `${BASE_URL}/disclaimer`,
+    breadcrumbs: [{ name: "Αποποίηση Ευθύνης", item: `${BASE_URL}/disclaimer` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Αποποίηση Ευθύνης — Dropolis",
+      url: `${BASE_URL}/disclaimer`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/sitemap",
+    title: "Χάρτης Ιστότοπου",
+    description: "Χάρτης ιστότοπου του Dropolis — πλήρης κατάλογος σελίδων και ενότητες του portal.",
+    url: `${BASE_URL}/sitemap`,
+    breadcrumbs: [{ name: "Χάρτης Ιστότοπου", item: `${BASE_URL}/sitemap` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Χάρτης Ιστότοπου — Dropolis",
+      url: `${BASE_URL}/sitemap`,
+      inLanguage: "el",
+    },
+  },
+];
+
+/**
+ * STATIC_META for the dev crawler middleware — same data as STATIC_PRERENDER
+ * but keyed by path for O(1) lookup.
+ */
+export const STATIC_META: Record<string, Meta> = Object.fromEntries(
+  STATIC_PRERENDER.map(({ path, ...meta }) => [path, meta])
+);
+
+/**
+ * Legacy URL aliases that are handled as client-side redirects in App.tsx.
+ * Value is the full canonical URL so the crawler middleware can issue a 301
+ * and the prerender script can write a canonical-redirect stub.
+ */
+export const CRAWLER_REDIRECTS: Record<string, string> = {
+  "/privacy-policy": `${BASE_URL}/privacy`,
+  "/terms-of-service": `${BASE_URL}/terms`,
+};

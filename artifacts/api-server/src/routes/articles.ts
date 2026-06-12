@@ -3,6 +3,7 @@ import { db } from "@workspace/db";
 import { articlesTable } from "@workspace/db";
 import { eq, desc, and, sql } from "drizzle-orm";
 import { autoIndexArticle } from "../lib/auto-indexing.js";
+import { prerenderArticle } from "../lib/on-demand-prerender.js";
 import {
   ListArticlesQueryParams,
   CreateArticleBody,
@@ -48,6 +49,19 @@ router.post("/articles", async (req, res) => {
     published: body.published ?? true,
     featured: body.featured ?? false,
   }).returning();
+  // Fire-and-forget: prerender HTML first (writes HTML + updates manifest),
+  // then schedule IndexNow/Google Indexing API submission after the delay.
+  void prerenderArticle({
+    id: article.id,
+    title: article.title,
+    excerpt: article.excerpt,
+    content: article.content,
+    imageUrl: article.imageUrl,
+    author: article.author,
+    category: article.category,
+    createdAt: article.createdAt.toISOString(),
+    updatedAt: article.updatedAt.toISOString(),
+  });
   void autoIndexArticle(article.id);
   res.status(201).json(formatArticle(article));
 });
@@ -119,6 +133,18 @@ router.patch("/articles/:id", async (req, res) => {
     res.status(404).json({ error: "Not found" });
     return;
   }
+  // Re-prerender immediately so the updated OG/JSON-LD tags go live now
+  void prerenderArticle({
+    id: article.id,
+    title: article.title,
+    excerpt: article.excerpt,
+    content: article.content,
+    imageUrl: article.imageUrl,
+    author: article.author,
+    category: article.category,
+    createdAt: article.createdAt.toISOString(),
+    updatedAt: article.updatedAt.toISOString(),
+  });
   res.json(formatArticle(article));
 });
 

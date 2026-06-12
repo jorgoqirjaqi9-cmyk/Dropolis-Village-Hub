@@ -2,6 +2,7 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { villagesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
+import { prerenderVillage } from "../lib/on-demand-prerender.js";
 import {
   CreateVillageBody,
   DeleteVillageParams,
@@ -29,6 +30,15 @@ router.post("/villages", async (req, res) => {
     latitude: body.latitude ?? null,
     longitude: body.longitude ?? null,
   }).returning();
+  void prerenderVillage({
+    id: village.id,
+    nameEl: village.nameEl,
+    name: village.name,
+    description: village.description,
+    imageUrl: village.imageUrl,
+    latitude: village.latitude,
+    longitude: village.longitude,
+  });
   res.status(201).json(formatVillage(village));
 });
 
@@ -51,6 +61,16 @@ router.patch("/villages/:id", async (req, res) => {
     ...(body.latitude !== undefined && { latitude: body.latitude }),
     ...(body.longitude !== undefined && { longitude: body.longitude }),
   }).where(eq(villagesTable.id, id)).returning();
+  // Re-prerender immediately so updated OG/JSON-LD tags go live now
+  void prerenderVillage({
+    id: updated.id,
+    nameEl: updated.nameEl,
+    name: updated.name,
+    description: updated.description,
+    imageUrl: updated.imageUrl,
+    latitude: updated.latitude,
+    longitude: updated.longitude,
+  });
   res.json(formatVillage(updated));
 });
 
