@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -7,6 +7,7 @@ export const chatMessagesTable = pgTable("chat_messages", {
   username: text("username").notNull(),
   message: text("message").notNull(),
   avatar: text("avatar"),
+  isBot: boolean("is_bot").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

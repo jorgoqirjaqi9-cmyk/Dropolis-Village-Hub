@@ -3,6 +3,7 @@ import { db } from "@workspace/db";
 import { chatMessagesTable } from "@workspace/db";
 import { desc, eq } from "drizzle-orm";
 import { ListChatMessagesQueryParams, SendChatMessageBody, PingChatPresenceBody } from "@workspace/api-zod";
+import { maybeRespondToMessage } from "../lib/chat-bot.js";
 
 const router = Router();
 
@@ -34,8 +35,11 @@ router.post("/chat/messages", async (req, res) => {
     username: body.username,
     message: body.message,
     avatar: body.avatar ?? null,
+    isBot: false,
   }).returning();
   res.status(201).json(formatMessage(message));
+  // Fire-and-forget bot response
+  void maybeRespondToMessage(body.message, body.username);
 });
 
 router.delete("/chat/messages/:id", async (req, res) => {
@@ -67,6 +71,7 @@ function formatMessage(m: typeof chatMessagesTable.$inferSelect) {
     username: m.username,
     message: m.message,
     avatar: m.avatar,
+    isBot: m.isBot,
     createdAt: m.createdAt.toISOString(),
   };
 }

@@ -14,8 +14,10 @@ import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Send, Users, MessageSquare, X } from "lucide-react";
+import { Send, Users, MessageSquare, X, Bot } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+const BOT_USERNAME = "Δρόπολη Bot";
 
 export default function Chat() {
   const [username, setUsername] = useState(() => localStorage.getItem("dropolis_username") || "");
@@ -121,7 +123,11 @@ export default function Chat() {
           <Users className="w-8 h-8 text-primary" />
         </div>
         <h1 className="text-3xl font-serif font-bold text-foreground mb-2">Ζωντανή Συζήτηση</h1>
-        <p className="text-muted-foreground mb-8">Επιλέξτε ένα όνομα για να συμμετάσχετε στη ζωντανή συζήτηση με άλλους συμπατριώτες.</p>
+        <p className="text-muted-foreground mb-4">Επιλέξτε ένα όνομα για να συμμετάσχετε στη ζωντανή συζήτηση με άλλους συμπατριώτες.</p>
+        <p className="text-xs text-muted-foreground/70 mb-6 flex items-center justify-center gap-1.5">
+          <Bot className="w-3.5 h-3.5 text-primary/60" />
+          Ο <strong className="text-primary/80">Δρόπολη Bot</strong> είναι εδώ για να σας βοηθήσει
+        </p>
         
         <form onSubmit={handleJoin} className="space-y-4">
           <Input 
@@ -170,6 +176,12 @@ export default function Chat() {
         </div>
       </header>
 
+      {/* Bot hint bar */}
+      <div className="bg-primary/5 border-b border-border/40 px-4 py-2 flex items-center gap-2 text-xs text-muted-foreground">
+        <Bot className="w-3.5 h-3.5 text-primary shrink-0" />
+        <span>Ο <strong className="text-primary">Δρόπολη Bot</strong> απαντάει σε ερωτήσεις — γράψτε οτιδήποτε θέλετε να μάθετε!</span>
+      </div>
+
       {/* Messages Area */}
       <div className="flex-grow overflow-y-auto p-4 md:p-6 space-y-6 bg-background/50">
         {isLoading && !messages ? (
@@ -177,8 +189,31 @@ export default function Chat() {
         ) : messages && messages.length > 0 ? (
           messages.slice().reverse().map((msg, i) => {
             const isMe = msg.username === username;
+            const isBot = msg.isBot || msg.username === BOT_USERNAME;
             const showHeader = i === 0 || messages[messages.length - i]?.username !== msg.username;
             
+            if (isBot) {
+              return (
+                <div key={msg.id} className="flex justify-start gap-3">
+                  <div className="w-8 h-8 mt-1 shrink-0 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <Bot className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="max-w-[75%] md:max-w-[65%] flex flex-col items-start">
+                    <span className="text-xs font-semibold text-primary/80 mb-1 ml-1 flex items-center gap-1">
+                      {BOT_USERNAME}
+                      <span className="bg-primary/10 text-primary text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wide">Bot</span>
+                    </span>
+                    <div className="px-4 py-2.5 rounded-2xl rounded-tl-sm shadow-sm bg-primary/8 border border-primary/15 text-foreground">
+                      <p className="whitespace-pre-wrap break-words text-sm md:text-base leading-relaxed">{msg.message}</p>
+                    </div>
+                    <span className="text-[10px] text-muted-foreground/60 mt-1 mx-1">
+                      {format(new Date(msg.createdAt), "HH:mm", { locale: el })}
+                    </span>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'} gap-3`}>
                 {!isMe && showHeader && (
@@ -238,7 +273,7 @@ export default function Chat() {
           <Input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Γράψτε ένα μήνυμα..."
+            placeholder="Γράψτε ένα μήνυμα ή ερώτηση…"
             className="flex-grow bg-background border-input"
             disabled={sendMessage.isPending}
           />

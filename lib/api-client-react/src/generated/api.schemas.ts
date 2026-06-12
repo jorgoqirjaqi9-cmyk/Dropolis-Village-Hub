@@ -190,6 +190,7 @@ export interface ChatMessage {
   message: string;
   /** @nullable */
   avatar?: string | null;
+  isBot?: boolean;
   createdAt: string;
 }
 

@@ -435,6 +435,7 @@ export const ListChatMessagesResponseItem = zod.object({
   "username": zod.string(),
   "message": zod.string(),
   "avatar": zod.string().nullish(),
+  "isBot": zod.boolean().optional(),
   "createdAt": zod.string()
 })
 export const ListChatMessagesResponse = zod.array(ListChatMessagesResponseItem)

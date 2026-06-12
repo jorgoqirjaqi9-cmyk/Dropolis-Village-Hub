@@ -864,6 +864,8 @@ components:
           type: string
         avatar:
           type: ["string", "null"]
+        isBot:
+          type: boolean
         createdAt:
           type: string
 
