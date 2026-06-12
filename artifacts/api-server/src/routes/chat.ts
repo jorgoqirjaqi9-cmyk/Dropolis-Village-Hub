@@ -8,7 +8,6 @@ import {
   SendChatMessageBody,
   PingChatPresenceBody,
 } from "@workspace/api-zod";
-import { maybeRespondToMessage } from "../lib/chat-bot.js";
 
 const router = Router();
 
@@ -53,6 +52,7 @@ router.get("/chat/messages", async (req, res) => {
   const messages = await db
     .select()
     .from(chatMessagesTable)
+    .where(eq(chatMessagesTable.isBot, false))
     .orderBy(desc(chatMessagesTable.createdAt))
     .limit(limit);
   res.json(messages.reverse().map(formatMessage));
@@ -82,8 +82,6 @@ router.post("/chat/messages", async (req, res) => {
     isBot: false,
   }).returning();
   res.status(201).json(formatMessage(message));
-  // Fire-and-forget bot response
-  void maybeRespondToMessage(messageText, username);
 });
 
 router.delete("/chat/messages/:id", async (req, res) => {
