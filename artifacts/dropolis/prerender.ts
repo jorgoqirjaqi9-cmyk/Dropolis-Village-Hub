@@ -192,18 +192,28 @@ ${villageEntries.join("\n")}
 async function main() {
   console.log("[prerender] Starting...");
 
-  // Run schema migrations so production DB is always up to date before querying
+  // Run idempotent schema migrations so the production DB is always up to date
+  // before querying. Each statement runs independently — one failure never blocks
+  // the rest (e.g. index already exists on a retry).
+  const migrations = [
+    `ALTER TABLE articles ADD COLUMN IF NOT EXISTS source_url text`,
+    `CREATE UNIQUE INDEX IF NOT EXISTS articles_source_url_unique ON articles(source_url) WHERE source_url IS NOT NULL`,
+    `ALTER TABLE articles ADD COLUMN IF NOT EXISTS seo_title text`,
+    `ALTER TABLE articles ADD COLUMN IF NOT EXISTS meta_description text`,
+    `ALTER TABLE articles ADD COLUMN IF NOT EXISTS slug text`,
+    `CREATE UNIQUE INDEX IF NOT EXISTS articles_slug_unique ON articles(slug) WHERE slug IS NOT NULL`,
+    `ALTER TABLE articles ADD COLUMN IF NOT EXISTS score integer NOT NULL DEFAULT 0`,
+  ];
+
   const client = await pool.connect();
   try {
-    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS source_url text`);
-    await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS articles_source_url_unique ON articles(source_url) WHERE source_url IS NOT NULL`);
-    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS seo_title text`);
-    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS meta_description text`);
-    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS slug text`);
-    await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS articles_slug_unique ON articles(slug) WHERE slug IS NOT NULL`);
-    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS score integer NOT NULL DEFAULT 0`);
-  } catch (err) {
-    console.warn("[prerender] Migration warning:", err);
+    for (const stmt of migrations) {
+      try {
+        await client.query(stmt);
+      } catch (err) {
+        console.warn(`[prerender] Migration skipped (${stmt.slice(0, 60)}):`, (err as Error).message);
+      }
+    }
   } finally {
     client.release();
   }
