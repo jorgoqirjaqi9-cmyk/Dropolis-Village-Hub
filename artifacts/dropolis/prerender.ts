@@ -60,7 +60,7 @@ function jsonLdItems(value?: object | object[]): object[] {
 }
 
 function staticExtraSchemas(m: Meta): object[] {
-  if (m.url !== BASE_URL + "/help") return [];
+  if (m.url.endsWith("/help") === false) return [];
   return [
     {
       "@context": "https://schema.org",
