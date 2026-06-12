@@ -26,5 +26,6 @@
 
 ## Notes
 - The frontend is a Vite + React SPA using `wouter`.
-- Route-level SEO is currently implemented client-side through `artifacts/dropolis/src/components/SEO.tsx`.
+- Public SEO is hybrid: a shared client-side `SEO.tsx` layer exists for all pages, while `prerender.ts` and the dev `seo-crawler` plugin provide crawler-friendly HTML for only a subset of public routes.
 - Public routes that depend on JavaScript rendering should be treated as at risk for social bots and AI crawlers even if Google can render them eventually.
+- The dynamic `/api/sitemap.xml` is live against the database, while prerendered article and village HTML is generated only at frontend build time. Future scans should check for drift between newly published content and crawler-ready HTML.
