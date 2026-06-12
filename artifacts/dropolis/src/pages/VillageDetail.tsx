@@ -229,6 +229,12 @@ export default function VillageDetail() {
                   </Link>
                 ))}
               </div>
+              <Link
+                href={`/news?village=${encodeURIComponent(village.nameEl)}`}
+                className="mt-5 flex items-center justify-center gap-1 text-xs font-medium text-primary hover:text-secondary border border-primary/30 hover:border-secondary/50 rounded-lg py-2 px-3 transition-colors"
+              >
+                Όλα τα νέα για {village.nameEl} &rarr;
+              </Link>
             </div>
           )}
         </aside>

@@ -124,7 +124,7 @@ export default function NewsDetail() {
               </span>
             </Link>
             {article.villageName && (
-              <Link href={`/villages?search=${article.villageName}`}>
+              <Link href={`/news?village=${encodeURIComponent(article.villageName)}`}>
                 <span className="bg-accent/10 text-accent px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 cursor-pointer hover:bg-accent/20 transition-colors">
                   <MapPin className="w-3 h-3" /> {article.villageName}
                 </span>
