@@ -26,6 +26,12 @@ const FEED_SOURCES: FeedSource[] = [
     defaultCategory: "Επικαιρότητα",
     needsTranslation: false,
   },
+  {
+    url: "https://epirusonline.gr/feed/",
+    name: "Epirus Online",
+    defaultCategory: "Ομογένεια",
+    needsTranslation: false,
+  },
 ];
 
 // Google News feeds that require translation
@@ -85,7 +91,16 @@ function extractImage(item: Parser.Item & Record<string, unknown>): string | nul
 
 async function fetchFeed(source: FeedSource): Promise<number> {
   try {
-    const feed = await parser.parseURL(source.url);
+    // Fetch manually so Node's built-in decompression handles gzip/brotli responses
+    const raw = await fetch(source.url, {
+      headers: {
+        "User-Agent": "Dropolis/1.0 RSS Reader",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept": "application/rss+xml, application/xml, text/xml, */*",
+      },
+    });
+    const xml = await raw.text();
+    const feed = await parser.parseString(xml);
     let inserted = 0;
 
     for (const item of feed.items) {
