@@ -1,0 +1,35 @@
+# Dropolis (Δρόπολη)
+
+> Dropolis is the news, photo, video, and community portal for the villages of Dropoli (Northern Epirus / Southern Albania). All content is published in Modern Greek.
+
+## About
+
+Dropolis covers local news, cultural events, and community life across 41 villages in the Dropoli region. The site is maintained by the diaspora and local community alike.
+
+- Language: Greek (el)
+- Canonical domain: https://dropolis.net
+- Sitemaps: https://dropolis.net/sitemap.xml | https://dropolis.net/api/sitemap.xml
+
+## Public Sections
+
+- [Homepage](https://dropolis.net/) — Featured articles, news ticker, statistics, latest content
+- [News](https://dropolis.net/news) — Full article listing, filterable by category and village
+- [Villages](https://dropolis.net/villages) — Directory of all 41 Dropoli villages with individual pages
+- [Photos](https://dropolis.net/photos) — Photo gallery, filterable by village
+- [Videos](https://dropolis.net/videos) — YouTube video gallery
+- [About](https://dropolis.net/about) — About the portal
+- [Contact](https://dropolis.net/contact) — Contact information
+- [Press](https://dropolis.net/press) — Press and media information
+- [Help](https://dropolis.net/help) — Help and FAQ
+
+## Content Structure
+
+- Article detail pages: https://dropolis.net/news/{id}
+- Village detail pages: https://dropolis.net/villages/{id}
+
+## Crawling Notes
+
+- The dynamic sitemap at https://dropolis.net/api/sitemap.xml is preferred over the static one; it includes real publication dates for all articles and villages.
+- The `/chat` section is excluded from indexing (real-time user-generated content).
+- API routes under `/api/` are not intended for indexing.
+- Full crawl guidance: https://dropolis.net/robots.txt
