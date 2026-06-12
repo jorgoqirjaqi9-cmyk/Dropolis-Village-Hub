@@ -3,6 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 import { db, articlesTable } from "@workspace/db";
 import { eq, sql, like, or } from "drizzle-orm";
 import { logger } from "./lib/logger.js";
+import { autoIndexArticle } from "./lib/auto-indexing.js";
 
 const parser = new Parser({ timeout: 10000, headers: { "User-Agent": "Dropolis/1.0 RSS Reader" } });
 
@@ -178,6 +179,7 @@ async function fetchFeed(source: FeedSource): Promise<number> {
           seoTitle: art.title.slice(0, 60),
           metaDescription: excerpt.slice(0, 155),
         }).where(eq(articlesTable.id, art.id));
+        void autoIndexArticle(art.id);
       }
     }
 
@@ -373,6 +375,7 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
         const slug = toSlug(art.title, art.id);
         const score = calcScore(!!art.imageUrl, art.content.length);
         await db.update(articlesTable).set({ slug, score }).where(eq(articlesTable.id, art.id));
+        void autoIndexArticle(art.id);
         logger.info({ url: input.link, title: translated.title }, "Translated article imported");
       }
     }

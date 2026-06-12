@@ -2,6 +2,7 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { articlesTable } from "@workspace/db";
 import { eq, desc, and, sql } from "drizzle-orm";
+import { autoIndexArticle } from "../lib/auto-indexing.js";
 import {
   ListArticlesQueryParams,
   CreateArticleBody,
@@ -47,6 +48,7 @@ router.post("/articles", async (req, res) => {
     published: body.published ?? true,
     featured: body.featured ?? false,
   }).returning();
+  void autoIndexArticle(article.id);
   res.status(201).json(formatArticle(article));
 });
 

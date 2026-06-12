@@ -2,7 +2,7 @@ import React from "react";
 import { useRoute, Link } from "wouter";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
-import { useGetArticle, getGetArticleQueryKey, useListArticles, getListArticlesQueryKey } from "@workspace/api-client-react";
+import { useGetArticle, getGetArticleQueryKey, useListArticles, getListArticlesQueryKey, useGetTrendingArticles, getGetTrendingArticlesQueryKey } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,6 +22,12 @@ export default function NewsDetail() {
   );
 
   const displayRelated = relatedArticles?.filter(a => a.id !== id).slice(0, 3);
+
+  const { data: trendingArticles } = useGetTrendingArticles(
+    { limit: 5 },
+    { query: { queryKey: getGetTrendingArticlesQueryKey({ limit: 5 }) } }
+  );
+  const displayTrending = trendingArticles?.filter(a => a.id !== id).slice(0, 4);
 
   if (isError) {
     return (
@@ -193,6 +199,28 @@ export default function NewsDetail() {
             ))}
           </div>
         )}
+
+        {/* Διαβάστε επίσης — internal linking for SEO crawlability */}
+        {displayTrending && displayTrending.length > 0 && (
+          <section aria-label="Διαβάστε επίσης" className="pt-8 border-t border-border">
+            <h2 className="text-xl font-serif font-bold mb-5">Διαβάστε επίσης</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {displayTrending.map(a => (
+                <Link key={a.id} href={`/news/${a.id}`} className="group flex gap-3 p-3 rounded-lg bg-muted/40 hover:bg-muted transition-colors">
+                  {a.imageUrl && (
+                    <div className="w-20 h-16 rounded overflow-hidden shrink-0">
+                      <img src={a.imageUrl} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors leading-snug">{a.seoTitle || a.title}</h3>
+                    <span className="text-xs text-muted-foreground mt-1 block">{a.category}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       {/* Sidebar */}
@@ -201,7 +229,7 @@ export default function NewsDetail() {
           <AdSenseSlot adSlot="7994234180" adFormat="rectangle" className="rounded-lg shadow-sm" />
           
           {displayRelated && displayRelated.length > 0 && (
-            <div className="bg-card rounded-xl p-5 shadow-sm border border-card-border">
+            <nav aria-label="Σχετικά άρθρα" className="bg-card rounded-xl p-5 shadow-sm border border-card-border">
               <h3 className="font-serif text-lg font-bold mb-4 border-b border-border pb-2">Σχετικά Άρθρα</h3>
               <div className="space-y-4">
                 {displayRelated.map(related => (
@@ -209,11 +237,11 @@ export default function NewsDetail() {
                     <div className="flex gap-3">
                       {related.imageUrl && (
                         <div className="w-20 h-20 rounded-md overflow-hidden shrink-0">
-                          <img src={related.imageUrl} alt={related.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                          <img src={related.imageUrl} alt={related.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform" loading="lazy" />
                         </div>
                       )}
                       <div>
-                        <h4 className="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors">{related.title}</h4>
+                        <h4 className="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors">{related.seoTitle || related.title}</h4>
                         <span className="text-xs text-muted-foreground block mt-1">
                           {format(new Date(related.createdAt), "d MMM yyyy", { locale: el })}
                         </span>
@@ -222,7 +250,26 @@ export default function NewsDetail() {
                   </Link>
                 ))}
               </div>
-            </div>
+            </nav>
+          )}
+
+          {displayTrending && displayTrending.length > 0 && (
+            <nav aria-label="Δημοφιλή άρθρα" className="bg-card rounded-xl p-5 shadow-sm border border-card-border">
+              <h3 className="font-serif text-lg font-bold mb-4 border-b border-border pb-2">🔥 Δημοφιλή</h3>
+              <ol className="space-y-3">
+                {displayTrending.map((a, idx) => (
+                  <li key={a.id}>
+                    <Link href={`/news/${a.id}`} className="group flex gap-3 items-start">
+                      <span className="text-2xl font-black text-muted-foreground/30 leading-none w-6 shrink-0 select-none">{idx + 1}</span>
+                      <div className="min-w-0">
+                        <h4 className="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors leading-snug">{a.seoTitle || a.title}</h4>
+                        <span className="text-xs text-muted-foreground mt-0.5 block">{a.viewCount} προβολές</span>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+            </nav>
           )}
           
           <AdSenseSlot adSlot="7994234180" adFormat="vertical" className="rounded-lg shadow-sm hidden lg:block" />
