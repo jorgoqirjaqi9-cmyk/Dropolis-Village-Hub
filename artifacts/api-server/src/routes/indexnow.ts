@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { requireAdmin } from "../lib/admin-auth.js";
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const INDEXNOW_ENDPOINT = "https://api.indexnow.org/IndexNow";
  *     -H "Content-Type: application/json" \
  *     -d '{"urls":["https://dropolis.net/news/27"]}'
  */
-router.post("/indexnow/submit", async (req, res) => {
+router.post("/indexnow/submit", requireAdmin, async (req, res) => {
   const { urls } = req.body as { urls?: unknown };
 
   if (!Array.isArray(urls) || urls.length === 0) {

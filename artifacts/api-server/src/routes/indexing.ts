@@ -6,6 +6,7 @@ import {
   pingSitemaps,
   getRecentIndexingEvents,
 } from "../lib/auto-indexing.js";
+import { requireAdmin } from "../lib/admin-auth.js";
 
 const router = Router();
 
@@ -24,7 +25,7 @@ const router = Router();
  *     -H "Content-Type: application/json" \
  *     -d '{"ids":[123,124,125]}'
  */
-router.post("/indexing/trigger", async (req, res) => {
+router.post("/indexing/trigger", requireAdmin, async (req, res) => {
   const body = req.body as { ids?: unknown; pingOnly?: unknown; latest?: unknown };
 
   if (body.pingOnly === true) {

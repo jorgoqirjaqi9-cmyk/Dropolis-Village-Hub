@@ -3,6 +3,7 @@ import { db } from "@workspace/db";
 import { villagesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { prerenderVillage } from "../lib/on-demand-prerender.js";
+import { requireAdmin } from "../lib/admin-auth.js";
 import {
   CreateVillageBody,
   DeleteVillageParams,
@@ -17,7 +18,7 @@ router.get("/villages", async (req, res) => {
   res.json(villages.map(formatVillage));
 });
 
-router.post("/villages", async (req, res) => {
+router.post("/villages", requireAdmin, async (req, res) => {
   const body = CreateVillageBody.parse(req.body);
   const [village] = await db.insert(villagesTable).values({
     name: body.name,
@@ -42,7 +43,7 @@ router.post("/villages", async (req, res) => {
   res.status(201).json(formatVillage(village));
 });
 
-router.patch("/villages/:id", async (req, res) => {
+router.patch("/villages/:id", requireAdmin, async (req, res) => {
   const { id } = GetVillageParams.parse({ id: Number(req.params.id) });
   const body = UpdateVillageBody.parse(req.body);
   const [existing] = await db.select().from(villagesTable).where(eq(villagesTable.id, id));
@@ -74,7 +75,7 @@ router.patch("/villages/:id", async (req, res) => {
   res.json(formatVillage(updated));
 });
 
-router.delete("/villages/:id", async (req, res) => {
+router.delete("/villages/:id", requireAdmin, async (req, res) => {
   const { id } = DeleteVillageParams.parse({ id: Number(req.params.id) });
   const [existing] = await db.select().from(villagesTable).where(eq(villagesTable.id, id));
   if (!existing) {

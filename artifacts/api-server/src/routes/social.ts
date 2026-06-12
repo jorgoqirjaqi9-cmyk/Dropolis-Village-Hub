@@ -3,10 +3,11 @@ import { GoogleGenAI } from "@google/genai";
 import { db, articlesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { logger } from "../lib/logger.js";
+import { requireAdmin } from "../lib/admin-auth.js";
 
 const router = Router();
 
-router.post("/social/publish/:id", async (req, res) => {
+router.post("/social/publish/:id", requireAdmin, async (req, res) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Μη έγκυρο αναγνωριστικό" });

@@ -157,6 +157,7 @@ export default function Chat() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="text-center text-lg py-6 bg-background"
+              maxLength={40}
               autoFocus
             />
             <Button type="submit" className="w-full py-6 text-lg font-bold" disabled={!username.trim()}>
@@ -323,6 +324,7 @@ export default function Chat() {
             placeholder="Γράψτε μήνυμα ή ερώτηση…"
             className="flex-grow bg-background"
             disabled={sendMessage.isPending}
+            maxLength={500}
             autoComplete="off"
           />
           <Button

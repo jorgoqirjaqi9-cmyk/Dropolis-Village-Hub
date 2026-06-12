@@ -4,6 +4,7 @@ import { articlesTable } from "@workspace/db";
 import { eq, desc, and, sql } from "drizzle-orm";
 import { autoIndexArticle } from "../lib/auto-indexing.js";
 import { prerenderArticle } from "../lib/on-demand-prerender.js";
+import { requireAdmin } from "../lib/admin-auth.js";
 import {
   ListArticlesQueryParams,
   CreateArticleBody,
@@ -14,9 +15,14 @@ import {
 } from "@workspace/api-zod";
 
 const router = Router();
+const DEFAULT_ARTICLE_LIMIT = 20;
+const MAX_ARTICLE_LIMIT = 100;
+const MAX_ARTICLE_OFFSET = 10_000;
 
 router.get("/articles", async (req, res) => {
   const query = ListArticlesQueryParams.parse(req.query);
+  const limit = Math.min(Math.max(query.limit ?? DEFAULT_ARTICLE_LIMIT, 1), MAX_ARTICLE_LIMIT);
+  const offset = Math.min(Math.max(query.offset ?? 0, 0), MAX_ARTICLE_OFFSET);
   const conditions = [];
   if (query.category) conditions.push(eq(articlesTable.category, query.category));
   if (query.village) conditions.push(eq(articlesTable.villageName, query.village));
@@ -26,13 +32,13 @@ router.get("/articles", async (req, res) => {
     .from(articlesTable)
     .where(conditions.length > 0 ? and(...conditions) : undefined)
     .orderBy(desc(articlesTable.createdAt))
-    .limit(query.limit ?? 20)
-    .offset(query.offset ?? 0);
+    .limit(limit)
+    .offset(offset);
 
   res.json(articles.map(formatArticle));
 });
 
-router.post("/articles", async (req, res) => {
+router.post("/articles", requireAdmin, async (req, res) => {
   const body = CreateArticleBody.parse(req.body);
   const [article] = await db.insert(articlesTable).values({
     title: body.title,
@@ -77,7 +83,7 @@ router.get("/articles/featured", async (req, res) => {
 });
 
 router.get("/articles/trending", async (req, res) => {
-  const limit = Math.min(Number(req.query.limit) || 10, 30);
+  const limit = Math.min(Math.max(Number(req.query.limit) || 10, 1), 30);
   const articles = await db
     .select()
     .from(articlesTable)
@@ -87,7 +93,7 @@ router.get("/articles/trending", async (req, res) => {
   res.json(articles.map(formatArticle));
 });
 
-router.post("/articles/recalculate-scores", async (req, res) => {
+router.post("/articles/recalculate-scores", requireAdmin, async (req, res) => {
   await db.execute(sql`
     UPDATE articles
     SET score = GREATEST(0,
@@ -121,7 +127,7 @@ router.get("/articles/:id", async (req, res) => {
   res.json(formatArticle({ ...article, viewCount: article.viewCount + 1 }));
 });
 
-router.patch("/articles/:id", async (req, res) => {
+router.patch("/articles/:id", requireAdmin, async (req, res) => {
   const { id } = UpdateArticleParams.parse({ id: Number(req.params.id) });
   const body = UpdateArticleBody.parse(req.body);
   const [article] = await db
@@ -148,7 +154,7 @@ router.patch("/articles/:id", async (req, res) => {
   res.json(formatArticle(article));
 });
 
-router.delete("/articles/:id", async (req, res) => {
+router.delete("/articles/:id", requireAdmin, async (req, res) => {
   const { id } = DeleteArticleParams.parse({ id: Number(req.params.id) });
   await db.delete(articlesTable).where(eq(articlesTable.id, id));
   res.status(204).send();

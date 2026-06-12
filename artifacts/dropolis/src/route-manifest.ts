@@ -31,7 +31,7 @@ export type Meta = {
   url: string;
   type?: string;
   article?: ArticleMeta;
-  jsonLd?: object | object[];
+  jsonLd?: object;
   breadcrumbs?: Array<{ name: string; item: string }>;
 };
 
@@ -66,15 +66,15 @@ export const STATIC_ROUTES: StaticRoute[] = [
 export const STATIC_PRERENDER: StaticPrerender[] = [
   {
     path: "/chat",
-    title: "Live Chat - Dropolis",
-    description: "Community live chat for Dropolis visitors and residents.",
+    title: "Ζωντανή Συζήτηση",
+    description: "Ζωντανή συνομιλία για την κοινότητα της Δρόπολης.",
     url: `${BASE_URL}/chat`,
-    breadcrumbs: [{ name: "Live Chat", item: `${BASE_URL}/chat` }],
+    breadcrumbs: [{ name: "Ζωντανή Συζήτηση", item: `${BASE_URL}/chat` }],
     jsonLd: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      name: "Live Chat - Dropolis",
-      description: "Community live chat for Dropolis visitors and residents.",
+      name: "Ζωντανή Συζήτηση — Δρόπολη",
+      description: "Ζωντανή συνομιλία για την κοινότητα της Δρόπολης.",
       url: `${BASE_URL}/chat`,
       inLanguage: "el",
     },

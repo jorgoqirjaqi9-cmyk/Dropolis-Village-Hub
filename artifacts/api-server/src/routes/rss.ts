@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { fetchAllFeeds, retranslateEnglishArticles } from "../rss-fetcher.js";
+import { requireAdmin } from "../lib/admin-auth.js";
 
 const router = Router();
 
-router.post("/rss/import", async (req, res) => {
+router.post("/rss/import", requireAdmin, async (req, res) => {
   try {
     void fetchAllFeeds();
     res.json({ ok: true, message: "RSS import started in background" });
@@ -13,7 +14,7 @@ router.post("/rss/import", async (req, res) => {
   }
 });
 
-router.post("/rss/retranslate", async (req, res) => {
+router.post("/rss/retranslate", requireAdmin, async (req, res) => {
   try {
     void retranslateEnglishArticles();
     res.json({ ok: true, message: "Retranslation started in background" });
