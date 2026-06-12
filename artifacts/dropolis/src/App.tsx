@@ -22,6 +22,15 @@ import Disclaimer from "@/pages/Disclaimer";
 import Press from "@/pages/Press";
 import Help from "@/pages/Help";
 import Sitemap from "@/pages/Sitemap";
+import EditorialPolicy from "@/pages/EditorialPolicy";
+import CorrectionsPolicy from "@/pages/CorrectionsPolicy";
+import Contributors from "@/pages/Contributors";
+import Advertise from "@/pages/Advertise";
+import EnIndex from "@/pages/EnIndex";
+import EnAbout from "@/pages/EnAbout";
+import EnVillages from "@/pages/EnVillages";
+import EnNews from "@/pages/EnNews";
+import EnContact from "@/pages/EnContact";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,6 +87,24 @@ function Router() {
             <Route path="/help/" component={Help} />
             <Route path="/sitemap" component={Sitemap} />
             <Route path="/sitemap/" component={Sitemap} />
+            <Route path="/editorial-policy" component={EditorialPolicy} />
+            <Route path="/editorial-policy/" component={EditorialPolicy} />
+            <Route path="/corrections-policy" component={CorrectionsPolicy} />
+            <Route path="/corrections-policy/" component={CorrectionsPolicy} />
+            <Route path="/contributors" component={Contributors} />
+            <Route path="/contributors/" component={Contributors} />
+            <Route path="/advertise" component={Advertise} />
+            <Route path="/advertise/" component={Advertise} />
+            <Route path="/en" component={EnIndex} />
+            <Route path="/en/" component={EnIndex} />
+            <Route path="/en/about" component={EnAbout} />
+            <Route path="/en/about/" component={EnAbout} />
+            <Route path="/en/villages" component={EnVillages} />
+            <Route path="/en/villages/" component={EnVillages} />
+            <Route path="/en/news" component={EnNews} />
+            <Route path="/en/news/" component={EnNews} />
+            <Route path="/en/contact" component={EnContact} />
+            <Route path="/en/contact/" component={EnContact} />
             <Route component={NotFound} />
           </Switch>
         </Layout>

@@ -1,0 +1,41 @@
+Implement a Brand Authority / Trust upgrade for Dropolis. Goal: improve authority signals without fake claims or thin pages. Do not use filler text. Keep design consistent with the existing site.
+
+Add the following real, useful pages and route them in the React app:
+
+Greek trust pages:
+- /editorial-policy — editorial standards, source policy, AI/automation disclosure, correction principles
+- /corrections-policy — how users can request corrections, review process, timestamps, transparency
+- /contributors — how local residents/contributors can submit news/photos/history, basic contributor standards
+- /advertise — advertising/sponsorship info, audience, contact path, no fake metrics
+
+English international pages:
+- /en — concise English landing page for Dropolis
+- /en/about — about Dropolis in English
+- /en/villages — explain Dropolis/Northern Epirus villages in English, link back to /villages
+- /en/news — English guide to news coverage, link back to /news
+- /en/contact — contact in English
+
+Requirements:
+1) Use existing page/component patterns. If there is a reusable SEO component, breadcrumbs component, Layout, PageHeader, etc., use them.
+2) Add routes in artifacts/dropolis/src/App.tsx for all pages.
+3) Add navigation/footer links carefully: add trust pages in footer or sitemap-like area, not crowded primary nav. English links may go in footer.
+4) Update artifacts/dropolis/src/pages/Sitemap.tsx if there is a human sitemap page so these pages are discoverable.
+5) Update robots/sitemap route inventory:
+   - artifacts/dropolis/src/route-manifest.ts STATIC_ROUTES and STATIC_PRERENDER must include the new routes with correct canonical URLs and unique title/description/schema.
+   - artifacts/api-server/src/routes/sitemap.ts STATIC_ROUTES must include them too.
+   - artifacts/dropolis/public/robots.txt should allow these pages if it has an allowlist.
+6) Update the server-side SEO route added earlier (artifacts/api-server/src/routes/seo-pages.ts) so these new routes get distinct title, description, canonical, one H1 fallback, JSON-LD, and breadcrumbs in live HTML.
+7) Update artifacts/api-server/.replit-artifact/artifact.toml paths so the API server receives these new public routes in production if required by the SEO route setup.
+8) All titles and descriptions must be natural and unique. Do not claim Wikipedia, partnerships, awards, app stores, or metrics that are not present.
+9) Do not reintroduce the chat bot. Do not redesign the whole site. Do not touch unrelated business logic.
+10) Run typecheck/build. Fix errors. Restart server. Republish/deploy.
+
+After deploy, verify live:
+- /editorial-policy has unique title/canonical and 1 h1
+- /corrections-policy has unique title/canonical and 1 h1
+- /contributors has unique title/canonical and 1 h1
+- /advertise has unique title/canonical and 1 h1
+- /en, /en/about, /en/villages, /en/news, /en/contact have unique canonical/title and 1 h1
+- sitemap.xml contains the new routes
+- /news article SEO still works
+- /api/articles still works

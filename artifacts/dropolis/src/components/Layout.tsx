@@ -108,6 +108,13 @@ const resourceLinks = [
   { href: "/sitemap", label: "Χάρτης Ιστοτόπου" },
 ];
 
+const trustLinks = [
+  { href: "/editorial-policy", label: "Συντακτική Πολιτική" },
+  { href: "/corrections-policy", label: "Πολιτική Διορθώσεων" },
+  { href: "/contributors", label: "Συνεισφορά" },
+  { href: "/advertise", label: "Διαφήμιση" },
+];
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -403,6 +410,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </li>
                 ))}
               </ul>
+              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-3">Δεοντολογία</h4>
+              <ul className="space-y-2 mb-5">
+                {trustLinks.map(({ href, label }) => (
+                  <li key={href}>
+                    <Link href={href} className="text-sm text-background/60 hover:text-secondary transition-colors">{label}</Link>
+                  </li>
+                ))}
+              </ul>
               <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-3">Νομικά</h4>
               <ul className="space-y-2">
                 {legalLinks.map(({ href, label }) => (
@@ -414,6 +429,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <div className="mt-5 space-y-1 text-xs text-background/40">
                 <p className="mt-2">
                   <a href="mailto:dropolis9@gmail.com" className="hover:text-secondary transition-colors">dropolis9@gmail.com</a>
+                </p>
+                <p className="mt-2">
+                  <Link href="/en" className="hover:text-secondary transition-colors">🇬🇧 English</Link>
                 </p>
               </div>
             </div>

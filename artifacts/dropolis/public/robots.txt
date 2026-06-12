@@ -20,6 +20,11 @@ Allow: /privacy
 Allow: /terms
 Allow: /cookie-policy
 Allow: /disclaimer
+Allow: /editorial-policy
+Allow: /corrections-policy
+Allow: /contributors
+Allow: /advertise
+Allow: /en
 
 # Disallow real-time/user-specific pages
 Disallow: /chat

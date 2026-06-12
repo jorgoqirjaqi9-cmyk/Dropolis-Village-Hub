@@ -25,7 +25,16 @@ const STATIC_ROUTES = [
   { loc: "/terms",         changefreq: "yearly",  priority: "0.4" },
   { loc: "/cookie-policy", changefreq: "yearly",  priority: "0.3" },
   { loc: "/disclaimer",    changefreq: "yearly",  priority: "0.3" },
-  { loc: "/sitemap",       changefreq: "monthly", priority: "0.3" },
+  { loc: "/sitemap",            changefreq: "monthly", priority: "0.3" },
+  { loc: "/editorial-policy",  changefreq: "monthly", priority: "0.5" },
+  { loc: "/corrections-policy",changefreq: "monthly", priority: "0.5" },
+  { loc: "/contributors",      changefreq: "monthly", priority: "0.5" },
+  { loc: "/advertise",         changefreq: "monthly", priority: "0.4" },
+  { loc: "/en",                changefreq: "monthly", priority: "0.6" },
+  { loc: "/en/about",          changefreq: "monthly", priority: "0.5" },
+  { loc: "/en/villages",       changefreq: "monthly", priority: "0.5" },
+  { loc: "/en/news",           changefreq: "monthly", priority: "0.5" },
+  { loc: "/en/contact",        changefreq: "monthly", priority: "0.5" },
 ];
 
 function escapeXml(str: string): string {

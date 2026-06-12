@@ -25,6 +25,11 @@ paths = [
   "/disclaimer",
   "/sitemap",
   "/chat",
+  "/editorial-policy",
+  "/corrections-policy",
+  "/contributors",
+  "/advertise",
+  "/en",
 ]
 
 [services.development]

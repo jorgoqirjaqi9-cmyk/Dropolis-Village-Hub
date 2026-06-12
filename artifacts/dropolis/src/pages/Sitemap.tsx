@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Home, Newspaper, MapPin, Image, Video, MessageSquare,
   Info, Mail, Shield, FileText, Cookie, AlertTriangle,
-  Megaphone, HelpCircle, Map,
+  Megaphone, HelpCircle, Map, BookOpen, UserPlus, BarChart2, Globe,
 } from "lucide-react";
 
 const fade = { hidden: { opacity: 0, y: 20 }, show: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.4, delay: i * 0.07 } }) };
@@ -49,6 +49,32 @@ const sections = [
       { href: "/terms", label: "Όροι Χρήσης", desc: "Κανόνες χρήσης της πλατφόρμας", icon: FileText },
       { href: "/cookie-policy", label: "Πολιτική Cookies", desc: "Χρήση cookies στον ιστότοπο", icon: Cookie },
       { href: "/disclaimer", label: "Αποποίηση Ευθύνης", desc: "Περιορισμοί ευθύνης", icon: AlertTriangle },
+    ],
+  },
+  {
+    title: "Δεοντολογία & Εμπιστοσύνη",
+    color: "text-primary",
+    border: "border-primary/20",
+    bg: "bg-primary/5",
+    icon: BookOpen,
+    links: [
+      { href: "/editorial-policy", label: "Συντακτική Πολιτική", desc: "Πηγές, AI, ανεξαρτησία, διαφάνεια", icon: BookOpen },
+      { href: "/corrections-policy", label: "Πολιτική Διορθώσεων", desc: "Πώς να αναφέρετε ανακρίβεια", icon: FileText },
+      { href: "/contributors", label: "Συνεισφορά", desc: "Υποβολή ειδήσεων, φωτογραφιών, ιστοριών", icon: UserPlus },
+      { href: "/advertise", label: "Διαφήμιση", desc: "Πληροφορίες για διαφήμιση & χορηγία", icon: BarChart2 },
+    ],
+  },
+  {
+    title: "English / International",
+    color: "text-secondary",
+    border: "border-secondary/20",
+    bg: "bg-secondary/5",
+    icon: Globe,
+    links: [
+      { href: "/en", label: "Dropolis in English", desc: "English-language portal for Dropull", icon: Globe },
+      { href: "/en/about", label: "About Dropolis", desc: "What we are and what we cover", icon: Info },
+      { href: "/en/villages", label: "The 41 Villages", desc: "Dropull municipality — geography & history", icon: MapPin },
+      { href: "/en/news", label: "News guide (EN)", desc: "How to navigate our Greek news section", icon: Newspaper },
     ],
   },
 ];
