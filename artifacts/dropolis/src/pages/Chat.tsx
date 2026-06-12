@@ -28,6 +28,7 @@ export default function Chat() {
   // Scroll container ref — we scroll this directly (no scrollIntoView)
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const initialScrollDone = useRef(false);
+  const prevLengthRef = useRef(0);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -61,16 +62,16 @@ export default function Chat() {
     el.scrollTo({ top: el.scrollHeight, behavior });
   }, []);
 
-  // First load: instant jump to bottom
+  // First load: jump to bottom without animation
   useEffect(() => {
     if (messages && !initialScrollDone.current) {
       initialScrollDone.current = true;
-      scrollToBottom("instant");
+      prevLengthRef.current = messages.length;
+      scrollToBottom("auto");
     }
   }, [messages, scrollToBottom]);
 
   // Subsequent new messages: smooth scroll to bottom
-  const prevLengthRef = useRef(0);
   useEffect(() => {
     const len = messages?.length ?? 0;
     if (initialScrollDone.current && len > prevLengthRef.current) {
