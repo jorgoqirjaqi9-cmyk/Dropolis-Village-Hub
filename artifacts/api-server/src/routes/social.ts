@@ -15,7 +15,7 @@ router.post("/social/publish/:id", requireAdmin, async (req, res) => {
   }
 
   const [article] = await db.select().from(articlesTable).where(eq(articlesTable.id, id));
-  if (!article) {
+  if (!article || !article.published) {
     res.status(404).json({ error: "Άρθρο δεν βρέθηκε" });
     return;
   }

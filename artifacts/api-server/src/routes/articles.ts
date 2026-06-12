@@ -23,14 +23,14 @@ router.get("/articles", async (req, res) => {
   const query = ListArticlesQueryParams.parse(req.query);
   const limit = Math.min(Math.max(query.limit ?? DEFAULT_ARTICLE_LIMIT, 1), MAX_ARTICLE_LIMIT);
   const offset = Math.min(Math.max(query.offset ?? 0, 0), MAX_ARTICLE_OFFSET);
-  const conditions = [];
+  const conditions = [eq(articlesTable.published, true)];
   if (query.category) conditions.push(eq(articlesTable.category, query.category));
   if (query.village) conditions.push(eq(articlesTable.villageName, query.village));
 
   const articles = await db
     .select()
     .from(articlesTable)
-    .where(conditions.length > 0 ? and(...conditions) : undefined)
+    .where(and(...conditions))
     .orderBy(desc(articlesTable.createdAt))
     .limit(limit)
     .offset(offset);
@@ -57,18 +57,20 @@ router.post("/articles", requireAdmin, async (req, res) => {
   }).returning();
   // Fire-and-forget: prerender HTML first (writes HTML + updates manifest),
   // then schedule IndexNow/Google Indexing API submission after the delay.
-  void prerenderArticle({
-    id: article.id,
-    title: article.title,
-    excerpt: article.excerpt,
-    content: article.content,
-    imageUrl: article.imageUrl,
-    author: article.author,
-    category: article.category,
-    createdAt: article.createdAt.toISOString(),
-    updatedAt: article.updatedAt.toISOString(),
-  });
-  void autoIndexArticle(article.id);
+  if (article.published) {
+    void prerenderArticle({
+      id: article.id,
+      title: article.title,
+      excerpt: article.excerpt,
+      content: article.content,
+      imageUrl: article.imageUrl,
+      author: article.author,
+      category: article.category,
+      createdAt: article.createdAt.toISOString(),
+      updatedAt: article.updatedAt.toISOString(),
+    });
+    void autoIndexArticle(article.id);
+  }
   res.status(201).json(formatArticle(article));
 });
 
@@ -107,7 +109,7 @@ router.post("/articles/recalculate-scores", requireAdmin, async (req, res) => {
 });
 
 router.get("/articles/categories", async (req, res) => {
-  const articles = await db.select({ category: articlesTable.category }).from(articlesTable);
+  const articles = await db.select({ category: articlesTable.category }).from(articlesTable).where(eq(articlesTable.published, true));
   const counts: Record<string, number> = {};
   for (const a of articles) {
     counts[a.category] = (counts[a.category] ?? 0) + 1;
@@ -119,7 +121,7 @@ router.get("/articles/categories", async (req, res) => {
 router.get("/articles/:id", async (req, res) => {
   const { id } = GetArticleParams.parse({ id: Number(req.params.id) });
   const [article] = await db.select().from(articlesTable).where(eq(articlesTable.id, id));
-  if (!article) {
+  if (!article || !article.published) {
     res.status(404).json({ error: "Not found" });
     return;
   }
@@ -139,18 +141,20 @@ router.patch("/articles/:id", requireAdmin, async (req, res) => {
     res.status(404).json({ error: "Not found" });
     return;
   }
-  // Re-prerender immediately so the updated OG/JSON-LD tags go live now
-  void prerenderArticle({
-    id: article.id,
-    title: article.title,
-    excerpt: article.excerpt,
-    content: article.content,
-    imageUrl: article.imageUrl,
-    author: article.author,
-    category: article.category,
-    createdAt: article.createdAt.toISOString(),
-    updatedAt: article.updatedAt.toISOString(),
-  });
+  if (article.published) {
+    void prerenderArticle({
+      id: article.id,
+      title: article.title,
+      excerpt: article.excerpt,
+      content: article.content,
+      imageUrl: article.imageUrl,
+      author: article.author,
+      category: article.category,
+      createdAt: article.createdAt.toISOString(),
+      updatedAt: article.updatedAt.toISOString(),
+    });
+    void autoIndexArticle(article.id);
+  }
   res.json(formatArticle(article));
 });
 

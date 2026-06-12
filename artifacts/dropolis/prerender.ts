@@ -18,7 +18,7 @@
  */
 
 import { db, pool, articlesTable, villagesTable } from "@workspace/db";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import {
@@ -251,7 +251,7 @@ async function main() {
   }
 
   const [articles, villages] = await Promise.all([
-    db.select().from(articlesTable).orderBy(desc(articlesTable.createdAt)),
+    db.select().from(articlesTable).where(eq(articlesTable.published, true)).orderBy(desc(articlesTable.createdAt)),
     db.select().from(villagesTable).orderBy(villagesTable.id),
   ]);
 

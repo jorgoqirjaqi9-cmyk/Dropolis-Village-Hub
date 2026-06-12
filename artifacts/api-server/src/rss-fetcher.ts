@@ -1,9 +1,10 @@
 import Parser from "rss-parser";
 import { GoogleGenAI } from "@google/genai";
 import { db, articlesTable } from "@workspace/db";
-import { eq, sql, like, or } from "drizzle-orm";
+import { eq, sql, like } from "drizzle-orm";
 import { logger } from "./lib/logger.js";
 import { autoIndexArticle } from "./lib/auto-indexing.js";
+import { enhanceArticle } from "./lib/article-enhancer.js";
 
 const parser = new Parser({ timeout: 10000, headers: { "User-Agent": "Dropolis/1.0 RSS Reader" } });
 
@@ -157,22 +158,32 @@ async function fetchFeed(source: FeedSource): Promise<number> {
       const content = stripHtml(rawContent);
       if (content.length < 30) continue;
 
-      const excerpt = content.slice(0, 400);
-      const fullContent = content.slice(0, 10000);
       const cats = item.categories ?? [];
       const category = mapCategory(cats, item.title, source.defaultCategory);
       const imageUrl = item.enclosure?.url ?? null;
 
-      const returned = await db.insert(articlesTable).values({
-        title: item.title.slice(0, 500),
-        excerpt,
-        content: fullContent,
+      const enhanced = enhanceArticle({
+        title: item.title,
+        content,
         category,
+        sourceName: source.name,
+        sourceUrl: item.link,
+      });
+
+      const returned = await db.insert(articlesTable).values({
+        title: enhanced.title.slice(0, 500),
+        excerpt: enhanced.excerpt,
+        content: enhanced.content.slice(0, 10000),
+        category,
+        villageName: enhanced.villageName,
+        tags: enhanced.tags,
         author: source.name,
         imageUrl,
-        published: true,
+        published: enhanced.published,
         featured: false,
         sourceUrl: item.link,
+        seoTitle: enhanced.seoTitle,
+        metaDescription: enhanced.metaDescription,
       }).onConflictDoNothing().returning({
         id: articlesTable.id,
         title: articlesTable.title,
@@ -184,14 +195,13 @@ async function fetchFeed(source: FeedSource): Promise<number> {
         inserted++;
         const art = returned[0];
         const slug = toSlug(art.title, art.id);
-        const score = calcScore(!!art.imageUrl, art.content.length);
-        await db.update(articlesTable).set({
-          slug,
-          score,
-          seoTitle: art.title.slice(0, 60),
-          metaDescription: excerpt.slice(0, 155),
-        }).where(eq(articlesTable.id, art.id));
-        void autoIndexArticle(art.id);
+        const score = calcScore(!!art.imageUrl, art.content.length) + enhanced.qualityScore;
+        await db.update(articlesTable).set({ slug, score }).where(eq(articlesTable.id, art.id));
+        if (enhanced.published) {
+          void autoIndexArticle(art.id);
+        } else {
+          logger.info({ title: art.title, qualityScore: enhanced.qualityScore }, "RSS article saved as draft — quality score below threshold");
+        }
       }
     }
 
@@ -362,18 +372,29 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
         continue;
       }
 
-      const returned = await db.insert(articlesTable).values({
-        title: translated.title.slice(0, 500),
-        excerpt: translated.excerpt || null,
+      const enhanced = enhanceArticle({
+        title: translated.title,
         content: translated.content || translated.title,
+        excerpt: translated.excerpt,
+        category: source.defaultCategory,
+        sourceName: source.name,
+        sourceUrl: input.link,
+      });
+
+      const returned = await db.insert(articlesTable).values({
+        title: enhanced.title.slice(0, 500),
+        excerpt: enhanced.excerpt || null,
+        content: enhanced.content.slice(0, 10000) || enhanced.title,
+        villageName: enhanced.villageName,
+        tags: enhanced.tags,
         category: source.defaultCategory,
         author: source.name,
         imageUrl: input.imageUrl,
-        published: true,
+        published: enhanced.published,
         featured: false,
         sourceUrl: input.link,
-        seoTitle: (translated.seoTitle ?? translated.title).slice(0, 60) || null,
-        metaDescription: translated.metaDescription?.slice(0, 155) || null,
+        seoTitle: enhanced.seoTitle,
+        metaDescription: enhanced.metaDescription,
       }).onConflictDoNothing().returning({
         id: articlesTable.id,
         title: articlesTable.title,
@@ -385,10 +406,14 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
         inserted++;
         const art = returned[0];
         const slug = toSlug(art.title, art.id);
-        const score = calcScore(!!art.imageUrl, art.content.length);
+        const score = calcScore(!!art.imageUrl, art.content.length) + enhanced.qualityScore;
         await db.update(articlesTable).set({ slug, score }).where(eq(articlesTable.id, art.id));
-        void autoIndexArticle(art.id);
-        logger.info({ url: input.link, title: translated.title }, "Translated article imported");
+        if (enhanced.published) {
+          void autoIndexArticle(art.id);
+          logger.info({ url: input.link, title: translated.title }, "Translated article imported");
+        } else {
+          logger.info({ url: input.link, title: translated.title, qualityScore: enhanced.qualityScore }, "Translated article saved as draft — quality score below threshold");
+        }
       }
     }
 

@@ -1,0 +1,62 @@
+Implement the automatic article quality/SEO pipeline and fix the accidental index.html corruption. Apply ONLY the following focused changes.
+
+IMPORTANT FIRST: artifacts/dropolis/index.html currently appears to have an accidental string inserted around the root div, like <dipwd v id="root">. Fix it so the body has exactly a valid root div:
+<div id="root">
+  <main class="seo-prerender-content" aria-label="Δρόπολη - Portal Ειδήσεων και Κοινότητας">
+    <h1>Δρόπολη - Portal Ειδήσεων και Κοινότητας</h1>
+    <p>Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης.</p>
+  </main>
+</div>
+Preserve the rest of index.html.
+
+1) Add new file artifacts/api-server/src/lib/article-enhancer.ts
+Create an exported function enhanceArticle(input) that:
+- accepts title, content, optional excerpt, category, sourceName, optional sourceUrl
+- strips boilerplate such as previous/next links, markdown images, thumbnail-image, read more, URLs
+- normalizes whitespace and title
+- creates excerpt from first sentences (max ~360 chars), metaDescription (max ~155 chars), seoTitle (max ~60 chars)
+- detects village names from Greek Dropolis/Northern Epirus villages when present
+- creates comma-separated tags from category, detected village, Dropolis, and topic keywords like Πολιτική, Οικονομία, Πολιτισμός, Ομογένεια, Αστυνομικό, Τουρισμός, Αλβανία, Ελλάδα
+- computes qualityScore: good title +20, good excerpt +20, content >=450 +25, content >=900 +10, sourceUrl +10, villageName +10, no boilerplate +5
+- returns published: qualityScore >= 55
+No DB migration, use existing fields only.
+
+2) Update artifacts/api-server/src/rss-fetcher.ts
+- import enhanceArticle from ./lib/article-enhancer.js
+- remove unused drizzle import or if present
+- For normal RSS imports, run enhanceArticle before insert.
+- Insert enhanced title/excerpt/content/category/villageName/tags/published/seoTitle/metaDescription.
+- Add enhanced.qualityScore to the stored score.
+- Only call autoIndexArticle when enhanced.published is true. If false, log that the article was saved as draft for review.
+- Do the same for translated Google News imports.
+- Remove any unused itemsByLink map if present.
+
+3) Update artifacts/api-server/src/routes/articles.ts
+- Public GET /articles must only return published articles.
+- GET /articles/:id must 404 if article is missing or published is false.
+- /articles/featured, /articles/trending, and /articles/categories must only use published articles.
+- In admin POST /articles and PATCH /articles/:id, run prerenderArticle/autoIndexArticle only if article.published is true.
+
+4) Update artifacts/api-server/src/routes/sitemap.ts
+- import eq from drizzle-orm.
+- Article sitemap query must include where(eq(articlesTable.published, true)).
+
+5) Update artifacts/dropolis/prerender.ts
+- import eq from drizzle-orm.
+- Build-time article query must include where(eq(articlesTable.published, true)).
+
+6) Update artifacts/api-server/src/routes/indexing.ts
+- import eq and and.
+- Manual latest indexing must select only published articles.
+- Manual ids indexing must only trigger for ids where published is true.
+
+7) Update artifacts/api-server/src/routes/social.ts
+- /social/publish/:id must 404 if article is missing or published is false.
+
+After changes:
+- Run typecheck/build commands available in this Replit.
+- Fix any TypeScript errors you introduced.
+- Do not redesign UI.
+- Do not reintroduce the chat bot.
+- Do not alter unrelated files.
+- When clean, republish/deploy the app.

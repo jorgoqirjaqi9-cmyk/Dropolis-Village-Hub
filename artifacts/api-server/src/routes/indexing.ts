@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, articlesTable } from "@workspace/db";
-import { inArray, desc } from "drizzle-orm";
+import { inArray, desc, eq, and } from "drizzle-orm";
 import {
   autoIndexArticle,
   pingSitemaps,
@@ -39,6 +39,7 @@ router.post("/indexing/trigger", requireAdmin, async (req, res) => {
     const articles = await db
       .select({ id: articlesTable.id })
       .from(articlesTable)
+      .where(eq(articlesTable.published, true))
       .orderBy(desc(articlesTable.createdAt))
       .limit(limit);
 
@@ -68,7 +69,7 @@ router.post("/indexing/trigger", requireAdmin, async (req, res) => {
   const articles = await db
     .select({ id: articlesTable.id })
     .from(articlesTable)
-    .where(inArray(articlesTable.id, validIds));
+    .where(and(inArray(articlesTable.id, validIds), eq(articlesTable.published, true)));
 
   for (const a of articles) {
     void autoIndexArticle(a.id);
