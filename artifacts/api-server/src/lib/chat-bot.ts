@@ -59,7 +59,7 @@ export async function maybeRespondToMessage(userMessage: string, username: strin
   try {
     const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-lite",
+      model: "gemini-2.0-flash",
       contents: [
         { role: "user", parts: [{ text: `${SYSTEM_PROMPT}\n\nΜήνυμα χρήστη (${username}): ${userMessage}` }] },
       ],

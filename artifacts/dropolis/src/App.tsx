@@ -35,34 +35,41 @@ const queryClient = new QueryClient({
 
 function Router() {
   return (
-    <Layout>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/news" component={News} />
-        <Route path="/news/:id" component={NewsDetail} />
-        <Route path="/villages" component={Villages} />
-        <Route path="/villages/:id" component={VillageDetail} />
-        <Route path="/photos" component={Photos} />
-        <Route path="/videos" component={Videos} />
-        <Route path="/chat" component={Chat} />
-        <Route path="/about" component={About} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/privacy" component={Privacy} />
-        <Route path="/privacy-policy">
-          <Redirect to="/privacy" />
-        </Route>
-        <Route path="/terms" component={Terms} />
-        <Route path="/terms-of-service">
-          <Redirect to="/terms" />
-        </Route>
-        <Route path="/cookie-policy" component={CookiePolicy} />
-        <Route path="/disclaimer" component={Disclaimer} />
-        <Route path="/press" component={Press} />
-        <Route path="/help" component={Help} />
-        <Route path="/sitemap" component={Sitemap} />
-        <Route component={NotFound} />
-      </Switch>
-    </Layout>
+    <Switch>
+      {/* Chat is full-screen — no Layout wrapper */}
+      <Route path="/chat" component={Chat} />
+
+      {/* All other pages use the standard Layout */}
+      <Route>
+        <Layout>
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/news" component={News} />
+            <Route path="/news/:id" component={NewsDetail} />
+            <Route path="/villages" component={Villages} />
+            <Route path="/villages/:id" component={VillageDetail} />
+            <Route path="/photos" component={Photos} />
+            <Route path="/videos" component={Videos} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/privacy" component={Privacy} />
+            <Route path="/privacy-policy">
+              <Redirect to="/privacy" />
+            </Route>
+            <Route path="/terms" component={Terms} />
+            <Route path="/terms-of-service">
+              <Redirect to="/terms" />
+            </Route>
+            <Route path="/cookie-policy" component={CookiePolicy} />
+            <Route path="/disclaimer" component={Disclaimer} />
+            <Route path="/press" component={Press} />
+            <Route path="/help" component={Help} />
+            <Route path="/sitemap" component={Sitemap} />
+            <Route component={NotFound} />
+          </Switch>
+        </Layout>
+      </Route>
+    </Switch>
   );
 }
 
