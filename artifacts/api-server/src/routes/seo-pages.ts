@@ -1,0 +1,444 @@
+/**
+ * Server-side HTML meta injection for public page routes.
+ *
+ * The shared proxy routes /news, /villages, /photos, /videos, /about,
+ * /contact, /press, /help, /privacy, /terms, /cookie-policy, /disclaimer,
+ * /sitemap, and /chat to this server (see artifact.toml paths).
+ *
+ * For each route, we load the frontend's built index.html as a template,
+ * strip the generic root-level meta tags, inject page-specific title /
+ * description / canonical / og:* / twitter:* / JSON-LD, and inject a
+ * matching <h1> + <p> fallback inside #root. React hydrates the result on the
+ * client so the full SPA experience is preserved.
+ */
+
+import { Router } from "express";
+import { readFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
+import { db, articlesTable, villagesTable } from "@workspace/db";
+import { eq } from "drizzle-orm";
+import { logger } from "../lib/logger.js";
+
+const BASE_URL = "https://dropolis.net";
+const SITE_NAME = "Δρόπολη (Dropolis)";
+const DEFAULT_IMG = `${BASE_URL}/opengraph.jpg`;
+
+// ---------------------------------------------------------------------------
+// Template loader (cached in production)
+// ---------------------------------------------------------------------------
+
+let _tpl: string | null = null;
+
+function loadTemplate(): string {
+  if (_tpl) return _tpl;
+  const cwd = process.cwd();
+  // In production the process is launched from the workspace root, so paths
+  // like "artifacts/dropolis/..." resolve correctly.
+  // In development, pnpm cd's into the package dir (artifacts/api-server/),
+  // so we also try two levels up to reach the workspace root.
+  const candidates = [
+    process.env.FRONTEND_DIST_PATH
+      ? resolve(process.env.FRONTEND_DIST_PATH, "index.html")
+      : null,
+    resolve(cwd, "artifacts/dropolis/dist/public/index.html"),
+    resolve(cwd, "artifacts/dropolis/index.html"),
+    resolve(cwd, "../../artifacts/dropolis/dist/public/index.html"),
+    resolve(cwd, "../../artifacts/dropolis/index.html"),
+  ].filter(Boolean) as string[];
+  for (const p of candidates) {
+    if (existsSync(p)) {
+      const t = readFileSync(p, "utf-8");
+      if (process.env.NODE_ENV === "production") _tpl = t;
+      return t;
+    }
+  }
+  throw new Error(`No index.html template found for SEO injection (cwd=${cwd})`);
+}
+
+// ---------------------------------------------------------------------------
+// HTML helpers
+// ---------------------------------------------------------------------------
+
+function esc(s: unknown): string {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+interface ArticleMeta {
+  publishedTime?: string | null;
+  modifiedTime?: string | null;
+  author?: string | null;
+  section?: string | null;
+}
+
+interface PageMeta {
+  title: string;
+  description: string;
+  image?: string | null;
+  url: string;
+  type?: string;
+  article?: ArticleMeta;
+  jsonLd?: object | object[];
+  breadcrumbs?: Array<{ name: string; item: string }>;
+  bodyH1?: string;
+  bodyP?: string;
+}
+
+function jsonLdItems(v?: object | object[]): object[] {
+  if (!v) return [];
+  return Array.isArray(v) ? v : [v];
+}
+
+function buildSeoTags(m: PageMeta): string {
+  const title = esc(`${m.title} | ${SITE_NAME}`);
+  const desc = esc((m.description ?? "").slice(0, 160));
+  const img = esc(m.image || DEFAULT_IMG);
+  const url = esc(m.url);
+  const type = m.type || "website";
+
+  const articleTags: string[] = [];
+  if (m.article) {
+    if (m.article.publishedTime) articleTags.push(`<meta property="article:published_time" content="${esc(m.article.publishedTime)}" />`);
+    if (m.article.modifiedTime) articleTags.push(`<meta property="article:modified_time" content="${esc(m.article.modifiedTime)}" />`);
+    if (m.article.author) articleTags.push(`<meta property="article:author" content="${esc(m.article.author)}" />`);
+    if (m.article.section) articleTags.push(`<meta property="article:section" content="${esc(m.article.section)}" />`);
+  }
+
+  const breadcrumbLd: object | null = m.breadcrumbs && m.breadcrumbs.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Αρχική", item: BASE_URL },
+          ...m.breadcrumbs.map((c, i) => ({ "@type": "ListItem", position: i + 2, name: c.name, item: c.item })),
+        ],
+      }
+    : null;
+
+  const schemas = [...jsonLdItems(m.jsonLd), ...(breadcrumbLd ? [breadcrumbLd] : [])];
+
+  return [
+    `<title>${title}</title>`,
+    `<meta name="description" content="${desc}" />`,
+    `<link rel="canonical" href="${url}" />`,
+    `<meta property="og:title" content="${title}" />`,
+    `<meta property="og:description" content="${desc}" />`,
+    `<meta property="og:type" content="${type}" />`,
+    `<meta property="og:url" content="${url}" />`,
+    `<meta property="og:image" content="${img}" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:site_name" content="${esc(SITE_NAME)}" />`,
+    `<meta property="og:locale" content="el_GR" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${title}" />`,
+    `<meta name="twitter:description" content="${desc}" />`,
+    `<meta name="twitter:image" content="${img}" />`,
+    ...articleTags,
+    schemas.length > 0
+      ? `<script type="application/ld+json">${JSON.stringify(schemas.length === 1 ? schemas[0] : schemas)}</script>`
+      : "",
+  ].filter(Boolean).join("\n  ");
+}
+
+function buildBodyFallback(h1: string, p: string): string {
+  const t = esc(h1.slice(0, 150));
+  const d = esc(p.slice(0, 240));
+  return `<main class="seo-prerender-content" aria-label="${t}">\n    <h1>${t}</h1>\n    <p>${d}</p>\n  </main>`;
+}
+
+function injectMeta(template: string, m: PageMeta): string {
+  let html = template
+    .replace(/<title>[^<]*<\/title>/g, "")
+    .replace(/<meta\s+name="description"[^>]*>/gi, "")
+    .replace(/<link\s+rel="canonical"[^>]*>/gi, "")
+    .replace(/<meta\s+property="og:title"[^>]*>/gi, "")
+    .replace(/<meta\s+property="og:description"[^>]*>/gi, "")
+    .replace(/<meta\s+property="og:type"[^>]*>/gi, "")
+    .replace(/<meta\s+property="og:url"[^>]*>/gi, "")
+    .replace(/<meta\s+property="og:image(?::\w+)?"[^>]*>/gi, "")
+    .replace(/<meta\s+name="twitter:[^"]*"[^>]*>/gi, "")
+    .replace(/<script\s+type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/gi, "");
+  html = html.replace("<head>", `<head>\n  ${buildSeoTags(m)}`);
+  html = html.replace(
+    /<div id="root">[^]*?<\/div>/,
+    `<div id="root">\n  ${buildBodyFallback(m.bodyH1 || m.title, m.bodyP || m.description)}\n</div>`
+  );
+  return html;
+}
+
+// ---------------------------------------------------------------------------
+// Static page meta map (mirrors STATIC_PRERENDER in route-manifest.ts)
+// ---------------------------------------------------------------------------
+
+const STATIC_META: Record<string, PageMeta> = {
+  "/chat": {
+    title: "Ζωντανή Συζήτηση",
+    description: "Ζωντανή συνομιλία για την κοινότητα της Δρόπολης.",
+    url: `${BASE_URL}/chat`,
+    breadcrumbs: [{ name: "Ζωντανή Συζήτηση", item: `${BASE_URL}/chat` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ζωντανή Συζήτηση — Δρόπολη", url: `${BASE_URL}/chat`, inLanguage: "el" },
+  },
+  "/news": {
+    title: "Ειδήσεις",
+    description: "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου.",
+    url: `${BASE_URL}/news`,
+    breadcrumbs: [{ name: "Ειδήσεις", item: `${BASE_URL}/news` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Ειδήσεις — Δρόπολη", description: "Τελευταία νέα και ρεπορτάζ από τη Δρόπολη.", url: `${BASE_URL}/news`, inLanguage: "el" },
+  },
+  "/villages": {
+    title: "Τα Χωριά της Δρόπολης",
+    description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου. Πληθυσμός, ιστορία και παραδόσεις.",
+    url: `${BASE_URL}/villages`,
+    breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Τα Χωριά της Δρόπολης", url: `${BASE_URL}/villages`, inLanguage: "el", numberOfItems: 41 },
+  },
+  "/photos": {
+    title: "Φωτογραφικό Αρχείο",
+    description: "Φωτογραφίες από τα χωριά της Δρόπολης — τοπία, παραδοσιακά κτίρια, πολιτιστικές εκδηλώσεις.",
+    url: `${BASE_URL}/photos`,
+    breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Φωτογραφικό Αρχείο — Δρόπολη", url: `${BASE_URL}/photos`, inLanguage: "el" },
+  },
+  "/videos": {
+    title: "Βίντεο",
+    description: "Βίντεο από τη Δρόπολη — εκδηλώσεις, πολιτισμός, τουρισμός και ζωή στα χωριά της Βόρειας Ηπείρου.",
+    url: `${BASE_URL}/videos`,
+    breadcrumbs: [{ name: "Βίντεο", item: `${BASE_URL}/videos` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Βίντεο — Δρόπολη", url: `${BASE_URL}/videos`, inLanguage: "el" },
+  },
+  "/about": {
+    title: "Σχετικά με το Dropolis",
+    description: "Μάθετε για το Dropolis — portal ειδήσεων, φωτογραφιών και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος, Αλβανία).",
+    url: `${BASE_URL}/about`,
+    breadcrumbs: [{ name: "Σχετικά", item: `${BASE_URL}/about` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "AboutPage", name: "Σχετικά με το Dropolis", url: `${BASE_URL}/about`, inLanguage: "el" },
+  },
+  "/contact": {
+    title: "Επικοινωνία",
+    description: "Επικοινωνήστε με το Dropolis. Υποβολή άρθρων, φωτογραφιών, ερωτήσεων και συνεργασιών για το portal της Δρόπολης.",
+    url: `${BASE_URL}/contact`,
+    breadcrumbs: [{ name: "Επικοινωνία", item: `${BASE_URL}/contact` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "ContactPage", name: "Επικοινωνία — Dropolis", url: `${BASE_URL}/contact`, inLanguage: "el" },
+  },
+  "/press": {
+    title: "Τύπος & Νέα",
+    description: "Δελτία τύπου, media kit και επικοινωνία τύπου για το Dropolis — portal ειδήσεων της Δρόπολης.",
+    url: `${BASE_URL}/press`,
+    breadcrumbs: [{ name: "Τύπος", item: `${BASE_URL}/press` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Τύπος & Νέα — Dropolis", url: `${BASE_URL}/press`, inLanguage: "el" },
+  },
+  "/help": {
+    title: "Κέντρο Βοήθειας",
+    description: "Απαντήσεις σε συχνές ερωτήσεις για το Dropolis — portal ειδήσεων και κοινότητας της Δρόπολης.",
+    url: `${BASE_URL}/help`,
+    breadcrumbs: [{ name: "Βοήθεια", item: `${BASE_URL}/help` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "FAQPage", name: "Κέντρο Βοήθειας — Dropolis", url: `${BASE_URL}/help`, inLanguage: "el" },
+  },
+  "/privacy": {
+    title: "Πολιτική Απορρήτου",
+    description: "Πολιτική Απορρήτου του Dropolis. Πληροφορίες για τη συλλογή, χρήση και προστασία των προσωπικών δεδομένων σας.",
+    url: `${BASE_URL}/privacy`,
+    breadcrumbs: [{ name: "Πολιτική Απορρήτου", item: `${BASE_URL}/privacy` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Πολιτική Απορρήτου — Dropolis", url: `${BASE_URL}/privacy`, inLanguage: "el" },
+  },
+  "/terms": {
+    title: "Όροι Χρήσης",
+    description: "Όροι Χρήσης του Dropolis. Πληροφορίες για τη χρήση του portal ειδήσεων και κοινότητας της Δρόπολης.",
+    url: `${BASE_URL}/terms`,
+    breadcrumbs: [{ name: "Όροι Χρήσης", item: `${BASE_URL}/terms` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Όροι Χρήσης — Dropolis", url: `${BASE_URL}/terms`, inLanguage: "el" },
+  },
+  "/cookie-policy": {
+    title: "Πολιτική Cookies",
+    description: "Πολιτική Cookies του Dropolis. Πληροφορίες για τη χρήση cookies και τεχνολογιών παρακολούθησης.",
+    url: `${BASE_URL}/cookie-policy`,
+    breadcrumbs: [{ name: "Πολιτική Cookies", item: `${BASE_URL}/cookie-policy` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Πολιτική Cookies — Dropolis", url: `${BASE_URL}/cookie-policy`, inLanguage: "el" },
+  },
+  "/disclaimer": {
+    title: "Αποποίηση Ευθύνης",
+    description: "Αποποίηση Ευθύνης του Dropolis. Πληροφορίες για τα όρια ευθύνης του ιστότοπου.",
+    url: `${BASE_URL}/disclaimer`,
+    breadcrumbs: [{ name: "Αποποίηση Ευθύνης", item: `${BASE_URL}/disclaimer` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Αποποίηση Ευθύνης — Dropolis", url: `${BASE_URL}/disclaimer`, inLanguage: "el" },
+  },
+  "/sitemap": {
+    title: "Χάρτης Ιστότοπου",
+    description: "Χάρτης ιστότοπου του Dropolis — πλήρης κατάλογος σελίδων και ενότητες του portal.",
+    url: `${BASE_URL}/sitemap`,
+    breadcrumbs: [{ name: "Χάρτης Ιστότοπου", item: `${BASE_URL}/sitemap` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Χάρτης Ιστότοπου — Dropolis", url: `${BASE_URL}/sitemap`, inLanguage: "el" },
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Response helper
+// ---------------------------------------------------------------------------
+
+function sendPage(
+  res: import("express").Response,
+  meta: PageMeta,
+  cacheSeconds = 3600
+): void {
+  try {
+    const html = injectMeta(loadTemplate(), meta);
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.setHeader("Cache-Control", `public, max-age=${cacheSeconds}`);
+    res.send(html);
+  } catch (err) {
+    logger.warn({ err }, "seo-pages: failed to inject meta — falling back");
+    res.status(500).send("Internal error generating page");
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Router
+// ---------------------------------------------------------------------------
+
+const router = Router();
+
+// Static routes
+for (const [path, meta] of Object.entries(STATIC_META)) {
+  router.get(path, (_req, res) => sendPage(res, meta));
+}
+
+// /news/:id — article detail
+router.get("/news/:id", async (req, res) => {
+  const id = parseInt(String(req.params.id), 10);
+  if (!Number.isInteger(id) || id <= 0) {
+    res.status(404).send("Not found");
+    return;
+  }
+
+  try {
+    const [article] = await db
+      .select()
+      .from(articlesTable)
+      .where(eq(articlesTable.id, id));
+
+    if (!article || !article.published) {
+      res.status(404).send("Not found");
+      return;
+    }
+
+    const cleanedDesc = (article.metaDescription
+      || article.excerpt
+      || article.content.replace(/[#*_`[\]!]/g, "").replace(/\s+/g, " ").trim()
+    ).slice(0, 155);
+
+    const meta: PageMeta = {
+      title: article.seoTitle || article.title,
+      description: cleanedDesc,
+      image: article.imageUrl,
+      url: `${BASE_URL}/news/${article.id}`,
+      type: "article",
+      article: {
+        publishedTime: article.createdAt.toISOString(),
+        modifiedTime: (article.updatedAt ?? article.createdAt).toISOString(),
+        author: article.author,
+        section: article.category,
+      },
+      breadcrumbs: [
+        { name: "Ειδήσεις", item: `${BASE_URL}/news` },
+        { name: article.title, item: `${BASE_URL}/news/${article.id}` },
+      ],
+      jsonLd: {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        headline: article.title,
+        description: cleanedDesc,
+        image: article.imageUrl ? [article.imageUrl] : [],
+        datePublished: article.createdAt.toISOString(),
+        dateModified: (article.updatedAt ?? article.createdAt).toISOString(),
+        author: { "@type": "Person", name: article.author || "Dropolis" },
+        publisher: {
+          "@type": "Organization",
+          name: SITE_NAME,
+          logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
+        },
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE_URL}/news/${article.id}` },
+        articleSection: article.category,
+        inLanguage: "el",
+      },
+      bodyH1: article.title,
+      bodyP: cleanedDesc,
+    };
+
+    sendPage(res, meta, 300);
+  } catch (err) {
+    logger.error({ err, id }, "seo-pages: error fetching article");
+    res.status(500).send("Internal error");
+  }
+});
+
+// /villages/:id — village detail
+router.get("/villages/:id", async (req, res) => {
+  const id = parseInt(String(req.params.id), 10);
+  if (!Number.isInteger(id) || id <= 0) {
+    res.status(404).send("Not found");
+    return;
+  }
+
+  try {
+    const [village] = await db
+      .select()
+      .from(villagesTable)
+      .where(eq(villagesTable.id, id));
+
+    if (!village) {
+      res.status(404).send("Not found");
+      return;
+    }
+
+    const description = (village.description
+      ? village.description.slice(0, 155)
+      : `Ανακαλύψτε το χωριό ${village.nameEl} στη Δρόπολη, Βόρεια Ήπειρος.`
+    );
+
+    const jsonLd: Record<string, unknown> = {
+      "@context": "https://schema.org",
+      "@type": "City",
+      name: village.nameEl,
+      alternateName: village.name,
+      description: village.description,
+      url: `${BASE_URL}/villages/${village.id}`,
+      containedInPlace: {
+        "@type": "AdministrativeArea",
+        name: "Δήμος Δρόπολης",
+        containedInPlace: { "@type": "Country", name: "Αλβανία" },
+      },
+    };
+    if (village.latitude && village.longitude) {
+      jsonLd["geo"] = {
+        "@type": "GeoCoordinates",
+        latitude: village.latitude,
+        longitude: village.longitude,
+      };
+    }
+
+    const meta: PageMeta = {
+      title: `${village.nameEl} — Χωριό της Δρόπολης`,
+      description,
+      image: village.imageUrl,
+      url: `${BASE_URL}/villages/${village.id}`,
+      breadcrumbs: [
+        { name: "Χωριά", item: `${BASE_URL}/villages` },
+        { name: village.nameEl, item: `${BASE_URL}/villages/${village.id}` },
+      ],
+      jsonLd,
+      bodyH1: village.nameEl,
+      bodyP: description,
+    };
+
+    sendPage(res, meta, 3600);
+  } catch (err) {
+    logger.error({ err, id }, "seo-pages: error fetching village");
+    res.status(500).send("Internal error");
+  }
+});
+
+export default router;

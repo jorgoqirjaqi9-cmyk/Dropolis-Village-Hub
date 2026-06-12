@@ -7,6 +7,7 @@ import cors from "cors";
 import pinoHttp from "pino-http";
 import router from "./routes";
 import redirectsRouter from "./routes/redirects.js";
+import seoPagesRouter from "./routes/seo-pages.js";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
@@ -94,6 +95,11 @@ app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 // proxy can route /privacy-policy and /terms-of-service to this server and
 // return genuine HTTP 301 redirects to bots and clients.
 app.use(redirectsRouter);
+
+// Server-side HTML meta injection for public page routes (before /api).
+// Returns route-specific title/canonical/OG/JSON-LD for crawlers and humans.
+// React hydrates the result on the client — full SPA still works.
+app.use(seoPagesRouter);
 
 app.use("/api", router);
 app.use(errorHandler);
