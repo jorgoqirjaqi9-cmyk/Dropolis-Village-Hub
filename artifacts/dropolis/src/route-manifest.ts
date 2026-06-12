@@ -31,7 +31,7 @@ export type Meta = {
   url: string;
   type?: string;
   article?: ArticleMeta;
-  jsonLd?: object;
+  jsonLd?: object | object[];
   breadcrumbs?: Array<{ name: string; item: string }>;
 };
 
@@ -146,13 +146,58 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Μάθετε για το Dropolis — το portal ειδήσεων, φωτογραφιών και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος, Αλβανία).",
     url: `${BASE_URL}/about`,
     breadcrumbs: [{ name: "Σχετικά", item: `${BASE_URL}/about` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "AboutPage",
-      name: "Σχετικά με το Dropolis",
-      description: "Portal ειδήσεων και κοινότητας για τα χωριά της Δρόπολης, Βόρεια Ήπειρος.",
-      url: `${BASE_URL}/about`,
-    },
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        name: "Σχετικά με το Dropolis",
+        description: "Portal ειδήσεων και κοινότητας για τα χωριά της Δρόπολης, Βόρεια Ήπειρος.",
+        url: `${BASE_URL}/about`,
+        mainEntity: {
+          "@type": "Organization",
+          name: "Dropolis (Δρόπολη)",
+          description: "Ψηφιακός κόμβος ενημέρωσης και κοινότητας για την ελληνική μειονότητα της Δρόπολης.",
+        },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Τι είναι η Δρόπολη;",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Η Δρόπολη (Dropull) είναι δήμος στον νομό Αργυροκάστρου της Αλβανίας. Αποτελεί ένα από τα σημαντικότερα κέντρα της ελληνικής μειονότητας στη Βόρεια Ήπειρο, με 41 χωριά κατανεμημένα σε τρεις δημοτικές ενότητες: Κάτω Δρόπολη, Άνω Δρόπολη και Πωγώνι.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Ποιος δημιούργησε το Dropolis;",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Το Dropolis δημιουργήθηκε από μέλη της κοινότητας της Δρόπολης με στόχο τη δημιουργία ενός ψηφιακού κόμβου ενημέρωσης, πολιτισμού και επικοινωνίας για την ελληνική μειονότητα.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Ποιο είναι το κοινό σας;",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Απευθυνόμαστε σε κατοίκους της Δρόπολης, στους απόδημους Έλληνες της Β. Ηπείρου, σε ερευνητές, τουρίστες και σε κάθε άνθρωπο που ενδιαφέρεται για την ιστορία και τον πολιτισμό της περιοχής.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Πώς μπορώ να συνεισφέρω;",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Μπορείτε να επικοινωνήσετε μαζί μας μέσω της σελίδας Επικοινωνία για να υποβάλετε άρθρα, φωτογραφίες, ιστορίες ή βίντεο από τη Δρόπολη.",
+            },
+          },
+        ],
+      },
+    ],
   },
   {
     path: "/contact",
@@ -160,13 +205,53 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Επικοινωνήστε με το Dropolis. Υποβολή άρθρων, φωτογραφιών, ερωτήσεων και συνεργασιών για το portal της Δρόπολης.",
     url: `${BASE_URL}/contact`,
     breadcrumbs: [{ name: "Επικοινωνία", item: `${BASE_URL}/contact` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "ContactPage",
-      name: "Επικοινωνία — Dropolis",
-      description: "Επικοινωνήστε με το Dropolis.",
-      url: `${BASE_URL}/contact`,
-    },
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        name: "Επικοινωνία — Dropolis",
+        description: "Επικοινωνήστε με το Dropolis.",
+        url: `${BASE_URL}/contact`,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Πώς μπορώ να υποβάλω άρθρο;",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Στείλτε μας το άρθρο σας μέσω της φόρμας ή στο email μας. Δεχόμαστε άρθρα σχετικά με τη Δρόπολη, την ιστορία, τον πολιτισμό και τον τουρισμό.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Σε πόσο χρόνο θα λάβω απάντηση;",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Απαντάμε συνήθως εντός 1-2 εργάσιμων ημερών.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Μπορώ να στείλω φωτογραφίες;",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Ναι! Αποδεχόμαστε φωτογραφίες από τα χωριά της Δρόπολης. Αναφέρετε τον τόπο, την ημερομηνία και τυχόν πληροφορίες για τη φωτογραφία.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Συνεργάζεστε με τουριστικούς φορείς;",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Ναι, είμαστε ανοιχτοί σε συνεργασίες με τουριστικές επιχειρήσεις, πολιτιστικούς φορείς και ΜΚΟ που δραστηριοποιούνται στη Β. Ήπειρο.",
+            },
+          },
+        ],
+      },
+    ],
   },
   {
     path: "/press",
@@ -191,10 +276,83 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     breadcrumbs: [{ name: "Βοήθεια", item: `${BASE_URL}/help` }],
     jsonLd: {
       "@context": "https://schema.org",
-      "@type": "WebPage",
+      "@type": "FAQPage",
       name: "Κέντρο Βοήθειας — Dropolis",
       url: `${BASE_URL}/help`,
-      inLanguage: "el",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Τι είναι το Dropolis;",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Το Dropolis (Δρόπολη) είναι ένα ψηφιακό portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα 41 χωριά του Δήμου Δρόπολης στη Βόρεια Ήπειρο (Αλβανία). Σκοπός του είναι να αποτελέσει τη ψηφιακή πλατφόρμα της ελληνικής μειονότητας.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Η υπηρεσία είναι δωρεάν;",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Ναι, η πρόσβαση στο Dropolis είναι εντελώς δωρεάν. Ο ιστότοπος χρηματοδοτείται μέσω διαφημίσεων Google AdSense που εμφανίζονται στις σελίδες.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Πώς μπορώ να βρω ειδήσεις για συγκεκριμένο χωριό;",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Μεταβείτε στη σελίδα Ειδήσεις (/news) και χρησιμοποιήστε το φίλτρο «Χωριό» ή «Κατηγορία» για να εντοπίσετε σχετικό περιεχόμενο. Μπορείτε επίσης να πλοηγηθείτε στη σελίδα του χωριού σας μέσα από τον κατάλογο Χωριά.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Πώς μπορώ να υποβάλω νέο ή ανακοίνωση;",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Επικοινωνήστε μαζί μας μέσω της σελίδας Επικοινωνία (/contact) ή στο email dropolis9@gmail.com. Η σύνταξη αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Πόσα χωριά καλύπτει το Dropolis;",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Το Dropolis καλύπτει και τα 41 χωριά του Δήμου Δρόπολης, κατανεμημένα σε τρεις Δημοτικές Ενότητες: Κάτω Δρόπολης (16 χωριά), Άνω Δρόπολης (18 χωριά) και Πωγωνίου (7 χωριά).",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Μπορώ να αναρτήσω δικές μου φωτογραφίες;",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Η δυνατότητα υποβολής φωτογραφιών από χρήστες βρίσκεται υπό ανάπτυξη. Προς το παρόν, μπορείτε να στείλετε φωτογραφίες στο dropolis9@gmail.com και η ομάδα θα τις αξιολογήσει για ανάρτηση.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Πώς λειτουργεί το live chat;",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Το chat κοινότητας (/chat) ανανεώνεται αυτόματα κάθε 5 δευτερόλεπτα. Μπορείτε να στείλετε μηνύματα εισάγοντας ένα παρατσούκλι και το κείμενό σας. Δεν απαιτείται εγγραφή.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Μπορώ να εγκαταστήσω το Dropolis ως εφαρμογή στο κινητό μου;",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Ναι! Το Dropolis είναι Progressive Web App (PWA). Στο Android ανοίξτε το site στο Chrome και πατήστε «Εγκατάσταση» ή «Προσθήκη στην αρχική οθόνη». Στο iPhone/iPad χρησιμοποιήστε Safari → κουμπί «Κοινοποίηση» → «Πρόσθεσε στην Αρχική Οθόνη».",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Πώς μπορώ να αλλάξω σε σκοτεινό (dark) θέμα;",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Κάντε κλικ στο εικονίδιο 🌙 / ☀️ στην επάνω δεξιά γωνία της σελίδας. Η επιλογή αποθηκεύεται αυτόματα στον browser σας.",
+          },
+        },
+      ],
     },
   },
   {

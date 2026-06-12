@@ -35,43 +35,6 @@ function jsonLdItems(value?: object | object[]): object[] {
   return Array.isArray(value) ? value : [value];
 }
 
-function staticExtraSchemas(m: Meta): object[] {
-  if (m.url.endsWith("/help") === false) return [];
-  return [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      name: "Dropolis Help Center",
-      url: BASE_URL + "/help",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "What is Dropolis?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Dropolis is a community portal for villages, news, photos, videos and local information."
-          }
-        },
-        {
-          "@type": "Question",
-          name: "Where can I find news?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "News articles are published on /news with title, description, image and structured data."
-          }
-        },
-        {
-          "@type": "Question",
-          name: "How are search engines notified?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "The site updates its sitemap and sends indexing notifications when new articles are published."
-          }
-        }
-      ],
-    },
-  ];
-}
 
 function buildBodyFallback(m: Meta): string {
   const rawTitle = `${m.title} | ${SITE_NAME}`.slice(0, 150);
@@ -112,7 +75,7 @@ function buildSeoTags(m: Meta): string {
       }
     : null;
 
-  const schemas = [...jsonLdItems(m.jsonLd), ...staticExtraSchemas(m), breadcrumbLd].filter(Boolean);
+  const schemas = [...jsonLdItems(m.jsonLd), breadcrumbLd].filter(Boolean);
 
   return [
     `<title>${title}</title>`,
