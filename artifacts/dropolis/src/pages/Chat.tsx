@@ -170,7 +170,7 @@ export default function Chat() {
 
   // ── Chat screen ────────────────────────────────────────────────────────────
   // API returns messages newest-first; reverse to get chronological order (oldest → newest).
-  const ordered = messages ? [...messages].reverse() : [];
+  const ordered = messages ?? [];
 
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
