@@ -110,9 +110,14 @@ type Meta = {
   url: string;
   type?: string;
   article?: ArticleMeta;
-  jsonLd?: object;
+  jsonLd?: object | object[];
   breadcrumbs?: Array<{ name: string; item: string }>;
 };
+
+function jsonLdItems(value?: object | object[]): object[] {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
 
 function buildSeoTags(m: Meta): string {
   const title = esc(`${m.title} | ${SITE_NAME}`);
@@ -150,7 +155,7 @@ function buildSeoTags(m: Meta): string {
         }
       : null;
 
-  const schemas = [m.jsonLd, breadcrumbLd].filter(Boolean);
+  const schemas = [...jsonLdItems(m.jsonLd), breadcrumbLd].filter(Boolean);
 
   return [
     `<title>${title}</title>`,

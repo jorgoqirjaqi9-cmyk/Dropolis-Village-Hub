@@ -31,7 +31,7 @@ export type Meta = {
   url: string;
   type?: string;
   article?: ArticleMeta;
-  jsonLd?: object;
+  jsonLd?: object | object[];
   breadcrumbs?: Array<{ name: string; item: string }>;
 };
 

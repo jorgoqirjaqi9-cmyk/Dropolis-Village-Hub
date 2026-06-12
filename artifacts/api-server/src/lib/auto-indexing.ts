@@ -274,7 +274,7 @@ export async function submitToGoogleIndexingApi(url: string): Promise<void> {
 // ---------------------------------------------------------------------------
 const INDEXNOW_DELAY_MS = (() => {
   const v = parseInt(process.env.INDEXNOW_DELAY_MS ?? "", 10);
-  return Number.isFinite(v) && v >= 0 ? v : 30 * 60 * 1000;
+  return Number.isFinite(v) && v >= 0 ? v : 60 * 1000;
 })();
 
 export async function autoIndexArticle(articleId: number): Promise<void> {

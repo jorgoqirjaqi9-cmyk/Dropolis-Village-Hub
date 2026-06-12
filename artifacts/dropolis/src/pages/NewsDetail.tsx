@@ -61,7 +61,7 @@ export default function NewsDetail() {
   // Split content by paragraphs to insert ad after 2nd paragraph
   const paragraphs = article.content.split('\n\n').filter(p => p.trim() !== '');
 
-  const BASE = typeof window !== "undefined" ? window.location.origin : "https://dropolis.net";
+  const BASE = "https://dropolis.net";
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
@@ -104,7 +104,7 @@ export default function NewsDetail() {
         article={{
           author: article.author || undefined,
           publishedTime: article.createdAt,
-          modifiedTime: article.createdAt,
+          modifiedTime: article.updatedAt ?? article.createdAt,
           section: article.category,
         }}
         breadcrumbs={[
