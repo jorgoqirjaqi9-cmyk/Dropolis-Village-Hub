@@ -33,6 +33,12 @@ const FEED_SOURCES: FeedSource[] = [
     defaultCategory: "Ομογένεια",
     needsTranslation: false,
   },
+  {
+    url: "https://www.news.gr/rss.ashx",
+    name: "News.gr",
+    defaultCategory: "Ελλάδα",
+    needsTranslation: false,
+  },
 ];
 
 // Google News feeds that require translation
@@ -80,6 +86,12 @@ function mapCategory(cats: unknown[], title: string, defaultCat: string): string
   if (combined.includes("ιστορ") || combined.includes("αφιερωμ") || combined.includes("history")) return "Αφιέρωμα";
   if (combined.includes("ομογεν") || combined.includes("diaspora") || combined.includes("homogeneia")) return "Ομογένεια";
   if (combined.includes("πολιτισμ") || combined.includes("culture") || combined.includes("μουσικ") || combined.includes("εκδηλ")) return "Πολιτισμός";
+  if (combined.includes("κοσμ") || combined.includes("world") || combined.includes("international") || combined.includes("διεθν")) return "Διεθνή";
+  if (combined.includes("ελλαδ") || combined.includes("ελλην") || combined.includes("greece") || combined.includes("greek")) return "Ελλάδα";
+  if (combined.includes("πολιτ") || combined.includes("βουλ") || combined.includes("κυβερν") || combined.includes("politics")) return "Πολιτική";
+  if (combined.includes("οικονομ") || combined.includes("αγορ") || combined.includes("χρηματ") || combined.includes("economy")) return "Οικονομία";
+  if (combined.includes("αθλητ") || combined.includes("ποδοσφαιρ") || combined.includes("sport")) return "Αθλητισμός";
+  if (combined.includes("τεχνολ") || combined.includes("ψηφιακ") || combined.includes("tech") || combined.includes("internet")) return "Τεχνολογία";
   return defaultCat;
 }
 
