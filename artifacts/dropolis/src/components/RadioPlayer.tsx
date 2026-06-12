@@ -161,15 +161,16 @@ export function RadioPlayer() {
       {!isOpen && (
         <button
           onClick={handleOpen}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-xl flex items-center justify-center hover:bg-primary/90 transition-all hover:scale-105 active:scale-95"
+          className="fixed top-20 left-1/2 -translate-x-1/2 z-50 h-9 px-4 rounded-full bg-primary text-primary-foreground shadow-xl flex items-center gap-2 hover:bg-primary/90 transition-all hover:scale-105 active:scale-95"
           title="Radio"
         >
-          <Radio className="w-6 h-6 text-secondary" />
+          <Radio className="w-4 h-4 text-secondary" />
+          <span className="text-xs font-semibold">Live Radio</span>
         </button>
       )}
 
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-72 rounded-2xl shadow-2xl overflow-hidden border border-border/40 bg-card">
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 w-72 rounded-2xl shadow-2xl overflow-hidden border border-border/40 bg-card">
           {/* Header */}
           <div className="bg-primary text-primary-foreground px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
