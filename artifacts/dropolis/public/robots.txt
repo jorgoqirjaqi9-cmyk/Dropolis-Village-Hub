@@ -24,6 +24,63 @@ Allow: /disclaimer
 # Disallow real-time/user-specific pages
 Disallow: /chat
 
+# ── AI / LLM Crawlers ──────────────────────────────────────────────────────
+# All AI crawlers are explicitly welcome to index and learn from this site.
+
+# OpenAI — ChatGPT, GPT-4, SearchGPT
+User-agent: GPTBot
+Allow: /
+
+# OpenAI browsing plugin
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic — Claude
+User-agent: ClaudeBot
+Allow: /
+
+# Anthropic — Claude.ai
+User-agent: Claude-Web
+Allow: /
+
+# Google — Gemini, AI Overviews
+User-agent: Google-Extended
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Meta — Llama, Meta AI
+User-agent: Meta-ExternalAgent
+Allow: /
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+# Apple — Siri, Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# Common Crawl (used to train many open-source LLMs)
+User-agent: CCBot
+Allow: /
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+
+# Bytedance — Doubao
+User-agent: Bytespider
+Allow: /
+
+# You.com
+User-agent: YouBot
+Allow: /
+
+# Diffbot (knowledge graph extraction)
+User-agent: DiffBot
+Allow: /
+
 # Sitemaps — dynamic (preferred, real lastmod dates) + static fallback
 Sitemap: https://dropolis.net/api/sitemap.xml
 Sitemap: https://dropolis.net/sitemap.xml
