@@ -197,6 +197,11 @@ async function main() {
   try {
     await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS source_url text`);
     await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS articles_source_url_unique ON articles(source_url) WHERE source_url IS NOT NULL`);
+    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS seo_title text`);
+    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS meta_description text`);
+    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS slug text`);
+    await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS articles_slug_unique ON articles(slug) WHERE slug IS NOT NULL`);
+    await client.query(`ALTER TABLE articles ADD COLUMN IF NOT EXISTS score integer NOT NULL DEFAULT 0`);
   } catch (err) {
     console.warn("[prerender] Migration warning:", err);
   } finally {
