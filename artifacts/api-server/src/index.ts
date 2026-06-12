@@ -1,7 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
 import { seedVideos } from "./seed-videos.js";
-import { seedArticles } from "./seed-articles.js";
 import { startRssFetcher } from "./rss-fetcher.js";
 import { runMigrations } from "./migrations.js";
 
@@ -28,7 +27,6 @@ app.listen(port, (err) => {
   logger.info({ port }, "Server listening");
   void runMigrations().then(() => {
     seedVideos();
-    seedArticles();
     startRssFetcher();
   });
 });
