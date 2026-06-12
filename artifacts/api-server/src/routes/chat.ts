@@ -27,7 +27,7 @@ async function pruneAndCount(): Promise<number> {
     await db.delete(chatMessagesTable).where(eq(chatMessagesTable.username, user));
   }
 
-  if (expiredUsers.length > 0 && presence.size === 0) {
+  if (expiredUsers.length > 0) {
     await db.delete(chatMessagesTable).where(eq(chatMessagesTable.username, BOT_USERNAME));
   }
 
