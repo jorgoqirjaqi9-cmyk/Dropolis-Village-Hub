@@ -85,11 +85,43 @@ interface PageMeta {
   breadcrumbs?: Array<{ name: string; item: string }>;
   bodyH1?: string;
   bodyP?: string;
+  noindex?: boolean;
 }
 
 function jsonLdItems(v?: object | object[]): object[] {
   if (!v) return [];
   return Array.isArray(v) ? v : [v];
+}
+
+// ---------------------------------------------------------------------------
+// Description helper — ensures 120-155 char descriptions for articles
+// ---------------------------------------------------------------------------
+
+function generateArticleDesc(a: {
+  metaDescription?: string | null;
+  excerpt?: string | null;
+  content: string;
+  title: string;
+}): string {
+  const clean = (s: string) =>
+    s.replace(/[#*_`[\]!]/g, "").replace(/\s+/g, " ").trim();
+
+  const candidates: string[] = [
+    a.metaDescription ? clean(a.metaDescription) : "",
+    a.excerpt ? clean(a.excerpt) : "",
+    clean(a.content),
+  ].filter((s) => s.length > 0);
+
+  // Pick first source with at least 80 chars
+  const primary = candidates.find((s) => s.length >= 80) ?? candidates.sort((x, y) => y.length - x.length)[0] ?? "";
+
+  if (primary.length >= 120) return primary.slice(0, 155);
+
+  // Try combining to reach target length
+  const combined = candidates.join(" — ");
+  if (combined.length >= 60) return combined.slice(0, 155);
+
+  return `${a.title} — ${combined}`.slice(0, 155);
 }
 
 function buildSeoTags(m: PageMeta): string {
@@ -121,6 +153,7 @@ function buildSeoTags(m: PageMeta): string {
   const schemas = [...jsonLdItems(m.jsonLd), ...(breadcrumbLd ? [breadcrumbLd] : [])];
 
   return [
+    m.noindex ? `<meta name="robots" content="noindex,follow" />` : "",
     `<title>${title}</title>`,
     `<meta name="description" content="${desc}" />`,
     `<link rel="canonical" href="${url}" />`,
@@ -162,6 +195,10 @@ function injectMeta(template: string, m: PageMeta): string {
     .replace(/<meta\s+property="og:image(?::\w+)?"[^>]*>/gi, "")
     .replace(/<meta\s+name="twitter:[^"]*"[^>]*>/gi, "")
     .replace(/<script\s+type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/gi, "");
+  // When noindex is set, strip the template's existing robots meta to avoid conflicts
+  if (m.noindex) {
+    html = html.replace(/<meta\s+name="robots"[^>]*>/gi, "");
+  }
   html = html.replace("<head>", `<head>\n  ${buildSeoTags(m)}`);
   html = html.replace(
     /<div id="root">[^]*?<\/div>/,
@@ -179,6 +216,7 @@ const STATIC_META: Record<string, PageMeta> = {
     title: "Ζωντανή Συζήτηση",
     description: "Ζωντανή συνομιλία για την κοινότητα της Δρόπολης.",
     url: `${BASE_URL}/chat`,
+    noindex: true,
     breadcrumbs: [{ name: "Ζωντανή Συζήτηση", item: `${BASE_URL}/chat` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ζωντανή Συζήτηση — Δρόπολη", url: `${BASE_URL}/chat`, inLanguage: "el" },
   },
@@ -388,10 +426,7 @@ router.get("/news/:id", async (req, res) => {
       return;
     }
 
-    const cleanedDesc = (article.metaDescription
-      || article.excerpt
-      || article.content.replace(/[#*_`[\]!]/g, "").replace(/\s+/g, " ").trim()
-    ).slice(0, 155);
+    const cleanedDesc = generateArticleDesc(article);
 
     const meta: PageMeta = {
       title: article.seoTitle || article.title,
@@ -414,7 +449,7 @@ router.get("/news/:id", async (req, res) => {
         "@type": "NewsArticle",
         headline: article.title,
         description: cleanedDesc,
-        image: article.imageUrl ? [article.imageUrl] : [],
+        image: [article.imageUrl || DEFAULT_IMG],
         datePublished: article.createdAt.toISOString(),
         dateModified: (article.updatedAt ?? article.createdAt).toISOString(),
         author: { "@type": "Person", name: article.author || "Dropolis" },
@@ -501,6 +536,42 @@ router.get("/villages/:id", async (req, res) => {
   } catch (err) {
     logger.error({ err, id }, "seo-pages: error fetching village");
     res.status(500).send("Internal error");
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Catch-all: any path reaching this router that wasn't matched above
+// → real HTTP 404 with noindex (fixes "soft 404" for crawlers).
+// Must call next() for /api/* so the API router can handle those.
+// ---------------------------------------------------------------------------
+
+router.use((req, res, next) => {
+  // Pass /api/* through to the main API router
+  if (req.path.startsWith("/api")) {
+    next();
+    return;
+  }
+  try {
+    const html = injectMeta(loadTemplate(), {
+      title: "Σελίδα δεν βρέθηκε",
+      description: "Η σελίδα που ζητήσατε δεν υπάρχει στο Dropolis.",
+      url: `${BASE_URL}/`,
+      noindex: true,
+      bodyH1: "Σελίδα δεν βρέθηκε",
+      bodyP: "Η διεύθυνση που ζητήσατε δεν υπάρχει. Επιστρέψτε στην αρχική σελίδα.",
+    });
+    res
+      .status(404)
+      .setHeader("X-Robots-Tag", "noindex,follow")
+      .setHeader("Cache-Control", "no-store")
+      .send(html);
+  } catch {
+    res
+      .status(404)
+      .setHeader("X-Robots-Tag", "noindex,follow")
+      .setHeader("Cache-Control", "no-store")
+      .type("text/html")
+      .send('<!doctype html><html lang="el"><head><meta charset="utf-8"><meta name="robots" content="noindex,follow"><title>404</title></head><body><h1>Σελίδα δεν βρέθηκε</h1><p><a href="/">Αρχική</a></p></body></html>');
   }
 });
 

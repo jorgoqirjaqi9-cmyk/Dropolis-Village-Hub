@@ -62,13 +62,14 @@ export default function NewsDetail() {
   const paragraphs = article.content.split('\n\n').filter(p => p.trim() !== '');
 
   const BASE = "https://dropolis.net";
+  const DEFAULT_IMG = `${BASE}/opengraph.jpg`;
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     "@id": `${BASE}/news/${article.id}`,
     headline: article.title,
     description: article.excerpt || "",
-    image: article.imageUrl ? [article.imageUrl] : [],
+    image: [article.imageUrl || DEFAULT_IMG],
     datePublished: article.createdAt,
     dateModified: article.updatedAt ?? article.createdAt,
     url: `${BASE}/news/${article.id}`,
@@ -99,7 +100,7 @@ export default function NewsDetail() {
       <SEO
         title={article.seoTitle || article.title}
         description={article.metaDescription || article.excerpt || `Διαβάστε το άρθρο: ${article.title}`}
-        image={article.imageUrl || undefined}
+        image={article.imageUrl || DEFAULT_IMG}
         type="article"
         article={{
           author: article.author || undefined,

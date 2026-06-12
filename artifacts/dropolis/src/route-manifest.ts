@@ -43,7 +43,6 @@ export type StaticPrerender = Meta & { path: string };
  */
 export const STATIC_ROUTES: StaticRoute[] = [
   { loc: "/",             changefreq: "daily",   priority: "1.0" },
-  { loc: "/chat",         changefreq: "daily",   priority: "0.7" },
   { loc: "/news",         changefreq: "hourly",  priority: "0.9" },
   { loc: "/villages",     changefreq: "weekly",  priority: "0.8" },
   { loc: "/photos",       changefreq: "weekly",  priority: "0.7" },
@@ -73,21 +72,6 @@ export const STATIC_ROUTES: StaticRoute[] = [
  * Every entry here must also be reachable via the client-side router (App.tsx).
  */
 export const STATIC_PRERENDER: StaticPrerender[] = [
-  {
-    path: "/chat",
-    title: "Ζωντανή Συζήτηση",
-    description: "Ζωντανή συνομιλία για την κοινότητα της Δρόπολης.",
-    url: `${BASE_URL}/chat`,
-    breadcrumbs: [{ name: "Ζωντανή Συζήτηση", item: `${BASE_URL}/chat` }],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      name: "Ζωντανή Συζήτηση — Δρόπολη",
-      description: "Ζωντανή συνομιλία για την κοινότητα της Δρόπολης.",
-      url: `${BASE_URL}/chat`,
-      inLanguage: "el",
-    },
-  },
   {
     path: "/news",
     title: "Ειδήσεις",
