@@ -4,7 +4,7 @@ import { logger } from "./logger.js";
 const HOST = "dropolis.net";
 const BASE_URL = `https://${HOST}`;
 const SITEMAP_URL = `${BASE_URL}/api/sitemap.xml`;
-const INDEXNOW_KEY = "4a7c1b9d2e5f8a0c3b6e9d2f5a8c1b4e";
+const INDEXNOW_KEY = "a65c5858b7f74b93a331bbe527a487d3";
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/IndexNow";
 
 export interface IndexingEvent {

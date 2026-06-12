@@ -2,7 +2,7 @@ import { Router } from "express";
 
 const router = Router();
 
-const INDEXNOW_KEY = "4a7c1b9d2e5f8a0c3b6e9d2f5a8c1b4e";
+const INDEXNOW_KEY = "a65c5858b7f74b93a331bbe527a487d3";
 const HOST = "dropolis.net";
 const KEY_LOCATION = `https://${HOST}/${INDEXNOW_KEY}.txt`;
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/IndexNow";

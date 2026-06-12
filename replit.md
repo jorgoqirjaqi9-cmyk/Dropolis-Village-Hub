@@ -149,7 +149,7 @@ After verification is confirmed:
 IndexNow is a protocol that notifies search engines instantly when content changes, eliminating the wait for their crawlers to discover new pages. **The key file is already deployed** at:
 
 ```
-https://dropolis.net/4a7c1b9d2e5f8a0c3b6e9d2f5a8c1b4e.txt
+https://dropolis.net/a65c5858b7f74b93a331bbe527a487d3.txt
 ```
 
 **To notify search engines after publishing a new article** (e.g., article ID 27):
