@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { useListPhotos } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PhotoLikeButtons } from "@/components/PhotoLikeButtons";
 import { Camera, MapPin, Upload } from "lucide-react";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
@@ -58,36 +59,47 @@ export default function Photos() {
           ))
         ) : photos && photos.length > 0 ? (
           photos.map(photo => (
-            <div key={photo.id} className="break-inside-avoid relative group rounded-2xl overflow-hidden shadow-md mb-4 bg-card">
-              <img 
-                src={photo.url} 
-                alt={photo.title} 
-                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" 
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                <h3 className="text-white font-bold text-lg leading-tight mb-1">{photo.title}</h3>
-                <div className="flex flex-wrap items-center gap-3 text-white/80 text-xs">
-                  {photo.villageId && photo.villageName ? (
-                    <Link href={`/villages/${photo.villageId}`} onClick={e => e.stopPropagation()}>
-                      <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm hover:bg-primary transition-colors">
+            <div key={photo.id} className="break-inside-avoid mb-4 bg-card rounded-2xl shadow-md">
+              {/* Image with hover overlay */}
+              <div className="relative group overflow-hidden rounded-t-2xl">
+                <img
+                  src={photo.thumbnailUrl || photo.url}
+                  alt={photo.title}
+                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                  <h3 className="text-white font-bold text-lg leading-tight mb-1">{photo.title}</h3>
+                  <div className="flex flex-wrap items-center gap-3 text-white/80 text-xs">
+                    {photo.villageId && photo.villageName ? (
+                      <Link href={`/villages/${photo.villageId}`} onClick={e => e.stopPropagation()}>
+                        <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm hover:bg-primary transition-colors">
+                          <MapPin className="w-3 h-3" /> {photo.villageName}
+                        </span>
+                      </Link>
+                    ) : photo.villageName ? (
+                      <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm">
                         <MapPin className="w-3 h-3" /> {photo.villageName}
                       </span>
-                    </Link>
-                  ) : photo.villageName ? (
-                    <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm">
-                      <MapPin className="w-3 h-3" /> {photo.villageName}
+                    ) : null}
+                    {photo.photographer && (
+                      <span className="flex items-center gap-1">
+                        <Camera className="w-3 h-3" /> {photo.photographer}
+                      </span>
+                    )}
+                    <span className="ml-auto opacity-60">
+                      {format(new Date(photo.createdAt), "MMM yyyy", { locale: el })}
                     </span>
-                  ) : null}
-                  {photo.photographer && (
-                    <span className="flex items-center gap-1">
-                      <Camera className="w-3 h-3" /> {photo.photographer}
-                    </span>
-                  )}
-                  <span className="ml-auto opacity-60">
-                    {format(new Date(photo.createdAt), "MMM yyyy", { locale: el })}
-                  </span>
+                  </div>
                 </div>
+              </div>
+              {/* Like / dislike bar */}
+              <div className="px-3 py-2 border-t border-border/40">
+                <PhotoLikeButtons
+                  photoId={photo.id}
+                  initialLikes={photo.likes}
+                  initialDislikes={photo.dislikes}
+                />
               </div>
             </div>
           ))

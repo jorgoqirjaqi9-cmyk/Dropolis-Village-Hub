@@ -17,6 +17,8 @@ export const photosTable = pgTable("photos", {
   thumbnailObjectPath: text("thumbnail_object_path"),
   copyrightConfirmed: boolean("copyright_confirmed").notNull().default(false),
   uploaderName: text("uploader_name"),
+  likes: integer("likes").notNull().default(0),
+  dislikes: integer("dislikes").notNull().default(0),
 });
 
 export const insertPhotoSchema = createInsertSchema(photosTable).omit({ id: true, createdAt: true });

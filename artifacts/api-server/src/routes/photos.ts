@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
 import { photosTable, villagesTable } from "@workspace/db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 import rateLimit from "express-rate-limit";
 import {
   ListPhotosQueryParams,
@@ -39,6 +39,15 @@ const submitRateLimit = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: "Έχετε φτάσει το όριο υποβολών. Δοκιμάστε ξανά σε 1 ώρα." },
+});
+
+// Voting: 60 requests per hour per IP (like/dislike/toggle actions)
+const voteRateLimit = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Πολλές ψήφοι. Δοκιμάστε ξανά σε 1 ώρα." },
 });
 
 // ---------------------------------------------------------------------------
@@ -181,6 +190,63 @@ router.get("/photos/:id", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// POST /photos/:id/like — add like
+// DELETE /photos/:id/like — remove like
+// POST /photos/:id/dislike — add dislike
+// DELETE /photos/:id/dislike — remove dislike
+// ---------------------------------------------------------------------------
+
+async function photoExists(id: number): Promise<boolean> {
+  const [row] = await db.select({ id: photosTable.id }).from(photosTable)
+    .where(and(eq(photosTable.id, id), eq(photosTable.status, "approved")));
+  return !!row;
+}
+
+router.post("/photos/:id/like", voteRateLimit, async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) { res.status(400).json({ error: "Invalid id" }); return; }
+  if (!await photoExists(id)) { res.status(404).json({ error: "Not found" }); return; }
+  const [row] = await db.update(photosTable)
+    .set({ likes: sql`${photosTable.likes} + 1` })
+    .where(eq(photosTable.id, id))
+    .returning({ likes: photosTable.likes, dislikes: photosTable.dislikes });
+  res.json(row);
+});
+
+router.delete("/photos/:id/like", voteRateLimit, async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) { res.status(400).json({ error: "Invalid id" }); return; }
+  if (!await photoExists(id)) { res.status(404).json({ error: "Not found" }); return; }
+  const [row] = await db.update(photosTable)
+    .set({ likes: sql`GREATEST(0, ${photosTable.likes} - 1)` })
+    .where(eq(photosTable.id, id))
+    .returning({ likes: photosTable.likes, dislikes: photosTable.dislikes });
+  res.json(row);
+});
+
+router.post("/photos/:id/dislike", voteRateLimit, async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) { res.status(400).json({ error: "Invalid id" }); return; }
+  if (!await photoExists(id)) { res.status(404).json({ error: "Not found" }); return; }
+  const [row] = await db.update(photosTable)
+    .set({ dislikes: sql`${photosTable.dislikes} + 1` })
+    .where(eq(photosTable.id, id))
+    .returning({ likes: photosTable.likes, dislikes: photosTable.dislikes });
+  res.json(row);
+});
+
+router.delete("/photos/:id/dislike", voteRateLimit, async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) { res.status(400).json({ error: "Invalid id" }); return; }
+  if (!await photoExists(id)) { res.status(404).json({ error: "Not found" }); return; }
+  const [row] = await db.update(photosTable)
+    .set({ dislikes: sql`GREATEST(0, ${photosTable.dislikes} - 1)` })
+    .where(eq(photosTable.id, id))
+    .returning({ likes: photosTable.likes, dislikes: photosTable.dislikes });
+  res.json(row);
+});
+
+// ---------------------------------------------------------------------------
 // DELETE /photos/:id — admin-only, also removes from storage
 // ---------------------------------------------------------------------------
 
@@ -215,6 +281,8 @@ function formatPhoto(p: typeof photosTable.$inferSelect) {
     villageName: p.villageName,
     photographer: p.photographer,
     createdAt: p.createdAt.toISOString(),
+    likes: p.likes,
+    dislikes: p.dislikes,
   };
 }
 

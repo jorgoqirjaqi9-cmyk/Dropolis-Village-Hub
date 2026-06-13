@@ -383,6 +383,78 @@ paths:
         "204":
           description: Deleted
 
+  /photos/{id}/like:
+    post:
+      operationId: likePhoto
+      tags: [photos]
+      summary: Add a like to a photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated vote counts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoteResponse"
+    delete:
+      operationId: unlikePhoto
+      tags: [photos]
+      summary: Remove a like from a photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated vote counts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoteResponse"
+
+  /photos/{id}/dislike:
+    post:
+      operationId: dislikePhoto
+      tags: [photos]
+      summary: Add a dislike to a photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated vote counts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoteResponse"
+    delete:
+      operationId: undislikePhoto
+      tags: [photos]
+      summary: Remove a dislike from a photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated vote counts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoteResponse"
+
   /photos/upload-url:
     post:
       operationId: requestPhotoUploadUrl
@@ -923,7 +995,7 @@ components:
 
     Photo:
       type: object
-      required: [id, title, url, createdAt]
+      required: [id, title, url, createdAt, likes, dislikes]
       properties:
         id:
           type: integer
@@ -943,6 +1015,19 @@ components:
           type: ["string", "null"]
         createdAt:
           type: string
+        likes:
+          type: integer
+        dislikes:
+          type: integer
+
+    VoteResponse:
+      type: object
+      required: [likes, dislikes]
+      properties:
+        likes:
+          type: integer
+        dislikes:
+          type: integer
 
     PhotoInput:
       type: object

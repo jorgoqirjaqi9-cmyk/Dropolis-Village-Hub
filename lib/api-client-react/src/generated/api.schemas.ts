@@ -150,6 +150,13 @@ export interface Photo {
   /** @nullable */
   photographer?: string | null;
   createdAt: string;
+  likes: number;
+  dislikes: number;
+}
+
+export interface VoteResponse {
+  likes: number;
+  dislikes: number;
 }
 
 export interface PhotoInput {

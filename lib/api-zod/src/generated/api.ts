@@ -344,7 +344,9 @@ export const ListPhotosResponseItem = zod.object({
   "villageId": zod.number().nullish(),
   "villageName": zod.string().nullish(),
   "photographer": zod.string().nullish(),
-  "createdAt": zod.string()
+  "createdAt": zod.string(),
+  "likes": zod.number(),
+  "dislikes": zod.number()
 })
 export const ListPhotosResponse = zod.array(ListPhotosResponseItem)
 
@@ -378,7 +380,9 @@ export const GetPhotoResponse = zod.object({
   "villageId": zod.number().nullish(),
   "villageName": zod.string().nullish(),
   "photographer": zod.string().nullish(),
-  "createdAt": zod.string()
+  "createdAt": zod.string(),
+  "likes": zod.number(),
+  "dislikes": zod.number()
 })
 
 
@@ -387,6 +391,58 @@ export const GetPhotoResponse = zod.object({
  */
 export const DeletePhotoParams = zod.object({
   "id": zod.coerce.number()
+})
+
+
+/**
+ * @summary Add a like to a photo
+ */
+export const LikePhotoParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const LikePhotoResponse = zod.object({
+  "likes": zod.number(),
+  "dislikes": zod.number()
+})
+
+
+/**
+ * @summary Remove a like from a photo
+ */
+export const UnlikePhotoParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UnlikePhotoResponse = zod.object({
+  "likes": zod.number(),
+  "dislikes": zod.number()
+})
+
+
+/**
+ * @summary Add a dislike to a photo
+ */
+export const DislikePhotoParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DislikePhotoResponse = zod.object({
+  "likes": zod.number(),
+  "dislikes": zod.number()
+})
+
+
+/**
+ * @summary Remove a dislike from a photo
+ */
+export const UndislikePhotoParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UndislikePhotoResponse = zod.object({
+  "likes": zod.number(),
+  "dislikes": zod.number()
 })
 
 

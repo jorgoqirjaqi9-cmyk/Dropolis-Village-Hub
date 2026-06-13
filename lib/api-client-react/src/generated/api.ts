@@ -51,7 +51,8 @@ import type {
   VideoInput,
   Village,
   VillageInput,
-  VillageUpdateInput
+  VillageUpdateInput,
+  VoteResponse
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -1492,6 +1493,286 @@ export const useDeletePhoto = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getDeletePhotoMutationOptions(options));
+    }
+
+export const getLikePhotoUrl = (id: number,) => {
+
+
+
+
+  return `/api/photos/${id}/like`
+}
+
+/**
+ * @summary Add a like to a photo
+ */
+export const likePhoto = async (id: number, options?: RequestInit): Promise<VoteResponse> => {
+
+  return customFetch<VoteResponse>(getLikePhotoUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getLikePhotoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof likePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof likePhoto>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['likePhoto'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof likePhoto>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  likePhoto(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LikePhotoMutationResult = NonNullable<Awaited<ReturnType<typeof likePhoto>>>
+
+    export type LikePhotoMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Add a like to a photo
+ */
+export const useLikePhoto = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof likePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof likePhoto>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getLikePhotoMutationOptions(options));
+    }
+
+export const getUnlikePhotoUrl = (id: number,) => {
+
+
+
+
+  return `/api/photos/${id}/like`
+}
+
+/**
+ * @summary Remove a like from a photo
+ */
+export const unlikePhoto = async (id: number, options?: RequestInit): Promise<VoteResponse> => {
+
+  return customFetch<VoteResponse>(getUnlikePhotoUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getUnlikePhotoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof unlikePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof unlikePhoto>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['unlikePhoto'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof unlikePhoto>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  unlikePhoto(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UnlikePhotoMutationResult = NonNullable<Awaited<ReturnType<typeof unlikePhoto>>>
+
+    export type UnlikePhotoMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Remove a like from a photo
+ */
+export const useUnlikePhoto = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof unlikePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof unlikePhoto>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getUnlikePhotoMutationOptions(options));
+    }
+
+export const getDislikePhotoUrl = (id: number,) => {
+
+
+
+
+  return `/api/photos/${id}/dislike`
+}
+
+/**
+ * @summary Add a dislike to a photo
+ */
+export const dislikePhoto = async (id: number, options?: RequestInit): Promise<VoteResponse> => {
+
+  return customFetch<VoteResponse>(getDislikePhotoUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getDislikePhotoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof dislikePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof dislikePhoto>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['dislikePhoto'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof dislikePhoto>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  dislikePhoto(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DislikePhotoMutationResult = NonNullable<Awaited<ReturnType<typeof dislikePhoto>>>
+
+    export type DislikePhotoMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Add a dislike to a photo
+ */
+export const useDislikePhoto = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof dislikePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof dislikePhoto>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDislikePhotoMutationOptions(options));
+    }
+
+export const getUndislikePhotoUrl = (id: number,) => {
+
+
+
+
+  return `/api/photos/${id}/dislike`
+}
+
+/**
+ * @summary Remove a dislike from a photo
+ */
+export const undislikePhoto = async (id: number, options?: RequestInit): Promise<VoteResponse> => {
+
+  return customFetch<VoteResponse>(getUndislikePhotoUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getUndislikePhotoMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof undislikePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof undislikePhoto>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['undislikePhoto'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof undislikePhoto>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  undislikePhoto(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UndislikePhotoMutationResult = NonNullable<Awaited<ReturnType<typeof undislikePhoto>>>
+
+    export type UndislikePhotoMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Remove a dislike from a photo
+ */
+export const useUndislikePhoto = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof undislikePhoto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof undislikePhoto>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getUndislikePhotoMutationOptions(options));
     }
 
 export const getRequestPhotoUploadUrlUrl = () => {

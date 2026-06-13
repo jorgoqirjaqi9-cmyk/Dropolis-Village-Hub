@@ -4,6 +4,7 @@ import { useGetVillage, getGetVillageQueryKey, useListArticles, getListArticlesQ
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera } from "lucide-react";
+import { PhotoLikeButtons } from "@/components/PhotoLikeButtons";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 
@@ -184,14 +185,27 @@ export default function VillageDetail() {
               {photos && photos.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {photos.map(photo => (
-                    <div key={photo.id} className="aspect-square rounded-lg overflow-hidden bg-muted relative group cursor-pointer shadow-sm">
-                      <img
-                        src={photo.thumbnailUrl || photo.url}
-                        alt={photo.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
-                        <span className="text-white text-sm font-medium line-clamp-1">{photo.title}</span>
+                    <div key={photo.id} className="rounded-xl bg-card shadow-sm border border-border/40 overflow-hidden">
+                      {/* Image */}
+                      <div className="aspect-square overflow-hidden relative group cursor-pointer">
+                        <img
+                          src={photo.thumbnailUrl || photo.url}
+                          alt={photo.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+                          <span className="text-white text-sm font-medium line-clamp-1">{photo.title}</span>
+                        </div>
+                      </div>
+                      {/* Like / dislike */}
+                      <div className="px-2 py-1.5 border-t border-border/40">
+                        <PhotoLikeButtons
+                          photoId={photo.id}
+                          initialLikes={photo.likes}
+                          initialDislikes={photo.dislikes}
+                          compact
+                        />
                       </div>
                     </div>
                   ))}
