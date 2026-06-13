@@ -36,6 +36,8 @@ import UploadPhoto from "@/pages/UploadPhoto";
 import AdminPhotos from "@/pages/AdminPhotos";
 import SubmitNews from "@/pages/SubmitNews";
 import AdminNews from "@/pages/AdminNews";
+import SubmitVideo from "@/pages/SubmitVideo";
+import AdminVideos from "@/pages/AdminVideos";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -118,6 +120,10 @@ function Router() {
             <Route path="/submit-news/" component={SubmitNews} />
             <Route path="/admin/news" component={AdminNews} />
             <Route path="/admin/news/" component={AdminNews} />
+            <Route path="/submit-video" component={SubmitVideo} />
+            <Route path="/submit-video/" component={SubmitVideo} />
+            <Route path="/admin/videos" component={AdminVideos} />
+            <Route path="/admin/videos/" component={AdminVideos} />
             <Route component={NotFound} />
           </Switch>
         </Layout>

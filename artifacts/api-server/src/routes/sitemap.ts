@@ -36,6 +36,7 @@ const STATIC_ROUTES = [
   { loc: "/en/contact",        changefreq: "monthly", priority: "0.5" },
   { loc: "/upload-photo",      changefreq: "monthly", priority: "0.6" },
   { loc: "/submit-news",       changefreq: "monthly", priority: "0.6" },
+  { loc: "/submit-video",      changefreq: "monthly", priority: "0.6" },
 ];
 
 function escapeXml(str: string): string {

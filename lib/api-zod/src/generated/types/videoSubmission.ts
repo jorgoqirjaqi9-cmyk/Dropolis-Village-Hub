@@ -6,17 +6,17 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface Video {
+export interface VideoSubmission {
   id: number;
   title: string;
   /** @nullable */
   description?: string | null;
-  /** @nullable */
-  youtubeId?: string | null;
-  /** @nullable */
-  videoUrl?: string | null;
+  videoUrl: string;
+  objectPath: string;
   /** @nullable */
   thumbnailUrl?: string | null;
+  /** @nullable */
+  thumbnailObjectPath?: string | null;
   /** @nullable */
   villageId?: number | null;
   /** @nullable */
@@ -24,8 +24,12 @@ export interface Video {
   /** @nullable */
   uploaderName?: string | null;
   /** @nullable */
-  eventDate?: string | null;
+  uploaderEmail?: string | null;
   /** @nullable */
-  duration?: string | null;
+  eventDate?: string | null;
+  copyrightConfirmed: boolean;
+  status: string;
   createdAt: string;
+  /** @nullable */
+  reviewedAt?: string | null;
 }

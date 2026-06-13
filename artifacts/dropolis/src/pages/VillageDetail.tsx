@@ -3,7 +3,7 @@ import { useRoute, Link } from "wouter";
 import { useGetVillage, getGetVillageQueryKey, useListArticles, getListArticlesQueryKey, useListPhotos, getListPhotosQueryKey } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera, Send } from "lucide-react";
+import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera, Send, Video } from "lucide-react";
 import { PhotoLikeButtons } from "@/components/PhotoLikeButtons";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
@@ -281,6 +281,13 @@ export default function VillageDetail() {
             >
               <Send className="w-4 h-4" />
               Στείλτε είδηση για αυτό το χωριό
+            </Link>
+            <Link
+              href={`/submit-video?villageId=${id}`}
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground px-4 py-2.5 text-sm font-semibold transition-colors"
+            >
+              <Video className="w-4 h-4" />
+              Ανεβάστε βίντεο για αυτό το χωριό
             </Link>
           </div>
         </aside>

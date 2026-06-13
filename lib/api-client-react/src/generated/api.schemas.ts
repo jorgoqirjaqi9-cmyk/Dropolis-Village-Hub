@@ -238,11 +238,20 @@ export interface Video {
   title: string;
   /** @nullable */
   description?: string | null;
-  youtubeId: string;
+  /** @nullable */
+  youtubeId?: string | null;
+  /** @nullable */
+  videoUrl?: string | null;
+  /** @nullable */
+  thumbnailUrl?: string | null;
   /** @nullable */
   villageId?: number | null;
   /** @nullable */
   villageName?: string | null;
+  /** @nullable */
+  uploaderName?: string | null;
+  /** @nullable */
+  eventDate?: string | null;
   /** @nullable */
   duration?: string | null;
   createdAt: string;
@@ -327,6 +336,61 @@ export interface NewsSubmissionStatusUpdate {
   status: NewsSubmissionStatusUpdateStatus;
 }
 
+export interface RequestVideoUploadUrlBody {
+  name: string;
+  size: number;
+  contentType: string;
+}
+
+export interface SubmitVideoBody {
+  /** @minLength 3 */
+  title: string;
+  description?: string;
+  objectPath: string;
+  thumbnailObjectPath?: string;
+  villageId?: number;
+  villageName?: string;
+  uploaderName?: string;
+  uploaderEmail?: string;
+  eventDate?: string;
+  copyrightConfirmed: boolean;
+  /** Honeypot field — must be empty */
+  website?: string;
+}
+
+export interface VideoSubmissionResult {
+  id: number;
+  status: string;
+}
+
+export interface VideoSubmission {
+  id: number;
+  title: string;
+  /** @nullable */
+  description?: string | null;
+  videoUrl: string;
+  objectPath: string;
+  /** @nullable */
+  thumbnailUrl?: string | null;
+  /** @nullable */
+  thumbnailObjectPath?: string | null;
+  /** @nullable */
+  villageId?: number | null;
+  /** @nullable */
+  villageName?: string | null;
+  /** @nullable */
+  uploaderName?: string | null;
+  /** @nullable */
+  uploaderEmail?: string | null;
+  /** @nullable */
+  eventDate?: string | null;
+  copyrightConfirmed: boolean;
+  status: string;
+  createdAt: string;
+  /** @nullable */
+  reviewedAt?: string | null;
+}
+
 export interface SiteStats {
   totalArticles: number;
   totalVillages: number;
@@ -380,6 +444,19 @@ export type ListVideosParams = {
 village_id?: number;
 limit?: number;
 };
+
+export type ListVideoSubmissionsParams = {
+status?: ListVideoSubmissionsStatus;
+};
+
+export type ListVideoSubmissionsStatus = typeof ListVideoSubmissionsStatus[keyof typeof ListVideoSubmissionsStatus];
+
+
+export const ListVideoSubmissionsStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected',
+} as const;
 
 export type ListChatMessagesParams = {
 limit?: number;

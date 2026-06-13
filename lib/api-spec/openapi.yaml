@@ -25,6 +25,8 @@ tags:
     description: Social media post generation
   - name: news-submissions
     description: User news submissions for editorial review
+  - name: video-submissions
+    description: User video uploads for moderation
 
 paths:
   /healthz:
@@ -741,6 +743,156 @@ paths:
               schema:
                 $ref: "#/components/schemas/Video"
 
+  /video-submissions/upload-url:
+    post:
+      operationId: requestVideoUploadUrl
+      tags: [video-submissions]
+      summary: Request a presigned URL for video file upload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestVideoUploadUrlBody"
+      responses:
+        "200":
+          description: Presigned URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrlResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /video-submissions/submit:
+    post:
+      operationId: submitVideo
+      tags: [video-submissions]
+      summary: Submit a user-uploaded video for moderation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitVideoBody"
+      responses:
+        "201":
+          description: Submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoSubmissionResult"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/video-submissions:
+    get:
+      operationId: listVideoSubmissions
+      tags: [video-submissions]
+      summary: List video submissions (admin only)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected]
+      responses:
+        "200":
+          description: List of submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VideoSubmission"
+        "401":
+          description: Unauthorized
+
+  /admin/video-submissions/{id}/approve:
+    put:
+      operationId: approveVideoSubmission
+      tags: [video-submissions]
+      summary: Approve a video submission (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated submission
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoSubmission"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /admin/video-submissions/{id}/reject:
+    put:
+      operationId: rejectVideoSubmission
+      tags: [video-submissions]
+      summary: Reject a video submission (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated submission
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoSubmission"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /admin/video-submissions/{id}:
+    delete:
+      operationId: deleteVideoSubmission
+      tags: [video-submissions]
+      summary: Delete a video submission (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
   /chat/messages:
     get:
       operationId: listChatMessages
@@ -1248,7 +1400,7 @@ components:
 
     Video:
       type: object
-      required: [id, title, youtubeId, createdAt]
+      required: [id, title, createdAt]
       properties:
         id:
           type: integer
@@ -1257,10 +1409,18 @@ components:
         description:
           type: ["string", "null"]
         youtubeId:
-          type: string
+          type: ["string", "null"]
+        videoUrl:
+          type: ["string", "null"]
+        thumbnailUrl:
+          type: ["string", "null"]
         villageId:
           type: ["integer", "null"]
         villageName:
+          type: ["string", "null"]
+        uploaderName:
+          type: ["string", "null"]
+        eventDate:
           type: ["string", "null"]
         duration:
           type: ["string", "null"]
@@ -1386,6 +1546,92 @@ components:
         status:
           type: string
           enum: [approved, rejected]
+
+    RequestVideoUploadUrlBody:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+        size:
+          type: integer
+        contentType:
+          type: string
+
+    SubmitVideoBody:
+      type: object
+      required: [title, objectPath, copyrightConfirmed]
+      properties:
+        title:
+          type: string
+          minLength: 3
+        description:
+          type: string
+        objectPath:
+          type: string
+        thumbnailObjectPath:
+          type: string
+        villageId:
+          type: integer
+        villageName:
+          type: string
+        uploaderName:
+          type: string
+        uploaderEmail:
+          type: string
+        eventDate:
+          type: string
+        copyrightConfirmed:
+          type: boolean
+        website:
+          type: string
+          description: Honeypot field — must be empty
+
+    VideoSubmissionResult:
+      type: object
+      required: [id, status]
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+
+    VideoSubmission:
+      type: object
+      required: [id, title, videoUrl, objectPath, copyrightConfirmed, status, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        videoUrl:
+          type: string
+        objectPath:
+          type: string
+        thumbnailUrl:
+          type: ["string", "null"]
+        thumbnailObjectPath:
+          type: ["string", "null"]
+        villageId:
+          type: ["integer", "null"]
+        villageName:
+          type: ["string", "null"]
+        uploaderName:
+          type: ["string", "null"]
+        uploaderEmail:
+          type: ["string", "null"]
+        eventDate:
+          type: ["string", "null"]
+        copyrightConfirmed:
+          type: boolean
+        status:
+          type: string
+        createdAt:
+          type: string
+        reviewedAt:
+          type: ["string", "null"]
 
     SiteStats:
       type: object

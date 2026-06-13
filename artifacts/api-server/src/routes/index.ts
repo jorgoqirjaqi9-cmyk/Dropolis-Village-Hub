@@ -14,6 +14,8 @@ import socialRouter from "./social";
 import indexingRouter from "./indexing";
 import storageRouter from "./storage";
 import newsSubmissionsRouter from "./newsSubmissions";
+import videoSubmissionsRouter from "./video-submissions";
+import adminVideosRouter from "./admin-videos";
 
 const router: IRouter = Router();
 
@@ -32,5 +34,7 @@ router.use(socialRouter);
 router.use(indexingRouter);
 router.use(storageRouter);
 router.use(newsSubmissionsRouter);
+router.use(videoSubmissionsRouter);
+router.use(adminVideosRouter);
 
 export default router;

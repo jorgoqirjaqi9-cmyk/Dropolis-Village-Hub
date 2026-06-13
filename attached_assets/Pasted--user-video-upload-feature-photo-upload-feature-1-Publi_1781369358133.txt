@@ -1,0 +1,74 @@
+Φτιάξε user video upload feature όπως το photo upload feature.
+
+1. Public page /submit-video
+Fields:
+- video file upload
+- title
+- short description
+- destination selector:
+  - Γενικό video album
+  - all villages using Greek nameEl
+- uploader name optional
+- uploader email optional
+- event date optional
+- copyright confirmation checkbox:
+  “Δηλώνω ότι έχω το δικαίωμα δημοσίευσης του βίντεο.”
+
+2. Moderation
+- User submitted videos must NOT publish immediately.
+- Save as status = pending.
+- Add admin page /admin/videos.
+- Admin can approve/reject/delete.
+- Admin routes protected by ADMIN_API_KEY.
+
+3. Storage and validation
+- Allow mp4, mov, webm.
+- Max size 25MB for now.
+- Optional max duration 60 seconds if possible.
+- Validate mime type and file extension.
+- Rate limit submissions.
+- Store objectPath/videoUrl.
+- Create or save thumbnail if possible.
+
+4. Database
+Extend videos table or create submitted_videos table with:
+- title
+- description
+- videoUrl/objectPath
+- thumbnailUrl nullable
+- villageId nullable
+- villageName nullable
+- uploaderName nullable
+- uploaderEmail nullable
+- eventDate nullable
+- status pending/approved/rejected
+- copyrightConfirmed boolean
+- createdAt
+- approvedAt nullable
+
+5. Public display
+- GET /api/videos returns only approved videos.
+- Approved general videos appear on /videos.
+- Approved village videos appear on /videos and /villages/:id.
+- Pending/rejected videos never appear publicly or in sitemap.
+
+6. UI
+- Add button on /videos:
+  “Ανεβάστε βίντεο”
+- Add button on /villages/:id near videos/media section:
+  “Ανεβάστε βίντεο για αυτό το χωριό”
+  link: /submit-video?villageId=<id>
+- /submit-video?villageId=83 should preselect Κρα.
+
+7. SEO
+- /submit-video can be indexable.
+- /admin/videos noindex and not in sitemap.
+- Add Disallow /admin already exists, keep it.
+
+8. Performance
+- Do not autoplay all videos.
+- Use thumbnails/cards.
+- Lazy load video player.
+- Keep videos compressed and avoid loading full video until user clicks play.
+
+9. Run typecheck/build/deploy.

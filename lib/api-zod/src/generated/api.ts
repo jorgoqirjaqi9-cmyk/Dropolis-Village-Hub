@@ -662,9 +662,13 @@ export const ListVideosResponseItem = zod.object({
   "id": zod.number(),
   "title": zod.string(),
   "description": zod.string().nullish(),
-  "youtubeId": zod.string(),
+  "youtubeId": zod.string().nullish(),
+  "videoUrl": zod.string().nullish(),
+  "thumbnailUrl": zod.string().nullish(),
   "villageId": zod.number().nullish(),
   "villageName": zod.string().nullish(),
+  "uploaderName": zod.string().nullish(),
+  "eventDate": zod.string().nullish(),
   "duration": zod.string().nullish(),
   "createdAt": zod.string()
 })
@@ -680,6 +684,133 @@ export const CreateVideoBody = zod.object({
   "youtubeId": zod.string(),
   "villageId": zod.number().optional(),
   "duration": zod.string().optional()
+})
+
+
+/**
+ * @summary Request a presigned URL for video file upload
+ */
+export const RequestVideoUploadUrlBody = zod.object({
+  "name": zod.string(),
+  "size": zod.number(),
+  "contentType": zod.string()
+})
+
+export const RequestVideoUploadUrlResponse = zod.object({
+  "uploadURL": zod.string(),
+  "objectPath": zod.string()
+})
+
+
+/**
+ * @summary Submit a user-uploaded video for moderation
+ */
+export const submitVideoBodyTitleMin = 3;
+
+
+
+export const SubmitVideoBody = zod.object({
+  "title": zod.string().min(submitVideoBodyTitleMin),
+  "description": zod.string().optional(),
+  "objectPath": zod.string(),
+  "thumbnailObjectPath": zod.string().optional(),
+  "villageId": zod.number().optional(),
+  "villageName": zod.string().optional(),
+  "uploaderName": zod.string().optional(),
+  "uploaderEmail": zod.string().optional(),
+  "eventDate": zod.string().optional(),
+  "copyrightConfirmed": zod.boolean(),
+  "website": zod.string().optional().describe('Honeypot field — must be empty')
+})
+
+
+/**
+ * @summary List video submissions (admin only)
+ */
+export const ListVideoSubmissionsQueryParams = zod.object({
+  "status": zod.enum(['pending', 'approved', 'rejected']).optional()
+})
+
+export const ListVideoSubmissionsResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "videoUrl": zod.string(),
+  "objectPath": zod.string(),
+  "thumbnailUrl": zod.string().nullish(),
+  "thumbnailObjectPath": zod.string().nullish(),
+  "villageId": zod.number().nullish(),
+  "villageName": zod.string().nullish(),
+  "uploaderName": zod.string().nullish(),
+  "uploaderEmail": zod.string().nullish(),
+  "eventDate": zod.string().nullish(),
+  "copyrightConfirmed": zod.boolean(),
+  "status": zod.string(),
+  "createdAt": zod.string(),
+  "reviewedAt": zod.string().nullish()
+})
+export const ListVideoSubmissionsResponse = zod.array(ListVideoSubmissionsResponseItem)
+
+
+/**
+ * @summary Approve a video submission (admin only)
+ */
+export const ApproveVideoSubmissionParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const ApproveVideoSubmissionResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "videoUrl": zod.string(),
+  "objectPath": zod.string(),
+  "thumbnailUrl": zod.string().nullish(),
+  "thumbnailObjectPath": zod.string().nullish(),
+  "villageId": zod.number().nullish(),
+  "villageName": zod.string().nullish(),
+  "uploaderName": zod.string().nullish(),
+  "uploaderEmail": zod.string().nullish(),
+  "eventDate": zod.string().nullish(),
+  "copyrightConfirmed": zod.boolean(),
+  "status": zod.string(),
+  "createdAt": zod.string(),
+  "reviewedAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Reject a video submission (admin only)
+ */
+export const RejectVideoSubmissionParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const RejectVideoSubmissionResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "videoUrl": zod.string(),
+  "objectPath": zod.string(),
+  "thumbnailUrl": zod.string().nullish(),
+  "thumbnailObjectPath": zod.string().nullish(),
+  "villageId": zod.number().nullish(),
+  "villageName": zod.string().nullish(),
+  "uploaderName": zod.string().nullish(),
+  "uploaderEmail": zod.string().nullish(),
+  "eventDate": zod.string().nullish(),
+  "copyrightConfirmed": zod.boolean(),
+  "status": zod.string(),
+  "createdAt": zod.string(),
+  "reviewedAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Delete a video submission (admin only)
+ */
+export const DeleteVideoSubmissionParams = zod.object({
+  "id": zod.coerce.number()
 })
 
 

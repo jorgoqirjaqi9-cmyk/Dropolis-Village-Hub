@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useListVideos } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Play, MapPin, Clock } from "lucide-react";
+import { Play, MapPin, Clock, Upload, User, Calendar } from "lucide-react";
 
 export default function Videos() {
   const { data: videos, isLoading } = useListVideos({ limit: 200 });
@@ -24,7 +24,7 @@ export default function Videos() {
           numberOfItems: videos?.length ?? 0,
           ...(videos && videos.length > 0
             ? {
-                itemListElement: videos.slice(0, 30).map((v, i) => ({
+                itemListElement: videos.slice(0, 30).filter(v => v.youtubeId).map((v, i) => ({
                   "@type": "ListItem",
                   position: i + 1,
                   item: {
@@ -48,9 +48,16 @@ export default function Videos() {
         <div className="relative z-10">
           <Play className="w-10 h-10 mx-auto mb-4 text-secondary" />
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-3">Βίντεο & Ρεπορτάζ</h1>
-          <p className="text-primary-foreground/70 max-w-2xl mx-auto">
+          <p className="text-primary-foreground/70 max-w-2xl mx-auto mb-6">
             Ντοκιμαντέρ, εκδηλώσεις και ειδησεογραφικά ρεπορτάζ από τα χωριά της Δρόπολης.
           </p>
+          <Link
+            href="/submit-video"
+            className="inline-flex items-center gap-2 rounded-xl bg-secondary text-secondary-foreground px-5 py-2.5 text-sm font-semibold hover:bg-secondary/90 transition-colors"
+          >
+            <Upload className="w-4 h-4" />
+            Ανεβάστε βίντεο
+          </Link>
         </div>
       </div>
 
@@ -65,15 +72,25 @@ export default function Videos() {
           ))
         ) : videos && videos.length > 0 ? (
           videos.map(video => (
-            <div key={video.id} className="group glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+            <div key={video.youtubeId ? `yt-${video.id}` : `sv-${video.id}`} className="group glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full">
               <div className="aspect-video w-full relative bg-black">
-                <iframe 
-                  src={`https://www.youtube.com/embed/${video.youtubeId}?rel=0`} 
-                  title={video.title}
-                  className="absolute inset-0 w-full h-full border-0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                  allowFullScreen
-                ></iframe>
+                {video.youtubeId ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.youtubeId}?rel=0`}
+                    title={video.title}
+                    className="absolute inset-0 w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : video.videoUrl ? (
+                  <video
+                    src={video.videoUrl}
+                    controls
+                    className="absolute inset-0 w-full h-full object-cover"
+                    preload="metadata"
+                    poster={video.thumbnailUrl ?? undefined}
+                  />
+                ) : null}
               </div>
               <div className="p-5 flex flex-col flex-grow">
                 <h3 className="font-bold text-lg font-serif mb-2 line-clamp-2 text-foreground group-hover:text-primary transition-colors">
@@ -84,8 +101,8 @@ export default function Videos() {
                     {video.description}
                   </p>
                 )}
-                
-                <div className="flex items-center gap-4 text-xs text-muted-foreground pt-4 border-t border-border mt-auto">
+
+                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground pt-4 border-t border-border mt-auto">
                   {video.villageId && video.villageName ? (
                     <Link href={`/villages/${video.villageId}`}>
                       <span className="flex items-center gap-1 bg-accent/10 text-accent px-2 py-1 rounded font-medium hover:bg-accent/20 transition-colors">
@@ -97,6 +114,16 @@ export default function Videos() {
                       <MapPin className="w-3 h-3" /> {video.villageName}
                     </span>
                   ) : null}
+                  {video.uploaderName && (
+                    <span className="flex items-center gap-1">
+                      <User className="w-3 h-3" /> {video.uploaderName}
+                    </span>
+                  )}
+                  {video.eventDate && (
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" /> {video.eventDate}
+                    </span>
+                  )}
                   {video.duration && (
                     <span className="flex items-center gap-1 ml-auto font-mono">
                       <Clock className="w-3 h-3" /> {video.duration}
@@ -108,7 +135,15 @@ export default function Videos() {
           ))
         ) : (
           <div className="col-span-full text-center py-24 text-muted-foreground bg-card rounded-xl border border-dashed border-border">
-            Δεν υπάρχουν διαθέσιμα βίντεο αυτή τη στιγμή.
+            <Play className="w-10 h-10 mx-auto mb-3 text-muted-foreground/30" />
+            <p className="mb-4">Δεν υπάρχουν διαθέσιμα βίντεο αυτή τη στιγμή.</p>
+            <Link
+              href="/submit-video"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors"
+            >
+              <Upload className="w-4 h-4" />
+              Ανεβάστε το πρώτο βίντεο
+            </Link>
           </div>
         )}
       </div>

@@ -38,6 +38,7 @@ import type {
   ListChatMessagesParams,
   ListNewsSubmissionsParams,
   ListPhotosParams,
+  ListVideoSubmissionsParams,
   ListVideosParams,
   NewsSubmission,
   NewsSubmissionCreate,
@@ -48,12 +49,16 @@ import type {
   PhotoSubmission,
   PhotoUploadUrlRequest,
   RecalculateArticleScores200,
+  RequestVideoUploadUrlBody,
   SiteStats,
   SocialPost,
+  SubmitVideoBody,
   UploadUrlRequest,
   UploadUrlResponse,
   Video,
   VideoInput,
+  VideoSubmission,
+  VideoSubmissionResult,
   Village,
   VillageInput,
   VillageUpdateInput,
@@ -2667,6 +2672,442 @@ export const useCreateVideo = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getCreateVideoMutationOptions(options));
+    }
+
+export const getRequestVideoUploadUrlUrl = () => {
+
+
+
+
+  return `/api/video-submissions/upload-url`
+}
+
+/**
+ * @summary Request a presigned URL for video file upload
+ */
+export const requestVideoUploadUrl = async (requestVideoUploadUrlBody: RequestVideoUploadUrlBody, options?: RequestInit): Promise<UploadUrlResponse> => {
+
+  return customFetch<UploadUrlResponse>(getRequestVideoUploadUrlUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      requestVideoUploadUrlBody,)
+  }
+);}
+
+
+
+
+export const getRequestVideoUploadUrlMutationOptions = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestVideoUploadUrl>>, TError,{data: BodyType<RequestVideoUploadUrlBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof requestVideoUploadUrl>>, TError,{data: BodyType<RequestVideoUploadUrlBody>}, TContext> => {
+
+const mutationKey = ['requestVideoUploadUrl'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof requestVideoUploadUrl>>, {data: BodyType<RequestVideoUploadUrlBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  requestVideoUploadUrl(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RequestVideoUploadUrlMutationResult = NonNullable<Awaited<ReturnType<typeof requestVideoUploadUrl>>>
+    export type RequestVideoUploadUrlMutationBody = BodyType<RequestVideoUploadUrlBody>
+    export type RequestVideoUploadUrlMutationError = ErrorType<ErrorEnvelope>
+
+    /**
+ * @summary Request a presigned URL for video file upload
+ */
+export const useRequestVideoUploadUrl = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestVideoUploadUrl>>, TError,{data: BodyType<RequestVideoUploadUrlBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof requestVideoUploadUrl>>,
+        TError,
+        {data: BodyType<RequestVideoUploadUrlBody>},
+        TContext
+      > => {
+      return useMutation(getRequestVideoUploadUrlMutationOptions(options));
+    }
+
+export const getSubmitVideoUrl = () => {
+
+
+
+
+  return `/api/video-submissions/submit`
+}
+
+/**
+ * @summary Submit a user-uploaded video for moderation
+ */
+export const submitVideo = async (submitVideoBody: SubmitVideoBody, options?: RequestInit): Promise<VideoSubmissionResult> => {
+
+  return customFetch<VideoSubmissionResult>(getSubmitVideoUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      submitVideoBody,)
+  }
+);}
+
+
+
+
+export const getSubmitVideoMutationOptions = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitVideo>>, TError,{data: BodyType<SubmitVideoBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof submitVideo>>, TError,{data: BodyType<SubmitVideoBody>}, TContext> => {
+
+const mutationKey = ['submitVideo'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof submitVideo>>, {data: BodyType<SubmitVideoBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  submitVideo(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SubmitVideoMutationResult = NonNullable<Awaited<ReturnType<typeof submitVideo>>>
+    export type SubmitVideoMutationBody = BodyType<SubmitVideoBody>
+    export type SubmitVideoMutationError = ErrorType<ErrorEnvelope>
+
+    /**
+ * @summary Submit a user-uploaded video for moderation
+ */
+export const useSubmitVideo = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitVideo>>, TError,{data: BodyType<SubmitVideoBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof submitVideo>>,
+        TError,
+        {data: BodyType<SubmitVideoBody>},
+        TContext
+      > => {
+      return useMutation(getSubmitVideoMutationOptions(options));
+    }
+
+export const getListVideoSubmissionsUrl = (params?: ListVideoSubmissionsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/admin/video-submissions?${stringifiedParams}` : `/api/admin/video-submissions`
+}
+
+/**
+ * @summary List video submissions (admin only)
+ */
+export const listVideoSubmissions = async (params?: ListVideoSubmissionsParams, options?: RequestInit): Promise<VideoSubmission[]> => {
+
+  return customFetch<VideoSubmission[]>(getListVideoSubmissionsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListVideoSubmissionsQueryKey = (params?: ListVideoSubmissionsParams,) => {
+    return [
+    `/api/admin/video-submissions`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListVideoSubmissionsQueryOptions = <TData = Awaited<ReturnType<typeof listVideoSubmissions>>, TError = ErrorType<void>>(params?: ListVideoSubmissionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listVideoSubmissions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListVideoSubmissionsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listVideoSubmissions>>> = ({ signal }) => listVideoSubmissions(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listVideoSubmissions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListVideoSubmissionsQueryResult = NonNullable<Awaited<ReturnType<typeof listVideoSubmissions>>>
+export type ListVideoSubmissionsQueryError = ErrorType<void>
+
+
+/**
+ * @summary List video submissions (admin only)
+ */
+
+export function useListVideoSubmissions<TData = Awaited<ReturnType<typeof listVideoSubmissions>>, TError = ErrorType<void>>(
+ params?: ListVideoSubmissionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listVideoSubmissions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListVideoSubmissionsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getApproveVideoSubmissionUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/video-submissions/${id}/approve`
+}
+
+/**
+ * @summary Approve a video submission (admin only)
+ */
+export const approveVideoSubmission = async (id: number, options?: RequestInit): Promise<VideoSubmission> => {
+
+  return customFetch<VideoSubmission>(getApproveVideoSubmissionUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getApproveVideoSubmissionMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof approveVideoSubmission>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof approveVideoSubmission>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['approveVideoSubmission'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof approveVideoSubmission>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  approveVideoSubmission(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ApproveVideoSubmissionMutationResult = NonNullable<Awaited<ReturnType<typeof approveVideoSubmission>>>
+
+    export type ApproveVideoSubmissionMutationError = ErrorType<void>
+
+    /**
+ * @summary Approve a video submission (admin only)
+ */
+export const useApproveVideoSubmission = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof approveVideoSubmission>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof approveVideoSubmission>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getApproveVideoSubmissionMutationOptions(options));
+    }
+
+export const getRejectVideoSubmissionUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/video-submissions/${id}/reject`
+}
+
+/**
+ * @summary Reject a video submission (admin only)
+ */
+export const rejectVideoSubmission = async (id: number, options?: RequestInit): Promise<VideoSubmission> => {
+
+  return customFetch<VideoSubmission>(getRejectVideoSubmissionUrl(id),
+  {
+    ...options,
+    method: 'PUT'
+
+
+  }
+);}
+
+
+
+
+export const getRejectVideoSubmissionMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof rejectVideoSubmission>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof rejectVideoSubmission>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['rejectVideoSubmission'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof rejectVideoSubmission>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  rejectVideoSubmission(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RejectVideoSubmissionMutationResult = NonNullable<Awaited<ReturnType<typeof rejectVideoSubmission>>>
+
+    export type RejectVideoSubmissionMutationError = ErrorType<void>
+
+    /**
+ * @summary Reject a video submission (admin only)
+ */
+export const useRejectVideoSubmission = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof rejectVideoSubmission>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof rejectVideoSubmission>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getRejectVideoSubmissionMutationOptions(options));
+    }
+
+export const getDeleteVideoSubmissionUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/video-submissions/${id}`
+}
+
+/**
+ * @summary Delete a video submission (admin only)
+ */
+export const deleteVideoSubmission = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteVideoSubmissionUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteVideoSubmissionMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteVideoSubmission>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteVideoSubmission>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteVideoSubmission'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteVideoSubmission>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteVideoSubmission(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteVideoSubmissionMutationResult = NonNullable<Awaited<ReturnType<typeof deleteVideoSubmission>>>
+
+    export type DeleteVideoSubmissionMutationError = ErrorType<void>
+
+    /**
+ * @summary Delete a video submission (admin only)
+ */
+export const useDeleteVideoSubmission = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteVideoSubmission>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteVideoSubmission>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteVideoSubmissionMutationOptions(options));
     }
 
 export const getListChatMessagesUrl = (params?: ListChatMessagesParams,) => {

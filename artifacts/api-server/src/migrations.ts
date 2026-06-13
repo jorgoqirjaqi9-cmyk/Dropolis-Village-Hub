@@ -29,6 +29,26 @@ export async function runMigrations(): Promise<void> {
         reviewed_at timestamp
       )
     `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS submitted_videos (
+        id serial PRIMARY KEY,
+        title text NOT NULL,
+        description text,
+        video_url text NOT NULL,
+        object_path text NOT NULL,
+        thumbnail_url text,
+        thumbnail_object_path text,
+        village_id integer REFERENCES villages(id) ON DELETE SET NULL,
+        village_name text,
+        uploader_name text,
+        uploader_email text,
+        event_date text,
+        copyright_confirmed boolean NOT NULL DEFAULT false,
+        status text NOT NULL DEFAULT 'pending',
+        created_at timestamp NOT NULL DEFAULT now(),
+        reviewed_at timestamp
+      )
+    `);
     logger.info("DB migrations applied");
   } catch (err) {
     logger.error({ err }, "Migration failed");
