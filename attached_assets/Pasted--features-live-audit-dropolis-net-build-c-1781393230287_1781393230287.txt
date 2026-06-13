@@ -1,0 +1,30 @@
+Διόρθωσε τα σπασμένα και ημιτελή features που βρέθηκαν στο live audit του dropolis.net. Θέλω build changes, όχι μόνο plan.
+
+Προβλήματα:
+1. Στην αρχική υπάρχουν κουμπιά προς /submit-news και /submit-video, αλλά τα routes στο live γυρίζουν 404.
+2. /api/news-submissions υπάρχει και προστατεύεται, όμως λείπει η δημόσια σελίδα /submit-news.
+3. /submit-video λείπει και /api/video-submissions ή αντίστοιχο endpoint λείπει/γυρίζει 404.
+4. Το consent/cookie popup βάζει έξτρα <h1> στη σελίδα και μπερδεύει SEO scanners. Κράτα μόνο το πραγματικό page h1 ως h1 και άλλαξε headings του consent σε h2/div ώστε να μη μετράνε ως main h1.
+
+Υλοποίηση που θέλω:
+- Δημιούργησε δημόσια σελίδα /submit-news στα ελληνικά.
+  Πεδία: τίτλος, περιγραφή/κείμενο είδησης, χωριό επιλογή από τα 41 χωριά με ελληνικά ονόματα, όνομα αποστολέα, email, προαιρετική εικόνα ή url εικόνας αν υποστηρίζεται ήδη.
+  Με submit να αποθηκεύεται ως pending υποβολή και να φαίνεται στο /admin/news για έγκριση.
+  Να έχει SEO title/description και να είναι indexable.
+- Δημιούργησε δημόσια σελίδα /submit-video στα ελληνικά.
+  Πεδία: τίτλος, περιγραφή, χωριό επιλογή από τα 41 χωριά με ελληνικά ονόματα, όνομα αποστολέα, email, video URL. Κράτα pending.
+  Να αποθηκεύεται ως pending video submission και να φαίνεται στο /admin/videos για έγκριση.
+- Αν δεν υπάρχει backend endpoint για videos, πρόσθεσε API endpoint και schema/table/migration σύμφωνα με τα υπάρχοντα patterns. Μην σπάσεις production DB.
+- Στο admin, κράτα προστασία με ADMIN_API_KEY/token όπως υπάρχει για photos/news. Τα admin pages να είναι noindex.
+- Τα νέα routes να μπουν σε App/router, navigation όπου χρειάζεται, sitemap.xml και robots χωρίς 404 links.
+- Στην αρχική τα υπάρχοντα 3 κουμπιά να συνεχίσουν να δουλεύουν.
+- Φτιάξε το consent popup να μη δημιουργεί επιπλέον <h1>.
+
+Acceptance checks μετά την υλοποίηση:
+- pnpm run typecheck περνάει.
+- /submit-news επιστρέφει 200 και έχει φόρμα.
+- /submit-video επιστρέφει 200 και έχει φόρμα.
+- /admin/news και /admin/videos συνεχίζουν να ζητούν Admin Token και είναι noindex.
+- /api/video-submissions ή το endpoint που θα χρησιμοποιηθεί δεν γυρίζει 404.
+- Στην αρχική υπάρχει μόνο ένα πραγματικό page h1 για SEO, όχι h1 από cookie/consent popup.
+- Κάνε publish/redeploy στο live site αν είναι δυνατόν. Αν δεν μπορείς από task agent, άφησε έτοιμο για Apply changes και πες ακριβώς τι μένει.
