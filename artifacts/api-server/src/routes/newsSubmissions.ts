@@ -4,6 +4,7 @@ import { db } from "@workspace/db";
 import { newsSubmissionsTable, articlesTable, villagesTable } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
 import { requireAdmin } from "../lib/admin-auth.js";
+import { notifyAdminNewSubmission } from "../lib/mailer.js";
 import {
   CreateNewsSubmissionBody,
   UpdateNewsSubmissionBody,
@@ -102,6 +103,13 @@ router.post("/news-submissions", submissionRateLimit, async (req, res) => {
       consentGiven: true,
     })
     .returning();
+
+  void notifyAdminNewSubmission({
+    id: submission!.id,
+    senderName: submission!.senderName,
+    title: submission!.title,
+    eventDate: submission!.eventDate ?? null,
+  });
 
   res.status(201).json({ id: submission!.id, status: submission!.status });
 });
