@@ -357,7 +357,7 @@ export default function UploadPhoto() {
           >
             <option value="">— Γενικό φωτογραφικό αρχείο —</option>
             {villages?.map((v) => (
-              <option key={v.id} value={v.id}>{v.name}</option>
+              <option key={v.id} value={v.id}>{v.nameEl ?? v.name}</option>
             ))}
           </select>
           <p className="text-xs text-muted-foreground">
