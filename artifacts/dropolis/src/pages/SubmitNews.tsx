@@ -21,6 +21,7 @@ export default function SubmitNews() {
   const [eventTime, setEventTime] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [consentGiven, setConsentGiven] = useState(false);
+  const [website, setWebsite] = useState("");
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -60,6 +61,7 @@ export default function SubmitNews() {
           eventTime: eventTime || undefined,
           imageUrl: imageUrl.trim() || undefined,
           consentGiven: true,
+          website: website || undefined,
         },
       },
       {
@@ -106,6 +108,7 @@ export default function SubmitNews() {
               setEventTime("");
               setImageUrl("");
               setConsentGiven(false);
+              setWebsite("");
               setErrors({});
             }}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 py-3 font-semibold hover:bg-muted transition-colors"
@@ -145,6 +148,20 @@ export default function SubmitNews() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-card rounded-2xl border border-card-border p-6 md:p-8 shadow-sm">
+
+        {/* Honeypot — hidden from real users; bots fill it in */}
+        <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: 0, height: 0, overflow: "hidden", opacity: 0 }} aria-hidden="true">
+          <label htmlFor="hp-website">Website</label>
+          <input
+            id="hp-website"
+            type="text"
+            name="website"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
 
         {/* Title */}
         <div className="space-y-1.5">

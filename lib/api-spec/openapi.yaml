@@ -1335,6 +1335,9 @@ components:
           type: string
         consentGiven:
           type: boolean
+        website:
+          type: string
+          description: Honeypot field — must be empty; filled value indicates a bot
 
     NewsSubmissionResult:
       type: object

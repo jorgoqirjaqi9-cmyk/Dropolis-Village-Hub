@@ -564,7 +564,8 @@ export const CreateNewsSubmissionBody = zod.object({
   "eventDate": zod.string(),
   "eventTime": zod.string().optional(),
   "imageUrl": zod.string().optional(),
-  "consentGiven": zod.boolean()
+  "consentGiven": zod.boolean(),
+  "website": zod.string().optional().describe('Honeypot field — must be empty; filled value indicates a bot')
 })
 
 

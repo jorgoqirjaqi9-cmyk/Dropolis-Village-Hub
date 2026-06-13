@@ -74,6 +74,11 @@ router.post("/news-submissions", submissionRateLimit, async (req, res) => {
 
   const body = parseResult.data;
 
+  if (body.website) {
+    res.status(200).json({ id: 0, status: "pending" });
+    return;
+  }
+
   if (!body.consentGiven) {
     res.status(400).json({ error: "Απαιτείται συγκατάθεση" });
     return;

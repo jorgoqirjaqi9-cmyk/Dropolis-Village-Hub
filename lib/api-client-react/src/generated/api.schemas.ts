@@ -285,6 +285,8 @@ export interface NewsSubmissionCreate {
   eventTime?: string;
   imageUrl?: string;
   consentGiven: boolean;
+  /** Honeypot field — must be empty; filled value indicates a bot */
+  website?: string;
 }
 
 export interface NewsSubmissionResult {
