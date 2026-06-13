@@ -74,10 +74,10 @@ The site exposes two sitemaps:
 
 | URL | Type | Use |
 |-----|------|-----|
-| `https://dropolis.net/sitemap.xml` | Static XML | Built into the production bundle |
-| `https://dropolis.net/api/sitemap.xml` | Dynamic XML | Auto-generated from the database with real `lastmod` dates |
+| `https://dropolis.net/sitemap.xml` | Static XML | Core static routes only — built into the production bundle; never lists individual articles or villages |
+| `https://dropolis.net/api/sitemap.xml` | Dynamic XML | Auto-generated from the database; sole authoritative source for article and village pages with real `lastmod` dates |
 
-Submit **both** to search engines. The dynamic one is preferred because it reflects actual content dates.
+Submit **both** to search engines. The dynamic one is the authoritative source for all dynamic content (articles, villages). The static one covers only shell routes that never change (news listing, villages listing, about, contact, etc.).
 
 ---
 
