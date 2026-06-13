@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useListPhotos } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Camera, MapPin } from "lucide-react";
+import { Camera, MapPin, Upload } from "lucide-react";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 
@@ -34,6 +34,21 @@ export default function Photos() {
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-3">Φωτογραφικό Αρχείο</h1>
           <p className="text-primary-foreground/70 max-w-xl mx-auto">Αποτυπώνοντας την ομορφιά, την παράδοση και την καθημερινότητα</p>
         </div>
+      </div>
+
+      {/* Upload CTA */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-primary/20 bg-primary/5 px-6 py-4">
+        <div>
+          <p className="font-semibold text-foreground">Έχεις φωτογραφίες από τη Δρόπολη;</p>
+          <p className="text-sm text-muted-foreground mt-0.5">Κάθε υποβολή αξιολογείται από την ομάδα μας πριν δημοσιευτεί.</p>
+        </div>
+        <Link
+          href="/upload-photo"
+          className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm"
+        >
+          <Upload className="w-4 h-4" />
+          Ανέβασε τη δική σου φωτογραφία
+        </Link>
       </div>
 
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">

@@ -3,7 +3,7 @@ import { useRoute, Link } from "wouter";
 import { useGetVillage, getGetVillageQueryKey, useListArticles, getListArticlesQueryKey, useListPhotos, getListPhotosQueryKey } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin } from "lucide-react";
+import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera } from "lucide-react";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 
@@ -167,28 +167,49 @@ export default function VillageDetail() {
             </div>
           </section>
 
-          {photos && photos.length > 0 && (
-            <section>
-              <div className="flex items-center gap-2 mb-6">
-                <ImageIcon className="w-6 h-6 text-primary" />
-                <h2 className="text-2xl font-serif font-bold text-foreground">Φωτογραφίες</h2>
+          <section>
+              <div className="flex items-center justify-between gap-2 mb-6">
+                <div className="flex items-center gap-2">
+                  <ImageIcon className="w-6 h-6 text-primary" />
+                  <h2 className="text-2xl font-serif font-bold text-foreground">Φωτογραφίες</h2>
+                </div>
+                <Link
+                  href={`/upload-photo?villageId=${id}`}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground px-3 py-1.5 text-xs font-semibold transition-colors"
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                  Ανέβασε φωτογραφία
+                </Link>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {photos.map(photo => (
-                  <div key={photo.id} className="aspect-square rounded-lg overflow-hidden bg-muted relative group cursor-pointer shadow-sm">
-                    <img 
-                      src={photo.thumbnailUrl || photo.url} 
-                      alt={photo.title} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                    />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
-                      <span className="text-white text-sm font-medium line-clamp-1">{photo.title}</span>
+              {photos && photos.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {photos.map(photo => (
+                    <div key={photo.id} className="aspect-square rounded-lg overflow-hidden bg-muted relative group cursor-pointer shadow-sm">
+                      <img
+                        src={photo.thumbnailUrl || photo.url}
+                        alt={photo.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+                        <span className="text-white text-sm font-medium line-clamp-1">{photo.title}</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-xl border border-dashed border-border bg-muted/30 py-10 text-center">
+                  <Camera className="w-8 h-8 mx-auto mb-3 text-muted-foreground/50" />
+                  <p className="text-sm text-muted-foreground mb-4">Δεν υπάρχουν ακόμα φωτογραφίες για αυτό το χωριό.</p>
+                  <Link
+                    href={`/upload-photo?villageId=${id}`}
+                    className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-2 text-sm font-semibold hover:bg-primary/90 transition-colors"
+                  >
+                    <Camera className="w-4 h-4" />
+                    Ανέβασε φωτογραφία για αυτό το χωριό
+                  </Link>
+                </div>
+              )}
             </section>
-          )}
         </div>
 
         <aside className="space-y-8">

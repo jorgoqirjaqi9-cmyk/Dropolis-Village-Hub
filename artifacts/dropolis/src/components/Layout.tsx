@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail, Download, Share, ChevronDown } from "lucide-react";
+import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail, Download, Share, ChevronDown, Camera } from "lucide-react";
 import { usePWAInstall } from "../hooks/use-pwa-install";
 import { RadioPlayer } from "./RadioPlayer";
 import { CookieConsent } from "./CookieConsent";
@@ -202,6 +202,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <LanguageSwitcher scrolled={scrolled} />
 
             <Link
+              href="/upload-photo"
+              className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                scrolled
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                  : "bg-white/20 text-white hover:bg-white/30"
+              }`}
+            >
+              <Camera size={14} /> Ανέβασε φωτογραφία
+            </Link>
+
+            <Link
               href="/contact"
               className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
                 scrolled
@@ -275,6 +286,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 );
               })}
               <div className="border-t border-border/50 mt-1 pt-1">
+                <Link
+                  href="/upload-photo"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-primary bg-primary/5 hover:bg-primary/10 transition-all"
+                >
+                  <Camera size={16} /> Ανέβασε φωτογραφία
+                </Link>
                 <Link
                   href="/contact"
                   className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-muted transition-all"

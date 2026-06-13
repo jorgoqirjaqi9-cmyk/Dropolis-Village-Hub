@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useSearch } from "wouter";
 import { SEO } from "@/components/SEO";
 import { useListVillages } from "@workspace/api-client-react";
 import { Camera, Upload, CheckCircle, AlertCircle, ImageIcon, X } from "lucide-react";
@@ -9,7 +10,11 @@ const MAX_SIZE = 5 * 1024 * 1024;
 type Step = "form" | "uploading" | "success" | "error";
 
 export default function UploadPhoto() {
+  const search = useSearch();
   const { data: villages } = useListVillages();
+
+  // Pre-select village from query param ?villageId=83
+  const paramVillageId = new URLSearchParams(search).get("villageId") ?? "";
 
   const [step, setStep] = useState<Step>("form");
   const [file, setFile] = useState<File | null>(null);
@@ -19,7 +24,12 @@ export default function UploadPhoto() {
   const [progress, setProgress] = useState(0);
 
   const [title, setTitle] = useState("");
-  const [villageId, setVillageId] = useState<string>("");
+  const [villageId, setVillageId] = useState<string>(paramVillageId);
+
+  // Sync if query param changes (e.g. navigating between villages)
+  useEffect(() => {
+    setVillageId(paramVillageId);
+  }, [paramVillageId]);
   const [photographer, setPhotographer] = useState("");
   const [uploaderName, setUploaderName] = useState("");
   const [copyright, setCopyright] = useState(false);
