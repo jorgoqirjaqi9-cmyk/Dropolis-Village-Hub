@@ -175,6 +175,15 @@ export class ObjectStorageService {
     return `/objects/${entityId}`;
   }
 
+  async deleteObjectEntity(objectPath: string): Promise<void> {
+    try {
+      const objectFile = await this.getObjectEntityFile(objectPath);
+      await objectFile.delete({ ignoreNotFound: true });
+    } catch {
+      // ignore: object may not exist
+    }
+  }
+
   async trySetObjectEntityAclPolicy(
     rawPath: string,
     aclPolicy: ObjectAclPolicy

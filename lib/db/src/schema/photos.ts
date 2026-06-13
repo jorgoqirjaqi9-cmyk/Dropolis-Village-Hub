@@ -14,6 +14,7 @@ export const photosTable = pgTable("photos", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   status: text("status").notNull().default("approved"),
   objectPath: text("object_path"),
+  thumbnailObjectPath: text("thumbnail_object_path"),
   copyrightConfirmed: boolean("copyright_confirmed").notNull().default(false),
   uploaderName: text("uploader_name"),
 });

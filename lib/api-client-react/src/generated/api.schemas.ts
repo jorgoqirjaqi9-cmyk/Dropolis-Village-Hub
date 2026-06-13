@@ -189,6 +189,7 @@ export interface PhotoSubmission {
   title: string;
   /** @minLength 1 */
   objectPath: string;
+  thumbnailObjectPath?: string;
   villageId?: number;
   villageName?: string;
   photographer?: string;
@@ -213,6 +214,8 @@ export interface AdminPhoto {
   status: string;
   /** @nullable */
   objectPath?: string | null;
+  /** @nullable */
+  thumbnailObjectPath?: string | null;
   copyrightConfirmed: boolean;
   /** @nullable */
   uploaderName?: string | null;

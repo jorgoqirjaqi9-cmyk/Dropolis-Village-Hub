@@ -5,15 +5,79 @@ import { useListVillages } from "@workspace/api-client-react";
 import { Camera, Upload, CheckCircle, AlertCircle, ImageIcon, X } from "lucide-react";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_SIZE = 5 * 1024 * 1024;
+const MAX_RAW_SIZE = 20 * 1024 * 1024; // 20 MB — raw file before compression
+const MAX_COMPRESSED_SIZE = 3 * 1024 * 1024; // 3 MB final limit (server enforces too)
 
-type Step = "form" | "uploading" | "success" | "error";
+type Step = "form" | "compressing" | "uploading" | "success" | "error";
+
+// ---------------------------------------------------------------------------
+// Canvas helpers
+// ---------------------------------------------------------------------------
+
+function resizeCanvas(img: HTMLImageElement, maxPx: number): HTMLCanvasElement {
+  let { width, height } = img;
+  if (width > maxPx || height > maxPx) {
+    if (width >= height) {
+      height = Math.round((height * maxPx) / width);
+      width = maxPx;
+    } else {
+      width = Math.round((width * maxPx) / height);
+      height = maxPx;
+    }
+  }
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  canvas.getContext("2d")!.drawImage(img, 0, 0, width, height);
+  return canvas;
+}
+
+async function blobFromCanvas(canvas: HTMLCanvasElement, quality: number): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (b) => (b ? resolve(b) : reject(new Error("Canvas toBlob failed"))),
+      "image/jpeg",
+      quality
+    );
+  });
+}
+
+async function loadImage(file: File): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Δεν ήταν δυνατή η φόρτωση της εικόνας.")); };
+    img.src = url;
+  });
+}
+
+/**
+ * Compress image to JPEG, reducing quality until it fits under maxBytes.
+ * Returns a File with content-type image/jpeg.
+ */
+async function compressImage(file: File, maxPx: number, maxBytes: number, baseName: string): Promise<File> {
+  const img = await loadImage(file);
+  const canvas = resizeCanvas(img, maxPx);
+
+  // Try from quality 0.85 down to 0.50 in steps
+  for (const q of [0.85, 0.78, 0.70, 0.62, 0.54, 0.50]) {
+    const blob = await blobFromCanvas(canvas, q);
+    if (blob.size <= maxBytes) {
+      return new File([blob], baseName, { type: "image/jpeg" });
+    }
+  }
+  // Last resort
+  const blob = await blobFromCanvas(canvas, 0.45);
+  return new File([blob], baseName, { type: "image/jpeg" });
+}
+
+// ---------------------------------------------------------------------------
 
 export default function UploadPhoto() {
   const search = useSearch();
   const { data: villages } = useListVillages();
 
-  // Pre-select village from query param ?villageId=83
   const paramVillageId = new URLSearchParams(search).get("villageId") ?? "";
 
   const [step, setStep] = useState<Step>("form");
@@ -22,14 +86,15 @@ export default function UploadPhoto() {
   const [fileError, setFileError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
+  const [compressedSize, setCompressedSize] = useState<number | null>(null);
 
   const [title, setTitle] = useState("");
   const [villageId, setVillageId] = useState<string>(paramVillageId);
 
-  // Sync if query param changes (e.g. navigating between villages)
   useEffect(() => {
     setVillageId(paramVillageId);
   }, [paramVillageId]);
+
   const [photographer, setPhotographer] = useState("");
   const [uploaderName, setUploaderName] = useState("");
   const [copyright, setCopyright] = useState(false);
@@ -40,13 +105,14 @@ export default function UploadPhoto() {
     const f = e.target.files?.[0];
     if (!f) return;
     setFileError(null);
+    setCompressedSize(null);
 
     if (!ALLOWED_TYPES.includes(f.type)) {
       setFileError("Μόνο αρχεία JPG, PNG και WEBP επιτρέπονται.");
       return;
     }
-    if (f.size > MAX_SIZE) {
-      setFileError("Το αρχείο δεν πρέπει να υπερβαίνει τα 5 MB.");
+    if (f.size > MAX_RAW_SIZE) {
+      setFileError("Το αρχείο είναι πολύ μεγάλο (μέγ. 20 MB πριν τη συμπίεση).");
       return;
     }
 
@@ -60,6 +126,7 @@ export default function UploadPhoto() {
     setFile(null);
     setPreview(null);
     setFileError(null);
+    setCompressedSize(null);
     if (inputRef.current) inputRef.current.value = "";
   }
 
@@ -68,44 +135,68 @@ export default function UploadPhoto() {
     if (!file) { setFileError("Επιλέξτε αρχείο εικόνας."); return; }
     if (!copyright) { setSubmitError("Απαιτείται η αποδοχή δήλωσης πνευματικών δικαιωμάτων."); return; }
 
-    setStep("uploading");
-    setProgress(10);
+    setStep("compressing");
+    setProgress(5);
     setSubmitError(null);
 
     try {
-      // Step 1: get presigned URL
-      const urlRes = await fetch("/api/photos/upload-url", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: file.name, size: file.size, contentType: file.type }),
-      });
+      // ── Compress main image (max 1600px, ≤ 3 MB) ──────────────────────────
+      const mainFile = await compressImage(file, 1600, MAX_COMPRESSED_SIZE, "photo.jpg");
+      setCompressedSize(mainFile.size);
+      setProgress(20);
 
-      if (!urlRes.ok) {
-        const err = await urlRes.json().catch(() => ({ error: "Αποτυχία δημιουργίας URL." }));
-        throw new Error(err.error || "Αποτυχία δημιουργίας URL αποστολής.");
-      }
-
-      const { uploadURL, objectPath } = await urlRes.json();
+      // ── Compress thumbnail (max 600px, ≤ 200 KB) ─────────────────────────
+      const thumbFile = await compressImage(file, 600, 200 * 1024, "thumb.jpg");
       setProgress(30);
 
-      // Step 2: upload directly to GCS
-      const uploadRes = await fetch(uploadURL, {
-        method: "PUT",
-        body: file,
-        headers: { "Content-Type": file.type },
-      });
+      setStep("uploading");
 
-      if (!uploadRes.ok) throw new Error("Η αποστολή στο αποθηκευτικό χώρο απέτυχε.");
-      setProgress(75);
+      // ── Get presigned URLs (main + thumbnail in parallel) ─────────────────
+      const [mainUrlRes, thumbUrlRes] = await Promise.all([
+        fetch("/api/photos/upload-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: mainFile.name, size: mainFile.size, contentType: "image/jpeg" }),
+        }),
+        fetch("/api/photos/upload-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: thumbFile.name, size: thumbFile.size, contentType: "image/jpeg" }),
+        }),
+      ]);
 
-      // Step 3: submit metadata
+      if (!mainUrlRes.ok) {
+        const err = await mainUrlRes.json().catch(() => ({ error: "Σφάλμα URL." }));
+        throw new Error(err.error || "Αποτυχία δημιουργίας URL αποστολής.");
+      }
+      if (!thumbUrlRes.ok) {
+        const err = await thumbUrlRes.json().catch(() => ({ error: "Σφάλμα URL thumbnail." }));
+        throw new Error(err.error || "Αποτυχία δημιουργίας URL thumbnail.");
+      }
+
+      const { uploadURL: mainUploadURL, objectPath: mainObjectPath } = await mainUrlRes.json();
+      const { uploadURL: thumbUploadURL, objectPath: thumbObjectPath } = await thumbUrlRes.json();
+      setProgress(50);
+
+      // ── Upload both to GCS in parallel ───────────────────────────────────
+      const [uploadMain, uploadThumb] = await Promise.all([
+        fetch(mainUploadURL, { method: "PUT", body: mainFile, headers: { "Content-Type": "image/jpeg" } }),
+        fetch(thumbUploadURL, { method: "PUT", body: thumbFile, headers: { "Content-Type": "image/jpeg" } }),
+      ]);
+
+      if (!uploadMain.ok) throw new Error("Η αποστολή της φωτογραφίας στο αποθηκευτικό χώρο απέτυχε.");
+      if (!uploadThumb.ok) throw new Error("Η αποστολή του thumbnail στο αποθηκευτικό χώρο απέτυχε.");
+      setProgress(80);
+
+      // ── Submit metadata ───────────────────────────────────────────────────
       const selectedVillage = villages?.find((v) => v.id === Number(villageId));
       const submitRes = await fetch("/api/photos/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: title.trim(),
-          objectPath,
+          objectPath: mainObjectPath,
+          thumbnailObjectPath: thumbObjectPath,
           villageId: villageId ? Number(villageId) : undefined,
           villageName: selectedVillage?.name ?? undefined,
           photographer: photographer.trim() || undefined,
@@ -151,6 +242,7 @@ export default function UploadPhoto() {
             setUploaderName("");
             setCopyright(false);
             setProgress(0);
+            setCompressedSize(null);
           }}
           className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-semibold hover:bg-primary/90 transition-colors"
         >
@@ -160,6 +252,10 @@ export default function UploadPhoto() {
       </div>
     );
   }
+
+  const isCompressing = step === "compressing";
+  const isUploading = step === "uploading";
+  const isBusy = isCompressing || isUploading;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl space-y-8">
@@ -176,7 +272,7 @@ export default function UploadPhoto() {
           <Camera className="w-10 h-10 mx-auto mb-4 text-secondary" />
           <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">Υποβολή Φωτογραφίας</h1>
           <p className="text-primary-foreground/70 text-sm max-w-md mx-auto">
-            Κάθε υποβολή αξιολογείται από την ομάδα πριν δημοσιευτεί. JPG · PNG · WEBP · έως 5 MB.
+            Κάθε υποβολή αξιολογείται από την ομάδα πριν δημοσιευτεί. JPG · PNG · WEBP · αυτόματη συμπίεση.
           </p>
         </div>
       </div>
@@ -195,14 +291,20 @@ export default function UploadPhoto() {
               <button
                 type="button"
                 onClick={clearFile}
-                className="absolute top-2 right-2 rounded-full bg-black/60 text-white p-1 hover:bg-black/80 transition-colors"
+                disabled={isBusy}
+                className="absolute top-2 right-2 rounded-full bg-black/60 text-white p-1 hover:bg-black/80 transition-colors disabled:opacity-50"
                 aria-label="Αφαίρεση αρχείου"
               >
                 <X className="w-4 h-4" />
               </button>
               <div className="px-3 py-2 bg-muted text-xs text-muted-foreground flex items-center gap-2">
                 <ImageIcon className="w-3 h-3" />
-                {file?.name} — {file ? (file.size / 1024 / 1024).toFixed(2) : ""}  MB
+                {file?.name} — {file ? (file.size / 1024 / 1024).toFixed(2) : ""} MB αρχικά
+                {compressedSize !== null && (
+                  <span className="ml-auto text-green-600 dark:text-green-400 font-medium">
+                    → {(compressedSize / 1024).toFixed(0)} KB μετά συμπίεση
+                  </span>
+                )}
               </div>
             </div>
           ) : (
@@ -210,7 +312,7 @@ export default function UploadPhoto() {
               <Upload className="w-8 h-8 text-muted-foreground" />
               <div className="text-center">
                 <p className="font-medium text-sm">Κάντε κλικ για επιλογή αρχείου</p>
-                <p className="text-xs text-muted-foreground mt-1">JPG, PNG, WEBP — έως 5 MB</p>
+                <p className="text-xs text-muted-foreground mt-1">JPG, PNG, WEBP — αυτόματη συμπίεση πριν την αποστολή</p>
               </div>
               <input
                 ref={inputRef}
@@ -312,10 +414,10 @@ export default function UploadPhoto() {
         )}
 
         {/* Progress */}
-        {step === "uploading" && (
+        {isBusy && (
           <div className="space-y-2">
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Αποστολή σε εξέλιξη…</span>
+              <span>{isCompressing ? "Συμπίεση εικόνας…" : "Αποστολή στον διακομιστή…"}</span>
               <span>{progress}%</span>
             </div>
             <div className="h-2 rounded-full bg-muted overflow-hidden">
@@ -330,13 +432,13 @@ export default function UploadPhoto() {
         {/* Submit */}
         <button
           type="submit"
-          disabled={step === "uploading" || !file || !title.trim() || !copyright}
+          disabled={isBusy || !file || !title.trim() || !copyright}
           className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-semibold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {step === "uploading" ? (
+          {isBusy ? (
             <>
               <span className="animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white" />
-              Αποστολή…
+              {isCompressing ? "Συμπίεση…" : "Αποστολή…"}
             </>
           ) : (
             <>
@@ -347,7 +449,7 @@ export default function UploadPhoto() {
         </button>
 
         <p className="text-xs text-muted-foreground text-center">
-          Επιτρέπονται έως 5 υποβολές ανά 15 λεπτά από την ίδια σύνδεση.
+          Επιτρέπονται έως 3 υποβολές ανά ώρα από την ίδια σύνδεση.
         </p>
       </form>
     </div>

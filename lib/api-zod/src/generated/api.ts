@@ -420,6 +420,7 @@ export const RequestPhotoUploadUrlResponse = zod.object({
 export const SubmitPhotoBody = zod.object({
   "title": zod.string().min(1),
   "objectPath": zod.string().min(1),
+  "thumbnailObjectPath": zod.string().optional(),
   "villageId": zod.number().optional(),
   "villageName": zod.string().optional(),
   "photographer": zod.string().optional(),
@@ -446,6 +447,7 @@ export const ListAdminPhotosResponseItem = zod.object({
   "photographer": zod.string().nullish(),
   "status": zod.string(),
   "objectPath": zod.string().nullish(),
+  "thumbnailObjectPath": zod.string().nullish(),
   "copyrightConfirmed": zod.boolean(),
   "uploaderName": zod.string().nullish(),
   "createdAt": zod.string()
@@ -471,6 +473,7 @@ export const ApprovePhotoResponse = zod.object({
   "photographer": zod.string().nullish(),
   "status": zod.string(),
   "objectPath": zod.string().nullish(),
+  "thumbnailObjectPath": zod.string().nullish(),
   "copyrightConfirmed": zod.boolean(),
   "uploaderName": zod.string().nullish(),
   "createdAt": zod.string()

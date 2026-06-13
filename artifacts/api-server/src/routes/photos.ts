@@ -20,15 +20,25 @@ const objectStorageService = new ObjectStorageService();
 const DEFAULT_PHOTO_LIMIT = 100;
 const MAX_PHOTO_LIMIT = 300;
 const MAX_PHOTO_OFFSET = 10_000;
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3 MB
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
-const uploadRateLimit = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
+// Rate limit: upload-url allows 2 calls per submission (main + thumbnail), 3 submissions/h = 6 calls
+const uploadUrlRateLimit = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: "Πολλές αιτήσεις. Δοκιμάστε ξανά σε 15 λεπτά." },
+  message: { error: "Πολλές αιτήσεις. Δοκιμάστε ξανά σε 1 ώρα." },
+});
+
+// Stricter limit on actual submissions: 3 per hour per IP
+const submitRateLimit = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 3,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Έχετε φτάσει το όριο υποβολών. Δοκιμάστε ξανά σε 1 ώρα." },
 });
 
 // ---------------------------------------------------------------------------
@@ -59,7 +69,7 @@ router.get("/photos", async (req, res) => {
 // POST /photos/upload-url — rate-limited presigned URL (validates type + size)
 // ---------------------------------------------------------------------------
 
-router.post("/photos/upload-url", uploadRateLimit, async (req, res) => {
+router.post("/photos/upload-url", uploadUrlRateLimit, async (req, res) => {
   const parsed = RequestPhotoUploadUrlBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Λείπουν υποχρεωτικά πεδία (name, size, contentType)" });
@@ -74,7 +84,7 @@ router.post("/photos/upload-url", uploadRateLimit, async (req, res) => {
   }
 
   if (size > MAX_FILE_SIZE) {
-    res.status(400).json({ error: "Το αρχείο δεν πρέπει να υπερβαίνει τα 5 MB." });
+    res.status(400).json({ error: "Το αρχείο δεν πρέπει να υπερβαίνει τα 3 MB." });
     return;
   }
 
@@ -92,14 +102,14 @@ router.post("/photos/upload-url", uploadRateLimit, async (req, res) => {
 // POST /photos/submit — rate-limited public submission
 // ---------------------------------------------------------------------------
 
-router.post("/photos/submit", uploadRateLimit, async (req, res) => {
+router.post("/photos/submit", submitRateLimit, async (req, res) => {
   const parsed = SubmitPhotoBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Μη έγκυρα δεδομένα υποβολής." });
     return;
   }
 
-  const { title, objectPath, villageId, villageName, photographer, uploaderName, copyrightConfirmed } =
+  const { title, objectPath, thumbnailObjectPath, villageId, villageName, photographer, uploaderName, copyrightConfirmed } =
     parsed.data;
 
   if (!copyrightConfirmed) {
@@ -118,11 +128,14 @@ router.post("/photos/submit", uploadRateLimit, async (req, res) => {
 
   // The serving URL is /api/storage + objectPath
   const url = `/api/storage${objectPath}`;
+  const thumbnailUrl = thumbnailObjectPath ? `/api/storage${thumbnailObjectPath}` : null;
 
   const [photo] = await db.insert(photosTable).values({
     title,
     url,
     objectPath,
+    thumbnailObjectPath: thumbnailObjectPath ?? null,
+    thumbnailUrl,
     villageId: villageId ?? null,
     villageName: resolvedVillageName,
     photographer: photographer ?? null,
@@ -168,12 +181,24 @@ router.get("/photos/:id", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// DELETE /photos/:id — admin-only
+// DELETE /photos/:id — admin-only, also removes from storage
 // ---------------------------------------------------------------------------
 
 router.delete("/photos/:id", requireAdmin, async (req, res) => {
   const { id } = DeletePhotoParams.parse({ id: Number(req.params.id) });
+  const [photo] = await db.select().from(photosTable).where(eq(photosTable.id, id));
+  if (!photo) {
+    res.status(404).end();
+    return;
+  }
   await db.delete(photosTable).where(eq(photosTable.id, id));
+  // Delete files from storage (best-effort, don't fail the request if missing)
+  if (photo.objectPath) {
+    await objectStorageService.deleteObjectEntity(photo.objectPath);
+  }
+  if (photo.thumbnailObjectPath) {
+    await objectStorageService.deleteObjectEntity(photo.thumbnailObjectPath);
+  }
   res.status(204).end();
 });
 
