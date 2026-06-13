@@ -1,8 +1,6 @@
 import { Resend } from "resend";
 import { logger } from "./logger.js";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function notifyAdminNewSubmission(submission: {
   id: number;
   senderName: string;
@@ -19,6 +17,8 @@ export async function notifyAdminNewSubmission(submission: {
     logger.warn("RESEND_API_KEY not set — skipping submission notification email");
     return;
   }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   const fromAddress = process.env.RESEND_FROM_EMAIL ?? "noreply@dropolis.net";
 
