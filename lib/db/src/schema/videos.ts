@@ -10,6 +10,8 @@ export const videosTable = pgTable("videos", {
   villageId: integer("village_id"),
   villageName: text("village_name"),
   duration: text("duration"),
+  likesCount: integer("likes_count").notNull().default(0),
+  dislikesCount: integer("dislikes_count").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

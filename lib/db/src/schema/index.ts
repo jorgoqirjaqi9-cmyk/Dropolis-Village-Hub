@@ -5,3 +5,4 @@ export * from "./videos";
 export * from "./chat";
 export * from "./newsSubmissions";
 export * from "./submittedVideos";
+export * from "./contentVotes";

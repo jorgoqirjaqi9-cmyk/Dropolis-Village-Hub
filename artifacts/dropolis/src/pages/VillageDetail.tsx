@@ -4,7 +4,7 @@ import { useGetVillage, getGetVillageQueryKey, useListArticles, getListArticlesQ
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera, Send, Video } from "lucide-react";
-import { PhotoLikeButtons } from "@/components/PhotoLikeButtons";
+import { VoteButtons } from "@/components/VoteButtons";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 
@@ -200,10 +200,11 @@ export default function VillageDetail() {
                       </div>
                       {/* Like / dislike */}
                       <div className="px-2 py-1.5 border-t border-border/40">
-                        <PhotoLikeButtons
-                          photoId={photo.id}
-                          initialLikes={photo.likes}
-                          initialDislikes={photo.dislikes}
+                        <VoteButtons
+                          contentType="photo"
+                          contentId={photo.id}
+                          likesCount={photo.likes}
+                          dislikesCount={photo.dislikes}
                           compact
                         />
                       </div>

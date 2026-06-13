@@ -1,0 +1,82 @@
+Πρόσθεσε likes/dislikes σε user-generated περιεχόμενο: φωτογραφίες, βίντεο και νέα χρηστών.
+
+1. Photos
+- Κάτω από κάθε φωτογραφία σε /photos και /villages/:id να φαίνεται:
+  ❤️ Μου αρέσει count
+  👎 Δεν μου αρέσει count
+- Τα counts να είναι κοινά παντού.
+
+2. Videos
+- Κάτω από κάθε βίντεο σε /videos και /villages/:id να φαίνεται:
+  ❤️ Μου αρέσει count
+  👎 Δεν μου αρέσει count
+- Αν ο χρήστης κάνει like/dislike από /videos, να φαίνεται και στη σελίδα του χωριού.
+- Αν το κάνει από τη σελίδα χωριού, να φαίνεται και στο /videos.
+
+3. User news
+- Σε user-submitted news/articles που εγκρίνονται και εμφανίζονται στο /news και /villages/:id, να υπάρχει:
+  ❤️ Μου αρέσει count
+  👎 Δεν μου αρέσει count
+- Τα κανονικά RSS/imported άρθρα μπορούν να μείνουν χωρίς likes αν είναι πιο εύκολο, αλλά τα community/user-submitted news να έχουν.
+
+4. Database
+Φτιάξε γενικό σύστημα votes αντί για ξεχωριστό για κάθε τύπο:
+- content_votes table:
+  id
+  content_type: "photo" | "video" | "news"
+  content_id
+  voter_key
+  vote_type: "like" | "dislike"
+  created_at
+  updated_at
+
+Unique constraint:
+- content_type + content_id + voter_key
+
+Στους πίνακες photos/videos/user_news ή articles πρόσθεσε:
+- likes_count integer default 0
+- dislikes_count integer default 0
+
+5. API
+Φτιάξε endpoint:
+POST /api/votes
+body:
+{
+  contentType: "photo" | "video" | "news",
+  contentId: number,
+  voteType: "like" | "dislike"
+}
+
+Λογική:
+- Αν δεν υπάρχει ψήφος, δημιουργεί.
+- Αν υπάρχει ίδια ψήφος, την αφαιρεί.
+- Αν υπάρχει αντίθετη ψήφος, την αλλάζει.
+- Ενημερώνει σωστά likes_count/dislikes_count.
+- Επιστρέφει τα νέα counts.
+
+6. Anti-spam
+- Μία ψήφος ανά χρήστη/IP/browser ανά αντικείμενο.
+- Χρησιμοποίησε anonymous visitor id σε localStorage ή IP hash.
+- Βάλε rate limit στο /api/votes.
+
+7. Frontend component
+Φτιάξε κοινό component:
+<VoteButtons contentType="photo" contentId={id} likesCount={...} dislikesCount={...} />
+
+Να χρησιμοποιείται:
+- σε φωτογραφίες
+- σε βίντεο
+- σε community news
+
+8. UI
+- Mobile friendly.
+- Μικρά κουμπιά:
+  ❤️ count
+  👎 count
+- Να ενημερώνεται αμέσως μετά το click.
+
+9. Security
+- Μόνο approved/public content μπορεί να ψηφίζεται.
+- Pending/rejected content όχι.
+
+10. Run typecheck/build/deploy.

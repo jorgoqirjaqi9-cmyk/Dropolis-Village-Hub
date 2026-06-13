@@ -8,6 +8,7 @@ import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Send, Users } from "lucide-react";
+import { VoteButtons } from "@/components/VoteButtons";
 
 const COMMUNITY_CATEGORY = "Ειδήσεις Κοινότητας";
 
@@ -229,6 +230,17 @@ export default function News() {
                       <span className="text-primary font-medium group-hover:text-secondary transition-colors">Διαβάστε περισσότερα &rarr;</span>
                     </div>
                   </Link>
+                  {article.category === COMMUNITY_CATEGORY && (
+                    <div className="pt-3 mt-2 border-t border-border/40">
+                      <VoteButtons
+                        contentType="news"
+                        contentId={article.id}
+                        likesCount={article.likesCount ?? 0}
+                        dislikesCount={article.dislikesCount ?? 0}
+                        compact
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 

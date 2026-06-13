@@ -30,6 +30,8 @@ export interface Article {
   viewCount?: number;
   published: boolean;
   featured?: boolean;
+  likesCount?: number;
+  dislikesCount?: number;
   createdAt: string;
   updatedAt?: string;
 }

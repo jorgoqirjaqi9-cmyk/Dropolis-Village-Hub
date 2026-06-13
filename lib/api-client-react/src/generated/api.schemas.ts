@@ -41,6 +41,8 @@ export interface Article {
   viewCount?: number;
   published: boolean;
   featured?: boolean;
+  likesCount?: number;
+  dislikesCount?: number;
   createdAt: string;
   updatedAt?: string;
 }
@@ -233,6 +235,14 @@ export interface ErrorEnvelope {
   error: string;
 }
 
+export type VideoContentType = typeof VideoContentType[keyof typeof VideoContentType];
+
+
+export const VideoContentType = {
+  youtube_video: 'youtube_video',
+  uploaded_video: 'uploaded_video',
+} as const;
+
 export interface Video {
   id: number;
   title: string;
@@ -254,6 +264,9 @@ export interface Video {
   eventDate?: string | null;
   /** @nullable */
   duration?: string | null;
+  contentType: VideoContentType;
+  likesCount: number;
+  dislikesCount: number;
   createdAt: string;
 }
 
@@ -389,6 +402,36 @@ export interface VideoSubmission {
   createdAt: string;
   /** @nullable */
   reviewedAt?: string | null;
+}
+
+export type VoteRequestContentType = typeof VoteRequestContentType[keyof typeof VoteRequestContentType];
+
+
+export const VoteRequestContentType = {
+  photo: 'photo',
+  youtube_video: 'youtube_video',
+  uploaded_video: 'uploaded_video',
+  news: 'news',
+} as const;
+
+export type VoteRequestVoteType = typeof VoteRequestVoteType[keyof typeof VoteRequestVoteType];
+
+
+export const VoteRequestVoteType = {
+  like: 'like',
+  dislike: 'dislike',
+} as const;
+
+export interface VoteRequest {
+  contentType: VoteRequestContentType;
+  contentId: number;
+  voteType: VoteRequestVoteType;
+  voterKey: string;
+}
+
+export interface VoteResult {
+  likesCount: number;
+  dislikesCount: number;
 }
 
 export interface SiteStats {

@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useListPhotos } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PhotoLikeButtons } from "@/components/PhotoLikeButtons";
+import { VoteButtons } from "@/components/VoteButtons";
 import { Camera, MapPin, Upload } from "lucide-react";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
@@ -95,10 +95,11 @@ export default function Photos() {
               </div>
               {/* Like / dislike bar */}
               <div className="px-3 py-2 border-t border-border/40">
-                <PhotoLikeButtons
-                  photoId={photo.id}
-                  initialLikes={photo.likes}
-                  initialDislikes={photo.dislikes}
+                <VoteButtons
+                  contentType="photo"
+                  contentId={photo.id}
+                  likesCount={photo.likes}
+                  dislikesCount={photo.dislikes}
                 />
               </div>
             </div>

@@ -5,6 +5,7 @@
  * Dropolis API - Portal for Dropolë villages
  * OpenAPI spec version: 0.1.0
  */
+import type { VideoContentType } from './videoContentType';
 
 export interface Video {
   id: number;
@@ -27,5 +28,8 @@ export interface Video {
   eventDate?: string | null;
   /** @nullable */
   duration?: string | null;
+  contentType: VideoContentType;
+  likesCount: number;
+  dislikesCount: number;
   createdAt: string;
 }

@@ -62,7 +62,9 @@ import type {
   Village,
   VillageInput,
   VillageUpdateInput,
-  VoteResponse
+  VoteRequest,
+  VoteResponse,
+  VoteResult
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -3108,6 +3110,77 @@ export const useDeleteVideoSubmission = <TError = ErrorType<void>,
         TContext
       > => {
       return useMutation(getDeleteVideoSubmissionMutationOptions(options));
+    }
+
+export const getCastVoteUrl = () => {
+
+
+
+
+  return `/api/votes`
+}
+
+/**
+ * @summary Cast a like or dislike vote on content
+ */
+export const castVote = async (voteRequest: VoteRequest, options?: RequestInit): Promise<VoteResult> => {
+
+  return customFetch<VoteResult>(getCastVoteUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      voteRequest,)
+  }
+);}
+
+
+
+
+export const getCastVoteMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof castVote>>, TError,{data: BodyType<VoteRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof castVote>>, TError,{data: BodyType<VoteRequest>}, TContext> => {
+
+const mutationKey = ['castVote'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof castVote>>, {data: BodyType<VoteRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  castVote(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CastVoteMutationResult = NonNullable<Awaited<ReturnType<typeof castVote>>>
+    export type CastVoteMutationBody = BodyType<VoteRequest>
+    export type CastVoteMutationError = ErrorType<void>
+
+    /**
+ * @summary Cast a like or dislike vote on content
+ */
+export const useCastVote = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof castVote>>, TError,{data: BodyType<VoteRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof castVote>>,
+        TError,
+        {data: BodyType<VoteRequest>},
+        TContext
+      > => {
+      return useMutation(getCastVoteMutationOptions(options));
     }
 
 export const getListChatMessagesUrl = (params?: ListChatMessagesParams,) => {

@@ -18,6 +18,8 @@ export const articlesTable = pgTable("articles", {
   score: integer("score").notNull().default(0),
   sourceUrl: text("source_url").unique(),
   viewCount: integer("view_count").notNull().default(0),
+  likesCount: integer("likes_count").notNull().default(0),
+  dislikesCount: integer("dislikes_count").notNull().default(0),
   published: boolean("published").notNull().default(true),
   featured: boolean("featured").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),

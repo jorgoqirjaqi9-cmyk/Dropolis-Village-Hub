@@ -893,6 +893,31 @@ paths:
         "404":
           description: Not found
 
+  /votes:
+    post:
+      operationId: castVote
+      tags: [votes]
+      summary: Cast a like or dislike vote on content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VoteRequest"
+      responses:
+        "200":
+          description: Updated vote counts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VoteResult"
+        "400":
+          description: Bad request
+        "404":
+          description: Content not found or not public
+        "429":
+          description: Rate limit exceeded
+
   /chat/messages:
     get:
       operationId: listChatMessages
@@ -1078,6 +1103,10 @@ components:
           type: boolean
         featured:
           type: boolean
+        likesCount:
+          type: integer
+        dislikesCount:
+          type: integer
         createdAt:
           type: string
         updatedAt:
@@ -1400,7 +1429,7 @@ components:
 
     Video:
       type: object
-      required: [id, title, createdAt]
+      required: [id, title, createdAt, contentType, likesCount, dislikesCount]
       properties:
         id:
           type: integer
@@ -1424,6 +1453,13 @@ components:
           type: ["string", "null"]
         duration:
           type: ["string", "null"]
+        contentType:
+          type: string
+          enum: [youtube_video, uploaded_video]
+        likesCount:
+          type: integer
+        dislikesCount:
+          type: integer
         createdAt:
           type: string
 
@@ -1632,6 +1668,30 @@ components:
           type: string
         reviewedAt:
           type: ["string", "null"]
+
+    VoteRequest:
+      type: object
+      required: [contentType, contentId, voteType, voterKey]
+      properties:
+        contentType:
+          type: string
+          enum: [photo, youtube_video, uploaded_video, news]
+        contentId:
+          type: integer
+        voteType:
+          type: string
+          enum: [like, dislike]
+        voterKey:
+          type: string
+
+    VoteResult:
+      type: object
+      required: [likesCount, dislikesCount]
+      properties:
+        likesCount:
+          type: integer
+        dislikesCount:
+          type: integer
 
     SiteStats:
       type: object

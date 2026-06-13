@@ -4,6 +4,7 @@ import { useListVideos } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Play, MapPin, Clock, Upload, User, Calendar } from "lucide-react";
+import { VoteButtons } from "@/components/VoteButtons";
 
 export default function Videos() {
   const { data: videos, isLoading } = useListVideos({ limit: 200 });
@@ -129,6 +130,15 @@ export default function Videos() {
                       <Clock className="w-3 h-3" /> {video.duration}
                     </span>
                   )}
+                </div>
+                <div className="pt-3 border-t border-border/40 mt-2">
+                  <VoteButtons
+                    contentType={video.contentType}
+                    contentId={video.id}
+                    likesCount={video.likesCount}
+                    dislikesCount={video.dislikesCount}
+                    compact
+                  />
                 </div>
               </div>
             </div>

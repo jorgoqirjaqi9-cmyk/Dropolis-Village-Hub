@@ -49,6 +49,39 @@ export async function runMigrations(): Promise<void> {
         reviewed_at timestamp
       )
     `);
+    await client.query(`
+      ALTER TABLE videos ADD COLUMN IF NOT EXISTS likes_count integer NOT NULL DEFAULT 0
+    `);
+    await client.query(`
+      ALTER TABLE videos ADD COLUMN IF NOT EXISTS dislikes_count integer NOT NULL DEFAULT 0
+    `);
+    await client.query(`
+      ALTER TABLE submitted_videos ADD COLUMN IF NOT EXISTS likes_count integer NOT NULL DEFAULT 0
+    `);
+    await client.query(`
+      ALTER TABLE submitted_videos ADD COLUMN IF NOT EXISTS dislikes_count integer NOT NULL DEFAULT 0
+    `);
+    await client.query(`
+      ALTER TABLE articles ADD COLUMN IF NOT EXISTS likes_count integer NOT NULL DEFAULT 0
+    `);
+    await client.query(`
+      ALTER TABLE articles ADD COLUMN IF NOT EXISTS dislikes_count integer NOT NULL DEFAULT 0
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS content_votes (
+        id serial PRIMARY KEY,
+        content_type text NOT NULL,
+        content_id integer NOT NULL,
+        voter_key text NOT NULL,
+        vote_type text NOT NULL,
+        created_at timestamp NOT NULL DEFAULT now(),
+        updated_at timestamp NOT NULL DEFAULT now()
+      )
+    `);
+    await client.query(`
+      CREATE UNIQUE INDEX IF NOT EXISTS content_votes_unique
+        ON content_votes(content_type, content_id, voter_key)
+    `);
     logger.info("DB migrations applied");
   } catch (err) {
     logger.error({ err }, "Migration failed");

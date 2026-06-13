@@ -43,6 +43,8 @@ export const ListArticlesResponseItem = zod.object({
   "viewCount": zod.number().optional(),
   "published": zod.boolean(),
   "featured": zod.boolean().optional(),
+  "likesCount": zod.number().optional(),
+  "dislikesCount": zod.number().optional(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().optional()
 })
@@ -89,6 +91,8 @@ export const GetFeaturedArticlesResponseItem = zod.object({
   "viewCount": zod.number().optional(),
   "published": zod.boolean(),
   "featured": zod.boolean().optional(),
+  "likesCount": zod.number().optional(),
+  "dislikesCount": zod.number().optional(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().optional()
 })
@@ -119,6 +123,8 @@ export const GetTrendingArticlesResponseItem = zod.object({
   "viewCount": zod.number().optional(),
   "published": zod.boolean(),
   "featured": zod.boolean().optional(),
+  "likesCount": zod.number().optional(),
+  "dislikesCount": zod.number().optional(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().optional()
 })
@@ -168,6 +174,8 @@ export const GetArticleResponse = zod.object({
   "viewCount": zod.number().optional(),
   "published": zod.boolean(),
   "featured": zod.boolean().optional(),
+  "likesCount": zod.number().optional(),
+  "dislikesCount": zod.number().optional(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().optional()
 })
@@ -214,6 +222,8 @@ export const UpdateArticleResponse = zod.object({
   "viewCount": zod.number().optional(),
   "published": zod.boolean(),
   "featured": zod.boolean().optional(),
+  "likesCount": zod.number().optional(),
+  "dislikesCount": zod.number().optional(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().optional()
 })
@@ -670,6 +680,9 @@ export const ListVideosResponseItem = zod.object({
   "uploaderName": zod.string().nullish(),
   "eventDate": zod.string().nullish(),
   "duration": zod.string().nullish(),
+  "contentType": zod.enum(['youtube_video', 'uploaded_video']),
+  "likesCount": zod.number(),
+  "dislikesCount": zod.number(),
   "createdAt": zod.string()
 })
 export const ListVideosResponse = zod.array(ListVideosResponseItem)
@@ -811,6 +824,22 @@ export const RejectVideoSubmissionResponse = zod.object({
  */
 export const DeleteVideoSubmissionParams = zod.object({
   "id": zod.coerce.number()
+})
+
+
+/**
+ * @summary Cast a like or dislike vote on content
+ */
+export const CastVoteBody = zod.object({
+  "contentType": zod.enum(['photo', 'youtube_video', 'uploaded_video', 'news']),
+  "contentId": zod.number(),
+  "voteType": zod.enum(['like', 'dislike']),
+  "voterKey": zod.string()
+})
+
+export const CastVoteResponse = zod.object({
+  "likesCount": zod.number(),
+  "dislikesCount": zod.number()
 })
 
 

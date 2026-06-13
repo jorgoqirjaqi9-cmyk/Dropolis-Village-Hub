@@ -68,6 +68,9 @@ function formatYouTubeVideo(v: typeof videosTable.$inferSelect) {
     uploaderName: null as string | null,
     eventDate: null as string | null,
     duration: v.duration,
+    contentType: "youtube_video" as const,
+    likesCount: v.likesCount,
+    dislikesCount: v.dislikesCount,
     createdAt: v.createdAt.toISOString(),
   };
 }
@@ -85,6 +88,9 @@ function formatSubmittedVideo(sv: typeof submittedVideosTable.$inferSelect) {
     uploaderName: sv.uploaderName,
     eventDate: sv.eventDate,
     duration: null as string | null,
+    contentType: "uploaded_video" as const,
+    likesCount: sv.likesCount,
+    dislikesCount: sv.dislikesCount,
     createdAt: sv.createdAt.toISOString(),
   };
 }

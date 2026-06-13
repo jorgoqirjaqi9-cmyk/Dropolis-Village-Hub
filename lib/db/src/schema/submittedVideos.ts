@@ -15,6 +15,8 @@ export const submittedVideosTable = pgTable("submitted_videos", {
   eventDate: text("event_date"),
   copyrightConfirmed: boolean("copyright_confirmed").notNull().default(false),
   status: text("status").notNull().default("pending"),
+  likesCount: integer("likes_count").notNull().default(0),
+  dislikesCount: integer("dislikes_count").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   reviewedAt: timestamp("reviewed_at"),
 });

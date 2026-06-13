@@ -16,6 +16,7 @@ import storageRouter from "./storage";
 import newsSubmissionsRouter from "./newsSubmissions";
 import videoSubmissionsRouter from "./video-submissions";
 import adminVideosRouter from "./admin-videos";
+import votesRouter from "./votes";
 
 const router: IRouter = Router();
 
@@ -36,5 +37,6 @@ router.use(storageRouter);
 router.use(newsSubmissionsRouter);
 router.use(videoSubmissionsRouter);
 router.use(adminVideosRouter);
+router.use(votesRouter);
 
 export default router;
