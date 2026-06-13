@@ -4,6 +4,7 @@ import { villagesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { prerenderVillage } from "../lib/on-demand-prerender.js";
 import { requireAdmin } from "../lib/admin-auth.js";
+import { autoIndexVillage } from "../lib/auto-indexing.js";
 import {
   CreateVillageBody,
   DeleteVillageParams,
@@ -40,6 +41,7 @@ router.post("/villages", requireAdmin, async (req, res) => {
     latitude: village.latitude,
     longitude: village.longitude,
   });
+  void autoIndexVillage(village.id);
   res.status(201).json(formatVillage(village));
 });
 
@@ -72,6 +74,7 @@ router.patch("/villages/:id", requireAdmin, async (req, res) => {
     latitude: updated.latitude,
     longitude: updated.longitude,
   });
+  void autoIndexVillage(updated.id);
   res.json(formatVillage(updated));
 });
 

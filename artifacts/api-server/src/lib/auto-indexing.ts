@@ -86,6 +86,20 @@ async function isArticlePrerendered(articleId: number): Promise<boolean> {
   return String(articleId) in manifest.articles;
 }
 
+/**
+ * Returns true if the village has prerendered HTML in the currently deployed build.
+ *
+ * Fail-closed: returns false (skip submission) if the manifest cannot be fetched.
+ */
+async function isVillagePrerendered(villageId: number): Promise<boolean> {
+  const manifest = await fetchManifest();
+  if (!manifest) {
+    logger.warn({ villageId }, "auto-indexing: manifest unavailable — failing closed (submission skipped)");
+    return false;
+  }
+  return String(villageId) in manifest.villages;
+}
+
 // ---------------------------------------------------------------------------
 // Sitemap ping — notifies Bing/Yandex of sitemap updates via IndexNow.
 //
@@ -306,5 +320,45 @@ export async function autoIndexArticle(articleId: number): Promise<void> {
     pingSitemaps(),
     submitToIndexNow([articleUrl]),
     submitToGoogleIndexingApi(articleUrl),
+  ]);
+}
+
+// ---------------------------------------------------------------------------
+// autoIndexVillage — orchestrates all indexing for a created/updated village.
+// Called fire-and-forget from POST /villages and PATCH /villages/:id.
+//
+// Flow mirrors autoIndexArticle:
+//   1. Wait INDEXNOW_DELAY_MS — gives on-demand-prerender.ts time to write
+//      the village HTML and update the manifest before notifying crawlers.
+//   2. Manifest check (fail closed): village ID must be present in
+//      manifest.villages, otherwise skip and log.
+//   3. Submit to IndexNow + Google Indexing API.
+// ---------------------------------------------------------------------------
+export async function autoIndexVillage(villageId: number): Promise<void> {
+  const villageUrl = `${BASE_URL}/villages/${villageId}`;
+  logger.info({ villageId, url: villageUrl, delayMs: INDEXNOW_DELAY_MS }, "Auto-indexing village scheduled");
+
+  if (INDEXNOW_DELAY_MS > 0) {
+    await new Promise<void>((resolve) => setTimeout(resolve, INDEXNOW_DELAY_MS));
+  }
+
+  const prerendered = await isVillagePrerendered(villageId);
+  if (!prerendered) {
+    logEvent({
+      ts: new Date().toISOString(),
+      type: "indexnow",
+      status: "skipped",
+      url: villageUrl,
+      detail: "Village absent from prerender-manifest.json or manifest unavailable — retry via POST /api/indexnow/submit",
+    });
+    return;
+  }
+
+  logger.info({ villageId, url: villageUrl }, "Auto-indexing village: prerender confirmed — submitting");
+
+  await Promise.allSettled([
+    pingSitemaps(),
+    submitToIndexNow([villageUrl]),
+    submitToGoogleIndexingApi(villageUrl),
   ]);
 }
