@@ -120,7 +120,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showIOSHint, setShowIOSHint] = useState(false);
-  const { canInstall, isIOS, install } = usePWAInstall();
+  const { canNativeInstall, isIOS, isInstalled, install } = usePWAInstall();
+  const canInstall = (canNativeInstall || isIOS) && !isInstalled;
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== "undefined") {
       return document.documentElement.classList.contains("dark");

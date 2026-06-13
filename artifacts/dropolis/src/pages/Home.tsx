@@ -7,7 +7,9 @@ import { useGetStats, useGetFeaturedArticles, useListArticles } from "@workspace
 import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera } from "lucide-react";
+import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera, CheckCircle2 } from "lucide-react";
+import { usePWAInstall } from "@/hooks/use-pwa-install";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { WeatherWidget } from "@/components/WeatherWidget";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80";
@@ -21,29 +23,6 @@ const stagger = {
   show: { transition: { staggerChildren: 0.12 } },
 };
 
-// PWA install prompt hook
-function usePWAInstall() {
-  const [prompt, setPrompt] = useState<Event | null>(null);
-  const [installed, setInstalled] = useState(false);
-
-  useEffect(() => {
-    const handler = (e: Event) => { e.preventDefault(); setPrompt(e); };
-    window.addEventListener("beforeinstallprompt", handler);
-    window.addEventListener("appinstalled", () => setInstalled(true));
-    return () => window.removeEventListener("beforeinstallprompt", handler);
-  }, []);
-
-  const install = async () => {
-    if (!prompt) return;
-    (prompt as any).prompt();
-    const { outcome } = await (prompt as any).userChoice;
-    if (outcome === "accepted") setInstalled(true);
-    setPrompt(null);
-  };
-
-  return { canInstall: !!prompt && !installed, install };
-}
-
 const mediaMentions = [
   { name: "Greek Reporter", url: "https://greekreporter.com", abbr: "GR" },
   { name: "Keep Talking Greece", url: "https://keeptalkinggreece.com", abbr: "KTG" },
@@ -54,8 +33,20 @@ const mediaMentions = [
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const { canInstall, install } = usePWAInstall();
-  const [showInstallBanner, setShowInstallBanner] = useState(true);
+  const { canNativeInstall, isIOS, isInstalled, install } = usePWAInstall();
+  const [showIOSModal, setShowIOSModal] = useState(false);
+  const [showGenericModal, setShowGenericModal] = useState(false);
+
+  const handleInstallClick = async () => {
+    if (isInstalled) return;
+    if (canNativeInstall) {
+      await install();
+    } else if (isIOS) {
+      setShowIOSModal(true);
+    } else {
+      setShowGenericModal(true);
+    }
+  };
   const { data: stats, isLoading: statsLoading } = useGetStats();
   const { data: featuredArticles, isLoading: featuredLoading } = useGetFeaturedArticles();
   const { data: recentArticles, isLoading: recentLoading } = useListArticles({ limit: 6 });
@@ -247,39 +238,107 @@ export default function Home() {
           ))}
         </motion.div>
 
-        {/* PWA Install Banner */}
-        <AnimatePresence>
-          {canInstall && showInstallBanner && (
-            <motion.div
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              className="relative bg-primary text-primary-foreground rounded-2xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-lg border border-primary/20"
+        {/* PWA Install Button — always visible */}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className={`rounded-2xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-md border ${
+            isInstalled
+              ? "bg-muted/60 border-border text-muted-foreground"
+              : "bg-primary text-primary-foreground border-primary/20"
+          }`}
+        >
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isInstalled ? "bg-green-500/20" : "bg-secondary/20"}`}>
+            {isInstalled
+              ? <CheckCircle2 size={20} className="text-green-500" />
+              : <Smartphone size={20} className="text-secondary" />
+            }
+          </div>
+          <div className="flex-grow">
+            <p className="font-semibold text-sm">
+              {isInstalled ? "Η εφαρμογή είναι εγκατεστημένη" : "Εγκαταστήστε το Dropolis στη συσκευή σας"}
+            </p>
+            <p className={`text-xs mt-0.5 ${isInstalled ? "text-muted-foreground" : "text-primary-foreground/60"}`}>
+              {isInstalled
+                ? "Μπορείτε να ανοίξετε το Dropolis απευθείας από την οθόνη σας."
+                : "Γρήγορη πρόσβαση στις ειδήσεις — χωρίς browser, δουλεύει offline."}
+            </p>
+          </div>
+          {!isInstalled && (
+            <button
+              onClick={handleInstallClick}
+              className="shrink-0 flex items-center gap-1.5 bg-secondary text-secondary-foreground text-sm font-semibold px-4 py-2 rounded-full hover:bg-secondary/90 transition-colors shadow-md"
             >
-              <div className="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center shrink-0">
-                <Smartphone size={20} className="text-secondary" />
-              </div>
-              <div className="flex-grow">
-                <p className="font-semibold text-sm">Εγκαταστήστε το Dropolis στη συσκευή σας</p>
-                <p className="text-primary-foreground/60 text-xs mt-0.5">Γρήγορη πρόσβαση στις ειδήσεις — χωρίς browser</p>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <button
-                  onClick={install}
-                  className="flex items-center gap-1.5 bg-secondary text-secondary-foreground text-sm font-semibold px-4 py-2 rounded-full hover:bg-secondary/90 transition-colors shadow-md"
-                >
-                  <Download size={14} /> Εγκατάσταση
-                </button>
-                <button
-                  onClick={() => setShowInstallBanner(false)}
-                  className="p-1.5 rounded-full hover:bg-white/10 transition-colors text-primary-foreground/50"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-            </motion.div>
+              <Download size={14} /> Εγκατάσταση εφαρμογής
+            </button>
           )}
-        </AnimatePresence>
+        </motion.div>
+
+        {/* iOS install modal */}
+        <Dialog open={showIOSModal} onOpenChange={setShowIOSModal}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 font-serif">
+                <Smartphone size={20} className="text-primary" /> Εγκατάσταση στο iPhone / iPad
+              </DialogTitle>
+              <DialogDescription>
+                Το Safari δεν υποστηρίζει αυτόματη εγκατάσταση. Ακολούθησε τα παρακάτω βήματα:
+              </DialogDescription>
+            </DialogHeader>
+            <ol className="space-y-4 mt-2">
+              <li className="flex items-start gap-3">
+                <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                <div>
+                  <p className="text-sm font-medium">Πάτησε το κουμπί Κοινοποίηση</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Βρίσκεται στο κάτω μέρος του Safari <span className="inline-block">⬆️</span></p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                <div>
+                  <p className="text-sm font-medium">Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Κύλισε προς τα κάτω στο μενού επιλογών</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                <div>
+                  <p className="text-sm font-medium">Πάτησε «Προσθήκη»</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Το Dropolis θα εμφανιστεί στην αρχική οθόνη σου</p>
+                </div>
+              </li>
+            </ol>
+          </DialogContent>
+        </Dialog>
+
+        {/* Generic browser install modal */}
+        <Dialog open={showGenericModal} onOpenChange={setShowGenericModal}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 font-serif">
+                <Download size={20} className="text-primary" /> Εγκατάσταση εφαρμογής
+              </DialogTitle>
+              <DialogDescription>
+                Ο browser σου μπορεί να υποστηρίζει εγκατάσταση ως εφαρμογή.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="mt-2 space-y-3 text-sm text-foreground">
+              <p>Άνοιξε το μενού του browser σου <span className="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">⋮</span> ή <span className="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">≡</span> και επίλεξε:</p>
+              <ul className="space-y-2 pl-2">
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  <span><strong>«Install app»</strong> ή <strong>«Εγκατάσταση εφαρμογής»</strong></span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  <span><strong>«Add to Home screen»</strong> ή <strong>«Προσθήκη στην αρχική»</strong></span>
+                </li>
+              </ul>
+              <p className="text-muted-foreground text-xs">Αν δεν εμφανίζεται αυτή η επιλογή, ο browser σου ενδέχεται να μην υποστηρίζει PWA εγκατάσταση.</p>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Media Mentions Bar */}
         <motion.div

@@ -11,6 +11,7 @@ export function usePWAInstall() {
   const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
+    // Already running as standalone PWA
     const standalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       (navigator as Navigator & { standalone?: boolean }).standalone === true;
@@ -20,17 +21,22 @@ export function usePWAInstall() {
     }
 
     const ua = navigator.userAgent;
-    setIsIOS(/iphone|ipad|ipod/i.test(ua) && !/crios/i.test(ua));
+    // iOS Safari: iPhone/iPad/iPod, excluding Chrome iOS and Firefox iOS
+    setIsIOS(/iphone|ipad|ipod/i.test(ua) && !/crios/i.test(ua) && !/fxios/i.test(ua));
 
     const handler = (e: Event) => {
       e.preventDefault();
       setPrompt(e as BeforeInstallPromptEvent);
     };
     window.addEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", () => {
+      setIsInstalled(true);
+      setPrompt(null);
+    });
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
-  const install = async () => {
+  const install = async (): Promise<boolean> => {
     if (!prompt) return false;
     await prompt.prompt();
     const { outcome } = await prompt.userChoice;
@@ -41,7 +47,7 @@ export function usePWAInstall() {
     return outcome === "accepted";
   };
 
-  const canInstall = !isInstalled && (!!prompt || isIOS);
+  const canNativeInstall = !!prompt;
 
-  return { canInstall, isIOS, isInstalled, install };
+  return { canNativeInstall, isIOS, isInstalled, install };
 }
