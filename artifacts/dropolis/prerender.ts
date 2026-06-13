@@ -235,6 +235,15 @@ async function main() {
     `ALTER TABLE articles ADD COLUMN IF NOT EXISTS slug text`,
     `CREATE UNIQUE INDEX IF NOT EXISTS articles_slug_unique ON articles(slug) WHERE slug IS NOT NULL`,
     `ALTER TABLE articles ADD COLUMN IF NOT EXISTS score integer NOT NULL DEFAULT 0`,
+    `ALTER TABLE articles ADD COLUMN IF NOT EXISTS likes_count integer NOT NULL DEFAULT 0`,
+    `ALTER TABLE articles ADD COLUMN IF NOT EXISTS dislikes_count integer NOT NULL DEFAULT 0`,
+    `ALTER TABLE videos ADD COLUMN IF NOT EXISTS likes_count integer NOT NULL DEFAULT 0`,
+    `ALTER TABLE videos ADD COLUMN IF NOT EXISTS dislikes_count integer NOT NULL DEFAULT 0`,
+    `ALTER TABLE submitted_videos ADD COLUMN IF NOT EXISTS likes_count integer NOT NULL DEFAULT 0`,
+    `ALTER TABLE submitted_videos ADD COLUMN IF NOT EXISTS dislikes_count integer NOT NULL DEFAULT 0`,
+    `CREATE TABLE IF NOT EXISTS content_votes (id serial PRIMARY KEY, content_type text NOT NULL, content_id integer NOT NULL, voter_key text NOT NULL, vote_type text NOT NULL, created_at timestamp NOT NULL DEFAULT now(), updated_at timestamp NOT NULL DEFAULT now())`,
+    `CREATE UNIQUE INDEX IF NOT EXISTS content_votes_unique ON content_votes(content_type, content_id, voter_key)`,
+    `CREATE TABLE IF NOT EXISTS submitted_videos (id serial PRIMARY KEY, title text NOT NULL, description text, video_url text NOT NULL, object_path text NOT NULL, thumbnail_url text, thumbnail_object_path text, village_id integer, village_name text, uploader_name text, uploader_email text, event_date text, copyright_confirmed boolean NOT NULL DEFAULT false, status text NOT NULL DEFAULT 'pending', created_at timestamp NOT NULL DEFAULT now(), reviewed_at timestamp)`,
   ];
 
   const client = await pool.connect();
