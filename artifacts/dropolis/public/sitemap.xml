@@ -88,6 +88,72 @@
     <priority>0.3</priority>
     <lastmod>2026-06-12</lastmod>
   </url>
+  <url>
+    <loc>https://dropolis.net/editorial-policy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/corrections-policy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/contributors</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/advertise</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/upload-photo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/submit-video</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/en</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/en/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/en/villages</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/en/news</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/en/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
 
   <!-- ===== Article Detail Pages (26 articles) ===== -->
   <url>

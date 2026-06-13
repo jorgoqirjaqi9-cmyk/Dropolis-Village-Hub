@@ -25,6 +25,9 @@ Allow: /corrections-policy
 Allow: /contributors
 Allow: /advertise
 Allow: /en
+Allow: /upload-photo
+Allow: /submit-news
+Allow: /submit-video
 
 # Disallow real-time/user-specific pages
 Disallow: /chat
