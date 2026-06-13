@@ -7,7 +7,7 @@ import { useGetStats, useGetFeaturedArticles, useListArticles } from "@workspace
 import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X } from "lucide-react";
+import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera } from "lucide-react";
 import { WeatherWidget } from "@/components/WeatherWidget";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80";
@@ -534,6 +534,18 @@ export default function Home() {
                   Ανακαλύψτε τα χωριά <ArrowRight size={14} />
                 </span>
               </Link>
+
+              <div className="mt-5 pt-5 border-t border-border/50">
+                <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+                  Έχεις φωτογραφία από κάποιο χωριό της Δρόπολης; Στείλ' την στο φωτογραφικό αρχείο.
+                </p>
+                <Link href="/upload-photo">
+                  <span className="inline-flex items-center gap-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground px-4 py-2 text-sm font-semibold transition-colors cursor-pointer">
+                    <Camera size={14} />
+                    Ανέβασε φωτογραφία χωριού
+                  </span>
+                </Link>
+              </div>
             </motion.div>
 
             <motion.div

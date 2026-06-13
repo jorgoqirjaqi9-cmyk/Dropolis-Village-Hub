@@ -4,7 +4,7 @@ import { useListVillages } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { Users, Mountain } from "lucide-react";
+import { Users, Mountain, Camera } from "lucide-react";
 
 const UNITS = [
   { key: "all", label: "Όλα τα Χωριά" },
@@ -89,7 +89,7 @@ export default function Villages() {
             Το καθένα με τη δική του μοναδική ομορφιά και παράδοση.
           </p>
         </div>
-        <div className="w-full md:w-72 relative z-10">
+        <div className="w-full md:w-72 relative z-10 flex flex-col gap-3">
           <Input
             placeholder="Αναζήτηση χωριού..."
             value={searchTerm}
@@ -97,6 +97,13 @@ export default function Villages() {
             className="bg-white/15 border-white/20 text-white placeholder:text-white/50 w-full focus-visible:ring-secondary"
             data-testid="input-village-search"
           />
+          <Link
+            href="/upload-photo"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/15 border border-white/30 text-white hover:bg-white/25 px-4 py-2 text-sm font-semibold transition-all backdrop-blur-sm"
+          >
+            <Camera size={15} />
+            Ανέβασε φωτογραφία χωριού
+          </Link>
         </div>
       </div>
 
