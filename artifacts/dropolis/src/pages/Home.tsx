@@ -59,18 +59,21 @@ export default function Home() {
   return (
     <div>
       <SEO
-        title="Δρόπολη — Portal Ειδήσεων & Κοινότητας"
+        title="Δρόπολη - Dropolis | Ειδήσεις, Χωριά και Κοινότητα"
         standalone={true}
-        description="Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης."
+        description="Ειδήσεις, χωριά, φωτογραφίες, βίντεο και ιστορίες από τη Δρόπολη, τη Βόρεια Ήπειρο και τα 41 χωριά της περιοχής."
+        image="/og-home.jpg"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",
           "@id": "https://dropolis.net/#webpage",
-          name: "Δρόπολη — Portal Ειδήσεων & Κοινότητας",
-          description: "Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, χωριά και πολιτισμός της Δρόπολης.",
+          name: "Δρόπολη - Dropolis | Ειδήσεις, Χωριά και Κοινότητα",
+          description: "Ειδήσεις, χωριά, φωτογραφίες, βίντεο και ιστορίες από τη Δρόπολη, τη Βόρεια Ήπειρο και τα 41 χωριά της περιοχής.",
           url: "https://dropolis.net/",
           inLanguage: "el",
           isPartOf: { "@id": "https://dropolis.net/#website" },
+          image: "https://dropolis.net/og-home.jpg",
+          keywords: "Δρόπολη, Dropolis, Dropull, Βόρεια Ήπειρος, χωριά Δρόπολης, 41 χωριά, ειδήσεις Δρόπολη, φωτογραφίες Δρόπολη, πολιτισμός, κοινότητα, Ήπειρος, Αργυρόκαστρο",
           about: {
             "@type": "AdministrativeArea",
             name: "Δήμος Δρόπολης",
