@@ -1,0 +1,64 @@
+Ολοκλήρωσε και κάνε deploy το photo upload feature στο Dropolis.
+
+Στόχος:
+Να μπορούν οι χρήστες να ανεβάζουν φωτογραφίες στο dropolis.net είτε στο γενικό album φωτογραφιών είτε σε συγκεκριμένο χωριό από τα 41 χωριά.
+
+Απαιτήσεις:
+
+1. Δημόσια σελίδα /upload-photo
+- Φόρμα με photo file upload.
+- Πεδία: τίτλος, σύντομη περιγραφή, επιλογή προορισμού, όνομα αποστολέα προαιρετικό, email προαιρετικό.
+- Στην επιλογή προορισμού να υπάρχει:
+  - Γενικό φωτογραφικό αρχείο
+  - και όλα τα χωριά από το villages API/database, π.χ. Χωριό: Κρα.
+- Αν ο χρήστης επιλέξει Γενικό φωτογραφικό αρχείο, η φωτογραφία μετά την έγκριση να εμφανίζεται μόνο στο /photos.
+- Αν επιλέξει χωριό, π.χ. Κρα, να αποθηκεύεται με το αντίστοιχο villageId και μετά την έγκριση να εμφανίζεται και στο /photos και στη σελίδα του χωριού, π.χ. /villages/83.
+
+2. Moderation πριν τη δημοσίευση
+- Μην δημοσιεύονται άμεσα οι φωτογραφίες.
+- Να αποθηκεύονται ως status = pending.
+- Να υπάρχει admin σελίδα /admin/photos όπου εγκρίνουμε ή απορρίπτουμε.
+- Η admin σελίδα να είναι noindex και να μη μπει στο sitemap.
+- Προστάτευσε το admin με env var ADMIN_TOKEN.
+
+3. Backend/API
+- Πρόσθεσε πεδία στον πίνακα photos αν λείπουν:
+  - status text default approved
+  - uploader_name text
+  - uploader_email text
+  - moderation_note text
+- Δημόσιο GET /api/photos να επιστρέφει μόνο approved.
+- GET /api/photos?village_id=ID να επιστρέφει μόνο approved για το συγκεκριμένο χωριό.
+- POST /api/photos/upload να δέχεται user upload και να το αποθηκεύει ως pending.
+- GET /api/photos/pending να θέλει ADMIN_TOKEN.
+- PATCH /api/photos/:id/approve να θέλει ADMIN_TOKEN.
+- PATCH /api/photos/:id/reject να θέλει ADMIN_TOKEN.
+
+4. Ασφάλεια upload
+- Επιτρέπονται μόνο jpg/jpeg/png/webp.
+- Μέγιστο μέγεθος 5MB.
+- Έλεγξε και mime type και file signature/magic bytes.
+- Βάλε rate limit για uploads.
+- Ο χρήστης πρέπει να τσεκάρει copyright confirmation:
+  “Δηλώνω ότι έχω το δικαίωμα δημοσίευσης της φωτογραφίας.”
+
+5. Εμφάνιση
+- Approved φωτογραφίες να εμφανίζονται στο /photos.
+- Αν έχουν villageId, να εμφανίζονται και στο αντίστοιχο /villages/:id.
+- Αν δεν έχουν villageId, να εμφανίζονται μόνο στο γενικό album /photos.
+
+6. SEO/sitemap/robots
+- Το /upload-photo μπορεί να μπει στο sitemap.
+- Το /admin/photos να είναι noindex και εκτός sitemap.
+- Πρόσθεσε Disallow: /admin στο robots.txt.
+
+7. Deploy checklist
+- Βάλε ADMIN_TOKEN στα secrets/env.
+- Τρέξε pnpm run typecheck.
+- Τρέξε pnpm run build.
+- Κάνε deploy.
+- Δοκίμασε:
+  - upload με Γενικό φωτογραφικό αρχείο -> approve -> εμφανίζεται στο /photos.
+  - upload με Χωριό: Κρα -> approve -> εμφανίζεται στο /photos και στο /villages/83.
+
+Υπάρχει έτοιμο τελικό zip στο local Codex workspace με όνομα dropolis-photo-upload-feature-final.zip αν μπορείς να το χρησιμοποιήσεις, αλλιώς υλοποίησέ το απευθείας με βάση τις παραπάνω οδηγίες.

@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -12,6 +12,10 @@ export const photosTable = pgTable("photos", {
   villageName: text("village_name"),
   photographer: text("photographer"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  status: text("status").notNull().default("approved"),
+  objectPath: text("object_path"),
+  copyrightConfirmed: boolean("copyright_confirmed").notNull().default(false),
+  uploaderName: text("uploader_name"),
 });
 
 export const insertPhotoSchema = createInsertSchema(photosTable).omit({ id: true, createdAt: true });

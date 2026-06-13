@@ -21,7 +21,7 @@ router.get("/stats", async (req, res) => {
   ] = await Promise.all([
     db.select({ count: count() }).from(articlesTable),
     db.select({ count: count() }).from(villagesTable),
-    db.select({ count: count() }).from(photosTable),
+    db.select({ count: count() }).from(photosTable).where(eq(photosTable.status, "approved")),
     db.select({ count: count() }).from(videosTable),
     db.select({ count: count() }).from(chatMessagesTable),
     db.select({ count: count() }).from(articlesTable).where(gte(articlesTable.createdAt, oneWeekAgo)),

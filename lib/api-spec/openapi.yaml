@@ -383,6 +383,151 @@ paths:
         "204":
           description: Deleted
 
+  /photos/upload-url:
+    post:
+      operationId: requestPhotoUploadUrl
+      tags: [photos]
+      summary: Request a presigned URL for photo upload (validates type & size)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PhotoUploadUrlRequest"
+      responses:
+        "200":
+          description: Presigned URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrlResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /photos/submit:
+    post:
+      operationId: submitPhoto
+      tags: [photos]
+      summary: Submit a photo for moderation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PhotoSubmission"
+      responses:
+        "201":
+          description: Submitted — pending review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Photo"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/photos:
+    get:
+      operationId: listAdminPhotos
+      tags: [photos]
+      summary: List photos by status (admin)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of admin photos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminPhoto"
+        "401":
+          description: Unauthorized
+
+  /admin/photos/{id}/approve:
+    put:
+      operationId: approvePhoto
+      tags: [photos]
+      summary: Approve a pending photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Approved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminPhoto"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /admin/photos/{id}:
+    delete:
+      operationId: rejectPhoto
+      tags: [photos]
+      summary: Reject and delete a photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Rejected and deleted
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /storage/uploads/request-url:
+    post:
+      operationId: requestUploadUrl
+      tags: [photos]
+      summary: Request a generic presigned URL for file upload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadUrlRequest"
+      responses:
+        "200":
+          description: Presigned URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrlResponse"
+
   /videos:
     get:
       operationId: listVideos
@@ -814,6 +959,102 @@ components:
         villageId:
           type: integer
         photographer:
+          type: string
+
+    PhotoUploadUrlRequest:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        size:
+          type: integer
+          minimum: 1
+        contentType:
+          type: string
+          minLength: 1
+
+    UploadUrlRequest:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        size:
+          type: integer
+          minimum: 1
+        contentType:
+          type: string
+          minLength: 1
+
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:
+          type: string
+        objectPath:
+          type: string
+
+    PhotoSubmission:
+      type: object
+      required: [title, objectPath, copyrightConfirmed]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        objectPath:
+          type: string
+          minLength: 1
+        villageId:
+          type: integer
+        villageName:
+          type: string
+        photographer:
+          type: string
+        uploaderName:
+          type: string
+        copyrightConfirmed:
+          type: boolean
+
+    AdminPhoto:
+      type: object
+      required: [id, title, url, status, copyrightConfirmed, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        url:
+          type: string
+        thumbnailUrl:
+          type: ["string", "null"]
+        villageId:
+          type: ["integer", "null"]
+        villageName:
+          type: ["string", "null"]
+        photographer:
+          type: ["string", "null"]
+        status:
+          type: string
+        objectPath:
+          type: ["string", "null"]
+        copyrightConfirmed:
+          type: boolean
+        uploaderName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
           type: string
 
     Video:

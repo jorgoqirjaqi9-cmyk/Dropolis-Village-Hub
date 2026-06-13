@@ -391,6 +391,121 @@ export const DeletePhotoParams = zod.object({
 
 
 /**
+ * @summary Request a presigned URL for photo upload (validates type & size)
+ */
+
+
+
+
+
+export const RequestPhotoUploadUrlBody = zod.object({
+  "name": zod.string().min(1),
+  "size": zod.number().min(1),
+  "contentType": zod.string().min(1)
+})
+
+export const RequestPhotoUploadUrlResponse = zod.object({
+  "uploadURL": zod.string(),
+  "objectPath": zod.string()
+})
+
+
+/**
+ * @summary Submit a photo for moderation
+ */
+
+
+
+
+export const SubmitPhotoBody = zod.object({
+  "title": zod.string().min(1),
+  "objectPath": zod.string().min(1),
+  "villageId": zod.number().optional(),
+  "villageName": zod.string().optional(),
+  "photographer": zod.string().optional(),
+  "uploaderName": zod.string().optional(),
+  "copyrightConfirmed": zod.boolean()
+})
+
+
+/**
+ * @summary List photos by status (admin)
+ */
+export const ListAdminPhotosQueryParams = zod.object({
+  "status": zod.coerce.string().optional()
+})
+
+export const ListAdminPhotosResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "url": zod.string(),
+  "thumbnailUrl": zod.string().nullish(),
+  "villageId": zod.number().nullish(),
+  "villageName": zod.string().nullish(),
+  "photographer": zod.string().nullish(),
+  "status": zod.string(),
+  "objectPath": zod.string().nullish(),
+  "copyrightConfirmed": zod.boolean(),
+  "uploaderName": zod.string().nullish(),
+  "createdAt": zod.string()
+})
+export const ListAdminPhotosResponse = zod.array(ListAdminPhotosResponseItem)
+
+
+/**
+ * @summary Approve a pending photo
+ */
+export const ApprovePhotoParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const ApprovePhotoResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "url": zod.string(),
+  "thumbnailUrl": zod.string().nullish(),
+  "villageId": zod.number().nullish(),
+  "villageName": zod.string().nullish(),
+  "photographer": zod.string().nullish(),
+  "status": zod.string(),
+  "objectPath": zod.string().nullish(),
+  "copyrightConfirmed": zod.boolean(),
+  "uploaderName": zod.string().nullish(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Reject and delete a photo
+ */
+export const RejectPhotoParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
+ * @summary Request a generic presigned URL for file upload
+ */
+
+
+
+
+
+export const RequestUploadUrlBody = zod.object({
+  "name": zod.string().min(1),
+  "size": zod.number().min(1),
+  "contentType": zod.string().min(1)
+})
+
+export const RequestUploadUrlResponse = zod.object({
+  "uploadURL": zod.string(),
+  "objectPath": zod.string()
+})
+
+
+/**
  * @summary List videos
  */
 export const ListVideosQueryParams = zod.object({

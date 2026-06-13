@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './adminPhoto';
 export * from './article';
 export * from './articleInput';
 export * from './articleUpdate';
@@ -15,17 +16,23 @@ export * from './chatMessageInput';
 export * from './chatPresence';
 export * from './chatPresenceInput';
 export * from './deleteChatMessageParams';
+export * from './errorEnvelope';
 export * from './getTrendingArticlesParams';
 export * from './healthStatus';
+export * from './listAdminPhotosParams';
 export * from './listArticlesParams';
 export * from './listChatMessagesParams';
 export * from './listPhotosParams';
 export * from './listVideosParams';
 export * from './photo';
 export * from './photoInput';
+export * from './photoSubmission';
+export * from './photoUploadUrlRequest';
 export * from './recalculateArticleScores200';
 export * from './siteStats';
 export * from './socialPost';
+export * from './uploadUrlRequest';
+export * from './uploadUrlResponse';
 export * from './video';
 export * from './videoInput';
 export * from './village';

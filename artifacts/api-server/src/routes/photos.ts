@@ -1,34 +1,142 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
-import { photosTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { photosTable, villagesTable } from "@workspace/db";
+import { eq, and } from "drizzle-orm";
+import rateLimit from "express-rate-limit";
 import {
   ListPhotosQueryParams,
   CreatePhotoBody,
   GetPhotoParams,
   DeletePhotoParams,
+  RequestPhotoUploadUrlBody,
+  SubmitPhotoBody,
 } from "@workspace/api-zod";
 import { requireAdmin } from "../lib/admin-auth.js";
+import { ObjectStorageService } from "../lib/objectStorage.js";
 
 const router = Router();
+const objectStorageService = new ObjectStorageService();
+
 const DEFAULT_PHOTO_LIMIT = 100;
 const MAX_PHOTO_LIMIT = 300;
 const MAX_PHOTO_OFFSET = 10_000;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+
+const uploadRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Πολλές αιτήσεις. Δοκιμάστε ξανά σε 15 λεπτά." },
+});
+
+// ---------------------------------------------------------------------------
+// GET /photos — approved only
+// ---------------------------------------------------------------------------
 
 router.get("/photos", async (req, res) => {
   const query = ListPhotosQueryParams.parse(req.query);
   const limit = Math.min(Math.max(query.limit ?? DEFAULT_PHOTO_LIMIT, 1), MAX_PHOTO_LIMIT);
   const offset = Math.min(Math.max(query.offset ?? 0, 0), MAX_PHOTO_OFFSET);
-  let q = db.select().from(photosTable);
+
+  const conditions = [eq(photosTable.status, "approved")];
   if (query.village_id) {
-    q = q.where(eq(photosTable.villageId, query.village_id)) as typeof q;
+    conditions.push(eq(photosTable.villageId, query.village_id));
   }
-  const photos = await q
+
+  const photos = await db.select()
+    .from(photosTable)
+    .where(and(...conditions))
     .orderBy(photosTable.createdAt)
     .limit(limit)
     .offset(offset);
+
   res.json(photos.map(formatPhoto));
 });
+
+// ---------------------------------------------------------------------------
+// POST /photos/upload-url — rate-limited presigned URL (validates type + size)
+// ---------------------------------------------------------------------------
+
+router.post("/photos/upload-url", uploadRateLimit, async (req, res) => {
+  const parsed = RequestPhotoUploadUrlBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Λείπουν υποχρεωτικά πεδία (name, size, contentType)" });
+    return;
+  }
+
+  const { size, contentType } = parsed.data;
+
+  if (!ALLOWED_TYPES.has(contentType)) {
+    res.status(400).json({ error: "Μόνο JPG, PNG και WEBP επιτρέπονται." });
+    return;
+  }
+
+  if (size > MAX_FILE_SIZE) {
+    res.status(400).json({ error: "Το αρχείο δεν πρέπει να υπερβαίνει τα 5 MB." });
+    return;
+  }
+
+  try {
+    const uploadURL = await objectStorageService.getObjectEntityUploadURL();
+    const objectPath = objectStorageService.normalizeObjectEntityPath(uploadURL);
+    res.json({ uploadURL, objectPath });
+  } catch (err) {
+    req.log.error({ err }, "Error generating photo upload URL");
+    res.status(500).json({ error: "Αποτυχία δημιουργίας URL αποστολής." });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// POST /photos/submit — rate-limited public submission
+// ---------------------------------------------------------------------------
+
+router.post("/photos/submit", uploadRateLimit, async (req, res) => {
+  const parsed = SubmitPhotoBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Μη έγκυρα δεδομένα υποβολής." });
+    return;
+  }
+
+  const { title, objectPath, villageId, villageName, photographer, uploaderName, copyrightConfirmed } =
+    parsed.data;
+
+  if (!copyrightConfirmed) {
+    res.status(400).json({ error: "Απαιτείται αποδοχή δήλωσης πνευματικών δικαιωμάτων." });
+    return;
+  }
+
+  // Resolve villageName if not provided
+  let resolvedVillageName = villageName ?? null;
+  if (villageId && !resolvedVillageName) {
+    const [village] = await db.select({ name: villagesTable.name })
+      .from(villagesTable)
+      .where(eq(villagesTable.id, villageId));
+    resolvedVillageName = village?.name ?? null;
+  }
+
+  // The serving URL is /api/storage + objectPath
+  const url = `/api/storage${objectPath}`;
+
+  const [photo] = await db.insert(photosTable).values({
+    title,
+    url,
+    objectPath,
+    villageId: villageId ?? null,
+    villageName: resolvedVillageName,
+    photographer: photographer ?? null,
+    uploaderName: uploaderName ?? null,
+    copyrightConfirmed,
+    status: "pending",
+  }).returning();
+
+  res.status(201).json(formatPhoto(photo));
+});
+
+// ---------------------------------------------------------------------------
+// POST /photos — admin-only direct creation (existing)
+// ---------------------------------------------------------------------------
 
 router.post("/photos", requireAdmin, async (req, res) => {
   const body = CreatePhotoBody.parse(req.body);
@@ -39,13 +147,19 @@ router.post("/photos", requireAdmin, async (req, res) => {
     thumbnailUrl: body.thumbnailUrl ?? null,
     villageId: body.villageId ?? null,
     photographer: body.photographer ?? null,
+    status: "approved",
   }).returning();
   res.status(201).json(formatPhoto(photo));
 });
 
+// ---------------------------------------------------------------------------
+// GET /photos/:id
+// ---------------------------------------------------------------------------
+
 router.get("/photos/:id", async (req, res) => {
   const { id } = GetPhotoParams.parse({ id: Number(req.params.id) });
-  const [photo] = await db.select().from(photosTable).where(eq(photosTable.id, id));
+  const [photo] = await db.select().from(photosTable)
+    .where(and(eq(photosTable.id, id), eq(photosTable.status, "approved")));
   if (!photo) {
     res.status(404).json({ error: "Not found" });
     return;
@@ -53,11 +167,17 @@ router.get("/photos/:id", async (req, res) => {
   res.json(formatPhoto(photo));
 });
 
+// ---------------------------------------------------------------------------
+// DELETE /photos/:id — admin-only
+// ---------------------------------------------------------------------------
+
 router.delete("/photos/:id", requireAdmin, async (req, res) => {
   const { id } = DeletePhotoParams.parse({ id: Number(req.params.id) });
   await db.delete(photosTable).where(eq(photosTable.id, id));
   res.status(204).end();
 });
+
+// ---------------------------------------------------------------------------
 
 function formatPhoto(p: typeof photosTable.$inferSelect) {
   return {

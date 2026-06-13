@@ -374,6 +374,14 @@ const STATIC_META: Record<string, PageMeta> = {
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Contact", item: `${BASE_URL}/en/contact` }],
     jsonLd: { "@context": "https://schema.org", "@type": "ContactPage", name: "Contact Dropolis", url: `${BASE_URL}/en/contact`, inLanguage: "en" },
   },
+  "/upload-photo": {
+    title: "Υποβολή Φωτογραφίας",
+    description: "Στείλτε τη δική σας φωτογραφία από τα χωριά της Δρόπολης. Κάθε υποβολή αξιολογείται πριν δημοσιευτεί.",
+    url: `${BASE_URL}/upload-photo`,
+    noindex: false,
+    breadcrumbs: [{ name: "Υποβολή Φωτογραφίας", item: `${BASE_URL}/upload-photo` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Υποβολή Φωτογραφίας — Dropolis", url: `${BASE_URL}/upload-photo`, inLanguage: "el" },
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -406,6 +414,20 @@ const router = Router();
 for (const [path, meta] of Object.entries(STATIC_META)) {
   router.get(path, (_req, res) => sendPage(res, meta));
 }
+
+// Admin panel — noindex, no body text (React SPA handles rendering)
+router.get(/^\/admin(\/.*)?$/, (_req, res) => {
+  sendPage(
+    res,
+    {
+      title: "Διαχείριση — Dropolis",
+      description: "",
+      url: `${BASE_URL}/admin`,
+      noindex: true,
+    },
+    0 // no-cache
+  );
+});
 
 // /news/:id — article detail
 router.get("/news/:id", async (req, res) => {

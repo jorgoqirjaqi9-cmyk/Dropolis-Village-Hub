@@ -161,6 +161,68 @@ export interface PhotoInput {
   photographer?: string;
 }
 
+export interface PhotoUploadUrlRequest {
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  size: number;
+  /** @minLength 1 */
+  contentType: string;
+}
+
+export interface UploadUrlRequest {
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  size: number;
+  /** @minLength 1 */
+  contentType: string;
+}
+
+export interface UploadUrlResponse {
+  uploadURL: string;
+  objectPath: string;
+}
+
+export interface PhotoSubmission {
+  /** @minLength 1 */
+  title: string;
+  /** @minLength 1 */
+  objectPath: string;
+  villageId?: number;
+  villageName?: string;
+  photographer?: string;
+  uploaderName?: string;
+  copyrightConfirmed: boolean;
+}
+
+export interface AdminPhoto {
+  id: number;
+  title: string;
+  /** @nullable */
+  description?: string | null;
+  url: string;
+  /** @nullable */
+  thumbnailUrl?: string | null;
+  /** @nullable */
+  villageId?: number | null;
+  /** @nullable */
+  villageName?: string | null;
+  /** @nullable */
+  photographer?: string | null;
+  status: string;
+  /** @nullable */
+  objectPath?: string | null;
+  copyrightConfirmed: boolean;
+  /** @nullable */
+  uploaderName?: string | null;
+  createdAt: string;
+}
+
+export interface ErrorEnvelope {
+  error: string;
+}
+
 export interface Video {
   id: number;
   title: string;
@@ -230,6 +292,10 @@ export type ListPhotosParams = {
 village_id?: number;
 limit?: number;
 offset?: number;
+};
+
+export type ListAdminPhotosParams = {
+status?: string;
 };
 
 export type ListVideosParams = {

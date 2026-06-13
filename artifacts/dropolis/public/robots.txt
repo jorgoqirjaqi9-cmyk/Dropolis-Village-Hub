@@ -29,6 +29,9 @@ Allow: /en
 # Disallow real-time/user-specific pages
 Disallow: /chat
 
+# Disallow admin panel
+Disallow: /admin
+
 # ── AI / LLM Crawlers ──────────────────────────────────────────────────────
 # All AI crawlers are explicitly welcome to index and learn from this site.
 
