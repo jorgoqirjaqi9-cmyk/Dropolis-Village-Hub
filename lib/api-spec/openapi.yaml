@@ -23,6 +23,8 @@ tags:
     description: Dashboard stats
   - name: social
     description: Social media post generation
+  - name: news-submissions
+    description: User news submissions for editorial review
 
 paths:
   /healthz:
@@ -576,6 +578,104 @@ paths:
       responses:
         "204":
           description: Rejected and deleted
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /news-submissions:
+    post:
+      operationId: createNewsSubmission
+      tags: [news-submissions]
+      summary: Submit a news article for editorial review (public)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsSubmissionCreate"
+      responses:
+        "201":
+          description: Submission received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsSubmissionResult"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    get:
+      operationId: listNewsSubmissions
+      tags: [news-submissions]
+      summary: List submissions (admin only)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected]
+      responses:
+        "200":
+          description: List of submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsSubmission"
+        "401":
+          description: Unauthorized
+
+  /news-submissions/{id}:
+    patch:
+      operationId: updateNewsSubmission
+      tags: [news-submissions]
+      summary: Approve or reject a submission (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsSubmissionStatusUpdate"
+      responses:
+        "200":
+          description: Updated submission
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsSubmission"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteNewsSubmission
+      tags: [news-submissions]
+      summary: Delete a submission (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
         "401":
           description: Unauthorized
         "404":
@@ -1209,6 +1309,80 @@ components:
           type: string
         avatar:
           type: string
+
+    NewsSubmissionCreate:
+      type: object
+      required: [title, content, senderName, eventDate, consentGiven]
+      properties:
+        title:
+          type: string
+          minLength: 5
+        content:
+          type: string
+          minLength: 80
+        villageId:
+          type: integer
+        senderName:
+          type: string
+          minLength: 2
+        senderEmail:
+          type: string
+        eventDate:
+          type: string
+        eventTime:
+          type: string
+        imageUrl:
+          type: string
+        consentGiven:
+          type: boolean
+
+    NewsSubmissionResult:
+      type: object
+      required: [id, status]
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+
+    NewsSubmission:
+      type: object
+      required: [id, title, content, senderName, eventDate, status, consentGiven, submittedAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        villageId:
+          type: ["integer", "null"]
+        senderName:
+          type: string
+        senderEmail:
+          type: ["string", "null"]
+        eventDate:
+          type: string
+        eventTime:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        status:
+          type: string
+        consentGiven:
+          type: boolean
+        submittedAt:
+          type: string
+        reviewedAt:
+          type: ["string", "null"]
+
+    NewsSubmissionStatusUpdate:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [approved, rejected]
 
     SiteStats:
       type: object

@@ -7,7 +7,7 @@ import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 
 const PAGE_SIZE = 50;
 
@@ -112,6 +112,13 @@ export default function News() {
             <p className="text-primary-foreground/70">Τελευταία νέα και ρεπορτάζ.</p>
           </div>
           <div className="flex flex-wrap gap-3">
+            <Link
+              href="/submit-news"
+              className="inline-flex items-center gap-2 rounded-xl bg-secondary text-secondary-foreground px-4 py-2.5 text-sm font-semibold hover:bg-secondary/90 transition-colors"
+            >
+              <Send className="w-4 h-4" />
+              Στείλτε είδηση
+            </Link>
             <select
               className="bg-white/15 border border-white/20 text-primary-foreground text-sm rounded-xl px-4 py-2.5 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-secondary"
               value={category}

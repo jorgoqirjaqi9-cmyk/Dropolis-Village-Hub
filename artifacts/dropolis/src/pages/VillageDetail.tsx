@@ -3,7 +3,7 @@ import { useRoute, Link } from "wouter";
 import { useGetVillage, getGetVillageQueryKey, useListArticles, getListArticlesQueryKey, useListPhotos, getListPhotosQueryKey } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera } from "lucide-react";
+import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera, Send } from "lucide-react";
 import { PhotoLikeButtons } from "@/components/PhotoLikeButtons";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
@@ -248,30 +248,41 @@ export default function VillageDetail() {
             )}
           </div>
 
-          {news && news.length > 0 && (
-            <div className="bg-card rounded-xl p-6 shadow-sm border border-card-border">
-              <div className="flex items-center gap-2 mb-6">
-                <Newspaper className="w-5 h-5 text-primary" />
-                <h3 className="font-serif text-xl font-bold">Νέα του Χωριού</h3>
-              </div>
-              <div className="space-y-4">
-                {news.map(article => (
-                  <Link key={article.id} href={`/news/${article.id}`} className="group block border-b border-border last:border-0 pb-4 last:pb-0">
-                    <h4 className="font-bold text-sm leading-snug group-hover:text-primary transition-colors mb-2 line-clamp-2">{article.title}</h4>
-                    <span className="text-xs text-muted-foreground block">
-                      {format(new Date(article.createdAt), "d MMMM yyyy", { locale: el })}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-              <Link
-                href={`/news?village=${encodeURIComponent(village.nameEl)}`}
-                className="mt-5 flex items-center justify-center gap-1 text-xs font-medium text-primary hover:text-secondary border border-primary/30 hover:border-secondary/50 rounded-lg py-2 px-3 transition-colors"
-              >
-                Όλα τα νέα για {village.nameEl} &rarr;
-              </Link>
+          <div className="bg-card rounded-xl p-6 shadow-sm border border-card-border">
+            <div className="flex items-center gap-2 mb-4">
+              <Newspaper className="w-5 h-5 text-primary" />
+              <h3 className="font-serif text-xl font-bold">Νέα του Χωριού</h3>
             </div>
-          )}
+            {news && news.length > 0 ? (
+              <>
+                <div className="space-y-4 mb-4">
+                  {news.map(article => (
+                    <Link key={article.id} href={`/news/${article.id}`} className="group block border-b border-border last:border-0 pb-4 last:pb-0">
+                      <h4 className="font-bold text-sm leading-snug group-hover:text-primary transition-colors mb-2 line-clamp-2">{article.title}</h4>
+                      <span className="text-xs text-muted-foreground block">
+                        {format(new Date(article.createdAt), "d MMMM yyyy", { locale: el })}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+                <Link
+                  href={`/news?village=${encodeURIComponent(village.nameEl)}`}
+                  className="flex items-center justify-center gap-1 text-xs font-medium text-primary hover:text-secondary border border-primary/30 hover:border-secondary/50 rounded-lg py-2 px-3 transition-colors mb-3"
+                >
+                  Όλα τα νέα για {village.nameEl} &rarr;
+                </Link>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground mb-4">Δεν υπάρχουν ακόμα νέα για αυτό το χωριό.</p>
+            )}
+            <Link
+              href={`/submit-news?villageId=${id}`}
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground px-4 py-2.5 text-sm font-semibold transition-colors"
+            >
+              <Send className="w-4 h-4" />
+              Στείλτε είδηση για αυτό το χωριό
+            </Link>
+          </div>
         </aside>
       </div>
     </div>

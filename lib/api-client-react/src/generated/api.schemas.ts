@@ -272,6 +272,59 @@ export interface ChatMessageInput {
   avatar?: string;
 }
 
+export interface NewsSubmissionCreate {
+  /** @minLength 5 */
+  title: string;
+  /** @minLength 80 */
+  content: string;
+  villageId?: number;
+  /** @minLength 2 */
+  senderName: string;
+  senderEmail?: string;
+  eventDate: string;
+  eventTime?: string;
+  imageUrl?: string;
+  consentGiven: boolean;
+}
+
+export interface NewsSubmissionResult {
+  id: number;
+  status: string;
+}
+
+export interface NewsSubmission {
+  id: number;
+  title: string;
+  content: string;
+  /** @nullable */
+  villageId?: number | null;
+  senderName: string;
+  /** @nullable */
+  senderEmail?: string | null;
+  eventDate: string;
+  /** @nullable */
+  eventTime?: string | null;
+  /** @nullable */
+  imageUrl?: string | null;
+  status: string;
+  consentGiven: boolean;
+  submittedAt: string;
+  /** @nullable */
+  reviewedAt?: string | null;
+}
+
+export type NewsSubmissionStatusUpdateStatus = typeof NewsSubmissionStatusUpdateStatus[keyof typeof NewsSubmissionStatusUpdateStatus];
+
+
+export const NewsSubmissionStatusUpdateStatus = {
+  approved: 'approved',
+  rejected: 'rejected',
+} as const;
+
+export interface NewsSubmissionStatusUpdate {
+  status: NewsSubmissionStatusUpdateStatus;
+}
+
 export interface SiteStats {
   totalArticles: number;
   totalVillages: number;
@@ -307,6 +360,19 @@ offset?: number;
 export type ListAdminPhotosParams = {
 status?: string;
 };
+
+export type ListNewsSubmissionsParams = {
+status?: ListNewsSubmissionsStatus;
+};
+
+export type ListNewsSubmissionsStatus = typeof ListNewsSubmissionsStatus[keyof typeof ListNewsSubmissionsStatus];
+
+
+export const ListNewsSubmissionsStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected',
+} as const;
 
 export type ListVideosParams = {
 village_id?: number;

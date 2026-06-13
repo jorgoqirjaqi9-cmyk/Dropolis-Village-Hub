@@ -36,8 +36,13 @@ import type {
   ListAdminPhotosParams,
   ListArticlesParams,
   ListChatMessagesParams,
+  ListNewsSubmissionsParams,
   ListPhotosParams,
   ListVideosParams,
+  NewsSubmission,
+  NewsSubmissionCreate,
+  NewsSubmissionResult,
+  NewsSubmissionStatusUpdate,
   Photo,
   PhotoInput,
   PhotoSubmission,
@@ -2139,6 +2144,303 @@ export const useRejectPhoto = <TError = ErrorType<void>,
         TContext
       > => {
       return useMutation(getRejectPhotoMutationOptions(options));
+    }
+
+export const getCreateNewsSubmissionUrl = () => {
+
+
+
+
+  return `/api/news-submissions`
+}
+
+/**
+ * @summary Submit a news article for editorial review (public)
+ */
+export const createNewsSubmission = async (newsSubmissionCreate: NewsSubmissionCreate, options?: RequestInit): Promise<NewsSubmissionResult> => {
+
+  return customFetch<NewsSubmissionResult>(getCreateNewsSubmissionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      newsSubmissionCreate,)
+  }
+);}
+
+
+
+
+export const getCreateNewsSubmissionMutationOptions = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createNewsSubmission>>, TError,{data: BodyType<NewsSubmissionCreate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createNewsSubmission>>, TError,{data: BodyType<NewsSubmissionCreate>}, TContext> => {
+
+const mutationKey = ['createNewsSubmission'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createNewsSubmission>>, {data: BodyType<NewsSubmissionCreate>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createNewsSubmission(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateNewsSubmissionMutationResult = NonNullable<Awaited<ReturnType<typeof createNewsSubmission>>>
+    export type CreateNewsSubmissionMutationBody = BodyType<NewsSubmissionCreate>
+    export type CreateNewsSubmissionMutationError = ErrorType<ErrorEnvelope>
+
+    /**
+ * @summary Submit a news article for editorial review (public)
+ */
+export const useCreateNewsSubmission = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createNewsSubmission>>, TError,{data: BodyType<NewsSubmissionCreate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createNewsSubmission>>,
+        TError,
+        {data: BodyType<NewsSubmissionCreate>},
+        TContext
+      > => {
+      return useMutation(getCreateNewsSubmissionMutationOptions(options));
+    }
+
+export const getListNewsSubmissionsUrl = (params?: ListNewsSubmissionsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/news-submissions?${stringifiedParams}` : `/api/news-submissions`
+}
+
+/**
+ * @summary List submissions (admin only)
+ */
+export const listNewsSubmissions = async (params?: ListNewsSubmissionsParams, options?: RequestInit): Promise<NewsSubmission[]> => {
+
+  return customFetch<NewsSubmission[]>(getListNewsSubmissionsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListNewsSubmissionsQueryKey = (params?: ListNewsSubmissionsParams,) => {
+    return [
+    `/api/news-submissions`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListNewsSubmissionsQueryOptions = <TData = Awaited<ReturnType<typeof listNewsSubmissions>>, TError = ErrorType<void>>(params?: ListNewsSubmissionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listNewsSubmissions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListNewsSubmissionsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listNewsSubmissions>>> = ({ signal }) => listNewsSubmissions(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listNewsSubmissions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListNewsSubmissionsQueryResult = NonNullable<Awaited<ReturnType<typeof listNewsSubmissions>>>
+export type ListNewsSubmissionsQueryError = ErrorType<void>
+
+
+/**
+ * @summary List submissions (admin only)
+ */
+
+export function useListNewsSubmissions<TData = Awaited<ReturnType<typeof listNewsSubmissions>>, TError = ErrorType<void>>(
+ params?: ListNewsSubmissionsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listNewsSubmissions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListNewsSubmissionsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getUpdateNewsSubmissionUrl = (id: number,) => {
+
+
+
+
+  return `/api/news-submissions/${id}`
+}
+
+/**
+ * @summary Approve or reject a submission (admin only)
+ */
+export const updateNewsSubmission = async (id: number,
+    newsSubmissionStatusUpdate: NewsSubmissionStatusUpdate, options?: RequestInit): Promise<NewsSubmission> => {
+
+  return customFetch<NewsSubmission>(getUpdateNewsSubmissionUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      newsSubmissionStatusUpdate,)
+  }
+);}
+
+
+
+
+export const getUpdateNewsSubmissionMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNewsSubmission>>, TError,{id: number;data: BodyType<NewsSubmissionStatusUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateNewsSubmission>>, TError,{id: number;data: BodyType<NewsSubmissionStatusUpdate>}, TContext> => {
+
+const mutationKey = ['updateNewsSubmission'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateNewsSubmission>>, {id: number;data: BodyType<NewsSubmissionStatusUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateNewsSubmission(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateNewsSubmissionMutationResult = NonNullable<Awaited<ReturnType<typeof updateNewsSubmission>>>
+    export type UpdateNewsSubmissionMutationBody = BodyType<NewsSubmissionStatusUpdate>
+    export type UpdateNewsSubmissionMutationError = ErrorType<void>
+
+    /**
+ * @summary Approve or reject a submission (admin only)
+ */
+export const useUpdateNewsSubmission = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNewsSubmission>>, TError,{id: number;data: BodyType<NewsSubmissionStatusUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateNewsSubmission>>,
+        TError,
+        {id: number;data: BodyType<NewsSubmissionStatusUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdateNewsSubmissionMutationOptions(options));
+    }
+
+export const getDeleteNewsSubmissionUrl = (id: number,) => {
+
+
+
+
+  return `/api/news-submissions/${id}`
+}
+
+/**
+ * @summary Delete a submission (admin only)
+ */
+export const deleteNewsSubmission = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteNewsSubmissionUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteNewsSubmissionMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteNewsSubmission>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteNewsSubmission>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteNewsSubmission'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteNewsSubmission>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteNewsSubmission(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteNewsSubmissionMutationResult = NonNullable<Awaited<ReturnType<typeof deleteNewsSubmission>>>
+
+    export type DeleteNewsSubmissionMutationError = ErrorType<void>
+
+    /**
+ * @summary Delete a submission (admin only)
+ */
+export const useDeleteNewsSubmission = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteNewsSubmission>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteNewsSubmission>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteNewsSubmissionMutationOptions(options));
     }
 
 export const getRequestUploadUrlUrl = () => {

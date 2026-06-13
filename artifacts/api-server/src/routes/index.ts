@@ -13,6 +13,7 @@ import rssRouter from "./rss";
 import socialRouter from "./social";
 import indexingRouter from "./indexing";
 import storageRouter from "./storage";
+import newsSubmissionsRouter from "./newsSubmissions";
 
 const router: IRouter = Router();
 
@@ -30,5 +31,6 @@ router.use(rssRouter);
 router.use(socialRouter);
 router.use(indexingRouter);
 router.use(storageRouter);
+router.use(newsSubmissionsRouter);
 
 export default router;

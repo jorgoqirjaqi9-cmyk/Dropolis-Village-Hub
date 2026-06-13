@@ -545,6 +545,91 @@ export const RejectPhotoParams = zod.object({
 
 
 /**
+ * @summary Submit a news article for editorial review (public)
+ */
+export const createNewsSubmissionBodyTitleMin = 5;
+
+export const createNewsSubmissionBodyContentMin = 80;
+
+export const createNewsSubmissionBodySenderNameMin = 2;
+
+
+
+export const CreateNewsSubmissionBody = zod.object({
+  "title": zod.string().min(createNewsSubmissionBodyTitleMin),
+  "content": zod.string().min(createNewsSubmissionBodyContentMin),
+  "villageId": zod.number().optional(),
+  "senderName": zod.string().min(createNewsSubmissionBodySenderNameMin),
+  "senderEmail": zod.string().optional(),
+  "eventDate": zod.string(),
+  "eventTime": zod.string().optional(),
+  "imageUrl": zod.string().optional(),
+  "consentGiven": zod.boolean()
+})
+
+
+/**
+ * @summary List submissions (admin only)
+ */
+export const ListNewsSubmissionsQueryParams = zod.object({
+  "status": zod.enum(['pending', 'approved', 'rejected']).optional()
+})
+
+export const ListNewsSubmissionsResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "content": zod.string(),
+  "villageId": zod.number().nullish(),
+  "senderName": zod.string(),
+  "senderEmail": zod.string().nullish(),
+  "eventDate": zod.string(),
+  "eventTime": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "status": zod.string(),
+  "consentGiven": zod.boolean(),
+  "submittedAt": zod.string(),
+  "reviewedAt": zod.string().nullish()
+})
+export const ListNewsSubmissionsResponse = zod.array(ListNewsSubmissionsResponseItem)
+
+
+/**
+ * @summary Approve or reject a submission (admin only)
+ */
+export const UpdateNewsSubmissionParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateNewsSubmissionBody = zod.object({
+  "status": zod.enum(['approved', 'rejected'])
+})
+
+export const UpdateNewsSubmissionResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "content": zod.string(),
+  "villageId": zod.number().nullish(),
+  "senderName": zod.string(),
+  "senderEmail": zod.string().nullish(),
+  "eventDate": zod.string(),
+  "eventTime": zod.string().nullish(),
+  "imageUrl": zod.string().nullish(),
+  "status": zod.string(),
+  "consentGiven": zod.boolean(),
+  "submittedAt": zod.string(),
+  "reviewedAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Delete a submission (admin only)
+ */
+export const DeleteNewsSubmissionParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
  * @summary Request a generic presigned URL for file upload
  */
 

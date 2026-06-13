@@ -34,6 +34,8 @@ import EnNews from "@/pages/EnNews";
 import EnContact from "@/pages/EnContact";
 import UploadPhoto from "@/pages/UploadPhoto";
 import AdminPhotos from "@/pages/AdminPhotos";
+import SubmitNews from "@/pages/SubmitNews";
+import AdminNews from "@/pages/AdminNews";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -112,6 +114,10 @@ function Router() {
             <Route path="/upload-photo/" component={UploadPhoto} />
             <Route path="/admin/photos" component={AdminPhotos} />
             <Route path="/admin/photos/" component={AdminPhotos} />
+            <Route path="/submit-news" component={SubmitNews} />
+            <Route path="/submit-news/" component={SubmitNews} />
+            <Route path="/admin/news" component={AdminNews} />
+            <Route path="/admin/news/" component={AdminNews} />
             <Route component={NotFound} />
           </Switch>
         </Layout>
