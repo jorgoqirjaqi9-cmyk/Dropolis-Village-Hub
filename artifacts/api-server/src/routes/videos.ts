@@ -43,6 +43,12 @@ router.get("/videos", async (req, res) => {
   res.json(merged);
 });
 
+router.delete("/admin/videos/all", requireAdmin, async (req, res) => {
+  const { count: ytCount } = await db.delete(videosTable).returning({ id: videosTable.id }).then(r => ({ count: r.length }));
+  const { count: svCount } = await db.delete(submittedVideosTable).returning({ id: submittedVideosTable.id }).then(r => ({ count: r.length }));
+  res.json({ deleted: { youtubeVideos: ytCount, submittedVideos: svCount } });
+});
+
 router.post("/videos", requireAdmin, async (req, res) => {
   const body = CreateVideoBody.parse(req.body);
   const [video] = await db.insert(videosTable).values({
