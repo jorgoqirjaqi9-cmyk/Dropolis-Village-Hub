@@ -102,6 +102,12 @@ const MANIFEST_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
 let manifestCache: ManifestCache | null = null;
 
+/** Immediately invalidates the in-process manifest cache so the next sitemap
+ *  request fetches a fresh copy from disk (e.g. after an article is deleted). */
+export function invalidateSitemapManifestCache(): void {
+  manifestCache = null;
+}
+
 async function fetchPrerenderManifest(): Promise<PrerenderManifest | null> {
   if (manifestCache && Date.now() - manifestCache.fetchedAt < MANIFEST_CACHE_TTL_MS) {
     return manifestCache.data;

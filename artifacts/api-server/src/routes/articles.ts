@@ -3,7 +3,8 @@ import { db } from "@workspace/db";
 import { articlesTable } from "@workspace/db";
 import { eq, desc, and, sql } from "drizzle-orm";
 import { autoIndexArticle } from "../lib/auto-indexing.js";
-import { prerenderArticle } from "../lib/on-demand-prerender.js";
+import { prerenderArticle, removeArticlePrerender } from "../lib/on-demand-prerender.js";
+import { invalidateSitemapManifestCache } from "./sitemap.js";
 import { requireAdmin } from "../lib/admin-auth.js";
 import {
   ListArticlesQueryParams,
@@ -154,6 +155,9 @@ router.patch("/articles/:id", requireAdmin, async (req, res) => {
       updatedAt: article.updatedAt.toISOString(),
     });
     void autoIndexArticle(article.id);
+  } else {
+    void removeArticlePrerender(article.id);
+    invalidateSitemapManifestCache();
   }
   res.json(formatArticle(article));
 });
@@ -161,6 +165,8 @@ router.patch("/articles/:id", requireAdmin, async (req, res) => {
 router.delete("/articles/:id", requireAdmin, async (req, res) => {
   const { id } = DeleteArticleParams.parse({ id: Number(req.params.id) });
   await db.delete(articlesTable).where(eq(articlesTable.id, id));
+  void removeArticlePrerender(id);
+  invalidateSitemapManifestCache();
   res.status(204).send();
 });
 

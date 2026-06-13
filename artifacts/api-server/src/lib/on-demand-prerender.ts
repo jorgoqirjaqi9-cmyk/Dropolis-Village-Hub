@@ -14,7 +14,7 @@
  * enhancement; it must never block or break the API response.
  */
 
-import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
+import { readFileSync, mkdirSync, writeFileSync, existsSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import { logger } from "./logger.js";
 
@@ -80,6 +80,22 @@ function updateManifestEntry(
       writeManifestSync(distDir, manifest);
     } catch (err) {
       logger.warn({ err, kind, id }, "on-demand-prerender: failed to update manifest");
+    }
+  });
+}
+
+function removeManifestEntry(
+  distDir: string,
+  kind: "articles" | "villages",
+  id: number
+): void {
+  manifestWriteChain = manifestWriteChain.then(() => {
+    try {
+      const manifest = readManifest(distDir);
+      delete manifest[kind][String(id)];
+      writeManifestSync(distDir, manifest);
+    } catch (err) {
+      logger.warn({ err, kind, id }, "on-demand-prerender: failed to remove manifest entry");
     }
   });
 }
@@ -409,5 +425,26 @@ export async function prerenderVillage(data: VillageData): Promise<void> {
     logger.info({ id: data.id, url: `${BASE_URL}/villages/${data.id}` }, "on-demand-prerender: village HTML written");
   } catch (err) {
     logger.warn({ err, id: data.id }, "on-demand-prerender: failed to prerender village");
+  }
+}
+
+/**
+ * Removes the prerendered HTML and manifest entry for a specific article.
+ * Call this when an article is deleted or unpublished so the sitemap no
+ * longer advertises a URL that would return 404 or stale content.
+ * Fire-and-forget: void removeArticlePrerender(id)
+ */
+export async function removeArticlePrerender(id: number): Promise<void> {
+  const distDir = getDistDir();
+  try {
+    const htmlDir = resolve(distDir, `news/${id}`);
+    if (existsSync(htmlDir)) {
+      rmSync(htmlDir, { recursive: true, force: true });
+      logger.info({ id }, "on-demand-prerender: removed prerendered article HTML");
+    }
+    removeManifestEntry(distDir, "articles", id);
+    logger.info({ id }, "on-demand-prerender: removed article from prerender manifest");
+  } catch (err) {
+    logger.warn({ err, id }, "on-demand-prerender: failed to remove article prerender");
   }
 }
