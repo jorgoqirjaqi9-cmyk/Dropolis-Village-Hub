@@ -168,6 +168,39 @@ export default function Home() {
               </motion.span>
             </Link>
           </motion.div>
+
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-3 justify-center mt-4">
+            <Link href="/submit-news">
+              <motion.span
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all"
+              >
+                <Newspaper size={14} />
+                Στείλτε είδηση
+              </motion.span>
+            </Link>
+            <Link href="/upload-photo">
+              <motion.span
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all"
+              >
+                <Camera size={14} />
+                Ανέβασε τη δική σου φωτογραφία
+              </motion.span>
+            </Link>
+            <Link href="/submit-video">
+              <motion.span
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all"
+              >
+                <VideoIcon size={14} />
+                Ανεβάστε βίντεο
+              </motion.span>
+            </Link>
+          </motion.div>
         </motion.div>
 
         {/* Weather overlay — bottom left */}
