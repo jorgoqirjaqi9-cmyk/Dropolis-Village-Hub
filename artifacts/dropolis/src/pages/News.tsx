@@ -7,7 +7,9 @@ import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Send } from "lucide-react";
+import { ChevronLeft, ChevronRight, Send, Users } from "lucide-react";
+
+const COMMUNITY_CATEGORY = "Ειδήσεις Κοινότητας";
 
 const PAGE_SIZE = 50;
 
@@ -143,6 +145,29 @@ export default function News() {
         </div>
       </div>
 
+      {/* Community filter shortcut pill */}
+      <div className="flex flex-wrap gap-2 items-center">
+        <button
+          onClick={() => handleCategoryChange(category === COMMUNITY_CATEGORY ? "" : COMMUNITY_CATEGORY)}
+          className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+            category === COMMUNITY_CATEGORY
+              ? "bg-secondary text-secondary-foreground border-secondary shadow-sm"
+              : "bg-secondary/10 text-secondary border-secondary/30 hover:bg-secondary/20"
+          }`}
+        >
+          <Users className="w-3 h-3" />
+          Κοινότητα
+        </button>
+        {category === COMMUNITY_CATEGORY && (
+          <button
+            onClick={() => handleCategoryChange("")}
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+          >
+            Εμφάνιση όλων
+          </button>
+        )}
+      </div>
+
       {/* Village filter links — crawlable anchor links for each village archive */}
       {villages && villages.length > 0 && !village && !category && (
         <nav aria-label="Αρχεία ανά χωριό" className="flex flex-wrap gap-2">
@@ -181,6 +206,12 @@ export default function News() {
                     <Link href={buildNewsUrl({ category: article.category, page: 1 })}>
                       <span className="bg-primary/10 text-primary px-2 py-1 rounded text-xs font-bold uppercase tracking-wider hover:bg-primary/20 transition-colors">{article.category}</span>
                     </Link>
+                    {article.category === COMMUNITY_CATEGORY && (
+                      <span className="inline-flex items-center gap-1 bg-secondary/15 text-secondary px-2 py-1 rounded text-xs font-semibold border border-secondary/25">
+                        <Users className="w-3 h-3" />
+                        Κοινότητα
+                      </span>
+                    )}
                     {article.villageName && (
                       <Link href={`/news?village=${encodeURIComponent(article.villageName)}`}>
                         <span className="bg-accent/10 text-accent px-2 py-1 rounded text-xs font-medium hover:bg-accent/20 transition-colors">{article.villageName}</span>

@@ -7,10 +7,12 @@ import { useGetStats, useGetFeaturedArticles, useListArticles } from "@workspace
 import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera, CheckCircle2 } from "lucide-react";
+import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera, CheckCircle2, UsersRound } from "lucide-react";
 import { usePWAInstall } from "@/hooks/use-pwa-install";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { WeatherWidget } from "@/components/WeatherWidget";
+
+const COMMUNITY_CATEGORY = "Ειδήσεις Κοινότητας";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80";
 
@@ -197,9 +199,15 @@ export default function Home() {
           </span>
           <div className="flex-grow overflow-hidden relative">
             <div className="animate-marquee whitespace-nowrap">
-              {recentArticles?.slice(0, 3).map((article) => (
-                <span key={article.id} className="mx-6 text-sm">
-                  <span className="opacity-40 mr-2">◆</span>
+              {recentArticles?.slice(0, 5).map((article) => (
+                <span key={article.id} className="mx-6 text-sm inline-flex items-center gap-2">
+                  <span className="opacity-40">◆</span>
+                  {article.category === COMMUNITY_CATEGORY && (
+                    <span className="inline-flex items-center gap-0.5 bg-secondary/30 text-secondary-foreground text-[10px] font-semibold px-1.5 py-0.5 rounded uppercase tracking-wide shrink-0">
+                      <UsersRound className="w-2.5 h-2.5" />
+                      Κοινότητα
+                    </span>
+                  )}
                   <Link href={`/news/${article.id}`} className="hover:text-secondary transition-colors">
                     {article.title}
                   </Link>
@@ -548,6 +556,12 @@ export default function Home() {
                           <div className="flex flex-col flex-grow justify-center">
                             <div className="flex items-center gap-2 mb-2">
                               <span className="text-primary dark:text-secondary text-xs font-bold uppercase tracking-wider">{article.category}</span>
+                              {article.category === COMMUNITY_CATEGORY && (
+                                <span className="inline-flex items-center gap-0.5 bg-secondary/15 text-secondary text-[10px] font-semibold px-1.5 py-0.5 rounded border border-secondary/25 uppercase tracking-wide">
+                                  <UsersRound className="w-2.5 h-2.5" />
+                                  Κοινότητα
+                                </span>
+                              )}
                               <span className="text-muted-foreground text-xs">• {format(new Date(article.createdAt), "d MMM yyyy", { locale: el })}</span>
                             </div>
                             <h4 className="font-serif text-lg font-bold mb-1.5 group-hover:text-primary dark:group-hover:text-secondary transition-colors line-clamp-2">{article.title}</h4>
