@@ -38,6 +38,7 @@ import SubmitNews from "@/pages/SubmitNews";
 import AdminNews from "@/pages/AdminNews";
 import SubmitVideo from "@/pages/SubmitVideo";
 import AdminVideos from "@/pages/AdminVideos";
+import AdminIndexingLog from "@/pages/AdminIndexingLog";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -124,6 +125,8 @@ function Router() {
             <Route path="/submit-video/" component={SubmitVideo} />
             <Route path="/admin/videos" component={AdminVideos} />
             <Route path="/admin/videos/" component={AdminVideos} />
+            <Route path="/admin/indexing" component={AdminIndexingLog} />
+            <Route path="/admin/indexing/" component={AdminIndexingLog} />
             <Route component={NotFound} />
           </Switch>
         </Layout>

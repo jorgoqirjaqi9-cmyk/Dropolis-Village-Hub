@@ -96,4 +96,22 @@ router.get("/indexing/status", (_req, res) => {
   res.json({ summary, events });
 });
 
+/**
+ * GET /api/indexing/events
+ * Admin-only. Returns the last 200 indexing events with a summary.
+ */
+router.get("/indexing/events", requireAdmin, (req, res) => {
+  const events = getRecentIndexingEvents();
+  const summary = {
+    total: events.length,
+    ok: events.filter((e) => e.status === "ok").length,
+    fail: events.filter((e) => e.status === "fail").length,
+    skipped: events.filter((e) => e.status === "skipped").length,
+    googleIndexingApiEnabled:
+      !!(process.env.GOOGLE_INDEXING_CLIENT_EMAIL && process.env.GOOGLE_INDEXING_PRIVATE_KEY),
+  };
+  req.log.info({ total: events.length }, "Admin fetched indexing event log");
+  res.json({ summary, events });
+});
+
 export default router;
