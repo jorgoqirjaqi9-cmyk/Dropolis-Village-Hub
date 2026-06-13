@@ -1,0 +1,34 @@
+Build task: Fix the broken public submission routes on Dropolis.
+
+Current live audit:
+- https://dropolis.net/submit-news returns 404, but homepage links to it.
+- https://dropolis.net/submit-video returns 404, but homepage links to it.
+- /admin/news exists and shows Admin Token UI.
+- /admin/videos exists and shows Admin Token UI.
+- /api/news-submissions exists but is protected/401 on GET, so backend likely exists.
+- /api/video-submissions returns 404, while the database has submitted_videos table.
+
+Implement and verify:
+1. Wire /submit-news in the frontend router and server/prerender/static fallback so direct browser refresh returns 200, not 404.
+   - Use the existing SubmitNews page if present.
+   - Form fields in Greek: title, content/description, village selector using Greek village names, submitter name, email, optional image URL if already supported.
+   - POST to the existing news submission endpoint according to current backend contract.
+   - Keep it indexable with SEO title/description.
+
+2. Wire /submit-video in the frontend router and server/prerender/static fallback so direct browser refresh returns 200, not 404.
+   - Use existing SubmitVideo page if present, but make it support video URL submission if the current upload flow is incomplete.
+   - Fields in Greek: title, description, village selector using Greek names, submitter name, email, video URL.
+   - Add backend endpoint if missing. Use existing submitted_videos table/schema if present.
+   - Ensure admin videos page can list pending video submissions via protected admin endpoint.
+
+3. Make sure homepage buttons continue linking to /submit-news, /upload-photo, /submit-video.
+
+4. Update sitemap and robots if needed after routes are real.
+
+Acceptance checks:
+- pnpm run typecheck passes.
+- curl or browser direct load /submit-news returns 200 and form is visible.
+- curl or browser direct load /submit-video returns 200 and form is visible.
+- /api/video-submissions or the endpoint used by SubmitVideo no longer returns 404 for the supported method.
+- /admin/news and /admin/videos remain noindex and protected by admin token.
+- If production publish cannot be triggered from task agent, leave ready for Apply changes and say exactly that.
