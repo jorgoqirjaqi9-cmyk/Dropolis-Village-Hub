@@ -131,7 +131,7 @@ export function SEO({
       name: `${SITE_NAME} (${SITE_NAME_EN})`,
       url: BASE_URL,
       logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
-      sameAs: ["https://www.facebook.com/dropolis", "https://www.youtube.com/@dropolis"],
+      sameAs: ["https://www.facebook.com/profile.php?id=61590717183098", "https://www.youtube.com/@dropolis"],
       description: DEFAULT_DESCRIPTION,
     };
 

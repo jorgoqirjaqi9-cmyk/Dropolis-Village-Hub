@@ -363,7 +363,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, ιστορία και πολιτισμός από τα 41 χωριά της Β. Ηπείρου.
               </p>
               <div className="flex gap-3">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                <a href="https://www.facebook.com/profile.php?id=61590717183098" target="_blank" rel="noopener noreferrer"
                   aria-label="Facebook"
                   className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-sm font-bold">
                   f
