@@ -29,26 +29,50 @@ const DEFAULT_IMG = `${BASE_URL}/opengraph.jpg`;
 
 let _tpl: string | null = null;
 
-function loadTemplate(): string {
+async function loadTemplate(): Promise<string> {
   if (_tpl) return _tpl;
   const cwd = process.cwd();
-  // In production the process is launched from the workspace root, so paths
-  // like "artifacts/dropolis/..." resolve correctly.
-  // In development, pnpm cd's into the package dir (artifacts/api-server/),
-  // so we also try two levels up to reach the workspace root.
-  const candidates = [
-    process.env.FRONTEND_DIST_PATH
-      ? resolve(process.env.FRONTEND_DIST_PATH, "index.html")
-      : null,
-    resolve(cwd, "artifacts/dropolis/dist/public/index.html"),
-    resolve(cwd, "artifacts/dropolis/index.html"),
-    resolve(cwd, "../../artifacts/dropolis/dist/public/index.html"),
-    resolve(cwd, "../../artifacts/dropolis/index.html"),
-  ].filter(Boolean) as string[];
+  const isProd = process.env.NODE_ENV === "production";
+
+  // In development: fetch from the Vite dev server so we get Vite's full HTML
+  // injection (/@vite/client, /@react-refresh preamble, etc.). Without these,
+  // the browser receives HTML with only <script src="/src/main.tsx"> but is
+  // missing the HMR client and React Refresh preamble that Vite normally injects,
+  // which causes "Expected JS module, got text/html" errors.
+  if (!isProd) {
+    const vitePort = process.env.VITE_PORT ?? "20727";
+    try {
+      const r = await fetch(`http://localhost:${vitePort}/`);
+      if (r.ok) return await r.text();
+    } catch {
+      // Vite not ready yet — fall through to file-based fallback
+    }
+  }
+
+  // Production: use the BUILT dist/index.html (hashed assets, correct for static serving).
+  // Cache the template so it is only read once.
+  const candidates = (isProd
+    ? [
+        process.env.FRONTEND_DIST_PATH
+          ? resolve(process.env.FRONTEND_DIST_PATH, "index.html")
+          : null,
+        resolve(cwd, "artifacts/dropolis/dist/public/index.html"),
+        resolve(cwd, "../../artifacts/dropolis/dist/public/index.html"),
+        resolve(cwd, "artifacts/dropolis/index.html"),
+        resolve(cwd, "../../artifacts/dropolis/index.html"),
+      ]
+    : [
+        resolve(cwd, "artifacts/dropolis/index.html"),
+        resolve(cwd, "../../artifacts/dropolis/index.html"),
+        resolve(cwd, "artifacts/dropolis/dist/public/index.html"),
+        resolve(cwd, "../../artifacts/dropolis/dist/public/index.html"),
+      ]
+  ).filter(Boolean) as string[];
+
   for (const p of candidates) {
     if (existsSync(p)) {
       const t = readFileSync(p, "utf-8");
-      if (process.env.NODE_ENV === "production") _tpl = t;
+      if (isProd) _tpl = t;
       return t;
     }
   }
@@ -388,15 +412,19 @@ const STATIC_META: Record<string, PageMeta> = {
 // Response helper
 // ---------------------------------------------------------------------------
 
-function sendPage(
+async function sendPage(
   res: import("express").Response,
   meta: PageMeta,
   cacheSeconds = 3600
-): void {
+): Promise<void> {
   try {
-    const html = injectMeta(loadTemplate(), meta);
+    const html = injectMeta(await loadTemplate(), meta);
+    const isDev = process.env.NODE_ENV !== "production";
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.setHeader("Cache-Control", `public, max-age=${cacheSeconds}`);
+    res.setHeader(
+      "Cache-Control",
+      isDev ? "no-store" : `public, max-age=${cacheSeconds}`
+    );
     res.send(html);
   } catch (err) {
     logger.warn({ err }, "seo-pages: failed to inject meta — falling back");
@@ -567,14 +595,14 @@ router.get("/villages/:id", async (req, res) => {
 // Must call next() for /api/* so the API router can handle those.
 // ---------------------------------------------------------------------------
 
-router.use((req, res, next) => {
+router.use(async (req, res, next) => {
   // Pass /api/* through to the main API router
   if (req.path.startsWith("/api")) {
     next();
     return;
   }
   try {
-    const html = injectMeta(loadTemplate(), {
+    const html = injectMeta(await loadTemplate(), {
       title: "Σελίδα δεν βρέθηκε",
       description: "Η σελίδα που ζητήσατε δεν υπάρχει στο Dropolis.",
       url: `${BASE_URL}/`,
