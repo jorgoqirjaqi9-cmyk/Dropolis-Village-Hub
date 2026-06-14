@@ -13,9 +13,11 @@ export const SITE = {
 
 export const seoPages = {
   home: {
-    title: "Δρόπολη - Dropolis | Ειδήσεις, Χωριά και Κοινότητα",
+    title: "Δρόπολη - Dropolis | Τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο",
     description:
-      "Ειδήσεις, χωριά, φωτογραφίες, βίντεο και ιστορίες από τη Δρόπολη, τη Βόρεια Ήπειρο και τα 41 χωριά της περιοχής.",
+      "Το Dropolis.net είναι η ψηφιακή πλατφόρμα για τη Δρόπολη, τα 41 χωριά της Δρόπολης, την ελληνική μειονότητα στη Βόρεια Ήπειρο, με ειδήσεις, φωτογραφίες, ιστορία, βίντεο και διαδραστικό χάρτη.",
+    ogDescription:
+      "Ειδήσεις, φωτογραφίες, ιστορία, βίντεο και διαδραστικός χάρτης για τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο.",
     image: "https://dropolis.net/og-home.jpg",
     url: "https://dropolis.net/",
   },
@@ -38,6 +40,8 @@ export const seoPages = {
 export interface SEOProps {
   title: string;
   description?: string;
+  /** Override og:description / twitter:description separately from meta description */
+  ogDescription?: string;
   image?: string;
   type?: "website" | "article";
   article?: {
@@ -90,6 +94,7 @@ function injectJsonLd(id: string, data: object | object[]) {
 export function SEO({
   title,
   description,
+  ogDescription,
   image,
   type = "website",
   article,
@@ -103,6 +108,7 @@ export function SEO({
   const canonicalUrl = `${SITE.url}${location === "/" ? "" : location}`;
   const fullTitle = standalone ? title : `${title} | ${SITE.name} (${SITE.nameEn})`;
   const metaDesc = description || SITE.description;
+  const socialDesc = ogDescription ?? metaDesc;
   const ogImage = image
     ? image.startsWith("http")
       ? image
@@ -125,7 +131,7 @@ export function SEO({
     setLink("canonical", canonicalUrl);
 
     setMeta("property", "og:title", fullTitle);
-    setMeta("property", "og:description", metaDesc);
+    setMeta("property", "og:description", socialDesc);
     setMeta("property", "og:type", type);
     setMeta("property", "og:url", canonicalUrl);
     setMeta("property", "og:image", ogImage);
@@ -134,7 +140,7 @@ export function SEO({
 
     setMeta("name", "twitter:card", "summary_large_image");
     setMeta("name", "twitter:title", fullTitle);
-    setMeta("name", "twitter:description", metaDesc);
+    setMeta("name", "twitter:description", socialDesc);
     setMeta("name", "twitter:image", ogImage);
 
     if (type === "article" && article) {
@@ -152,7 +158,8 @@ export function SEO({
       "@context": "https://schema.org",
       "@type": "WebSite",
       "@id": `${SITE.url}/#website`,
-      name: `${SITE.name} (${SITE.nameEn})`,
+      name: "Δρόπολη - Dropolis",
+      alternateName: ["Dropolis", "Δρόπολη", "Dropull"],
       url: SITE.url,
       description: SITE.description,
       inLanguage: "el",
@@ -162,10 +169,13 @@ export function SEO({
       "@context": "https://schema.org",
       "@type": "Organization",
       "@id": `${SITE.url}/#organization`,
-      name: `${SITE.name} (${SITE.nameEn})`,
+      name: "Δρόπολη - Dropolis",
       url: SITE.url,
       logo: { "@type": "ImageObject", url: `${SITE.url}/favicon.svg` },
-      sameAs: ["https://www.facebook.com/profile.php?id=61590717183098", "https://www.youtube.com/@dropolis"],
+      sameAs: [
+        "https://www.facebook.com/profile.php?id=61590717183098",
+        "https://www.youtube.com/@dropolis",
+      ],
       description: SITE.description,
     };
 

@@ -64,13 +64,14 @@ export default function Home() {
         title={seoPages.home.title}
         standalone={true}
         description={seoPages.home.description}
+        ogDescription={seoPages.home.ogDescription}
         image={seoPages.home.image}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",
           "@id": "https://dropolis.net/#webpage",
-          name: "Δρόπολη - Dropolis | Ειδήσεις, Χωριά και Κοινότητα",
-          description: "Ειδήσεις, χωριά, φωτογραφίες, βίντεο και ιστορίες από τη Δρόπολη, τη Βόρεια Ήπειρο και τα 41 χωριά της περιοχής.",
+          name: "Δρόπολη - Dropolis | Τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο",
+          description: "Το Dropolis.net είναι η ψηφιακή πλατφόρμα για τη Δρόπολη, τα 41 χωριά της Δρόπολης, την ελληνική μειονότητα στη Βόρεια Ήπειρο, με ειδήσεις, φωτογραφίες, ιστορία, βίντεο και διαδραστικό χάρτη.",
           url: "https://dropolis.net/",
           inLanguage: "el",
           isPartOf: { "@id": "https://dropolis.net/#website" },
@@ -133,9 +134,9 @@ export default function Home() {
           <motion.h1
             id="hero-heading"
             variants={fadeUp}
-            className="font-serif text-6xl sm:text-7xl md:text-8xl font-black text-white text-shadow-hero leading-none tracking-tight mb-4"
+            className="font-serif text-5xl sm:text-6xl md:text-7xl font-black text-white text-shadow-hero leading-none tracking-tight mb-4"
           >
-            Δρόπολη
+            Δρόπολη - Dropolis
           </motion.h1>
 
           <motion.p
@@ -225,6 +226,16 @@ export default function Home() {
             </div>
           </div>
         </motion.div>
+
+        {/* Brand intro — visible to crawlers and users */}
+        <p className="text-sm text-muted-foreground text-center leading-relaxed max-w-3xl mx-auto -mt-4">
+          Το <strong>Dropolis.net</strong> είναι η ψηφιακή πλατφόρμα για τη{" "}
+          <strong>Δρόπολη</strong>, τα{" "}
+          <Link href="/villages" className="underline underline-offset-2 hover:text-foreground transition-colors">
+            41 χωριά της Δρόπολης
+          </Link>{" "}
+          και την ελληνική μειονότητα στη <strong>Βόρεια Ήπειρο</strong>.
+        </p>
 
         {/* Stats Bar */}
         <motion.div
