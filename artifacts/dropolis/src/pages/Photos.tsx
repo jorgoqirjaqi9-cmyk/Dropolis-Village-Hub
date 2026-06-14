@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 import { useListPhotos } from "@workspace/api-client-react";
-import { SEO } from "@/components/SEO";
+import { SEO, seoPages } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { VoteButtons } from "@/components/VoteButtons";
 import { Camera, MapPin, Upload } from "lucide-react";
@@ -14,9 +14,10 @@ export default function Photos() {
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO
-        title="Φωτογραφικό Αρχείο"
-        description="Πλούσιο φωτογραφικό αρχείο από τα χωριά, τις εκδηλώσεις και τους ανθρώπους της Δρόπολης, Βόρεια Ήπειρος."
-        image="/og-photos.png"
+        title={seoPages.photos.title}
+        standalone={true}
+        description={seoPages.photos.description}
+        image={seoPages.photos.image}
         keywords="φωτογραφίες Δρόπολης, εικόνες χωριών Βόρεια Ήπειρος, ελληνική μειονότητα φωτογραφίες, Dropull photos, Δερόπολη εικόνες, παραδοσιακά χωριά"
         breadcrumbs={[{ name: "Φωτογραφίες", url: "/photos" }]}
         jsonLd={{

@@ -1,12 +1,39 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 
-const SITE_NAME = "Δρόπολη";
-const SITE_NAME_EN = "Dropolis";
-const BASE_URL = "https://dropolis.net";
-const DEFAULT_IMAGE = "/opengraph.jpg";
-const DEFAULT_DESCRIPTION =
-  "Το portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος).";
+export const SITE = {
+  name: "Δρόπολη",
+  nameEn: "Dropolis",
+  url: "https://dropolis.net",
+  locale: "el_GR",
+  defaultImage: "https://dropolis.net/og-home.jpg",
+  description:
+    "Η ψηφιακή πλατφόρμα της Δρόπολης με ειδήσεις, ιστορία, χωριά, φωτογραφίες, βίντεο και κοινότητα για τα 41 χωριά της Βόρειας Ηπείρου.",
+};
+
+export const seoPages = {
+  home: {
+    title: "Δρόπολη - Dropolis | Ειδήσεις, Χωριά και Κοινότητα",
+    description:
+      "Ειδήσεις, χωριά, φωτογραφίες, βίντεο και ιστορίες από τη Δρόπολη, τη Βόρεια Ήπειρο και τα 41 χωριά της περιοχής.",
+    image: "https://dropolis.net/og-home.jpg",
+    url: "https://dropolis.net/",
+  },
+  photos: {
+    title: "Φωτογραφίες Δρόπολης | Χωριά, Παράδοση και Ιστορία",
+    description:
+      "Φωτογραφικό αρχείο της Δρόπολης με εικόνες από χωριά, τοπία, παραδόσεις, ιστορικά σημεία και την καθημερινότητα της ελληνικής κοινότητας.",
+    image: "https://dropolis.net/og-photos.png",
+    url: "https://dropolis.net/photos",
+  },
+  videos: {
+    title: "Βίντεο Δρόπολης | Ρεπορτάζ, Εκδηλώσεις και Ιστορία",
+    description:
+      "Βίντεο, ρεπορτάζ, ντοκιμαντέρ και εκδηλώσεις από τη Δρόπολη, τα 41 χωριά της και την ελληνική κοινότητα της Βόρειας Ηπείρου.",
+    image: "https://dropolis.net/og-videos.png",
+    url: "https://dropolis.net/videos",
+  },
+};
 
 export interface SEOProps {
   title: string;
@@ -24,7 +51,7 @@ export interface SEOProps {
   breadcrumbs?: Array<{ name: string; url: string }>;
   noindex?: boolean;
   keywords?: string;
-  /** When true, use title as-is without appending site name (for homepage) */
+  /** When true, use title as-is without appending site name */
   standalone?: boolean;
 }
 
@@ -73,10 +100,14 @@ export function SEO({
   standalone = false,
 }: SEOProps) {
   const [location] = useLocation();
-  const canonicalUrl = `${BASE_URL}${location === "/" ? "" : location}`;
-  const fullTitle = standalone ? title : `${title} | ${SITE_NAME} (${SITE_NAME_EN})`;
-  const metaDesc = description || DEFAULT_DESCRIPTION;
-  const ogImage = image ? (image.startsWith("http") ? image : `${BASE_URL}${image}`) : `${BASE_URL}${DEFAULT_IMAGE}`;
+  const canonicalUrl = `${SITE.url}${location === "/" ? "" : location}`;
+  const fullTitle = standalone ? title : `${title} | ${SITE.name} (${SITE.nameEn})`;
+  const metaDesc = description || SITE.description;
+  const ogImage = image
+    ? image.startsWith("http")
+      ? image
+      : `${SITE.url}${image}`
+    : SITE.defaultImage;
 
   useEffect(() => {
     document.title = fullTitle;
@@ -98,8 +129,8 @@ export function SEO({
     setMeta("property", "og:type", type);
     setMeta("property", "og:url", canonicalUrl);
     setMeta("property", "og:image", ogImage);
-    setMeta("property", "og:site_name", SITE_NAME);
-    setMeta("property", "og:locale", "el_GR");
+    setMeta("property", "og:site_name", SITE.name);
+    setMeta("property", "og:locale", SITE.locale);
 
     setMeta("name", "twitter:card", "summary_large_image");
     setMeta("name", "twitter:title", fullTitle);
@@ -112,7 +143,7 @@ export function SEO({
       if (article.author) setMeta("property", "article:author", article.author);
       if (article.section) setMeta("property", "article:section", article.section);
     }
-  }, [fullTitle, metaDesc, canonicalUrl, ogImage, type, noindex]);
+  }, [fullTitle, metaDesc, canonicalUrl, ogImage, type, noindex, keywords]);
 
   useEffect(() => {
     const schemas: object[] = [];
@@ -120,22 +151,22 @@ export function SEO({
     const websiteSchema = {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "@id": `${BASE_URL}/#website`,
-      name: `${SITE_NAME} (${SITE_NAME_EN})`,
-      url: BASE_URL,
-      description: DEFAULT_DESCRIPTION,
+      "@id": `${SITE.url}/#website`,
+      name: `${SITE.name} (${SITE.nameEn})`,
+      url: SITE.url,
+      description: SITE.description,
       inLanguage: "el",
     };
 
     const orgSchema = {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "@id": `${BASE_URL}/#organization`,
-      name: `${SITE_NAME} (${SITE_NAME_EN})`,
-      url: BASE_URL,
-      logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
+      "@id": `${SITE.url}/#organization`,
+      name: `${SITE.name} (${SITE.nameEn})`,
+      url: SITE.url,
+      logo: { "@type": "ImageObject", url: `${SITE.url}/favicon.svg` },
       sameAs: ["https://www.facebook.com/profile.php?id=61590717183098", "https://www.youtube.com/@dropolis"],
-      description: DEFAULT_DESCRIPTION,
+      description: SITE.description,
     };
 
     schemas.push(websiteSchema, orgSchema);
@@ -149,13 +180,13 @@ export function SEO({
             "@type": "ListItem",
             position: 1,
             name: "Αρχική",
-            item: BASE_URL,
+            item: SITE.url,
           },
           ...breadcrumbs.map((crumb, index) => ({
             "@type": "ListItem",
             position: index + 2,
             name: crumb.name,
-            item: `${BASE_URL}${crumb.url}`,
+            item: `${SITE.url}${crumb.url}`,
           })),
         ],
       };

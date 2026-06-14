@@ -132,8 +132,8 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
   },
   {
     path: "/photos",
-    title: "Φωτογραφικό Αρχείο",
-    description: "Πλούσιο φωτογραφικό αρχείο από τα χωριά, τις εκδηλώσεις και τους ανθρώπους της Δρόπολης, Βόρεια Ήπειρος.",
+    title: "Φωτογραφίες Δρόπολης | Χωριά, Παράδοση και Ιστορία",
+    description: "Φωτογραφικό αρχείο της Δρόπολης με εικόνες από χωριά, τοπία, παραδόσεις, ιστορικά σημεία και την καθημερινότητα της ελληνικής κοινότητας.",
     image: `${BASE_URL}/og-photos.png`,
     url: `${BASE_URL}/photos`,
     breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos` }],
@@ -150,8 +150,8 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
   },
   {
     path: "/videos",
-    title: "Βίντεο & Ρεπορτάζ",
-    description: "Ντοκιμαντέρ, ρεπορτάζ και βίντεο από τα χωριά της Δρόπολης, Βόρεια Ήπειρος. YouTube βίντεο για την ελληνική μειονότητα.",
+    title: "Βίντεο Δρόπολης | Ρεπορτάζ, Εκδηλώσεις και Ιστορία",
+    description: "Βίντεο, ρεπορτάζ, ντοκιμαντέρ και εκδηλώσεις από τη Δρόπολη, τα 41 χωριά της και την ελληνική κοινότητα της Βόρειας Ηπείρου.",
     image: `${BASE_URL}/og-videos.png`,
     url: `${BASE_URL}/videos`,
     breadcrumbs: [{ name: "Βίντεο", item: `${BASE_URL}/videos` }],

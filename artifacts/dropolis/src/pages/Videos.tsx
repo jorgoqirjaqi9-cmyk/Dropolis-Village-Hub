@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 import { useListVideos } from "@workspace/api-client-react";
-import { SEO } from "@/components/SEO";
+import { SEO, seoPages } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Play, MapPin, Clock, Upload, User, Calendar } from "lucide-react";
 import { VoteButtons } from "@/components/VoteButtons";
@@ -12,9 +12,10 @@ export default function Videos() {
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO
-        title="Βίντεο & Ρεπορτάζ"
-        description="Ντοκιμαντέρ, ρεπορτάζ και βίντεο από τα χωριά της Δρόπολης, Βόρεια Ήπειρος. YouTube βίντεο για την ελληνική μειονότητα."
-        image="/og-videos.png"
+        title={seoPages.videos.title}
+        standalone={true}
+        description={seoPages.videos.description}
+        image={seoPages.videos.image}
         keywords="βίντεο Δρόπολης, ντοκιμαντέρ Βόρεια Ήπειρος, YouTube ελληνική μειονότητα, Dropull videos, χορός Δερόπολης, πολυφωνικά τραγούδια"
         breadcrumbs={[{ name: "Βίντεο", url: "/videos" }]}
         jsonLd={{

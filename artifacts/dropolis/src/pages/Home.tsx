@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { el } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGetStats, useGetFeaturedArticles, useListArticles } from "@workspace/api-client-react";
-import { SEO } from "@/components/SEO";
+import { SEO, seoPages } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera, CheckCircle2, UsersRound } from "lucide-react";
@@ -61,10 +61,10 @@ export default function Home() {
   return (
     <div>
       <SEO
-        title="Δρόπολη - Dropolis | Ειδήσεις, Χωριά και Κοινότητα"
+        title={seoPages.home.title}
         standalone={true}
-        description="Ειδήσεις, χωριά, φωτογραφίες, βίντεο και ιστορίες από τη Δρόπολη, τη Βόρεια Ήπειρο και τα 41 χωριά της περιοχής."
-        image="/og-home.jpg"
+        description={seoPages.home.description}
+        image={seoPages.home.image}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",
