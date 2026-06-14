@@ -3,6 +3,13 @@ import { Play, Pause, Radio, X, Volume2, VolumeX } from "lucide-react";
 
 const STATIONS = [
   {
+    id: "menta88",
+    name: "Menta 88 FM",
+    streamUrl: "https://netradio.live24.gr/menta88ath",
+    website: "https://menta88.gr/player/",
+    websiteLabel: "menta88.gr",
+  },
+  {
     id: "sfera",
     name: "Sfera Radio",
     streamUrl: "https://sfera.live24.gr/sfera4132",
@@ -65,7 +72,7 @@ function StationRow({
 
   // expose play for the global radio-play event (triggers first station)
   useEffect(() => {
-    if (station.id !== "sfera") return;
+    if (station.id !== "menta88") return;
     const handler = () => {
       const audio = audioRef.current;
       if (!audio || isPlaying) return;
