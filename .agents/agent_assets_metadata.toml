@@ -1,0 +1,20 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "x_3m0LB4HzDGYMvTmal8o"
+uri = "file://artifacts/dropolis/public/og-news.png"
+type = "image"
+title = "greek news editorial og"
+
+[[generated]]
+id = "Mt9WHtlWcls0LAaeDkHd1"
+uri = "file://artifacts/dropolis/public/og-photos.png"
+type = "image"
+title = "photo gallery greek villages og"
+
+[[generated]]
+id = "drrwfOsEOto5mzW2Q3NeS"
+uri = "file://artifacts/dropolis/public/og-videos.png"
+type = "image"
+title = "greek village video documentary og"

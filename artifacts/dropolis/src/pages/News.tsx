@@ -94,15 +94,41 @@ export default function News() {
       <SEO
         title="Ειδήσεις"
         description="Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου."
+        image="/og-news.png"
+        keywords="Δρόπολη ειδήσεις, Βόρεια Ήπειρος νέα, ελληνική μειονότητα Αλβανία, Dropull news, Northern Epirus, Δερόπολη, Δρόπολης χωριά"
         breadcrumbs={[{ name: "Ειδήσεις", url: "/news" }]}
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          name: "Ειδήσεις — Δρόπολη",
-          description: "Τελευταία νέα και ρεπορτάζ από τη Δρόπολη.",
-          url: "https://dropolis.net/news",
-          inLanguage: "el",
-        }}
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "Ειδήσεις — Δρόπολη",
+            description: "Τελευταία νέα και ρεπορτάζ από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου.",
+            url: "https://dropolis.net/news",
+            inLanguage: "el",
+            publisher: {
+              "@type": "NewsMediaOrganization",
+              "@id": "https://dropolis.net/#organization",
+              name: "Δρόπολη (Dropolis)",
+              url: "https://dropolis.net",
+              logo: { "@type": "ImageObject", url: "https://dropolis.net/favicon.svg" },
+              sameAs: ["https://www.facebook.com/profile.php?id=61590717183098"],
+            },
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "NewsMediaOrganization",
+            "@id": "https://dropolis.net/#organization",
+            name: "Δρόπολη (Dropolis)",
+            url: "https://dropolis.net",
+            logo: { "@type": "ImageObject", url: "https://dropolis.net/favicon.svg" },
+            foundingLocation: { "@type": "Place", name: "Δρόπολη, Βόρεια Ήπειρος" },
+            publishingPrinciples: "https://dropolis.net/editorial-policy",
+            sameAs: [
+              "https://www.facebook.com/profile.php?id=61590717183098",
+              "https://www.youtube.com/@dropolis",
+            ],
+          },
+        ]}
       />
 
       {/* Page header */}

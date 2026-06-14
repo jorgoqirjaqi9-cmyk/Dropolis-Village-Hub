@@ -14,6 +14,8 @@ export default function Videos() {
       <SEO
         title="Βίντεο & Ρεπορτάζ"
         description="Ντοκιμαντέρ, ρεπορτάζ και βίντεο από τα χωριά της Δρόπολης, Βόρεια Ήπειρος. YouTube βίντεο για την ελληνική μειονότητα."
+        image="/og-videos.png"
+        keywords="βίντεο Δρόπολης, ντοκιμαντέρ Βόρεια Ήπειρος, YouTube ελληνική μειονότητα, Dropull videos, χορός Δερόπολης, πολυφωνικά τραγούδια"
         breadcrumbs={[{ name: "Βίντεο", url: "/videos" }]}
         jsonLd={{
           "@context": "https://schema.org",

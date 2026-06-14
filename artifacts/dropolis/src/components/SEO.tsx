@@ -23,6 +23,7 @@ export interface SEOProps {
   jsonLd?: object | object[];
   breadcrumbs?: Array<{ name: string; url: string }>;
   noindex?: boolean;
+  keywords?: string;
   /** When true, use title as-is without appending site name (for homepage) */
   standalone?: boolean;
 }
@@ -68,6 +69,7 @@ export function SEO({
   jsonLd,
   breadcrumbs,
   noindex = false,
+  keywords,
   standalone = false,
 }: SEOProps) {
   const [location] = useLocation();
@@ -80,6 +82,7 @@ export function SEO({
     document.title = fullTitle;
 
     setMeta("name", "description", metaDesc);
+    if (keywords) setMeta("name", "keywords", keywords);
     setMeta(
       "name",
       "robots",
