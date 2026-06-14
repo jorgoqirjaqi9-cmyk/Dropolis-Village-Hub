@@ -134,7 +134,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     path: "/photos",
     title: "Φωτογραφίες Δρόπολης | Χωριά, Παράδοση και Ιστορία",
     description: "Φωτογραφικό αρχείο της Δρόπολης με εικόνες από χωριά, τοπία, παραδόσεις, ιστορικά σημεία και την καθημερινότητα της ελληνικής κοινότητας.",
-    image: `${BASE_URL}/og-photos.png`,
+    image: `${BASE_URL}/og-photos.jpg`,
     url: `${BASE_URL}/photos`,
     breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos` }],
     jsonLd: {
@@ -152,7 +152,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     path: "/videos",
     title: "Βίντεο Δρόπολης | Ρεπορτάζ, Εκδηλώσεις και Ιστορία",
     description: "Βίντεο, ρεπορτάζ, ντοκιμαντέρ και εκδηλώσεις από τη Δρόπολη, τα 41 χωριά της και την ελληνική κοινότητα της Βόρειας Ηπείρου.",
-    image: `${BASE_URL}/og-videos.png`,
+    image: `${BASE_URL}/og-videos.jpg`,
     url: `${BASE_URL}/videos`,
     breadcrumbs: [{ name: "Βίντεο", item: `${BASE_URL}/videos` }],
     jsonLd: {

@@ -23,14 +23,14 @@ export const seoPages = {
     title: "Φωτογραφίες Δρόπολης | Χωριά, Παράδοση και Ιστορία",
     description:
       "Φωτογραφικό αρχείο της Δρόπολης με εικόνες από χωριά, τοπία, παραδόσεις, ιστορικά σημεία και την καθημερινότητα της ελληνικής κοινότητας.",
-    image: "https://dropolis.net/og-photos.png",
+    image: "https://dropolis.net/og-photos.jpg",
     url: "https://dropolis.net/photos",
   },
   videos: {
     title: "Βίντεο Δρόπολης | Ρεπορτάζ, Εκδηλώσεις και Ιστορία",
     description:
       "Βίντεο, ρεπορτάζ, ντοκιμαντέρ και εκδηλώσεις από τη Δρόπολη, τα 41 χωριά της και την ελληνική κοινότητα της Βόρειας Ηπείρου.",
-    image: "https://dropolis.net/og-videos.png",
+    image: "https://dropolis.net/og-videos.jpg",
     url: "https://dropolis.net/videos",
   },
 };
