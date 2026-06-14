@@ -373,6 +373,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
                   ▶
                 </a>
+                <a href="https://www.reddit.com/r/DropolisNet/" target="_blank" rel="noopener noreferrer"
+                  aria-label="Reddit"
+                  className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                  r/
+                </a>
                 <a href="mailto:dropolis9@gmail.com"
                   aria-label="Email"
                   className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">

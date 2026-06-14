@@ -162,6 +162,58 @@ export default function About() {
         </div>
       </motion.section>
 
+      {/* Community / Social */}
+      <motion.section initial="hidden" whileInView="show" viewport={{ once: true }} variants={fade} className="space-y-6">
+        <h2 className="text-3xl font-serif font-bold text-foreground">Κοινότητα</h2>
+        <p className="text-foreground/80 leading-relaxed">
+          Ακολουθήστε την κοινότητα της Δρόπολης στα social media για νέα, φωτογραφίες, χάρτες, ιστορίες χωριών και συζητήσεις:
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <a
+            href="https://www.facebook.com/profile.php?id=61590717183098"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-card rounded-2xl p-5 flex items-center gap-4 hover:shadow-lg transition-shadow group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-blue-600/10 flex items-center justify-center shrink-0 text-blue-600 font-bold text-lg group-hover:bg-blue-600/20 transition-colors">
+              f
+            </div>
+            <div>
+              <p className="font-semibold text-foreground text-sm">Facebook</p>
+              <p className="text-xs text-muted-foreground">Επίσημη σελίδα</p>
+            </div>
+          </a>
+          <a
+            href="https://www.youtube.com/@dropolis"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-card rounded-2xl p-5 flex items-center gap-4 hover:shadow-lg transition-shadow group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-red-600/10 flex items-center justify-center shrink-0 text-red-600 font-bold text-lg group-hover:bg-red-600/20 transition-colors">
+              ▶
+            </div>
+            <div>
+              <p className="font-semibold text-foreground text-sm">YouTube</p>
+              <p className="text-xs text-muted-foreground">Βίντεο & ρεπορτάζ</p>
+            </div>
+          </a>
+          <a
+            href="https://www.reddit.com/r/DropolisNet/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-card rounded-2xl p-5 flex items-center gap-4 hover:shadow-lg transition-shadow group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center shrink-0 text-orange-500 font-bold text-sm group-hover:bg-orange-500/20 transition-colors">
+              r/
+            </div>
+            <div>
+              <p className="font-semibold text-foreground text-sm">Reddit</p>
+              <p className="text-xs text-muted-foreground">r/DropolisNet</p>
+            </div>
+          </a>
+        </div>
+      </motion.section>
+
       {/* CTA */}
       <motion.section initial="hidden" whileInView="show" viewport={{ once: true }} variants={fade}
         className="text-center glass-card rounded-3xl p-10 space-y-4"
