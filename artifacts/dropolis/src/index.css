@@ -259,3 +259,23 @@
 #goog-gt-tt               { display: none !important; }
 .goog-text-highlight      { background: none !important; box-shadow: none !important; }
 body                      { top: 0 !important; }
+
+/* ─── Global overflow containment ───────────────────────────── */
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.news-ticker,
+.marquee,
+.latest-news-strip {
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
