@@ -38,3 +38,5 @@ channel = "stable-25_05"
 
 [userenv.shared]
 ADMIN_EMAIL = "dropolis9@gmail.com"
+FACEBOOK_AUTO_POST_ENABLED = "false"
+FACEBOOK_PAGE_ID = ""

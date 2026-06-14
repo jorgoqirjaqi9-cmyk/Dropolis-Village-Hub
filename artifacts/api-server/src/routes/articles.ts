@@ -6,6 +6,7 @@ import { autoIndexArticle } from "../lib/auto-indexing.js";
 import { prerenderArticle, removeArticlePrerender } from "../lib/on-demand-prerender.js";
 import { invalidateSitemapManifestCache } from "./sitemap.js";
 import { requireAdmin } from "../lib/admin-auth.js";
+import { postArticleToFacebook } from "../lib/facebook-poster.js";
 import {
   ListArticlesQueryParams,
   CreateArticleBody,
