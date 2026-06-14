@@ -25,6 +25,13 @@ export function CookieConsent() {
     localStorage.setItem("dropolis-cookie-consent", "accepted");
     localStorage.setItem("dropolis-cookie-analytics", analytics ? "1" : "0");
     localStorage.setItem("dropolis-cookie-advertising", advertising ? "1" : "0");
+    if (advertising && !document.querySelector('script[src*="adsbygoogle.js"]')) {
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3960290713410584";
+      s.crossOrigin = "anonymous";
+      document.head.appendChild(s);
+    }
     setVisible(false);
     setTimeout(() => setState("accepted"), 350);
   };

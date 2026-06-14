@@ -187,14 +187,29 @@
     }
     </script>
 
-    <!-- AdSense — deferred until after page load to avoid TBT on critical path -->
+    <!-- Tell Google Funding Choices we manage our own consent — prevents it from
+         injecting its own consent dialog (which adds rogue H1/H2 to the DOM).  -->
+    <script>
+      window.googlefc = window.googlefc || {};
+      window.googlefc.controlledMessagingFunction = function(msg) {
+        msg.proceed(false);
+      };
+    </script>
+
+    <!-- AdSense — deferred and gated on advertising consent.
+         On repeat visits we check localStorage and load immediately if already accepted.
+         On first visit CookieConsent.tsx triggers loading after the user accepts. -->
     <script>
       window.addEventListener('load', function() {
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3960290713410584';
-        s.crossOrigin = 'anonymous';
-        document.head.appendChild(s);
+        var consent = localStorage.getItem('dropolis-cookie-consent');
+        var adv    = localStorage.getItem('dropolis-cookie-advertising');
+        if (consent === 'accepted' && adv !== '0') {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3960290713410584';
+          s.crossOrigin = 'anonymous';
+          document.head.appendChild(s);
+        }
       }, { once: true });
     </script>
 
