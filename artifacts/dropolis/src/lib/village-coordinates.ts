@@ -1,6 +1,6 @@
 export const VILLAGE_COORDINATES: Record<string, { lat: number; lng: number }> = {
   "Άγιος Νικόλαος": { lat: 39.838041, lng: 20.263431 },
-  "Shën Kolli": { lat: 39.838041, lng: 20.263431 },
+  "Dritë": { lat: 39.838041, lng: 20.263431 },
   "Άνω Επισκοπή": { lat: 39.967005, lng: 20.313199 },
   "Episkopi i Sipërm": { lat: 39.967005, lng: 20.313199 },
   "Βάνιστα": { lat: 40.009918, lng: 20.191326 },
