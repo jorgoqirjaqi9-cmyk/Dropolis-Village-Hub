@@ -17,6 +17,8 @@ import newsSubmissionsRouter from "./newsSubmissions";
 import videoSubmissionsRouter from "./video-submissions";
 import adminVideosRouter from "./admin-videos";
 import votesRouter from "./votes";
+import adminDashboardRouter from "./admin-dashboard";
+import adminArticlesRouter from "./admin-articles";
 
 const router: IRouter = Router();
 
@@ -38,5 +40,7 @@ router.use(newsSubmissionsRouter);
 router.use(videoSubmissionsRouter);
 router.use(adminVideosRouter);
 router.use(votesRouter);
+router.use(adminDashboardRouter);
+router.use(adminArticlesRouter);
 
 export default router;

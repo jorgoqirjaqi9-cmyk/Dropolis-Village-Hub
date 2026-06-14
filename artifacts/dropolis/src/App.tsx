@@ -35,11 +35,17 @@ const EnVillages      = lazy(() => import("@/pages/EnVillages"));
 const EnNews          = lazy(() => import("@/pages/EnNews"));
 const EnContact       = lazy(() => import("@/pages/EnContact"));
 const UploadPhoto     = lazy(() => import("@/pages/UploadPhoto"));
-const AdminPhotos     = lazy(() => import("@/pages/AdminPhotos"));
 const SubmitNews      = lazy(() => import("@/pages/SubmitNews"));
-const AdminNews       = lazy(() => import("@/pages/AdminNews"));
 const SubmitVideo     = lazy(() => import("@/pages/SubmitVideo"));
+
+// Admin pages — full-screen (no Layout wrapper, include their own AdminLayout)
+const AdminDashboard  = lazy(() => import("@/pages/AdminDashboard"));
+const AdminArticles   = lazy(() => import("@/pages/AdminArticles"));
+const AdminPhotos     = lazy(() => import("@/pages/AdminPhotos"));
 const AdminVideos     = lazy(() => import("@/pages/AdminVideos"));
+const AdminNews       = lazy(() => import("@/pages/AdminNews"));
+const AdminVillages   = lazy(() => import("@/pages/AdminVillages"));
+const AdminCaptions   = lazy(() => import("@/pages/AdminCaptions"));
 const AdminIndexingLog = lazy(() => import("@/pages/AdminIndexingLog"));
 
 export function PageLoader({ children }: { children: React.ReactNode }) {
@@ -52,17 +58,14 @@ export function PageLoader({ children }: { children: React.ReactNode }) {
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    },
+    queries: { refetchOnWindowFocus: false, retry: 1 },
   },
 });
 
 function Router() {
   return (
     <Switch>
-      {/* Chat is full-screen — no Layout wrapper */}
+      {/* Chat — full-screen, no Layout */}
       <Route path="/chat">
         <PageLoader><Chat /></PageLoader>
       </Route>
@@ -70,7 +73,57 @@ function Router() {
         <PageLoader><Chat /></PageLoader>
       </Route>
 
-      {/* All other pages use the standard Layout */}
+      {/* Admin routes — full-screen with AdminLayout sidebar (no public header/footer) */}
+      <Route path="/admin">
+        <PageLoader><AdminDashboard /></PageLoader>
+      </Route>
+      <Route path="/admin/">
+        <PageLoader><AdminDashboard /></PageLoader>
+      </Route>
+      <Route path="/admin/articles">
+        <PageLoader><AdminArticles /></PageLoader>
+      </Route>
+      <Route path="/admin/articles/">
+        <PageLoader><AdminArticles /></PageLoader>
+      </Route>
+      <Route path="/admin/photos">
+        <PageLoader><AdminPhotos /></PageLoader>
+      </Route>
+      <Route path="/admin/photos/">
+        <PageLoader><AdminPhotos /></PageLoader>
+      </Route>
+      <Route path="/admin/videos">
+        <PageLoader><AdminVideos /></PageLoader>
+      </Route>
+      <Route path="/admin/videos/">
+        <PageLoader><AdminVideos /></PageLoader>
+      </Route>
+      <Route path="/admin/news">
+        <PageLoader><AdminNews /></PageLoader>
+      </Route>
+      <Route path="/admin/news/">
+        <PageLoader><AdminNews /></PageLoader>
+      </Route>
+      <Route path="/admin/villages">
+        <PageLoader><AdminVillages /></PageLoader>
+      </Route>
+      <Route path="/admin/villages/">
+        <PageLoader><AdminVillages /></PageLoader>
+      </Route>
+      <Route path="/admin/captions">
+        <PageLoader><AdminCaptions /></PageLoader>
+      </Route>
+      <Route path="/admin/captions/">
+        <PageLoader><AdminCaptions /></PageLoader>
+      </Route>
+      <Route path="/admin/indexing">
+        <PageLoader><AdminIndexingLog /></PageLoader>
+      </Route>
+      <Route path="/admin/indexing/">
+        <PageLoader><AdminIndexingLog /></PageLoader>
+      </Route>
+
+      {/* All other pages use the standard public Layout */}
       <Route>
         <Layout>
           <PageLoader>
@@ -132,18 +185,10 @@ function Router() {
               <Route path="/en/contact/" component={EnContact} />
               <Route path="/upload-photo" component={UploadPhoto} />
               <Route path="/upload-photo/" component={UploadPhoto} />
-              <Route path="/admin/photos" component={AdminPhotos} />
-              <Route path="/admin/photos/" component={AdminPhotos} />
               <Route path="/submit-news" component={SubmitNews} />
               <Route path="/submit-news/" component={SubmitNews} />
-              <Route path="/admin/news" component={AdminNews} />
-              <Route path="/admin/news/" component={AdminNews} />
               <Route path="/submit-video" component={SubmitVideo} />
               <Route path="/submit-video/" component={SubmitVideo} />
-              <Route path="/admin/videos" component={AdminVideos} />
-              <Route path="/admin/videos/" component={AdminVideos} />
-              <Route path="/admin/indexing" component={AdminIndexingLog} />
-              <Route path="/admin/indexing/" component={AdminIndexingLog} />
               <Route component={NotFound} />
             </Switch>
           </PageLoader>

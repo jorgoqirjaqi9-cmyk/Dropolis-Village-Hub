@@ -108,6 +108,37 @@ router.delete("/admin/photos/:id", requireAdmin, async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// PATCH /admin/photos/:id — update metadata (title, description, photographer)
+// ---------------------------------------------------------------------------
+
+router.patch("/admin/photos/:id", requireAdmin, async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) { res.status(400).json({ error: "Invalid id" }); return; }
+
+  const update: {
+    title?: string;
+    description?: string | null;
+    photographer?: string | null;
+  } = {};
+
+  if ("title" in req.body && typeof req.body.title === "string" && req.body.title.trim()) {
+    update.title = req.body.title.trim();
+  }
+  if ("description" in req.body) {
+    update.description = req.body.description ? String(req.body.description) : null;
+  }
+  if ("photographer" in req.body) {
+    update.photographer = req.body.photographer ? String(req.body.photographer) : null;
+  }
+
+  if (Object.keys(update).length === 0) { res.status(400).json({ error: "No fields to update" }); return; }
+
+  const [updated] = await db.update(photosTable).set(update).where(eq(photosTable.id, id)).returning();
+  if (!updated) { res.status(404).json({ error: "Not found" }); return; }
+  res.json(formatAdminPhoto(updated));
+});
+
+// ---------------------------------------------------------------------------
 
 function formatAdminPhoto(p: typeof photosTable.$inferSelect) {
   return {
