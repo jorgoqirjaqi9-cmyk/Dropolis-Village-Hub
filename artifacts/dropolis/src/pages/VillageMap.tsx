@@ -20,12 +20,12 @@ type Village = {
   id: number;
   name: string;
   nameEl: string;
-  description: string;
-  municipalUnit: string | null;
-  population: number | null;
-  elevation: number | null;
-  latitude: number | null;
-  longitude: number | null;
+  description?: string | null;
+  municipalUnit?: string | null;
+  population?: number | null;
+  elevation?: number | null;
+  latitude?: number | null;
+  longitude?: number | null;
 };
 
 const UNITS = [
@@ -43,7 +43,7 @@ function getUnitLabel(unit: string | null): string {
   return unit;
 }
 
-function getUnitColor(unit: string | null): string {
+function getUnitColor(unit: string | null | undefined): string {
   if (!unit) return "#6b7280";
   if (unit.includes("Κάτω")) return "#1d4ed8";
   if (unit.includes("Άνω")) return "#15803d";
@@ -190,7 +190,6 @@ export default function VillageMap() {
       <SEO
         title="Διαδραστικός Χάρτης Χωριών Δρόπολης | Dropolis"
         description="Διαδραστικός χάρτης με τα 41 χωριά της Δρόπολης, πληροφορίες, φωτογραφίες, ειδήσεις και σύνδεση με κάθε χωριό."
-        url="https://dropolis.net/villages/map"
         breadcrumbs={[
           { name: "Χωριά", url: "/villages" },
           { name: "Χάρτης", url: "/villages/map" },

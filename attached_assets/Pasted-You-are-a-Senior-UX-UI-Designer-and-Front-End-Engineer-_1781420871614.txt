@@ -1,0 +1,109 @@
+You are a Senior UX/UI Designer and Front-End Engineer.
+
+Audit and improve the Dropolis.net homepage for 2026-level UX, CRO, mobile responsiveness, accessibility and SEO.
+
+Main goals:
+- Keep the current Dropolis visual identity: deep blue, gold/yellow, cultural/community feeling.
+- Do not redesign the whole site from scratch.
+- Improve hierarchy, readability, mobile behavior and CTA placement.
+- Keep all existing routes, APIs, uploads, sitemap, admin, news, photos and videos working.
+
+Required homepage changes:
+
+1. HERO CTA STRUCTURE
+Reorganize the hero buttons.
+
+Primary CTA row:
+- Τελευταίες Ειδήσεις -> /news
+- Τα Χωριά μας -> /villages
+- Διαδραστικός Χάρτης -> /villages/map
+
+Secondary CTA row, visually smaller:
+- Στείλτε Είδηση -> /submit-news
+- Ανέβασε Φωτογραφία -> /upload-photo
+- Ανεβάστε Βίντεο -> /submit-video
+
+On mobile:
+- buttons must wrap cleanly
+- no text overflow
+- touch targets minimum 44px height
+- keep spacing comfortable
+
+2. ADD HOMEPAGE SECTION FOR 41 VILLAGES
+Add a section after the hero:
+
+Title:
+Τα 41 χωριά της Δρόπολης
+
+Text:
+Ανακαλύψτε τα χωριά της Δρόπολης μέσα από ειδήσεις, φωτογραφίες, ιστορία και τον διαδραστικό χάρτη.
+
+Add 6-8 village cards/links and two buttons:
+- Όλα τα χωριά -> /villages
+- Διαδραστικός Χάρτης -> /villages/map
+
+Design:
+- clean responsive grid
+- no nested cards inside cards
+- elegant blue/gold accents
+- good spacing
+- mobile 1 column, tablet 2 columns, desktop 3 or 4 columns
+
+3. FIX MOBILE HORIZONTAL OVERFLOW
+There is slight horizontal overflow on mobile, likely from the latest news ticker/marquee.
+
+Fix:
+- body/html/root should not create horizontal scroll
+- ticker/marquee must stay inside its own container
+- use max-w-full, overflow-hidden, min-w-0 where needed
+- check at 390px width
+- no content should appear far outside viewport
+
+4. IMAGE ACCESSIBILITY
+Find all homepage images.
+Every image must have meaningful alt text.
+Decorative images should use alt="" only if truly decorative.
+
+5. TYPOGRAPHY AND READABILITY
+Improve visual hierarchy:
+- H1 should remain clear: Δρόπολη
+- subtitle should be readable on all hero backgrounds
+- add stronger text shadow or overlay only if needed
+- avoid too many competing button styles in the hero
+
+6. ACCESSIBILITY
+Ensure:
+- contrast passes WCAG AA
+- buttons/links have visible hover/focus states
+- keyboard focus is visible
+- touch targets are large enough on mobile
+
+7. SEO STRUCTURE
+Keep exactly one real homepage H1 inside the app:
+Δρόπολη
+
+Use H2 for:
+- Κύριες Ειδήσεις
+- Τα 41 χωριά της Δρόπολης
+- Φωτογραφικό Αρχείο
+- Βίντεο & Ρεπορτάζ if shown
+
+Add semantic sections:
+<section aria-labelledby="...">
+
+8. PERFORMANCE
+Do not add heavy animation libraries.
+Use CSS/Tailwind transitions only.
+Images must use loading="lazy" where appropriate, except the hero image.
+Use optimized responsive images if supported.
+
+9. VERIFY AFTER CHANGES
+Test:
+- desktop 1280px
+- mobile 390px
+- no horizontal scroll
+- homepage loads normally
+- all hero links work
+- /villages/map opens
+- no missing alt on homepage images
+- no console errors

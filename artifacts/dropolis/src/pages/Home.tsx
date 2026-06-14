@@ -7,7 +7,7 @@ import { useGetStats, useGetFeaturedArticles, useListArticles } from "@workspace
 import { SEO, seoPages } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera, CheckCircle2, UsersRound } from "lucide-react";
+import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera, CheckCircle2, UsersRound, Map } from "lucide-react";
 import { usePWAInstall } from "@/hooks/use-pwa-install";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { WeatherWidget } from "@/components/WeatherWidget";
@@ -88,6 +88,7 @@ export default function Home() {
       {/* ── HERO ───────────────────────────────────────────────────── */}
       <section
         ref={heroRef}
+        aria-labelledby="hero-heading"
         className="relative w-full min-h-[92vh] flex items-center justify-center overflow-hidden -mt-0"
         style={{ marginTop: 0 }}
       >
@@ -130,6 +131,7 @@ export default function Home() {
           </motion.div>
 
           <motion.h1
+            id="hero-heading"
             variants={fadeUp}
             className="font-serif text-6xl sm:text-7xl md:text-8xl font-black text-white text-shadow-hero leading-none tracking-tight mb-4"
           >
@@ -151,12 +153,13 @@ export default function Home() {
             <span className="text-secondary font-semibold">41 χωριά</span> του Δήμου Δρόπολης.
           </motion.p>
 
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-4 justify-center">
+          {/* Primary CTAs */}
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-3 justify-center">
             <Link href="/news">
               <motion.span
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground font-bold px-7 py-3.5 rounded-full shadow-lg shadow-secondary/30 cursor-pointer text-sm uppercase tracking-wider transition-shadow hover:shadow-secondary/50"
+                className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground font-bold px-6 py-3.5 rounded-full shadow-lg shadow-secondary/30 cursor-pointer text-sm uppercase tracking-wider transition-shadow hover:shadow-secondary/50 min-h-[44px]"
               >
                 Τελευταίες Ειδήσεις
                 <ArrowRight size={16} />
@@ -166,43 +169,54 @@ export default function Home() {
               <motion.span
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-white/15 text-white font-semibold px-7 py-3.5 rounded-full border border-white/30 cursor-pointer text-sm uppercase tracking-wider backdrop-blur-sm hover:bg-white/25 transition-all"
+                className="inline-flex items-center gap-2 bg-white/15 text-white font-semibold px-6 py-3.5 rounded-full border border-white/30 cursor-pointer text-sm uppercase tracking-wider backdrop-blur-sm hover:bg-white/25 transition-all min-h-[44px]"
               >
                 Τα Χωριά μας
                 <ArrowRight size={16} />
               </motion.span>
             </Link>
+            <Link href="/villages/map">
+              <motion.span
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 bg-white/15 text-white font-semibold px-6 py-3.5 rounded-full border border-white/30 cursor-pointer text-sm uppercase tracking-wider backdrop-blur-sm hover:bg-white/25 transition-all min-h-[44px]"
+              >
+                <Map size={15} />
+                Διαδραστικός Χάρτης
+              </motion.span>
+            </Link>
           </motion.div>
 
+          {/* Secondary CTAs */}
           <motion.div variants={fadeUp} className="flex flex-wrap gap-3 justify-center mt-4">
             <Link href="/submit-news">
               <motion.span
                 whileHover={{ scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all"
+                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all min-h-[44px]"
               >
                 <Newspaper size={14} />
-                Στείλτε είδηση
+                Στείλτε Είδηση
               </motion.span>
             </Link>
             <Link href="/upload-photo">
               <motion.span
                 whileHover={{ scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all"
+                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all min-h-[44px]"
               >
                 <Camera size={14} />
-                Ανέβασε τη δική σου φωτογραφία
+                Ανέβασε Φωτογραφία
               </motion.span>
             </Link>
             <Link href="/submit-video">
               <motion.span
                 whileHover={{ scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all"
+                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all min-h-[44px]"
               >
                 <VideoIcon size={14} />
-                Ανεβάστε βίντεο
+                Ανεβάστε Βίντεο
               </motion.span>
             </Link>
           </motion.div>
@@ -230,12 +244,12 @@ export default function Home() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-primary text-primary-foreground py-2.5 px-4 rounded-xl flex items-center gap-4 overflow-hidden shadow-md"
+          className="bg-primary text-primary-foreground py-2.5 px-4 rounded-xl flex items-center gap-4 overflow-hidden shadow-md max-w-full"
         >
           <span className="font-bold whitespace-nowrap bg-secondary text-secondary-foreground px-3 py-1 rounded-lg text-xs uppercase tracking-wider shrink-0">
             Τελευταίες
           </span>
-          <div className="flex-grow overflow-hidden relative">
+          <div className="flex-grow overflow-hidden relative min-w-0">
             <div className="animate-marquee whitespace-nowrap">
               {recentArticles?.slice(0, 5).map((article) => (
                 <span key={article.id} className="mx-6 text-sm inline-flex items-center gap-2">
@@ -286,6 +300,75 @@ export default function Home() {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* ── 41 VILLAGES SECTION ─────────────────────────────────── */}
+        <section aria-labelledby="villages-heading">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.15 }}
+            variants={stagger}
+          >
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+              <div>
+                <h2 id="villages-heading" className="font-serif text-3xl font-bold text-foreground relative inline-block">
+                  Τα 41 χωριά της Δρόπολης
+                  <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-secondary rounded-full" />
+                </h2>
+                <p className="text-muted-foreground text-sm mt-4 max-w-xl leading-relaxed">
+                  Ανακαλύψτε τα χωριά της Δρόπολης μέσα από ειδήσεις, φωτογραφίες, ιστορία και τον διαδραστικό χάρτη.
+                </p>
+              </div>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+              {[
+                { id: 51, nameEl: "Δερβιτσάνη", name: "Derviçan", unit: "Κάτω Δρόπολη", color: "#1d4ed8" },
+                { id: 69, nameEl: "Βουλιαράτες", name: "Bularat", unit: "Κάτω Δρόπολη", color: "#1d4ed8" },
+                { id: 81, nameEl: "Κακαβιά", name: "Kakavijë", unit: "Κάτω Δρόπολη", color: "#1d4ed8" },
+                { id: 55, nameEl: "Δούβιανη", name: "Duvjan", unit: "Κάτω Δρόπολη", color: "#1d4ed8" },
+                { id: 64, nameEl: "Γλύνα", name: "Glina", unit: "Άνω Δρόπολη", color: "#15803d" },
+                { id: 65, nameEl: "Βραχογοραντζή", name: "Vraho-Goranxi", unit: "Άνω Δρόπολη", color: "#15803d" },
+                { id: 84, nameEl: "Άγιος Νικόλαος", name: "Dritë", unit: "Άνω Δρόπολη", color: "#15803d" },
+                { id: 86, nameEl: "Πολίτσανη", name: "Politsan", unit: "Πωγώνι", color: "#c2410c" },
+              ].map((v) => (
+                <motion.div key={v.id} variants={fadeUp}>
+                  <Link href={`/villages/${v.id}`}>
+                    <div className="group glass-card rounded-xl p-4 flex items-start gap-3 hover:shadow-md transition-all duration-200 cursor-pointer border-l-[3px]"
+                      style={{ borderLeftColor: v.color }}>
+                      <div className="flex-grow min-w-0">
+                        <p className="font-semibold text-sm text-foreground group-hover:text-primary dark:group-hover:text-secondary transition-colors leading-tight truncate">
+                          {v.nameEl}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{v.name}</p>
+                        <span className="inline-block mt-1.5 text-[10px] font-semibold px-2 py-0.5 rounded-full text-white"
+                          style={{ backgroundColor: v.color }}>
+                          {v.unit}
+                        </span>
+                      </div>
+                      <ArrowRight size={14} className="shrink-0 mt-1 text-muted-foreground group-hover:text-primary dark:group-hover:text-secondary transition-colors" />
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
+              <Link href="/villages">
+                <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-5 py-2.5 rounded-full text-sm hover:bg-primary/90 transition-colors min-h-[44px]">
+                  <Users size={15} />
+                  Όλα τα χωριά
+                </span>
+              </Link>
+              <Link href="/villages/map">
+                <span className="inline-flex items-center gap-2 border border-primary text-primary dark:border-secondary dark:text-secondary font-semibold px-5 py-2.5 rounded-full text-sm hover:bg-primary/5 transition-colors min-h-[44px]">
+                  <Map size={15} />
+                  Διαδραστικός Χάρτης
+                </span>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </section>
 
         {/* PWA Install Button — always visible */}
         <motion.div
@@ -467,9 +550,9 @@ export default function Home() {
           <div className="lg:col-span-2 space-y-10">
 
             {/* Featured Articles */}
-            <section>
+            <section aria-labelledby="featured-heading">
               <div className="flex items-end justify-between mb-6">
-                <h2 className="font-serif text-3xl font-bold text-foreground relative">
+                <h2 id="featured-heading" className="font-serif text-3xl font-bold text-foreground relative">
                   Κύριες Ειδήσεις
                   <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-secondary rounded-full" />
                 </h2>
@@ -498,6 +581,7 @@ export default function Home() {
                         <img
                           src={featuredArticles[0].imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=70"}
                           alt={featuredArticles[0].title}
+                          loading="lazy"
                           className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                           onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=70"; }}
                         />
@@ -532,6 +616,7 @@ export default function Home() {
                               <img
                                 src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"}
                                 alt={article.title}
+                                loading="lazy"
                                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                                 onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"; }}
                               />
@@ -555,9 +640,9 @@ export default function Home() {
             </section>
 
             {/* News Feed */}
-            <section>
+            <section aria-labelledby="newsfeed-heading">
               <div className="flex justify-between items-end mb-6">
-                <h2 className="font-serif text-2xl font-bold text-foreground relative">
+                <h2 id="newsfeed-heading" className="font-serif text-2xl font-bold text-foreground relative">
                   Ροή Ειδήσεων
                   <span className="absolute -bottom-2 left-0 w-10 h-0.5 bg-secondary rounded-full" />
                 </h2>
@@ -587,6 +672,7 @@ export default function Home() {
                             <img
                               src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70"}
                               alt={article.title}
+                              loading="lazy"
                               className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                               onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70"; }}
                             />
