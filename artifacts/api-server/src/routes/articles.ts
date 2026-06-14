@@ -72,6 +72,7 @@ router.post("/articles", requireAdmin, async (req, res) => {
       updatedAt: article.updatedAt.toISOString(),
     });
     void autoIndexArticle(article.id);
+    void postArticleToFacebook(article);
   }
   res.status(201).json(formatArticle(article));
 });
@@ -134,6 +135,11 @@ router.get("/articles/:id", async (req, res) => {
 router.patch("/articles/:id", requireAdmin, async (req, res) => {
   const { id } = UpdateArticleParams.parse({ id: Number(req.params.id) });
   const body = UpdateArticleBody.parse(req.body);
+
+  // Read current published state before update to detect false → true transition
+  const [existing] = await db.select({ published: articlesTable.published }).from(articlesTable).where(eq(articlesTable.id, id));
+  const wasPublished = existing?.published ?? false;
+
   const [article] = await db
     .update(articlesTable)
     .set({ ...body, updatedAt: new Date() })
@@ -156,6 +162,10 @@ router.patch("/articles/:id", requireAdmin, async (req, res) => {
       updatedAt: article.updatedAt.toISOString(),
     });
     void autoIndexArticle(article.id);
+    // Only post to Facebook when an article goes from draft → published
+    if (!wasPublished) {
+      void postArticleToFacebook(article);
+    }
   } else {
     void removeArticlePrerender(article.id);
     invalidateSitemapManifestCache();
