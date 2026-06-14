@@ -153,72 +153,29 @@ export default function Home() {
             <span className="text-secondary font-semibold">41 χωριά</span> του Δήμου Δρόπολης.
           </motion.p>
 
-          {/* Primary CTAs */}
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-3 justify-center">
-            <Link href="/news">
-              <motion.span
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground font-bold px-6 py-3.5 rounded-full shadow-lg shadow-secondary/30 cursor-pointer text-sm uppercase tracking-wider transition-shadow hover:shadow-secondary/50 min-h-[44px]"
-              >
+          <motion.div variants={fadeUp} className="mx-auto mt-8 flex max-w-4xl flex-col items-center gap-4">
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link href="/news" className="min-h-12 rounded-full bg-yellow-400 px-6 py-3 font-bold text-slate-950 shadow-lg transition hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-200">
                 Τελευταίες Ειδήσεις
-                <ArrowRight size={16} />
-              </motion.span>
-            </Link>
-            <Link href="/villages">
-              <motion.span
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-white/15 text-white font-semibold px-6 py-3.5 rounded-full border border-white/30 cursor-pointer text-sm uppercase tracking-wider backdrop-blur-sm hover:bg-white/25 transition-all min-h-[44px]"
-              >
+              </Link>
+              <Link href="/villages" className="min-h-12 rounded-full border border-white/40 bg-white/15 px-6 py-3 font-bold text-white backdrop-blur transition hover:bg-white/25 focus:outline-none focus:ring-2 focus:ring-white/70">
                 Τα Χωριά μας
-                <ArrowRight size={16} />
-              </motion.span>
-            </Link>
-            <Link href="/villages/map">
-              <motion.span
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-white/15 text-white font-semibold px-6 py-3.5 rounded-full border border-white/30 cursor-pointer text-sm uppercase tracking-wider backdrop-blur-sm hover:bg-white/25 transition-all min-h-[44px]"
-              >
-                <Map size={15} />
+              </Link>
+              <Link href="/villages/map" className="min-h-12 rounded-full border border-yellow-300/70 bg-blue-950/70 px-6 py-3 font-bold text-yellow-300 backdrop-blur transition hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-yellow-300">
                 Διαδραστικός Χάρτης
-              </motion.span>
-            </Link>
-          </motion.div>
-
-          {/* Secondary CTAs */}
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-3 justify-center mt-4">
-            <Link href="/submit-news">
-              <motion.span
-                whileHover={{ scale: 1.03, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all min-h-[44px]"
-              >
-                <Newspaper size={14} />
+              </Link>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2">
+              <Link href="/submit-news" className="min-h-10 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
                 Στείλτε Είδηση
-              </motion.span>
-            </Link>
-            <Link href="/upload-photo">
-              <motion.span
-                whileHover={{ scale: 1.03, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all min-h-[44px]"
-              >
-                <Camera size={14} />
+              </Link>
+              <Link href="/upload-photo" className="min-h-10 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
                 Ανέβασε Φωτογραφία
-              </motion.span>
-            </Link>
-            <Link href="/submit-video">
-              <motion.span
-                whileHover={{ scale: 1.03, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium px-5 py-2.5 rounded-full border border-white/20 cursor-pointer text-xs uppercase tracking-wider backdrop-blur-sm hover:bg-white/20 transition-all min-h-[44px]"
-              >
-                <VideoIcon size={14} />
+              </Link>
+              <Link href="/submit-video" className="min-h-10 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
                 Ανεβάστε Βίντεο
-              </motion.span>
-            </Link>
+              </Link>
+            </div>
           </motion.div>
         </motion.div>
 
