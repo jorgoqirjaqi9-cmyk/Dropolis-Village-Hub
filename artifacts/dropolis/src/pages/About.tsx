@@ -198,6 +198,20 @@ export default function About() {
             </div>
           </a>
           <a
+            href="https://www.instagram.com/dropolis_net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-card rounded-2xl p-5 flex items-center gap-4 hover:shadow-lg transition-shadow group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center shrink-0 text-pink-500 font-bold text-sm group-hover:bg-pink-500/20 transition-colors">
+              IG
+            </div>
+            <div>
+              <p className="font-semibold text-foreground text-sm">Instagram</p>
+              <p className="text-xs text-muted-foreground">@dropolis_net</p>
+            </div>
+          </a>
+          <a
             href="https://www.reddit.com/r/DropolisNet/"
             target="_blank"
             rel="noopener noreferrer"

@@ -175,6 +175,7 @@ export function SEO({
       sameAs: [
         "https://www.facebook.com/profile.php?id=61590717183098",
         "https://www.youtube.com/@dropolis",
+        "https://www.instagram.com/dropolis_net/",
         "https://www.reddit.com/r/DropolisNet/",
       ],
       description: SITE.description,
