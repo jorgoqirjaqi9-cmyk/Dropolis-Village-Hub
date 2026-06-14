@@ -5,6 +5,8 @@ import express, {
 } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 import router from "./routes";
 import redirectsRouter from "./routes/redirects.js";
 import seoPagesRouter from "./routes/seo-pages.js";
@@ -90,6 +92,22 @@ app.use(
 );
 app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
+
+// Serve hashed Vite bundles (/assets/*.js, /assets/*.css) with long-term
+// immutable cache. The content hash in every filename guarantees correctness,
+// so browsers can cache these forever and skip network round-trips on revisit.
+const distAssets = resolve(process.cwd(), "artifacts/dropolis/dist/public/assets");
+if (existsSync(distAssets)) {
+  app.use(
+    "/assets",
+    express.static(distAssets, {
+      maxAge: "1y",
+      immutable: true,
+      etag: false,
+      lastModified: false,
+    }),
+  );
+}
 
 // Mount legacy redirect handlers at root level (not under /api) so the shared
 // proxy can route /privacy-policy and /terms-of-service to this server and

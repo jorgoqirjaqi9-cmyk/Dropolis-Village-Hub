@@ -60,7 +60,7 @@ export default function Photos() {
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
         {isLoading ? (
           Array(12).fill(0).map((_, i) => (
-            <Skeleton key={i} className="w-full rounded-xl" style={{ height: `${Math.floor(Math.random() * 200) + 150}px` }} />
+            <Skeleton key={i} className="w-full h-48 rounded-xl" />
           ))
         ) : photos && photos.length > 0 ? (
           photos.map(photo => (

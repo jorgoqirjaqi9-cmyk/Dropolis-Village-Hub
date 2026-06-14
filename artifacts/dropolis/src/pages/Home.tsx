@@ -91,9 +91,14 @@ export default function Home() {
         className="relative w-full min-h-[92vh] flex items-center justify-center overflow-hidden -mt-0"
         style={{ marginTop: 0 }}
       >
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url('${HERO_IMAGE}')` }}
+        <img
+          src={HERO_IMAGE}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          loading="eager"
+          decoding="sync"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="hero-gradient absolute inset-0" />
 
