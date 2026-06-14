@@ -12,6 +12,7 @@ const News            = lazy(() => import("@/pages/News"));
 const NewsDetail      = lazy(() => import("@/pages/NewsDetail"));
 const Villages        = lazy(() => import("@/pages/Villages"));
 const VillageDetail   = lazy(() => import("@/pages/VillageDetail"));
+const VillageMap      = lazy(() => import("@/pages/VillageMap"));
 const Photos          = lazy(() => import("@/pages/Photos"));
 const Videos          = lazy(() => import("@/pages/Videos"));
 const Chat            = lazy(() => import("@/pages/Chat"));
@@ -80,6 +81,8 @@ function Router() {
               <Route path="/news/:id" component={NewsDetail} />
               <Route path="/villages" component={Villages} />
               <Route path="/villages/" component={Villages} />
+              <Route path="/villages/map" component={VillageMap} />
+              <Route path="/villages/map/" component={VillageMap} />
               <Route path="/villages/:id" component={VillageDetail} />
               <Route path="/photos" component={Photos} />
               <Route path="/photos/" component={Photos} />

@@ -65,6 +65,7 @@ export const STATIC_ROUTES: StaticRoute[] = [
   { loc: "/en/villages",       changefreq: "monthly", priority: "0.5" },
   { loc: "/en/news",           changefreq: "monthly", priority: "0.5" },
   { loc: "/en/contact",        changefreq: "monthly", priority: "0.5" },
+  { loc: "/villages/map",      changefreq: "weekly",  priority: "0.8" },
   { loc: "/upload-photo",      changefreq: "monthly", priority: "0.6" },
   { loc: "/submit-news",       changefreq: "monthly", priority: "0.6" },
   { loc: "/submit-video",      changefreq: "monthly", priority: "0.6" },
@@ -546,6 +547,41 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     url: `${BASE_URL}/submit-video`,
     breadcrumbs: [{ name: "Ανεβάστε Βίντεο", item: `${BASE_URL}/submit-video` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ανεβάστε Βίντεο — Dropolis", url: `${BASE_URL}/submit-video`, inLanguage: "el" },
+  },
+  {
+    path: "/villages/map",
+    title: "Διαδραστικός Χάρτης Χωριών Δρόπολης | Dropolis",
+    description: "Διαδραστικός χάρτης με τα 41 χωριά της Δρόπολης, πληροφορίες, φωτογραφίες, ειδήσεις και σύνδεση με κάθε χωριό.",
+    url: `${BASE_URL}/villages/map`,
+    breadcrumbs: [
+      { name: "Χωριά", item: `${BASE_URL}/villages` },
+      { name: "Διαδραστικός Χάρτης", item: `${BASE_URL}/villages/map` },
+    ],
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: "Διαδραστικός Χάρτης Χωριών Δρόπολης",
+        description: "Διαδραστικός χάρτης με τα 41 χωριά της Δρόπολης, πληροφορίες, φωτογραφίες, ειδήσεις και σύνδεση με κάθε χωριό.",
+        url: `${BASE_URL}/villages/map`,
+        inLanguage: "el",
+        numberOfItems: 41,
+        about: {
+          "@type": "Place",
+          name: "Δρόπολη",
+          containedInPlace: { "@type": "Place", name: "Βόρεια Ήπειρος, Αλβανία" },
+        },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Αρχική", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: "Χωριά", item: `${BASE_URL}/villages` },
+          { "@type": "ListItem", position: 3, name: "Διαδραστικός Χάρτης", item: `${BASE_URL}/villages/map` },
+        ],
+      },
+    ],
   },
 ];
 

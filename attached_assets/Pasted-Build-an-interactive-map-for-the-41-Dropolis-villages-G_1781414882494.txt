@@ -1,0 +1,153 @@
+Build an interactive map for the 41 Dropolis villages.
+
+Goal:
+Create a useful public map for users and SEO, not a decorative mockup.
+
+Requirements:
+1. Add a new public route /villages/map with Greek UI and SEO.
+Title: Διαδραστικός Χάρτης Χωριών Δρόπολης | Dropolis
+Description: Διαδραστικός χάρτης με τα 41 χωριά της Δρόπολης, πληροφορίες, φωτογραφίες, ειδήσεις και σύνδεση με κάθε χωριό.
+
+2. Add a visible button/link on /villages near the hero/search area:
+Διαδραστικός χάρτης
+linking to /villages/map.
+
+3. Use OpenStreetMap/Leaflet or an equivalent lightweight interactive map. If packages are needed, use leaflet/react-leaflet.
+
+4. Pull villages from existing /api/villages data. Use DB latitude/longitude when present.
+
+5. Add this fallback file exactly as:
+src/lib/village-coordinates.ts
+
+Use these coordinates when /api/villages has missing latitude/longitude. Do not leave any village without a marker.
+
+----- FILE: src/lib/village-coordinates.ts -----
+
+export const VILLAGE_COORDINATES: Record<string, { lat: number; lng: number }> = {
+  "Άγιος Νικόλαος": { lat: 39.838041, lng: 20.263431 },
+  "Shën Kolli": { lat: 39.838041, lng: 20.263431 },
+  "Άνω Επισκοπή": { lat: 39.967005, lng: 20.313199 },
+  "Episkopi i Sipërm": { lat: 39.967005, lng: 20.313199 },
+  "Βάνιστα": { lat: 40.009918, lng: 20.191326 },
+  "Vanistë": { lat: 40.009918, lng: 20.191326 },
+  "Βοδίνο": { lat: 39.892492, lng: 20.321921 },
+  "Vodino": { lat: 39.892492, lng: 20.321921 },
+  "Βουλιαράτες": { lat: 39.906962, lng: 20.293754 },
+  "Bularat": { lat: 39.906962, lng: 20.293754 },
+  "Βραχογοραντζή": { lat: 39.990132, lng: 20.286099 },
+  "Vraho-Goranxi": { lat: 39.990132, lng: 20.286099 },
+  "Βρυσερά": { lat: 39.895415, lng: 20.345127 },
+  "Vrysera": { lat: 39.895415, lng: 20.345127 },
+  "Βόδριστα": { lat: 39.901882, lng: 20.305504 },
+  "Bodrishtë": { lat: 39.901882, lng: 20.305504 },
+  "Γιωργουτσάτες": { lat: 39.937754, lng: 20.264821 },
+  "Gjergucatë": { lat: 39.937754, lng: 20.264821 },
+  "Γλύνα": { lat: 39.969345, lng: 20.283714 },
+  "Glina": { lat: 39.969345, lng: 20.283714 },
+  "Γορίτσα": { lat: 39.975619, lng: 20.227399 },
+  "Goricë": { lat: 39.975619, lng: 20.227399 },
+  "Γοραντζή": { lat: 40.018033, lng: 20.190737 },
+  "Goranxi": { lat: 40.018033, lng: 20.190737 },
+  "Γράψη": { lat: 39.954925, lng: 20.249073 },
+  "Grapsë": { lat: 39.954925, lng: 20.249073 },
+  "Δερβιτσάνη": { lat: 40.032992, lng: 20.176304 },
+  "Derviçan": { lat: 40.032992, lng: 20.176304 },
+  "Δούβιανη": { lat: 39.997275, lng: 20.198618 },
+  "Duvjan": { lat: 39.997275, lng: 20.198618 },
+  "Ζερβάτι": { lat: 39.917542, lng: 20.288991 },
+  "Zervat": { lat: 39.917542, lng: 20.288991 },
+  "Κάτω Επισκοπή": { lat: 39.960815, lng: 20.297018 },
+  "Episkopi i Poshtëm": { lat: 39.960815, lng: 20.297018 },
+  "Κακαβιά": { lat: 39.9481, lng: 20.3312 },
+  "Kakavijë": { lat: 39.9481, lng: 20.3312 },
+  "Κλεισάρι": { lat: 39.857831, lng: 20.328941 },
+  "Klishar": { lat: 39.857831, lng: 20.328941 },
+  "Κοσσοβίτσα": { lat: 39.818425, lng: 20.408197 },
+  "Kosovcë": { lat: 39.818425, lng: 20.408197 },
+  "Κρα": { lat: 39.876853, lng: 20.265764 },
+  "Kra": { lat: 39.876853, lng: 20.265764 },
+  "Κρυονέρι": { lat: 39.835176, lng: 20.359903 },
+  "Krioneri": { lat: 39.835176, lng: 20.359903 },
+  "Λιούγκαρη": { lat: 39.961919, lng: 20.237719 },
+  "Liugar": { lat: 39.961919, lng: 20.237719 },
+  "Λοβίνα": { lat: 39.855806, lng: 20.361487 },
+  "Lovina": { lat: 39.855806, lng: 20.361487 },
+  "Λυκομίλι": { lat: 39.868694, lng: 20.356798 },
+  "Likomil": { lat: 39.868694, lng: 20.356798 },
+  "Λόγγος": { lat: 39.836373, lng: 20.368918 },
+  "Llongos": { lat: 39.836373, lng: 20.368918 },
+  "Μαυρόγερο": { lat: 40.055976, lng: 20.342138 },
+  "Mavrogjer": { lat: 40.055976, lng: 20.342138 },
+  "Πέπελη": { lat: 39.872594, lng: 20.331612 },
+  "Pepel": { lat: 39.872594, lng: 20.331612 },
+  "Πολίτσανη": { lat: 40.129804, lng: 20.351774 },
+  "Politsan": { lat: 40.129804, lng: 20.351774 },
+  "Ραντάτι": { lat: 39.950967, lng: 20.333613 },
+  "Radati": { lat: 39.950967, lng: 20.333613 },
+  "Σέλτση": { lat: 40.108866, lng: 20.296836 },
+  "Selcë": { lat: 40.108866, lng: 20.296836 },
+  "Σελλιό": { lat: 39.846703, lng: 20.343394 },
+  "Sello": { lat: 39.846703, lng: 20.343394 },
+  "Σχωριάδες": { lat: 40.107879, lng: 20.367702 },
+  "Skorë": { lat: 40.107879, lng: 20.367702 },
+  "Σωπίκι": { lat: 40.089057, lng: 20.410886 },
+  "Sopik": { lat: 40.089057, lng: 20.410886 },
+  "Σωτήρα": { lat: 39.81985, lng: 20.359343 },
+  "Sotirë": { lat: 39.81985, lng: 20.359343 },
+  "Σωφράτικα": { lat: 39.991766, lng: 20.214021 },
+  "Sofratikë": { lat: 39.991766, lng: 20.214021 },
+  "Τεριαχάτι": { lat: 39.986041, lng: 20.217634 },
+  "Terjahat": { lat: 39.986041, lng: 20.217634 },
+  "Τσατίστα": { lat: 40.032323, lng: 20.342039 },
+  "Caçisht": { lat: 40.032323, lng: 20.342039 },
+  "Φράστανη": { lat: 39.966336, lng: 20.233902 },
+  "Frashtan": { lat: 39.966336, lng: 20.233902 },
+  "Χάσκοβο": { lat: 40.00543, lng: 20.196955 },
+  "Hazkovo": { lat: 40.00543, lng: 20.196955 },
+  "Χλωμό": { lat: 40.06783, lng: 20.345797 },
+  "Hlomë": { lat: 40.06783, lng: 20.345797 },
+};
+
+----- END FILE -----
+
+6. Each marker popup must show:
+- Greek village name
+- Latin/Albanian village name
+- municipal unit
+- population/elevation if available
+- links/buttons:
+  Άνοιγμα χωριού
+  Φωτογραφίες
+  Στείλτε είδηση
+  Ανέβασε φωτογραφία
+
+7. Add map controls:
+- search village by Greek or Latin name
+- filter: Όλα, Κάτω Δρόπολη, Άνω Δρόπολη, Πωγώνι
+- list panel with all filtered villages
+- clicking a village centers/zooms map and opens popup
+
+8. Make it responsive:
+- desktop: map + side list
+- mobile: map first, list below
+- no text overlap
+- stable map height
+- smooth loading state
+
+9. Add JSON-LD structured data for /villages/map:
+- CollectionPage
+- ItemList with villages and geo coordinates
+- BreadcrumbList
+
+10. Include /villages/map in sitemap/static routes/prerender, robots allowed, and internal links.
+
+11. Keep existing routes, database, articles, photos, admin, chat, sitemap behavior and SEO unchanged.
+
+12. Build and publish.
+
+13. Verify after publish:
+- https://dropolis.net/villages/map returns 200
+- React app renders full map, not fallback text
+- /villages has visible Διαδραστικός χάρτης link
+- no console errors from missing Leaflet CSS/assets
+- all 41 villages appear on the map

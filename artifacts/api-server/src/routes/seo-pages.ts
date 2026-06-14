@@ -258,6 +258,16 @@ const STATIC_META: Record<string, PageMeta> = {
     breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages` }],
     jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Τα Χωριά της Δρόπολης", url: `${BASE_URL}/villages`, inLanguage: "el", numberOfItems: 41 },
   },
+  "/villages/map": {
+    title: "Διαδραστικός Χάρτης Χωριών Δρόπολης",
+    description: "Διαδραστικός χάρτης με τα 41 χωριά της Δρόπολης, πληροφορίες, φωτογραφίες, ειδήσεις και σύνδεση με κάθε χωριό.",
+    url: `${BASE_URL}/villages/map`,
+    breadcrumbs: [
+      { name: "Χωριά", item: `${BASE_URL}/villages` },
+      { name: "Διαδραστικός Χάρτης", item: `${BASE_URL}/villages/map` },
+    ],
+    jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Διαδραστικός Χάρτης Χωριών Δρόπολης", url: `${BASE_URL}/villages/map`, inLanguage: "el", numberOfItems: 41 },
+  },
   "/photos": {
     title: "Φωτογραφικό Αρχείο",
     description: "Φωτογραφίες από τα χωριά της Δρόπολης — τοπία, παραδοσιακά κτίρια, πολιτιστικές εκδηλώσεις.",

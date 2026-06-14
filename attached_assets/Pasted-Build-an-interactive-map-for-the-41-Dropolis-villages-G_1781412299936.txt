@@ -1,0 +1,42 @@
+Build an interactive map for the 41 Dropolis villages.
+
+Goal:
+Create a useful public map for users and SEO, not a decorative mockup.
+
+Requirements:
+1. Add a new public route /villages/map with Greek UI and SEO.
+   Title: Διαδραστικός Χάρτης Χωριών Δρόπολης | Dropolis
+   Description: Διαδραστικός χάρτης με τα 41 χωριά της Δρόπολης, πληροφορίες, φωτογραφίες, ειδήσεις και σύνδεση με κάθε χωριό.
+2. Add a visible button/link on /villages near the hero/search area: "Διαδραστικός χάρτης" linking to /villages/map.
+3. Use OpenStreetMap/Leaflet or an equivalent lightweight interactive map. If adding packages is needed, use a proven library such as leaflet/react-leaflet.
+4. Pull villages from the existing /api/villages data. Use DB latitude/longitude when present.
+5. For villages without coordinates, add a local fallback coordinate map keyed by Greek or Latin village name so all 41 villages appear. Keep these fallback coordinates in one clearly named file, e.g. src/lib/village-coordinates.ts, so we can refine them later.
+6. Each marker popup must show:
+   - Greek village name
+   - Latin/Albanian village name
+   - municipal unit
+   - population/elevation if available
+   - buttons/links: "Άνοιγμα χωριού", "Φωτογραφίες", "Στείλτε είδηση", "Ανεβάστε φωτογραφία"
+7. Add map controls:
+   - search village by Greek or Latin name
+   - filter: Όλα, Κάτω Δρόπολη, Άνω Δρόπολη, Πωγώνι
+   - list panel with all filtered villages; clicking a village centers/zooms map and opens popup.
+8. Make it responsive:
+   - desktop: map + side list
+   - mobile: map first, collapsible/stacked list below
+   - no text overlap, stable heights, smooth loading state.
+9. Add JSON-LD structured data for the route:
+   - CollectionPage
+   - ItemList with villages that have geo coordinates
+   - BreadcrumbList
+10. Include /villages/map in sitemap/static routes/prerender, robots allowed, and internal links.
+11. Keep existing routes, database, articles, photos, admin, chat, sitemap behavior and SEO unchanged.
+12. Build and publish.
+13. Verify after publish:
+   - https://dropolis.net/villages/map returns 200
+   - React app renders full map, not fallback text
+   - /villages has a visible Διαδραστικός χάρτης link
+   - no console errors from missing leaflet CSS/assets
+
+Important:
+The live API currently has coordinates only for Kakavijë, so fallback coordinates are required for all 41 villages. Do not leave most markers missing.
