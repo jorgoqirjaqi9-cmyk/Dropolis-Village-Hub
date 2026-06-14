@@ -66,6 +66,8 @@ export const STATIC_ROUTES: StaticRoute[] = [
   { loc: "/en/news",           changefreq: "monthly", priority: "0.5" },
   { loc: "/en/contact",        changefreq: "monthly", priority: "0.5" },
   { loc: "/upload-photo",      changefreq: "monthly", priority: "0.6" },
+  { loc: "/submit-news",       changefreq: "monthly", priority: "0.6" },
+  { loc: "/submit-video",      changefreq: "monthly", priority: "0.6" },
 ];
 
 /**
@@ -490,6 +492,30 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     url: `${BASE_URL}/en/contact`,
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Contact", item: `${BASE_URL}/en/contact` }],
     jsonLd: { "@context": "https://schema.org", "@type": "ContactPage", name: "Contact Dropolis", url: `${BASE_URL}/en/contact`, inLanguage: "en" },
+  },
+  {
+    path: "/submit-news",
+    title: "Στείλτε Είδηση",
+    description: "Υποβάλετε είδηση, ανακοίνωση ή ρεπορτάζ από τη Δρόπολη. Η σύνταξη αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
+    url: `${BASE_URL}/submit-news`,
+    breadcrumbs: [{ name: "Στείλτε Είδηση", item: `${BASE_URL}/submit-news` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Στείλτε Είδηση — Dropolis", url: `${BASE_URL}/submit-news`, inLanguage: "el" },
+  },
+  {
+    path: "/upload-photo",
+    title: "Ανέβασε Φωτογραφία",
+    description: "Μοιραστείτε φωτογραφίες από τα χωριά της Δρόπολης. Υποβολή εικόνων για το φωτογραφικό αρχείο του Dropolis.",
+    url: `${BASE_URL}/upload-photo`,
+    breadcrumbs: [{ name: "Υποβολή Φωτογραφίας", item: `${BASE_URL}/upload-photo` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ανέβασε Φωτογραφία — Dropolis", url: `${BASE_URL}/upload-photo`, inLanguage: "el" },
+  },
+  {
+    path: "/submit-video",
+    title: "Ανεβάστε Βίντεο",
+    description: "Μοιραστείτε βίντεο από τη Δρόπολη. Υποβολή YouTube link για το αρχείο βίντεο του Dropolis.",
+    url: `${BASE_URL}/submit-video`,
+    breadcrumbs: [{ name: "Ανεβάστε Βίντεο", item: `${BASE_URL}/submit-video` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ανεβάστε Βίντεο — Dropolis", url: `${BASE_URL}/submit-video`, inLanguage: "el" },
   },
 ];
 
