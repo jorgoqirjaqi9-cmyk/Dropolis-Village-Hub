@@ -8,9 +8,6 @@ import { Users, Mountain, Camera, Map } from "lucide-react";
 
 const UNITS = [
   { key: "all", label: "Όλα τα Χωριά" },
-  { key: "Δημοτική Ενότητα Κάτω Δρόπολης", label: "Κάτω Δρόπολη" },
-  { key: "Δημοτική Ενότητα Άνω Δρόπολης", label: "Άνω Δρόπολη" },
-  { key: "Δημοτική Ενότητα Πωγωνίου", label: "Πωγώνι" },
 ];
 
 export default function Villages() {
@@ -63,13 +60,13 @@ export default function Villages() {
     <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO
         title="Τα Χωριά της Δρόπολης"
-        description="Ανακαλύψτε και τα 41 ιστορικά χωριά της Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου. Πληθυσμός, ιστορία και παραδόσεις."
+        description="Ανακαλύψτε και τα 41 ιστορικά χωριά της Δρόπολης. Πληθυσμός, ιστορία και παραδόσεις."
         breadcrumbs={[{ name: "Χωριά", url: "/villages" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Τα Χωριά της Δρόπολης",
-          description: "41 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου.",
+          description: "41 ιστορικά χωριά του Δήμου Δρόπολης.",
           url: "https://dropolis.net/villages",
           inLanguage: "el",
           numberOfItems: 41,
@@ -85,7 +82,7 @@ export default function Villages() {
             Τα Χωριά μας
           </h1>
           <p className="text-lg text-primary-foreground/75 leading-relaxed">
-            41 ιστορικά χωριά σε τρεις Δημοτικές Ενότητες — Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου.
+            41 ιστορικά χωριά του Δήμου Δρόπολης.
             Το καθένα με τη δική του μοναδική ομορφιά και παράδοση.
           </p>
         </div>
@@ -114,33 +111,6 @@ export default function Villages() {
         </div>
       </div>
 
-      {/* Unit tabs */}
-      <div className="flex flex-wrap gap-2" data-testid="tabs-municipal-units">
-        {UNITS.map(u => (
-          <button
-            key={u.key}
-            data-testid={`tab-unit-${u.key}`}
-            onClick={() => setActiveUnit(u.key)}
-            className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 ${
-              activeUnit === u.key
-                ? "bg-primary text-primary-foreground border-primary shadow"
-                : "bg-card text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
-            }`}
-          >
-            {u.label}
-            <span className={`ml-2 text-xs rounded-full px-1.5 py-0.5 ${activeUnit === u.key ? "bg-white/20" : "bg-muted"}`}>
-              {countForUnit(u.key)}
-            </span>
-          </button>
-        ))}
-      </div>
-
-      {/* Unit subtitle */}
-      {activeUnit !== "all" && (
-        <p className="text-sm text-muted-foreground -mt-4 pl-1">
-          {activeUnit}
-        </p>
-      )}
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -164,11 +134,7 @@ export default function Villages() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   {village.municipalUnit && (
                     <div className="absolute top-3 left-3 bg-primary/90 text-primary-foreground text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
-                      {village.municipalUnit === "Δημοτική Ενότητα Κάτω Δρόπολης"
-                        ? "Κάτω Δρόπολη"
-                        : village.municipalUnit === "Δημοτική Ενότητα Άνω Δρόπολης"
-                        ? "Άνω Δρόπολη"
-                        : "Πωγώνι"}
+                      {"Δρόπολη"}
                     </div>
                   )}
                 </div>

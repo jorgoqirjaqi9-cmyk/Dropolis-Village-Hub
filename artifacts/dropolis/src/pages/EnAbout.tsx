@@ -36,7 +36,7 @@ export default function EnAbout() {
         <motion.section initial="hidden" whileInView="show" viewport={{ once: true }} variants={fade}>
           <h2 className="text-2xl font-serif font-bold text-foreground mb-3">What is Dropull?</h2>
           <p>
-            Dropull (Greek: Δρόπολη) is a municipality in the Gjirokastër County of southern Albania. It encompasses 41 villages spread across three administrative units: Lower Dropull, Upper Dropull, and Pogoni. These villages are home to one of the oldest documented Greek-speaking communities outside modern Greece, with a continuous presence stretching back more than two thousand years.
+            Dropull (Greek: Δρόπολη) is a municipality in the Gjirokastër County of southern Albania. It encompasses 41 villages that are home to one of the oldest documented Greek-speaking communities outside modern Greece, with a continuous presence stretching back more than two thousand years.
           </p>
           <p>
             The region is known in Greece as part of <em>Northern Epirus</em> — a term used by the Greek-speaking community to describe the territory of historic Epirus that falls within Albania's borders. Today, the Greek minority community here maintains its language, Orthodox Christian traditions, and distinct cultural identity despite decades of isolation under communist rule.

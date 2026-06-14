@@ -253,7 +253,7 @@ const STATIC_META: Record<string, PageMeta> = {
   },
   "/villages": {
     title: "Τα Χωριά της Δρόπολης",
-    description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου. Πληθυσμός, ιστορία και παραδόσεις.",
+    description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Δρόπολης. Πληθυσμός, ιστορία και παραδόσεις.",
     url: `${BASE_URL}/villages`,
     breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages` }],
     jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Τα Χωριά της Δρόπολης", url: `${BASE_URL}/villages`, inLanguage: "el", numberOfItems: 41 },

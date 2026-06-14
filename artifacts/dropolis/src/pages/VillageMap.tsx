@@ -30,25 +30,14 @@ type Village = {
 
 const UNITS = [
   { key: "all", label: "Όλα" },
-  { key: "Δημοτική Ενότητα Κάτω Δρόπολης", label: "Κάτω Δρόπολη" },
-  { key: "Δημοτική Ενότητα Άνω Δρόπολης", label: "Άνω Δρόπολη" },
-  { key: "Δημοτική Ενότητα Πωγωνίου", label: "Πωγώνι" },
 ];
 
-function getUnitLabel(unit: string | null): string {
-  if (!unit) return "";
-  if (unit.includes("Κάτω")) return "Κάτω Δρόπολη";
-  if (unit.includes("Άνω")) return "Άνω Δρόπολη";
-  if (unit.includes("Πωγών")) return "Πωγώνι";
-  return unit;
+function getUnitLabel(_unit: string | null): string {
+  return "";
 }
 
-function getUnitColor(unit: string | null | undefined): string {
-  if (!unit) return "#6b7280";
-  if (unit.includes("Κάτω")) return "#1d4ed8";
-  if (unit.includes("Άνω")) return "#15803d";
-  if (unit.includes("Πωγών")) return "#c2410c";
-  return "#6b7280";
+function getUnitColor(_unit: string | null | undefined): string {
+  return "#1d4ed8";
 }
 
 function createPinIcon(color: string): L.DivIcon {
@@ -413,22 +402,6 @@ export default function VillageMap() {
             )}
           </div>
 
-          {/* Legend */}
-          <div className="px-4 py-3 border-t border-border bg-muted/20 shrink-0">
-            <p className="text-xs font-semibold text-muted-foreground mb-2">Υπόμνημα</p>
-            <div className="flex flex-col gap-1">
-              {[
-                { color: "#1d4ed8", label: "Κάτω Δρόπολη" },
-                { color: "#15803d", label: "Άνω Δρόπολη" },
-                { color: "#c2410c", label: "Πωγώνι" },
-              ].map(({ color, label }) => (
-                <div key={label} className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="w-3 h-3 rounded-full shrink-0" style={{ background: color }} />
-                  {label}
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>

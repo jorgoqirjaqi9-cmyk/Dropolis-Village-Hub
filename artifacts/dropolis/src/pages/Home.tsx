@@ -280,28 +280,23 @@ export default function Home() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
               {[
-                { id: 51, nameEl: "Δερβιτσάνη", name: "Derviçan", unit: "Κάτω Δρόπολη", color: "#1d4ed8" },
-                { id: 69, nameEl: "Βουλιαράτες", name: "Bularat", unit: "Κάτω Δρόπολη", color: "#1d4ed8" },
-                { id: 81, nameEl: "Κακαβιά", name: "Kakavijë", unit: "Κάτω Δρόπολη", color: "#1d4ed8" },
-                { id: 55, nameEl: "Δούβιανη", name: "Duvjan", unit: "Κάτω Δρόπολη", color: "#1d4ed8" },
-                { id: 64, nameEl: "Γλύνα", name: "Glina", unit: "Άνω Δρόπολη", color: "#15803d" },
-                { id: 65, nameEl: "Βραχογοραντζή", name: "Vraho-Goranxi", unit: "Άνω Δρόπολη", color: "#15803d" },
-                { id: 84, nameEl: "Άγιος Νικόλαος", name: "Dritë", unit: "Άνω Δρόπολη", color: "#15803d" },
-                { id: 86, nameEl: "Πολίτσανη", name: "Politsan", unit: "Πωγώνι", color: "#c2410c" },
+                { id: 51, nameEl: "Δερβιτσάνη", name: "Derviçan" },
+                { id: 69, nameEl: "Βουλιαράτες", name: "Bularat" },
+                { id: 81, nameEl: "Κακαβιά", name: "Kakavijë" },
+                { id: 55, nameEl: "Δούβιανη", name: "Duvjan" },
+                { id: 64, nameEl: "Γλύνα", name: "Glina" },
+                { id: 65, nameEl: "Βραχογοραντζή", name: "Vraho-Goranxi" },
+                { id: 84, nameEl: "Άγιος Νικόλαος", name: "Dritë" },
+                { id: 86, nameEl: "Πολίτσανη", name: "Politsan" },
               ].map((v) => (
                 <motion.div key={v.id} variants={fadeUp}>
                   <Link href={`/villages/${v.id}`}>
-                    <div className="group glass-card rounded-xl p-4 flex items-start gap-3 hover:shadow-md transition-all duration-200 cursor-pointer border-l-[3px]"
-                      style={{ borderLeftColor: v.color }}>
+                    <div className="group glass-card rounded-xl p-4 flex items-start gap-3 hover:shadow-md transition-all duration-200 cursor-pointer">
                       <div className="flex-grow min-w-0">
                         <p className="font-semibold text-sm text-foreground group-hover:text-primary dark:group-hover:text-secondary transition-colors leading-tight truncate">
                           {v.nameEl}
                         </p>
                         <p className="text-xs text-muted-foreground mt-0.5 truncate">{v.name}</p>
-                        <span className="inline-block mt-1.5 text-[10px] font-semibold px-2 py-0.5 rounded-full text-white"
-                          style={{ backgroundColor: v.color }}>
-                          {v.unit}
-                        </span>
                       </div>
                       <ArrowRight size={14} className="shrink-0 mt-1 text-muted-foreground group-hover:text-primary dark:group-hover:text-secondary transition-colors" />
                     </div>

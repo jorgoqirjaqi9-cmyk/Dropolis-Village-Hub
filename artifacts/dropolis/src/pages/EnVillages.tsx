@@ -4,20 +4,6 @@ import { motion } from "framer-motion";
 
 const fade = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } };
 
-const units = [
-  {
-    name: "Lower Dropull (Κάτω Δρόπολη)",
-    desc: "The larger of the two Dropull units, situated along the Drinos river valley. It includes the main settlement of Kakavia near the Greek border crossing and several well-known villages.",
-  },
-  {
-    name: "Upper Dropull (Άνω Δρόπολη)",
-    desc: "Higher altitude villages stretching towards the mountains. Many have experienced significant emigration since 1990 but retain active communities through seasonal returns and diaspora ties.",
-  },
-  {
-    name: "Pogoni (Πωγώνι)",
-    desc: "A cluster of villages on the northern edge of the municipality, historically associated with both Greek and Albanian communities.",
-  },
-];
 
 export default function EnVillages() {
   return (
@@ -50,18 +36,6 @@ export default function EnVillages() {
           <p>
             Dropull occupies the Drinos river valley and the surrounding hills between Gjirokastër (Argirocastro) and the Greek border at Kakavia. The terrain varies from fertile valley floor to mountainous slopes, giving each village a distinct character and microclimate. The Greek town of Ioannina lies just across the border.
           </p>
-        </motion.section>
-
-        <motion.section initial="hidden" whileInView="show" viewport={{ once: true }} variants={fade}>
-          <h2 className="text-2xl font-serif font-bold text-foreground mb-4">Administrative units</h2>
-          <div className="space-y-4 not-prose">
-            {units.map(({ name, desc }) => (
-              <div key={name} className="glass-card rounded-2xl p-5">
-                <h3 className="font-semibold text-foreground mb-1">{name}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
         </motion.section>
 
         <motion.section initial="hidden" whileInView="show" viewport={{ once: true }} variants={fade}>
