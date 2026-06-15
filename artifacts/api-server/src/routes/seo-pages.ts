@@ -21,7 +21,7 @@ import { logger } from "../lib/logger.js";
 
 const BASE_URL = "https://dropolis.net";
 const SITE_NAME = "Δρόπολη (Dropolis)";
-const DEFAULT_IMG = `${BASE_URL}/opengraph.jpg`;
+const DEFAULT_IMG = `${BASE_URL}/opengraph-dropolis-2026.jpg`;
 
 // ---------------------------------------------------------------------------
 // Template loader (cached in production)

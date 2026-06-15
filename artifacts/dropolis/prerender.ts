@@ -29,7 +29,7 @@ import {
   type Meta,
 } from "./src/route-manifest.js";
 
-const DEFAULT_IMG = `${BASE_URL}/opengraph.jpg`;
+const DEFAULT_IMG = `${BASE_URL}/opengraph-dropolis-2026.jpg`;
 const SITE_NAME = "Δρόπολη (Dropolis)";
 
 const DIST = resolve(process.cwd(), "dist/public");

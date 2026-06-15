@@ -62,7 +62,7 @@ export default function NewsDetail() {
   const paragraphs = article.content.split('\n\n').filter(p => p.trim() !== '');
 
   const BASE = "https://dropolis.net";
-  const DEFAULT_IMG = `${BASE}/opengraph.jpg`;
+  const DEFAULT_IMG = `${BASE}/opengraph-dropolis-2026.jpg`;
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",

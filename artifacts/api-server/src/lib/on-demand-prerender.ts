@@ -20,7 +20,7 @@ import { logger } from "./logger.js";
 
 const BASE_URL = "https://dropolis.net";
 const SITE_NAME = "Δρόπολη (Dropolis)";
-const DEFAULT_IMG = `${BASE_URL}/opengraph.jpg`;
+const DEFAULT_IMG = `${BASE_URL}/opengraph-dropolis-2026.jpg`;
 
 // Path to the frontend's dist/public directory.
 // In Replit's production deployment both services run in the same container,
