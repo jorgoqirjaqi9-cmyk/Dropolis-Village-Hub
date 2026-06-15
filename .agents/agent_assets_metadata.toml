@@ -18,3 +18,9 @@ id = "drrwfOsEOto5mzW2Q3NeS"
 uri = "file://artifacts/dropolis/public/og-videos.png"
 type = "image"
 title = "greek village video documentary og"
+
+[[generated]]
+id = "2Bpjf0S7aYHbnLHgIPpZf"
+uri = "file://attached_assets/generated_images/facebook_open_graph_image_64a7.png"
+type = "image"
+title = "generated_image"
