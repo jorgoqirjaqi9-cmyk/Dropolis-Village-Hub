@@ -102,7 +102,8 @@ const legalLinks = [
 
 const resourceLinks = [
   { href: "/press", label: "Τύπος & Νέα" },
-  { href: "/help", label: "Κέντρο Βοήθειας" },
+  { href: "/help", label: "Κέντρο Βοήθειας", rel: "help" },
+  { href: "/faq",  label: "Συχνές Ερωτήσεις", rel: "help" },
   { href: "/about", label: "Σχετικά με εμάς" },
   { href: "/contact", label: "Επικοινωνία" },
   { href: "/sitemap", label: "Χάρτης Ιστοτόπου" },
@@ -426,9 +427,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Πληροφορίες</h4>
               <ul className="space-y-2 mb-6">
-                {resourceLinks.map(({ href, label }) => (
+                {resourceLinks.map(({ href, label, rel }) => (
                   <li key={href}>
-                    <Link href={href} className="text-sm text-background/60 hover:text-secondary transition-colors">{label}</Link>
+                    <Link href={href} rel={rel} className="text-sm text-background/60 hover:text-secondary transition-colors">{label}</Link>
                   </li>
                 ))}
               </ul>
