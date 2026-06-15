@@ -182,11 +182,15 @@ export default function Home() {
                 Ανεβάστε Βίντεο
               </Link>
             </div>
+            {/* Weather widget — mobile only: in-flow below all buttons */}
+            <div className="md:hidden mt-6 flex justify-center w-full">
+              <WeatherWidget />
+            </div>
           </motion.div>
         </motion.div>
 
-        {/* Weather overlay — bottom left */}
-        <div className="absolute bottom-8 left-6 z-10">
+        {/* Weather overlay — desktop only: bottom left absolute */}
+        <div className="hidden md:block absolute bottom-8 left-6 z-10">
           <WeatherWidget />
         </div>
 
