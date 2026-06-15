@@ -198,14 +198,14 @@ function buildSitemap(
     const lastmod = a.createdAt
       ? new Date(a.createdAt).toISOString().slice(0, 10)
       : today;
-    return urlEntry(`${BASE_URL}/news/${a.id}`, lastmod, "monthly", "0.8");
+    return urlEntry(`${BASE_URL}/news/${a.id}/`, lastmod, "monthly", "0.8");
   });
 
   const villageEntries = villages.map((v) => {
     const lastmod = v.createdAt
       ? new Date(v.createdAt).toISOString().slice(0, 10)
       : today;
-    return urlEntry(`${BASE_URL}/villages/${v.id}`, lastmod, "monthly", "0.7");
+    return urlEntry(`${BASE_URL}/villages/${v.id}/`, lastmod, "monthly", "0.7");
   });
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -319,7 +319,7 @@ async function main() {
       title: a.title,
       description,
       image: a.imageUrl,
-      url: `${BASE_URL}/news/${a.id}`,
+      url: `${BASE_URL}/news/${a.id}/`,
       type: "article",
       article: {
         publishedTime: a.createdAt ? new Date(a.createdAt).toISOString() : null,
@@ -332,8 +332,8 @@ async function main() {
         section: a.category,
       },
       breadcrumbs: [
-        { name: "Ειδήσεις", item: `${BASE_URL}/news` },
-        { name: a.title, item: `${BASE_URL}/news/${a.id}` },
+        { name: "Ειδήσεις", item: `${BASE_URL}/news/` },
+        { name: a.title, item: `${BASE_URL}/news/${a.id}/` },
       ],
       jsonLd: {
         "@context": "https://schema.org",
@@ -351,7 +351,7 @@ async function main() {
         },
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `${BASE_URL}/news/${a.id}`,
+          "@id": `${BASE_URL}/news/${a.id}/`,
         },
         articleSection: a.category,
         inLanguage: "el",
@@ -373,10 +373,10 @@ async function main() {
       title: `${v.nameEl} — Χωριό της Δρόπολης`,
       description,
       image: v.imageUrl,
-      url: `${BASE_URL}/villages/${v.id}`,
+      url: `${BASE_URL}/villages/${v.id}/`,
       breadcrumbs: [
-        { name: "Χωριά", item: `${BASE_URL}/villages` },
-        { name: v.nameEl, item: `${BASE_URL}/villages/${v.id}` },
+        { name: "Χωριά", item: `${BASE_URL}/villages/` },
+        { name: v.nameEl, item: `${BASE_URL}/villages/${v.id}/` },
       ],
       jsonLd: {
         "@context": "https://schema.org",
@@ -384,7 +384,7 @@ async function main() {
         name: v.nameEl,
         alternateName: v.name,
         description: v.description,
-        url: `${BASE_URL}/villages/${v.id}`,
+        url: `${BASE_URL}/villages/${v.id}/`,
         ...(v.latitude && v.longitude
           ? {
               geo: {
