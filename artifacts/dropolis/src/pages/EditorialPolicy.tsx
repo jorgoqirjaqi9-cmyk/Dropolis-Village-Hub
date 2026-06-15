@@ -83,8 +83,8 @@ export default function EditorialPolicy() {
           Για παρατηρήσεις σχετικά με συντακτικές επιλογές ή για να αναφέρετε ανακρίβεια, επικοινωνήστε μαζί μας. Αξιολογούμε κάθε αίτημα εντός 48 ωρών.
         </p>
         <div className="flex flex-wrap gap-3">
-          <a href="mailto:news@dropolis.net" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
-            news@dropolis.net
+          <a href="mailto:info@dropolis.net" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
+            info@dropolis.net
           </a>
           <Link href="/corrections-policy" className="inline-flex items-center gap-2 border border-border text-foreground px-5 py-2 rounded-full text-sm font-medium hover:bg-muted transition-colors">
             Πολιτική Διορθώσεων <ArrowRight size={14} />

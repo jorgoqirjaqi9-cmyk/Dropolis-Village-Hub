@@ -338,7 +338,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
           name: "Πώς μπορώ να υποβάλω νέο ή ανακοίνωση;",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Επικοινωνήστε μαζί μας μέσω της σελίδας Επικοινωνία (/contact) ή στο email news@dropolis.net. Η σύνταξη αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
+            text: "Επικοινωνήστε μαζί μας μέσω της σελίδας Επικοινωνία (/contact) ή στο email info@dropolis.net. Η σύνταξη αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
           },
         },
         {
@@ -354,7 +354,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
           name: "Μπορώ να αναρτήσω δικές μου φωτογραφίες;",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Η δυνατότητα υποβολής φωτογραφιών από χρήστες βρίσκεται υπό ανάπτυξη. Προς το παρόν, μπορείτε να στείλετε φωτογραφίες στο news@dropolis.net και η ομάδα θα τις αξιολογήσει για ανάρτηση.",
+            text: "Η δυνατότητα υποβολής φωτογραφιών από χρήστες βρίσκεται υπό ανάπτυξη. Προς το παρόν, μπορείτε να στείλετε φωτογραφίες στο info@dropolis.net και η ομάδα θα τις αξιολογήσει για ανάρτηση.",
           },
         },
         {
@@ -402,7 +402,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
         { "@type": "Question", name: "Πόσα χωριά καλύπτει το Dropolis;", acceptedAnswer: { "@type": "Answer", text: "Το Dropolis καλύπτει και τα 41 χωριά του Δήμου Δρόπολης, κατανεμημένα σε τρεις Δημοτικές Ενότητες: Κάτω Δρόπολης, Άνω Δρόπολης και Πωγωνίου." } },
         { "@type": "Question", name: "Πώς λειτουργεί το live chat;", acceptedAnswer: { "@type": "Answer", text: "Το chat κοινότητας ανανεώνεται αυτόματα κάθε 5 δευτερόλεπτα. Δεν απαιτείται εγγραφή." } },
         { "@type": "Question", name: "Μπορώ να εγκαταστήσω το Dropolis ως εφαρμογή στο κινητό μου;", acceptedAnswer: { "@type": "Answer", text: "Ναι! Το Dropolis είναι Progressive Web App (PWA). Στο Android ανοίξτε το site στο Chrome και πατήστε «Εγκατάσταση». Στο iPhone χρησιμοποιήστε Safari → «Πρόσθεσε στην Αρχική Οθόνη»." } },
-        { "@type": "Question", name: "Πώς μπορώ να υποβάλω νέο ή ανακοίνωση;", acceptedAnswer: { "@type": "Answer", text: "Επικοινωνήστε μαζί μας μέσω της σελίδας Επικοινωνία ή στο email news@dropolis.net." } },
+        { "@type": "Question", name: "Πώς μπορώ να υποβάλω νέο ή ανακοίνωση;", acceptedAnswer: { "@type": "Answer", text: "Επικοινωνήστε μαζί μας μέσω της σελίδας Επικοινωνία ή στο email info@dropolis.net." } },
         { "@type": "Question", name: "Πώς μπορώ να αλλάξω σε σκοτεινό (dark) θέμα;", acceptedAnswer: { "@type": "Answer", text: "Κάντε κλικ στο εικονίδιο 🌙 / ☀️ στην επάνω δεξιά γωνία της σελίδας. Η επιλογή αποθηκεύεται αυτόματα." } },
       ],
     },

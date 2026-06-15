@@ -110,8 +110,8 @@ export default function EnPhotos() {
         <p className="text-sm text-muted-foreground leading-relaxed">
           Have a photograph from Dropull — historic or recent? We welcome community submissions.
           Send your images to{" "}
-          <a href="mailto:news@dropolis.net" className="text-primary underline underline-offset-4">
-            news@dropolis.net
+          <a href="mailto:info@dropolis.net" className="text-primary underline underline-offset-4">
+            info@dropolis.net
           </a>{" "}
           with a short caption and the village name.
         </p>

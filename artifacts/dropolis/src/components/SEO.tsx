@@ -234,7 +234,7 @@ export function SEO({
       publishingPrinciples: `${SITE.url}/editorial-policy`,
       contactPoint: {
         "@type": "ContactPoint",
-        email: "news@dropolis.net",
+        email: "info@dropolis.net",
         contactType: "editorial",
         availableLanguage: ["Greek", "English", "Albanian"],
       },

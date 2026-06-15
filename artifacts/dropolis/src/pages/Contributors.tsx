@@ -105,8 +105,8 @@ export default function Contributors() {
           Στείλτε ένα email στη συντακτική ομάδα με το υλικό σας. Απαντάμε συνήθως εντός 1-2 εργάσιμων ημερών.
         </p>
         <div className="flex flex-wrap gap-3">
-          <a href="mailto:news@dropolis.net?subject=Συνεισφορά" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
-            <Mail size={14} /> news@dropolis.net
+          <a href="mailto:info@dropolis.net?subject=Συνεισφορά" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
+            <Mail size={14} /> info@dropolis.net
           </a>
           <Link href="/contact" className="inline-flex items-center gap-2 border border-border text-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-muted transition-colors">
             Φόρμα επικοινωνίας
