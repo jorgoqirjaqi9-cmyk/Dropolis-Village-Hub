@@ -127,18 +127,26 @@ function buildSeoTags(m: Meta): string {
     .join("\n  ");
 }
 
-function injectMeta(m: Meta): string {
+function injectMeta(m: Meta, lang = "el"): string {
   let html = TEMPLATE
+    // Set correct html lang attribute
+    .replace(/(<html[^>]*\s)lang="[^"]*"/i, `$1lang="${lang}"`)
     .replace(/<title>[^<]*<\/title>/g, "")
     .replace(/<meta\s+name="description"[^>]*>/gi, "")
+    .replace(/<meta\s+name="language"[^>]*>/gi, "")
     .replace(/<link\s+rel="canonical"[^>]*>/gi, "")
     .replace(/<meta\s+property="og:title"[^>]*>/gi, "")
     .replace(/<meta\s+property="og:description"[^>]*>/gi, "")
     .replace(/<meta\s+property="og:type"[^>]*>/gi, "")
     .replace(/<meta\s+property="og:url"[^>]*>/gi, "")
     .replace(/<meta\s+property="og:image(?::\w+)?"[^>]*>/gi, "")
+    .replace(/<meta\s+property="og:locale"[^>]*>/gi, "")
     .replace(/<meta\s+name="twitter:[^"]*"[^>]*>/gi, "");
-  html = html.replace("<head>", `<head>\n  ${buildSeoTags(m)}`);
+  const locale = lang === "en" ? "en_US" : "el_GR";
+  const seoTags = buildSeoTags(m)
+    + `\n  <meta name="language" content="${lang}" />`
+    + `\n  <meta property="og:locale" content="${locale}" />`;
+  html = html.replace("<head>", `<head>\n  ${seoTags}`);
   html = html.replace(/<div id="root">[^]*?<\/div>/, `<div id="root">\n  ${buildBodyFallback(m)}\n</div>`);
   return html;
 }
@@ -270,7 +278,8 @@ async function main() {
   // route-manifest so prerender.ts, seo-crawler.ts, and sitemap.ts stay in sync)
   for (const route of STATIC_PRERENDER) {
     const { path, ...meta } = route;
-    writeRoute(path, injectMeta(meta));
+    const lang = path.startsWith("/en") ? "en" : "el";
+    writeRoute(path, injectMeta(meta, lang));
     count++;
   }
   console.log(`[prerender] Static routes: ${STATIC_PRERENDER.length} pages written.`);

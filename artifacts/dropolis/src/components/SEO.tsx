@@ -179,12 +179,17 @@ export function SEO({
     return setHreflangLinks(hreflang);
   }, [hreflang]);
 
-  // Dynamically switch <html lang> for multilingual pages
+  // Dynamically switch <html lang> and <meta name="language"> for multilingual pages
   useEffect(() => {
     const isEnglish = location.startsWith("/en");
-    document.documentElement.lang = isEnglish ? "en" : "el";
+    const lang = isEnglish ? "en" : "el";
+    document.documentElement.lang = lang;
+    setMeta("name", "language", lang);
+    setMeta("property", "og:locale", isEnglish ? "en_US" : "el_GR");
     return () => {
       document.documentElement.lang = "el";
+      setMeta("name", "language", "el");
+      setMeta("property", "og:locale", "el_GR");
     };
   }, [location]);
 

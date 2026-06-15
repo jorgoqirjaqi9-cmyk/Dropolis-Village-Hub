@@ -28,6 +28,11 @@ const securityHeaders: RequestHandler = (_req, res, next) => {
     "Permissions-Policy",
     "camera=(), microphone=(), geolocation=(), payment=()",
   );
+  // HSTS — tells browsers to always use HTTPS for this domain
+  res.setHeader(
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains; preload",
+  );
   res.setHeader(
     "Content-Security-Policy",
     [

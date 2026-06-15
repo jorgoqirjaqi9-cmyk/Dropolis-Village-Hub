@@ -10,6 +10,27 @@ const port = rawPort ? Number(rawPort) : 20727;
 
 const basePath = process.env.BASE_PATH ?? "/";
 
+const SECURITY_HEADERS: Record<string, string> = {
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "SAMEORIGIN",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
+  "Content-Security-Policy": [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://www.google.com https://partner.googleadservices.com https://static.doubleclick.net https://adservice.google.com https://www.gstatic.com https://www.youtube.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' data: https://fonts.gstatic.com",
+    "img-src 'self' data: blob: https:",
+    "frame-src https://www.youtube.com https://youtube-nocookie.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://www.google.com https://googleads.g.doubleclick.net",
+    "connect-src 'self' https:",
+    "media-src 'self' https:",
+    "object-src 'none'",
+    "base-uri 'self'",
+  ].join("; "),
+  // HSTS — only meaningful over HTTPS (production/preview); harmless in dev
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+};
+
 export default defineConfig({
   base: basePath,
   plugins: [
@@ -48,6 +69,7 @@ export default defineConfig({
     strictPort: true,
     host: "0.0.0.0",
     allowedHosts: true,
+    headers: SECURITY_HEADERS,
     fs: {
       strict: true,
     },
@@ -56,5 +78,6 @@ export default defineConfig({
     port,
     host: "0.0.0.0",
     allowedHosts: true,
+    headers: SECURITY_HEADERS,
   },
 });
