@@ -98,6 +98,16 @@ const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
   res.status(500).json({ error: "Internal server error" });
 };
 
+// Redirect www.dropolis.net → dropolis.net (permanent)
+app.use((req, res, next) => {
+  const host = req.headers.host ?? "";
+  if (host.startsWith("www.")) {
+    const target = `https://${host.slice(4)}${req.url}`;
+    return res.redirect(301, target);
+  }
+  next();
+});
+
 app.use(
   pinoHttp({
     logger,

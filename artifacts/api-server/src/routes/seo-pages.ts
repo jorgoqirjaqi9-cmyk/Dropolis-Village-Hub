@@ -152,7 +152,9 @@ function buildSeoTags(m: PageMeta): string {
   const title = esc(`${m.title} | ${SITE_NAME}`);
   const desc = esc((m.description ?? "").slice(0, 160));
   const img = esc(m.image || DEFAULT_IMG);
-  const url = esc(m.url);
+  // Enforce trailing slash on all page URLs for canonical consistency
+  const normalizedUrl = m.url === `${BASE_URL}/` ? m.url : (m.url.endsWith("/") ? m.url : m.url + "/");
+  const url = esc(normalizedUrl);
   const type = m.type || "website";
 
   const articleTags: string[] = [];
@@ -429,6 +431,34 @@ const STATIC_META: Record<string, PageMeta> = {
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Contact", item: `${BASE_URL}/en/contact` }],
     jsonLd: { "@context": "https://schema.org", "@type": "ContactPage", name: "Contact Dropolis", url: `${BASE_URL}/en/contact`, inLanguage: "en" },
   },
+  "/en/photos": {
+    title: "Photo Gallery — Dropull Villages",
+    description: "Photographs from the villages of Dropull, Northern Epirus — landscapes, village life, cultural heritage and the Greek minority communities of southern Albania.",
+    url: `${BASE_URL}/en/photos`,
+    breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Photos", item: `${BASE_URL}/en/photos` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "ImageGallery", name: "Photo Gallery — Dropull Villages", url: `${BASE_URL}/en/photos`, inLanguage: "en" },
+  },
+  "/faq": {
+    title: "Συχνές Ερωτήσεις",
+    description: "Απαντήσεις σε συχνές ερωτήσεις για το Dropolis — πώς να υποβάλετε ειδήσεις, φωτογραφίες και βίντεο από τη Δρόπολη.",
+    url: `${BASE_URL}/faq`,
+    breadcrumbs: [{ name: "Συχνές Ερωτήσεις", item: `${BASE_URL}/faq` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "FAQPage", name: "Συχνές Ερωτήσεις — Dropolis", url: `${BASE_URL}/faq`, inLanguage: "el" },
+  },
+  "/submit-news": {
+    title: "Στείλτε Είδηση",
+    description: "Υποβάλετε είδηση ή ανακοίνωση από τα χωριά της Δρόπολης. Η ομάδα μας αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
+    url: `${BASE_URL}/submit-news`,
+    breadcrumbs: [{ name: "Στείλτε Είδηση", item: `${BASE_URL}/submit-news` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Στείλτε Είδηση — Dropolis", url: `${BASE_URL}/submit-news`, inLanguage: "el" },
+  },
+  "/submit-video": {
+    title: "Ανεβάστε Βίντεο",
+    description: "Μοιραστείτε βίντεο από τα χωριά της Δρόπολης — εκδηλώσεις, πολιτισμός, τοπία. Η ομάδα αξιολογεί κάθε υποβολή.",
+    url: `${BASE_URL}/submit-video`,
+    breadcrumbs: [{ name: "Ανεβάστε Βίντεο", item: `${BASE_URL}/submit-video` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ανεβάστε Βίντεο — Dropolis", url: `${BASE_URL}/submit-video`, inLanguage: "el" },
+  },
   "/upload-photo": {
     title: "Υποβολή Φωτογραφίας",
     description: "Στείλτε τη δική σας φωτογραφία από τα χωριά της Δρόπολης. Κάθε υποβολή αξιολογείται πριν δημοσιευτεί.",
@@ -469,9 +499,9 @@ async function sendPage(
 
 const router = Router();
 
-// Static routes
+// Static routes — register both with and without trailing slash
 for (const [path, meta] of Object.entries(STATIC_META)) {
-  router.get(path, (_req, res) => sendPage(res, meta));
+  router.get([path, `${path}/`], (_req, res) => sendPage(res, meta));
 }
 
 // Admin panel — noindex, no body text (React SPA handles rendering)
@@ -489,7 +519,7 @@ router.get(/^\/admin(\/.*)?$/, (_req, res) => {
 });
 
 // /news/:id — article detail
-router.get("/news/:id", async (req, res) => {
+router.get(["/news/:id", "/news/:id/"], async (req, res) => {
   const id = parseInt(String(req.params.id), 10);
   if (!Number.isInteger(id) || id <= 0) {
     res.status(404).send("Not found");
@@ -555,7 +585,7 @@ router.get("/news/:id", async (req, res) => {
 });
 
 // /villages/:id — village detail
-router.get("/villages/:id", async (req, res) => {
+router.get(["/villages/:id", "/villages/:id/"], async (req, res) => {
   const id = parseInt(String(req.params.id), 10);
   if (!Number.isInteger(id) || id <= 0) {
     res.status(404).send("Not found");

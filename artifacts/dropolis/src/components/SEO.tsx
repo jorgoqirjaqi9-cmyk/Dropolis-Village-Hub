@@ -128,7 +128,9 @@ export function SEO({
   hreflang,
 }: SEOProps) {
   const [location] = useLocation();
-  const canonicalUrl = `${SITE.url}${location === "/" ? "" : location}`;
+  const canonicalUrl = location === "/"
+    ? `${SITE.url}/`
+    : `${SITE.url}${location.endsWith("/") ? location : location + "/"}`;
   const fullTitle = standalone ? title : `${title} | ${SITE.name} (${SITE.nameEn})`;
   const metaDesc = description || SITE.description;
   const socialDesc = ogDescription ?? metaDesc;

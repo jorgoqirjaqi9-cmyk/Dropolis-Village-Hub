@@ -11,35 +11,35 @@ const BASE_URL = "https://dropolis.net";
 // artifacts/dropolis/src/route-manifest.ts (shared within the frontend package;
 // duplicated here because api-server is a separate package).
 const STATIC_ROUTES = [
-  { loc: "/",              changefreq: "daily",   priority: "1.0" },
-  { loc: "/news",          changefreq: "hourly",  priority: "0.9" },
-  { loc: "/villages",      changefreq: "weekly",  priority: "0.8" },
-  { loc: "/photos",        changefreq: "weekly",  priority: "0.7" },
-  { loc: "/videos",        changefreq: "weekly",  priority: "0.7" },
-  { loc: "/about",         changefreq: "monthly", priority: "0.8" },
-  { loc: "/contact",       changefreq: "monthly", priority: "0.7" },
-  { loc: "/press",         changefreq: "monthly", priority: "0.6" },
-  { loc: "/help",          changefreq: "monthly", priority: "0.5" },
-  { loc: "/faq",           changefreq: "monthly", priority: "0.7" },
-  { loc: "/privacy",       changefreq: "yearly",  priority: "0.4" },
-  { loc: "/terms",         changefreq: "yearly",  priority: "0.4" },
-  { loc: "/cookie-policy", changefreq: "yearly",  priority: "0.3" },
-  { loc: "/disclaimer",    changefreq: "yearly",  priority: "0.3" },
-  { loc: "/sitemap",            changefreq: "monthly", priority: "0.3" },
-  { loc: "/editorial-policy",  changefreq: "monthly", priority: "0.5" },
-  { loc: "/corrections-policy",changefreq: "monthly", priority: "0.5" },
-  { loc: "/contributors",      changefreq: "monthly", priority: "0.5" },
-  { loc: "/advertise",         changefreq: "monthly", priority: "0.4" },
-  { loc: "/en",                changefreq: "monthly", priority: "0.6" },
-  { loc: "/en/about",          changefreq: "monthly", priority: "0.5" },
-  { loc: "/en/villages",       changefreq: "monthly", priority: "0.5" },
-  { loc: "/en/news",           changefreq: "monthly", priority: "0.5" },
-  { loc: "/en/contact",        changefreq: "monthly", priority: "0.5" },
-  { loc: "/en/photos",         changefreq: "weekly",  priority: "0.5" },
-  { loc: "/villages/map",      changefreq: "weekly",  priority: "0.8" },
-  { loc: "/upload-photo",      changefreq: "monthly", priority: "0.6" },
-  { loc: "/submit-news",       changefreq: "monthly", priority: "0.6" },
-  { loc: "/submit-video",      changefreq: "monthly", priority: "0.6" },
+  { loc: "/",                   changefreq: "daily",   priority: "1.0" },
+  { loc: "/news/",              changefreq: "hourly",  priority: "0.9" },
+  { loc: "/villages/",          changefreq: "weekly",  priority: "0.8" },
+  { loc: "/photos/",            changefreq: "weekly",  priority: "0.7" },
+  { loc: "/videos/",            changefreq: "weekly",  priority: "0.7" },
+  { loc: "/about/",             changefreq: "monthly", priority: "0.8" },
+  { loc: "/contact/",           changefreq: "monthly", priority: "0.7" },
+  { loc: "/press/",             changefreq: "monthly", priority: "0.6" },
+  { loc: "/help/",              changefreq: "monthly", priority: "0.5" },
+  { loc: "/faq/",               changefreq: "monthly", priority: "0.7" },
+  { loc: "/privacy/",           changefreq: "yearly",  priority: "0.4" },
+  { loc: "/terms/",             changefreq: "yearly",  priority: "0.4" },
+  { loc: "/cookie-policy/",     changefreq: "yearly",  priority: "0.3" },
+  { loc: "/disclaimer/",        changefreq: "yearly",  priority: "0.3" },
+  { loc: "/sitemap/",           changefreq: "monthly", priority: "0.3" },
+  { loc: "/editorial-policy/",  changefreq: "monthly", priority: "0.5" },
+  { loc: "/corrections-policy/",changefreq: "monthly", priority: "0.5" },
+  { loc: "/contributors/",      changefreq: "monthly", priority: "0.5" },
+  { loc: "/advertise/",         changefreq: "monthly", priority: "0.4" },
+  { loc: "/en/",                changefreq: "monthly", priority: "0.6" },
+  { loc: "/en/about/",          changefreq: "monthly", priority: "0.5" },
+  { loc: "/en/villages/",       changefreq: "monthly", priority: "0.5" },
+  { loc: "/en/news/",           changefreq: "monthly", priority: "0.5" },
+  { loc: "/en/contact/",        changefreq: "monthly", priority: "0.5" },
+  { loc: "/en/photos/",         changefreq: "weekly",  priority: "0.5" },
+  { loc: "/villages/map/",      changefreq: "weekly",  priority: "0.8" },
+  { loc: "/upload-photo/",      changefreq: "monthly", priority: "0.6" },
+  { loc: "/submit-news/",       changefreq: "monthly", priority: "0.6" },
+  { loc: "/submit-video/",      changefreq: "monthly", priority: "0.6" },
 ];
 
 function escapeXml(str: string): string {
@@ -254,7 +254,7 @@ router.get("/sitemap.xml", async (req, res) => {
       }
 
       return urlEntry(
-        `${BASE_URL}/news/${a.id}`,
+        `${BASE_URL}/news/${a.id}/`,
         lastmod,
         "monthly",
         "0.8",
@@ -263,7 +263,7 @@ router.get("/sitemap.xml", async (req, res) => {
     });
 
     const villageEntries = visibleVillages.map(({ id, lastmod }) =>
-      urlEntry(`${BASE_URL}/villages/${id}`, lastmod, "monthly", "0.7")
+      urlEntry(`${BASE_URL}/villages/${id}/`, lastmod, "monthly", "0.7")
     );
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
