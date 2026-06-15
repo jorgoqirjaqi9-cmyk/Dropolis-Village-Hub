@@ -190,6 +190,7 @@ function buildSeoTags(m: PageMeta): string {
     `<meta property="og:image" content="${img}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:image:alt" content="${desc}" />`,
     `<meta property="og:site_name" content="${esc(SITE_NAME)}" />`,
     `<meta property="og:locale" content="el_GR" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
@@ -219,6 +220,8 @@ function injectMeta(template: string, m: PageMeta): string {
     .replace(/<meta\s+property="og:type"[^>]*>/gi, "")
     .replace(/<meta\s+property="og:url"[^>]*>/gi, "")
     .replace(/<meta\s+property="og:image(?::\w+)?"[^>]*>/gi, "")
+    .replace(/<meta\s+property="og:site_name"[^>]*>/gi, "")
+    .replace(/<meta\s+property="og:locale"[^>]*>/gi, "")
     .replace(/<meta\s+name="twitter:[^"]*"[^>]*>/gi, "")
     .replace(/<script\s+type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/gi, "");
   // When noindex is set, strip the template's existing robots meta to avoid conflicts
@@ -247,7 +250,7 @@ const STATIC_META: Record<string, PageMeta> = {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "Δρόπολη (Dropolis)",
-      url: BASE_URL,
+      url: `${BASE_URL}/`,
       description: "Portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος).",
       inLanguage: "el",
       potentialAction: {
