@@ -24,6 +24,7 @@ const CookiePolicy    = lazy(() => import("@/pages/CookiePolicy"));
 const Disclaimer      = lazy(() => import("@/pages/Disclaimer"));
 const Press           = lazy(() => import("@/pages/Press"));
 const Help            = lazy(() => import("@/pages/Help"));
+const FAQ             = lazy(() => import("@/pages/FAQ"));
 const Sitemap         = lazy(() => import("@/pages/Sitemap"));
 const EditorialPolicy   = lazy(() => import("@/pages/EditorialPolicy"));
 const CorrectionsPolicy = lazy(() => import("@/pages/CorrectionsPolicy"));
@@ -163,6 +164,8 @@ function Router() {
               <Route path="/press/" component={Press} />
               <Route path="/help" component={Help} />
               <Route path="/help/" component={Help} />
+              <Route path="/faq" component={FAQ} />
+              <Route path="/faq/" component={FAQ} />
               <Route path="/sitemap" component={Sitemap} />
               <Route path="/sitemap/" component={Sitemap} />
               <Route path="/editorial-policy" component={EditorialPolicy} />
