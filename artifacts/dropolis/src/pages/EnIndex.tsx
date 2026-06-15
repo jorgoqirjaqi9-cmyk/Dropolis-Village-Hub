@@ -40,7 +40,7 @@ export default function EnIndex() {
           🇬🇧 English
         </div>
         <h1 className="text-4xl md:text-5xl font-serif font-bold text-foreground leading-tight">
-          Dropolis — The Digital Voice<br />of Northern Epirus
+          Dropolis — The Digital Voice of Northern Epirus
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
           Dropolis is a community news portal covering the 41 villages of the Dropull municipality in southern Albania — home to one of the oldest continuous Greek-speaking communities in the world.

@@ -28,6 +28,44 @@ const securityHeaders: RequestHandler = (_req, res, next) => {
     "Permissions-Policy",
     "camera=(), microphone=(), geolocation=(), payment=()",
   );
+  res.setHeader(
+    "Content-Security-Policy",
+    [
+      "default-src 'self'",
+      // Scripts: self + Google Ads / Analytics / YouTube
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'" +
+        " https://pagead2.googlesyndication.com" +
+        " https://www.googletagmanager.com" +
+        " https://www.google.com" +
+        " https://partner.googleadservices.com" +
+        " https://static.doubleclick.net" +
+        " https://adservice.google.com" +
+        " https://www.gstatic.com" +
+        " https://www.youtube.com",
+      // Styles: self + Google Fonts
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      // Fonts: self + Google Fonts CDN
+      "font-src 'self' data: https://fonts.gstatic.com",
+      // Images: self + data/blob URIs + all HTTPS (covers object-storage CDN, YouTube thumbs, etc.)
+      "img-src 'self' data: blob: https:",
+      // Iframes: YouTube and Google Ads
+      "frame-src" +
+        " https://www.youtube.com" +
+        " https://youtube-nocookie.com" +
+        " https://pagead2.googlesyndication.com" +
+        " https://tpc.googlesyndication.com" +
+        " https://www.google.com" +
+        " https://googleads.g.doubleclick.net",
+      // Fetch/XHR: self + all HTTPS (covers API + external services)
+      "connect-src 'self' https:",
+      // Audio/Video
+      "media-src 'self' https:",
+      // No plugins
+      "object-src 'none'",
+      // Prevent base tag hijacking
+      "base-uri 'self'",
+    ].join("; "),
+  );
   next();
 };
 

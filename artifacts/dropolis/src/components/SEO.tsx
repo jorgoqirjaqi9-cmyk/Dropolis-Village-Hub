@@ -179,6 +179,15 @@ export function SEO({
     return setHreflangLinks(hreflang);
   }, [hreflang]);
 
+  // Dynamically switch <html lang> for multilingual pages
+  useEffect(() => {
+    const isEnglish = location.startsWith("/en");
+    document.documentElement.lang = isEnglish ? "en" : "el";
+    return () => {
+      document.documentElement.lang = "el";
+    };
+  }, [location]);
+
   useEffect(() => {
     const schemas: object[] = [];
 
