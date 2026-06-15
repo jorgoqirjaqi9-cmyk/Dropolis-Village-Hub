@@ -236,6 +236,27 @@ function injectMeta(template: string, m: PageMeta): string {
 // ---------------------------------------------------------------------------
 
 const STATIC_META: Record<string, PageMeta> = {
+  "/": {
+    title: "Dropolis — Portal Ειδήσεων της Δρόπολης",
+    description: "Ειδήσεις, φωτογραφίες, βίντεο και κοινότητα για τα χωριά της Δρόπολης (Βόρεια Ήπειρος). Μείνετε ενημερωμένοι για την ελληνική μειονότητα στην Αλβανία.",
+    url: `${BASE_URL}/`,
+    type: "website",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Δρόπολη (Dropolis)",
+      url: BASE_URL,
+      description: "Portal ειδήσεων, φωτογραφιών, βίντεο και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος).",
+      inLanguage: "el",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${BASE_URL}/news?search={search_term_string}` },
+        "query-input": "required name=search_term_string",
+      },
+    },
+    bodyH1: "Δρόπολη — Portal Ειδήσεων",
+    bodyP: "Ειδήσεις, φωτογραφίες, βίντεο και κοινότητα για τα χωριά της Δρόπολης (Βόρεια Ήπειρος).",
+  },
   "/chat": {
     title: "Ζωντανή Συζήτηση",
     description: "Ζωντανή συνομιλία για την κοινότητα της Δρόπολης.",

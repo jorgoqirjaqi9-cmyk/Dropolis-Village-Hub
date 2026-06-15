@@ -152,6 +152,14 @@ if (existsSync(distAssets)) {
   );
 }
 
+// Serve all other static files from the frontend build output (favicon, og images,
+// sitemap.xml, robots.txt, .txt verification files, etc.) so that every response —
+// including the homepage — goes through Express and gets security headers applied.
+const distPublic = resolve(process.cwd(), "artifacts/dropolis/dist/public");
+if (existsSync(distPublic)) {
+  app.use(express.static(distPublic, { maxAge: "1h", index: false }));
+}
+
 // Mount legacy redirect handlers at root level (not under /api) so the shared
 // proxy can route /privacy-policy and /terms-of-service to this server and
 // return genuine HTTP 301 redirects to bots and clients.

@@ -8,6 +8,7 @@ kind = "api"
   localPort = 8080
   name = "API Server"
   paths = [
+    "/",
     "/api",
     "/privacy-policy",
     "/terms-of-service",
@@ -31,6 +32,8 @@ kind = "api"
     "/advertise",
     "/en",
     "/upload-photo",
+    "/submit-news",
+    "/submit-video",
     "/admin",
   ]
 
@@ -55,4 +58,3 @@ kind = "api"
 
   [services.production.health.startup]
   path = "/api/healthz"
-  
