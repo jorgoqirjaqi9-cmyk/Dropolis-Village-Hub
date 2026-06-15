@@ -59,14 +59,41 @@ export default function Press() {
       <SEO
         title="Τύπος & Νέα"
         description="Δελτία τύπου, media kit και επικοινωνία τύπου για το Dropolis — portal ειδήσεων της Δρόπολης."
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          name: "Τύπος & Νέα — Dropolis",
-          description: "Ανακοινώσεις τύπου, media kit και επικοινωνία για δημοσιογράφους.",
-          url: "https://dropolis.net/press",
-          inLanguage: "el",
-        }}
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Press & Media Kit — Dropolis",
+            description: "Press releases, media kit, and press contact for journalists covering the Greek minority of Northern Epirus.",
+            url: "https://dropolis.net/press",
+            inLanguage: "el",
+            about: { "@type": "Thing", name: "Greek minority, Northern Epirus, Dropull, Δρόπολη" },
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "NewsMediaOrganization",
+            "@id": "https://dropolis.net/#organization",
+            name: "Δρόπολη - Dropolis",
+            alternateName: ["Dropolis", "Δρόπολη", "Dropull News"],
+            url: "https://dropolis.net",
+            logo: { "@type": "ImageObject", url: "https://dropolis.net/favicon.svg" },
+            sameAs: [
+              "https://www.facebook.com/profile.php?id=61590717183098",
+              "https://www.instagram.com/dropolis_net/",
+              "https://www.reddit.com/r/DropolisNet/",
+              "https://www.youtube.com/@dropolis",
+            ],
+            contactPoint: {
+              "@type": "ContactPoint",
+              email: "dropolis9@gmail.com",
+              contactType: "press",
+              availableLanguage: ["Greek", "English"],
+            },
+            publishingPrinciples: "https://dropolis.net/editorial-policy",
+            ethicsPolicy: "https://dropolis.net/editorial-policy",
+            correctionsPolicy: "https://dropolis.net/corrections-policy",
+          },
+        ]}
       />
 
       {/* Header */}

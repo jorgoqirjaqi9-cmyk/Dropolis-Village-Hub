@@ -37,6 +37,15 @@ export default function CookiePolicy() {
         title="Πολιτική Cookies"
         description="Πολιτική Cookies του Dropolis. Πληροφορίες για τα cookies που χρησιμοποιούμε και τις επιλογές σας."
         breadcrumbs={[{ name: "Πολιτική Cookies", url: "/cookie-policy" }]}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Πολιτική Cookies — Dropolis",
+          description: "Πληροφορίες για τα cookies που χρησιμοποιούμε στο Dropolis και τις επιλογές διαχείρισής τους.",
+          url: "https://dropolis.net/cookie-policy",
+          inLanguage: "el",
+          about: { "@type": "Thing", name: "Cookies, GDPR" },
+        }}
       />
 
       <motion.header initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">

@@ -30,6 +30,11 @@ export default function Photos() {
           about: { "@type": "Place", name: "Δρόπολη", containedInPlace: { "@type": "Place", name: "Βόρεια Ήπειρος, Αλβανία" } },
           publisher: { "@type": "Organization", "@id": "https://dropolis.net/#organization", name: "Δρόπολη (Dropolis)" },
         }}
+        hreflang={[
+          { lang: "el-GR",     href: "https://dropolis.net/photos" },
+          { lang: "en",        href: "https://dropolis.net/en/photos" },
+          { lang: "x-default", href: "https://dropolis.net/photos" },
+        ]}
       />
 
       <div className="relative rounded-2xl overflow-hidden bg-primary text-primary-foreground p-8 md:p-12 shadow-lg text-center">

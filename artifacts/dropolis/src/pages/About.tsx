@@ -50,6 +50,11 @@ export default function About() {
         description="Μάθετε για το Dropolis — το portal ειδήσεων, φωτογραφιών και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος, Αλβανία)."
         breadcrumbs={[{ name: "Σχετικά", url: "/about" }]}
         jsonLd={[jsonLd, faqLd]}
+        hreflang={[
+          { lang: "el-GR", href: "https://dropolis.net/about" },
+          { lang: "en",    href: "https://dropolis.net/en/about" },
+          { lang: "x-default", href: "https://dropolis.net/about" },
+        ]}
       />
 
       {/* Hero */}

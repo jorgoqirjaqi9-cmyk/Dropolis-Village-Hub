@@ -29,6 +29,11 @@ export default function EnNews() {
           url: "https://dropolis.net/en/news",
           inLanguage: "en",
         }}
+        hreflang={[
+          { lang: "el-GR", href: "https://dropolis.net/news" },
+          { lang: "en",    href: "https://dropolis.net/en/news" },
+          { lang: "x-default", href: "https://dropolis.net/news" },
+        ]}
       />
 
       <motion.header initial="hidden" animate="show" variants={fade}>

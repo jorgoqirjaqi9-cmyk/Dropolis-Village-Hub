@@ -20,6 +20,11 @@ export default function EnAbout() {
           url: "https://dropolis.net/en/about",
           inLanguage: "en",
         }}
+        hreflang={[
+          { lang: "el-GR", href: "https://dropolis.net/about" },
+          { lang: "en",    href: "https://dropolis.net/en/about" },
+          { lang: "x-default", href: "https://dropolis.net/about" },
+        ]}
       />
 
       <motion.header initial="hidden" animate="show" variants={fade}>

@@ -52,6 +52,15 @@ export default function Terms() {
         title="Όροι Χρήσης"
         description="Όροι Χρήσης του Dropolis — portal ειδήσεων και κοινότητας για τη Δρόπολη, Βόρεια Ήπειρος."
         breadcrumbs={[{ name: "Όροι Χρήσης", url: "/terms" }]}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Όροι Χρήσης — Dropolis",
+          description: "Όροι Χρήσης του Dropolis, portal ειδήσεων και κοινότητας για τη Δρόπολη.",
+          url: "https://dropolis.net/terms",
+          inLanguage: "el",
+          about: { "@type": "Thing", name: "Όροι Χρήσης" },
+        }}
       />
 
       <motion.header initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">

@@ -35,6 +35,7 @@ const EnAbout         = lazy(() => import("@/pages/EnAbout"));
 const EnVillages      = lazy(() => import("@/pages/EnVillages"));
 const EnNews          = lazy(() => import("@/pages/EnNews"));
 const EnContact       = lazy(() => import("@/pages/EnContact"));
+const EnPhotos        = lazy(() => import("@/pages/EnPhotos"));
 const UploadPhoto     = lazy(() => import("@/pages/UploadPhoto"));
 const SubmitNews      = lazy(() => import("@/pages/SubmitNews"));
 const SubmitVideo     = lazy(() => import("@/pages/SubmitVideo"));
@@ -186,6 +187,8 @@ function Router() {
               <Route path="/en/news/" component={EnNews} />
               <Route path="/en/contact" component={EnContact} />
               <Route path="/en/contact/" component={EnContact} />
+              <Route path="/en/photos" component={EnPhotos} />
+              <Route path="/en/photos/" component={EnPhotos} />
               <Route path="/upload-photo" component={UploadPhoto} />
               <Route path="/upload-photo/" component={UploadPhoto} />
               <Route path="/submit-news" component={SubmitNews} />

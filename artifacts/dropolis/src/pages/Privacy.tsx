@@ -54,6 +54,15 @@ export default function Privacy() {
         title="Πολιτική Απορρήτου"
         description="Πολιτική Απορρήτου του Dropolis. Πληροφορίες για τη συλλογή, χρήση και προστασία των προσωπικών δεδομένων σας."
         breadcrumbs={[{ name: "Πολιτική Απορρήτου", url: "/privacy" }]}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Πολιτική Απορρήτου — Dropolis",
+          description: "Πολιτική Απορρήτου του Dropolis. Συλλογή, χρήση και προστασία δεδομένων σύμφωνα με τον GDPR.",
+          url: "https://dropolis.net/privacy",
+          inLanguage: "el",
+          about: { "@type": "Thing", name: "Πολιτική Απορρήτου, GDPR" },
+        }}
       />
 
       <motion.header initial="hidden" animate="show" variants={fade}

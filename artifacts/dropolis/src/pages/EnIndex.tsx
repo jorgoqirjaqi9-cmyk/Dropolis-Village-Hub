@@ -1,13 +1,14 @@
 import { Link } from "wouter";
 import { SEO } from "@/components/SEO";
 import { motion } from "framer-motion";
-import { Newspaper, MapPin, Globe, Mail } from "lucide-react";
+import { Newspaper, MapPin, Globe, Mail, Image } from "lucide-react";
 
 const fade = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } };
 
 const sections = [
   { icon: Newspaper, title: "News", desc: "Greek-language news from Dropull — local events, politics affecting the minority, cultural life.", href: "/en/news", cta: "Browse news coverage" },
   { icon: MapPin, title: "41 Villages", desc: "Explore the villages of Dropull municipality — history, geography, and the Greek communities that call them home.", href: "/en/villages", cta: "Explore the villages" },
+  { icon: Image, title: "Photo Gallery", desc: "Photographs from Dropull — landscapes, village life, cultural heritage, and the Greek minority communities of southern Albania.", href: "/en/photos", cta: "Browse photos" },
   { icon: Globe, title: "About Dropolis", desc: "Learn who we are, what we cover, and why this community platform exists.", href: "/en/about", cta: "About us" },
   { icon: Mail, title: "Contact", desc: "Submit a news tip, photo, or reach us for any inquiry. We respond to English messages.", href: "/en/contact", cta: "Get in touch" },
 ];
@@ -27,6 +28,11 @@ export default function EnIndex() {
           url: "https://dropolis.net/en",
           inLanguage: "en",
         }}
+        hreflang={[
+          { lang: "el-GR", href: "https://dropolis.net/" },
+          { lang: "en",    href: "https://dropolis.net/en" },
+          { lang: "x-default", href: "https://dropolis.net/" },
+        ]}
       />
 
       <motion.header initial="hidden" animate="show" variants={fade} className="text-center space-y-5">

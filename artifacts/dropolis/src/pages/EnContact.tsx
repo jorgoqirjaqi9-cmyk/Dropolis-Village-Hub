@@ -26,6 +26,11 @@ export default function EnContact() {
           url: "https://dropolis.net/en/contact",
           inLanguage: "en",
         }}
+        hreflang={[
+          { lang: "el-GR", href: "https://dropolis.net/contact" },
+          { lang: "en",    href: "https://dropolis.net/en/contact" },
+          { lang: "x-default", href: "https://dropolis.net/contact" },
+        ]}
       />
 
       <motion.header initial="hidden" animate="show" variants={fade}>

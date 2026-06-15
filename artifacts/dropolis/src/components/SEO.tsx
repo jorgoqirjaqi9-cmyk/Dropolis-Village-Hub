@@ -57,6 +57,12 @@ export interface SEOProps {
   keywords?: string;
   /** When true, use title as-is without appending site name */
   standalone?: boolean;
+  /**
+   * hreflang alternate links for multilingual SEO.
+   * Use lang codes like "el-GR", "en", "x-default".
+   * Example: [{ lang: "el-GR", href: "https://dropolis.net/" }, { lang: "en", href: "https://dropolis.net/en" }, { lang: "x-default", href: "https://dropolis.net/" }]
+   */
+  hreflang?: Array<{ lang: string; href: string }>;
 }
 
 function setMeta(kind: "name" | "property", key: string, value: string) {
@@ -78,6 +84,22 @@ function setLink(rel: string, href: string) {
     document.head.appendChild(el);
   }
   el.setAttribute("href", href);
+}
+
+function setHreflangLinks(entries: Array<{ lang: string; href: string }>): () => void {
+  // Remove any previously injected hreflang links
+  document.head.querySelectorAll('link[data-hreflang]').forEach(el => el.remove());
+  for (const { lang, href } of entries) {
+    const el = document.createElement("link");
+    el.setAttribute("rel", "alternate");
+    el.setAttribute("hreflang", lang);
+    el.setAttribute("href", href);
+    el.setAttribute("data-hreflang", "1");
+    document.head.appendChild(el);
+  }
+  return () => {
+    document.head.querySelectorAll('link[data-hreflang]').forEach(el => el.remove());
+  };
 }
 
 function injectJsonLd(id: string, data: object | object[]) {
@@ -103,6 +125,7 @@ export function SEO({
   noindex = false,
   keywords,
   standalone = false,
+  hreflang,
 }: SEOProps) {
   const [location] = useLocation();
   const canonicalUrl = `${SITE.url}${location === "/" ? "" : location}`;
@@ -152,6 +175,11 @@ export function SEO({
   }, [fullTitle, metaDesc, canonicalUrl, ogImage, type, noindex, keywords]);
 
   useEffect(() => {
+    if (!hreflang || hreflang.length === 0) return;
+    return setHreflangLinks(hreflang);
+  }, [hreflang]);
+
+  useEffect(() => {
     const schemas: object[] = [];
 
     const websiteSchema = {
@@ -167,18 +195,35 @@ export function SEO({
 
     const orgSchema = {
       "@context": "https://schema.org",
-      "@type": "Organization",
+      "@type": "NewsMediaOrganization",
       "@id": `${SITE.url}/#organization`,
       name: "Δρόπολη - Dropolis",
+      alternateName: "Dropolis",
       url: SITE.url,
-      logo: { "@type": "ImageObject", url: `${SITE.url}/favicon.svg` },
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE.url}/favicon.svg`,
+        width: 512,
+        height: 512,
+      },
       sameAs: [
         "https://www.facebook.com/profile.php?id=61590717183098",
-        "https://www.youtube.com/@dropolis",
         "https://www.instagram.com/dropolis_net/",
         "https://www.reddit.com/r/DropolisNet/",
+        "https://www.youtube.com/@dropolis",
       ],
       description: SITE.description,
+      foundingLocation: {
+        "@type": "Place",
+        name: "Δρόπολη, Βόρεια Ήπειρος",
+      },
+      publishingPrinciples: `${SITE.url}/editorial-policy`,
+      contactPoint: {
+        "@type": "ContactPoint",
+        email: "dropolis9@gmail.com",
+        contactType: "editorial",
+        availableLanguage: ["Greek", "English", "Albanian"],
+      },
     };
 
     schemas.push(websiteSchema, orgSchema);

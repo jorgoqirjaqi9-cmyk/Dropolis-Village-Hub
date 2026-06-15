@@ -66,6 +66,7 @@ export const STATIC_ROUTES: StaticRoute[] = [
   { loc: "/en/villages",       changefreq: "monthly", priority: "0.5" },
   { loc: "/en/news",           changefreq: "monthly", priority: "0.5" },
   { loc: "/en/contact",        changefreq: "monthly", priority: "0.5" },
+  { loc: "/en/photos",         changefreq: "weekly",  priority: "0.5" },
   { loc: "/villages/map",      changefreq: "weekly",  priority: "0.8" },
   { loc: "/upload-photo",      changefreq: "monthly", priority: "0.6" },
   { loc: "/submit-news",       changefreq: "monthly", priority: "0.6" },
@@ -547,6 +548,14 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     url: `${BASE_URL}/en/contact`,
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Contact", item: `${BASE_URL}/en/contact` }],
     jsonLd: { "@context": "https://schema.org", "@type": "ContactPage", name: "Contact Dropolis", url: `${BASE_URL}/en/contact`, inLanguage: "en" },
+  },
+  {
+    path: "/en/photos",
+    title: "Photo Gallery — Dropull Villages",
+    description: "Browse photographs from the 41 villages of Dropull, Northern Epirus — landscapes, village life, cultural heritage, and the Greek minority communities of southern Albania.",
+    url: `${BASE_URL}/en/photos`,
+    breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Photos", item: `${BASE_URL}/en/photos` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "ImageGallery", name: "Photo Gallery — Dropull Villages", url: `${BASE_URL}/en/photos`, inLanguage: "en" },
   },
   {
     path: "/submit-news",

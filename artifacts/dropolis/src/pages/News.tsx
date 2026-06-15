@@ -129,6 +129,11 @@ export default function News() {
             ],
           },
         ]}
+        hreflang={[
+          { lang: "el-GR",     href: "https://dropolis.net/news" },
+          { lang: "en",        href: "https://dropolis.net/en/news" },
+          { lang: "x-default", href: "https://dropolis.net/news" },
+        ]}
       />
 
       {/* Page header */}

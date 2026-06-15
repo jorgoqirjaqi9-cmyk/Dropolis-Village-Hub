@@ -84,6 +84,11 @@ export default function Home() {
             containedInPlace: { "@type": "Country", name: "Αλβανία" },
           },
         }}
+        hreflang={[
+          { lang: "el-GR",     href: "https://dropolis.net/" },
+          { lang: "en",        href: "https://dropolis.net/en" },
+          { lang: "x-default", href: "https://dropolis.net/" },
+        ]}
       />
 
       {/* ── HERO ───────────────────────────────────────────────────── */}

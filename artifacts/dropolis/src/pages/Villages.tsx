@@ -71,6 +71,11 @@ export default function Villages() {
           inLanguage: "el",
           numberOfItems: 41,
         }}
+        hreflang={[
+          { lang: "el-GR", href: "https://dropolis.net/villages" },
+          { lang: "en",    href: "https://dropolis.net/en/villages" },
+          { lang: "x-default", href: "https://dropolis.net/villages" },
+        ]}
       />
 
       {/* Hero header */}
