@@ -9,7 +9,7 @@ const steps = [
   {
     n: "1",
     title: "Υποβολή αιτήματος",
-    body: "Στείλτε email στο dropolis9@gmail.com με θέμα «Διόρθωση». Αναφέρετε: τον τίτλο ή τη διεύθυνση URL του άρθρου, την ανακρίβεια που εντοπίσατε, και — αν το γνωρίζετε — την ορθή πληροφορία με πηγή.",
+    body: "Στείλτε email στο news@dropolis.net με θέμα «Διόρθωση». Αναφέρετε: τον τίτλο ή τη διεύθυνση URL του άρθρου, την ανακρίβεια που εντοπίσατε, και — αν το γνωρίζετε — την ορθή πληροφορία με πηγή.",
   },
   {
     n: "2",
@@ -97,7 +97,7 @@ export default function CorrectionsPolicy() {
           Αν εντοπίσατε λανθασμένη πληροφορία, ημερομηνία, όνομα ή γεγονός σε κάποιο άρθρο μας, ενημερώστε μας.
         </p>
         <a
-          href="mailto:dropolis9@gmail.com?subject=Διόρθωση"
+          href="mailto:news@dropolis.net?subject=Διόρθωση"
           className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           <Mail size={15} /> Αποστολή αιτήματος διόρθωσης

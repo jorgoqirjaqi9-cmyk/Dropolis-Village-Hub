@@ -68,10 +68,10 @@ export default function EnContact() {
         <div>
           <p className="text-muted-foreground text-sm mb-2">Send your message to:</p>
           <a
-            href="mailto:dropolis9@gmail.com"
+            href="mailto:news@dropolis.net"
             className="text-xl font-semibold text-primary hover:underline"
           >
-            dropolis9@gmail.com
+            news@dropolis.net
           </a>
         </div>
         <p className="text-xs text-muted-foreground">We reply in both Greek and English.</p>

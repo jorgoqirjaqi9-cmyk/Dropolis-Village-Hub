@@ -63,10 +63,10 @@ export default function Advertise() {
               Για επιχειρήσεις, ΜΚΟ ή φορείς που θέλουν να συνεργαστούν απευθείας (sponsored content, banners, υποστήριξη εκδηλώσεων), επικοινωνήστε μαζί μας μέσω email. Κάθε διαφημιστικό ή χορηγούμενο περιεχόμενο επισημαίνεται ρητά ως τέτοιο — δεν παρουσιάζεται ποτέ ως συντακτικό άρθρο.
             </p>
             <a
-              href="mailto:dropolis9@gmail.com?subject=Διαφήμιση"
+              href="mailto:news@dropolis.net?subject=Διαφήμιση"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors"
             >
-              <Mail size={14} /> dropolis9@gmail.com
+              <Mail size={14} /> news@dropolis.net
             </a>
           </div>
         </motion.section>

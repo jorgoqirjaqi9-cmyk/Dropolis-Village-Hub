@@ -85,7 +85,7 @@ export default function Press() {
             ],
             contactPoint: {
               "@type": "ContactPoint",
-              email: "dropolis9@gmail.com",
+              email: "news@dropolis.net",
               contactType: "press",
               availableLanguage: ["Greek", "English"],
             },
