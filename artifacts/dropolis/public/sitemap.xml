@@ -9,157 +9,175 @@
     <loc>https://dropolis.net/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/news</loc>
+    <loc>https://dropolis.net/news/</loc>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/villages</loc>
+    <loc>https://dropolis.net/villages/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/photos</loc>
+    <loc>https://dropolis.net/photos/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/videos</loc>
+    <loc>https://dropolis.net/videos/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/about</loc>
+    <loc>https://dropolis.net/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/contact</loc>
+    <loc>https://dropolis.net/contact/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/press</loc>
+    <loc>https://dropolis.net/press/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/help</loc>
+    <loc>https://dropolis.net/help/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/privacy</loc>
+    <loc>https://dropolis.net/faq/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-06-15</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/privacy/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/terms</loc>
+    <loc>https://dropolis.net/terms/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/cookie-policy</loc>
+    <loc>https://dropolis.net/cookie-policy/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/disclaimer</loc>
+    <loc>https://dropolis.net/disclaimer/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/sitemap</loc>
+    <loc>https://dropolis.net/sitemap/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/editorial-policy</loc>
+    <loc>https://dropolis.net/editorial-policy/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/corrections-policy</loc>
+    <loc>https://dropolis.net/corrections-policy/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/contributors</loc>
+    <loc>https://dropolis.net/contributors/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/advertise</loc>
+    <loc>https://dropolis.net/advertise/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/upload-photo</loc>
+    <loc>https://dropolis.net/upload-photo/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/submit-news</loc>
+    <loc>https://dropolis.net/submit-news/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/submit-video</loc>
+    <loc>https://dropolis.net/submit-video/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/en</loc>
+    <loc>https://dropolis.net/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/en/about</loc>
+    <loc>https://dropolis.net/en/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/en/villages</loc>
+    <loc>https://dropolis.net/en/villages/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/en/news</loc>
+    <loc>https://dropolis.net/en/news/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
   </url>
   <url>
-    <loc>https://dropolis.net/en/contact</loc>
+    <loc>https://dropolis.net/en/contact/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <lastmod>2026-06-13</lastmod>
+    <lastmod>2026-06-15</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/en/photos/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2026-06-15</lastmod>
+  </url>
+  <url>
+    <loc>https://dropolis.net/villages/map/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-15</lastmod>
   </url>
 
 </urlset>
