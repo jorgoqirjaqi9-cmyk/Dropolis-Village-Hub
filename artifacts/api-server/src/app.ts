@@ -7,6 +7,7 @@ import cors from "cors";
 import pinoHttp from "pino-http";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+import http from "node:http";
 import router from "./routes";
 import redirectsRouter from "./routes/redirects.js";
 import seoPagesRouter from "./routes/seo-pages.js";
@@ -181,6 +182,29 @@ app.use(redirectsRouter);
 app.use(seoPagesRouter);
 
 app.use("/api", router);
+
+// In development, forward any request the API server doesn't recognise to the
+// Vite dev server (port 20727). This covers /@vite/client, /src/*, /@react-refresh,
+// HMR websocket, etc. so the preview pane loads the full React app.
+if (process.env.NODE_ENV !== "production") {
+  const VITE_PORT = process.env.VITE_PORT ?? "20727";
+  app.use((req, res) => {
+    const options: http.RequestOptions = {
+      hostname: "localhost",
+      port: Number(VITE_PORT),
+      path: req.url,
+      method: req.method,
+      headers: { ...req.headers, host: `localhost:${VITE_PORT}` },
+    };
+    const proxy = http.request(options, (proxyRes) => {
+      res.writeHead(proxyRes.statusCode ?? 200, proxyRes.headers);
+      proxyRes.pipe(res);
+    });
+    proxy.on("error", () => res.status(502).end("Vite dev server unavailable"));
+    req.pipe(proxy);
+  });
+}
+
 app.use(errorHandler);
 
 export default app;

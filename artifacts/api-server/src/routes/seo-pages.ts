@@ -667,11 +667,22 @@ router.get(["/villages/:id", "/villages/:id/"], async (req, res) => {
 // Must call next() for /api/* so the API router can handle those.
 // ---------------------------------------------------------------------------
 
+// Prefixes that the Vite dev server owns — never serve 404 HTML for these.
+const VITE_DEV_PREFIXES = ["/@", "/src/", "/node_modules/.vite", "/__vite", "/__hmr"];
+
 router.use(async (req, res, next) => {
   // Pass /api/* through to the main API router
   if (req.path.startsWith("/api")) {
     next();
     return;
+  }
+  // In development, let Vite-specific paths fall through to the dev-proxy middleware
+  if (process.env.NODE_ENV !== "production") {
+    const isVitePath = VITE_DEV_PREFIXES.some((p) => req.path.startsWith(p));
+    if (isVitePath) {
+      next();
+      return;
+    }
   }
   try {
     const html = injectMeta(await loadTemplate(), {
