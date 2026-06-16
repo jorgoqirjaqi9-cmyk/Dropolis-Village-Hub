@@ -76,7 +76,7 @@ export default function EnContact() {
         </div>
         <p className="text-xs text-muted-foreground">We reply in both Greek and English.</p>
         <div className="pt-1">
-          <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+          <Link href="/contact/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
             Greek-language contact page →
           </Link>
         </div>

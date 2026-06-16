@@ -130,11 +130,11 @@ export default function FAQ() {
       <p className="text-muted-foreground mb-10 ml-1">
         Βρείτε απαντήσεις στις πιο συνηθισμένες ερωτήσεις για το Dropolis.
         Χρειάζεστε περισσότερη βοήθεια;{" "}
-        <Link href="/help" className="text-primary underline underline-offset-4 hover:text-primary/80">
+        <Link href="/help/" className="text-primary underline underline-offset-4 hover:text-primary/80">
           Κέντρο Βοήθειας
         </Link>{" "}
         ή{" "}
-        <Link href="/contact" className="text-primary underline underline-offset-4 hover:text-primary/80">
+        <Link href="/contact/" className="text-primary underline underline-offset-4 hover:text-primary/80">
           Επικοινωνία
         </Link>.
       </p>
@@ -157,7 +157,7 @@ export default function FAQ() {
       <div className="mt-12 p-6 rounded-2xl bg-muted/50 border border-border/50 text-center">
         <p className="text-sm text-muted-foreground">
           Δεν βρήκατε την απάντησή σας;{" "}
-          <Link href="/contact" className="text-primary font-medium hover:underline">
+          <Link href="/contact/" className="text-primary font-medium hover:underline">
             Στείλτε μας μήνυμα
           </Link>{" "}
           και θα σας απαντήσουμε άμεσα.

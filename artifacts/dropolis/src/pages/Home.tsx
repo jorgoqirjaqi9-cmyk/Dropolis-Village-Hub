@@ -147,10 +147,10 @@ export default function Home() {
 
           <motion.div variants={fadeUp} className="mx-auto mt-8 flex max-w-4xl flex-col items-center gap-4">
             <div className="flex flex-wrap justify-center gap-3">
-              <Link href="/news" className="min-h-12 rounded-full bg-amber-400 px-6 py-3 font-bold text-stone-900 shadow-lg shadow-amber-500/30 transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300">
+              <Link href="/news/" className="min-h-12 rounded-full bg-amber-400 px-6 py-3 font-bold text-stone-900 shadow-lg shadow-amber-500/30 transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300">
                 Τελευταίες Ειδήσεις
               </Link>
-              <Link href="/villages" className="min-h-12 rounded-full border border-emerald-400/50 bg-emerald-600/70 px-6 py-3 font-bold text-white shadow-lg shadow-emerald-900/30 backdrop-blur transition hover:bg-emerald-500/80 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+              <Link href="/villages/" className="min-h-12 rounded-full border border-emerald-400/50 bg-emerald-600/70 px-6 py-3 font-bold text-white shadow-lg shadow-emerald-900/30 backdrop-blur transition hover:bg-emerald-500/80 focus:outline-none focus:ring-2 focus:ring-emerald-400">
                 Τα Χωριά μας
               </Link>
               <Link href="/villages/map" className="min-h-12 rounded-full border border-sky-400/50 bg-sky-600/65 px-6 py-3 font-bold text-white shadow-lg shadow-sky-900/30 backdrop-blur transition hover:bg-sky-500/80 focus:outline-none focus:ring-2 focus:ring-sky-400">
@@ -226,7 +226,7 @@ export default function Home() {
         <p className="text-sm text-muted-foreground text-center leading-relaxed max-w-3xl mx-auto -mt-4">
           Το <strong>Dropolis.net</strong> είναι η ψηφιακή πλατφόρμα για τη{" "}
           <strong>Δρόπολη</strong>, τα{" "}
-          <Link href="/villages" className="underline underline-offset-2 hover:text-foreground transition-colors">
+          <Link href="/villages/" className="underline underline-offset-2 hover:text-foreground transition-colors">
             41 χωριά της Δρόπολης
           </Link>{" "}
           και την ελληνική μειονότητα στη <strong>Βόρεια Ήπειρο</strong>.
@@ -316,7 +316,7 @@ export default function Home() {
             </div>
 
             <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
-              <Link href="/villages">
+              <Link href="/villages/">
                 <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-5 py-2.5 rounded-full text-sm hover:bg-primary/90 transition-colors min-h-[44px]">
                   <Users size={15} />
                   Όλα τα χωριά
@@ -462,7 +462,7 @@ export default function Home() {
               ))}
             </div>
             <div className="sm:ml-auto shrink-0">
-              <Link href="/press">
+              <Link href="/press/">
                 <span className="text-xs text-primary dark:text-secondary hover:opacity-80 transition-opacity cursor-pointer flex items-center gap-1">
                   Τύπος & Νέα <ArrowRight size={12} />
                 </span>
@@ -608,7 +608,7 @@ export default function Home() {
                   Ροή Ειδήσεων
                   <span className="absolute -bottom-2 left-0 w-10 h-0.5 bg-secondary rounded-full" />
                 </h2>
-                <Link href="/news" className="flex items-center gap-1 text-primary dark:text-secondary hover:opacity-80 text-sm font-medium transition-opacity">
+                <Link href="/news/" className="flex items-center gap-1 text-primary dark:text-secondary hover:opacity-80 text-sm font-medium transition-opacity">
                   Όλες οι ειδήσεις <ArrowRight size={14} />
                 </Link>
               </div>
@@ -691,7 +691,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <Link href="/villages">
+              <Link href="/villages/">
                 <span className="flex items-center gap-1.5 text-primary dark:text-secondary text-sm font-medium hover:opacity-80 transition-opacity cursor-pointer">
                   Ανακαλύψτε τα χωριά <ArrowRight size={14} />
                 </span>

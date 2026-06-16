@@ -86,7 +86,7 @@ export default function EditorialPolicy() {
           <a href="mailto:info@dropolis.net" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
             info@dropolis.net
           </a>
-          <Link href="/corrections-policy" className="inline-flex items-center gap-2 border border-border text-foreground px-5 py-2 rounded-full text-sm font-medium hover:bg-muted transition-colors">
+          <Link href="/corrections-policy/" className="inline-flex items-center gap-2 border border-border text-foreground px-5 py-2 rounded-full text-sm font-medium hover:bg-muted transition-colors">
             Πολιτική Διορθώσεων <ArrowRight size={14} />
           </Link>
         </div>

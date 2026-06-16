@@ -95,7 +95,7 @@ export default function Terms() {
       </div>
 
       <div className="glass-card rounded-xl p-5 text-sm text-muted-foreground">
-        Δείτε επίσης: <Link href="/privacy" className="text-primary hover:underline">Πολιτική Απορρήτου</Link> · <Link href="/disclaimer" className="text-primary hover:underline">Αποποίηση Ευθύνης</Link> · <Link href="/contact" className="text-primary hover:underline">Επικοινωνία</Link>
+        Δείτε επίσης: <Link href="/privacy/" className="text-primary hover:underline">Πολιτική Απορρήτου</Link> · <Link href="/disclaimer/" className="text-primary hover:underline">Αποποίηση Ευθύνης</Link> · <Link href="/contact/" className="text-primary hover:underline">Επικοινωνία</Link>
       </div>
     </div>
   );

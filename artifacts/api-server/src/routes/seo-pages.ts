@@ -478,6 +478,24 @@ const STATIC_META: Record<string, PageMeta> = {
     breadcrumbs: [{ name: "Ομογένεια", item: `${BASE_URL}/diaspora/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Έλληνες της Διασποράς — Dropolis", url: `${BASE_URL}/diaspora/`, inLanguage: "el" },
   },
+  "/finiq": {
+    title: "Δήμος Φοινικαίων | Βόρεια Ήπειρος",
+    description: "Ο Δήμος Φοινικαίων (Bashkia Finiq) της Βόρειας Ηπείρου. Κοινότητες, χωριά, φωτογραφίες, βίντεο και νέα από τη Φοινίκη, το Δελβινάκι και την ευρύτερη περιοχή.",
+    url: `${BASE_URL}/finiq/`,
+    breadcrumbs: [{ name: "Φοινικαίοι", item: `${BASE_URL}/finiq/` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "AdministrativeArea",
+      name: "Δήμος Φοινικαίων",
+      alternateName: "Bashkia Finiq",
+      url: `${BASE_URL}/finiq/`,
+      description: "Ο Δήμος Φοινικαίων (Bashkia Finiq) στη Βόρεια Ήπειρο, Αλβανία — με κοινότητες Φοινίκης, Δίβρης, Λιβαδειάς, Αλύκου και Μεσοποτάμου.",
+      containedInPlace: { "@type": "Country", name: "Αλβανία" },
+      inLanguage: "el",
+    },
+    bodyH1: "Δήμος Φοινικαίων — Βόρεια Ήπειρος",
+    bodyP: "Κοινότητες, χωριά, φωτογραφίες και νέα από τον Δήμο Φοινικαίων (Bashkia Finiq) στη Βόρεια Ήπειρο.",
+  },
 };
 
 // ---------------------------------------------------------------------------

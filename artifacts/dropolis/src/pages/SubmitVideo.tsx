@@ -146,7 +146,7 @@ export default function SubmitVideo() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
           <Link
-            href="/videos"
+            href="/videos/"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-semibold hover:bg-primary/90 transition-colors"
           >
             Πίσω στα Βίντεο
@@ -380,7 +380,7 @@ export default function SubmitVideo() {
             <span className="text-sm text-foreground/80 leading-relaxed group-hover:text-foreground transition-colors">
               Δηλώνω ότι είμαι ο κάτοχος του βίντεο ή έχω άδεια χρήσης, δεν παραβιάζει πνευματικά δικαιώματα τρίτων και
               αποδέχομαι τους{" "}
-              <Link href="/terms" className="text-primary hover:underline">Όρους Χρήσης</Link>{" "}
+              <Link href="/terms/" className="text-primary hover:underline">Όρους Χρήσης</Link>{" "}
               του Dropolis. <span className="text-destructive">*</span>
             </span>
           </label>

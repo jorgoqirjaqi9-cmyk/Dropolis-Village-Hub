@@ -91,7 +91,7 @@ export default function EnPhotos() {
           The full photo gallery — including filters by village — is available in the Greek-language section of the site.
         </p>
         <Link
-          href="/photos"
+          href="/photos/"
           className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors"
         >
           Browse the full gallery
@@ -117,7 +117,7 @@ export default function EnPhotos() {
         </p>
         <p className="text-xs text-muted-foreground">
           See also:{" "}
-          <Link href="/en" className="text-primary hover:underline">English overview</Link>
+          <Link href="/en/" className="text-primary hover:underline">English overview</Link>
           {" · "}
           <Link href="/en/villages" className="text-primary hover:underline">Villages</Link>
           {" · "}

@@ -104,7 +104,7 @@ export default function CorrectionsPolicy() {
         </a>
         <p className="text-xs text-muted-foreground mt-4">
           Για συντακτικές παρατηρήσεις, δείτε επίσης τη{" "}
-          <Link href="/editorial-policy" className="text-primary hover:underline">Συντακτική Πολιτική</Link>.
+          <Link href="/editorial-policy/" className="text-primary hover:underline">Συντακτική Πολιτική</Link>.
         </p>
       </motion.div>
     </div>

@@ -34,7 +34,7 @@ export default function NewsDetail() {
       <div className="container mx-auto px-4 py-8 text-center py-24">
         <h2 className="text-2xl font-bold text-destructive mb-2">Σφάλμα</h2>
         <p className="text-muted-foreground">Το άρθρο δεν βρέθηκε ή διεγράφη.</p>
-        <Link href="/news" className="text-primary hover:underline mt-4 inline-block">Επιστροφή στις ειδήσεις</Link>
+        <Link href="/news/" className="text-primary hover:underline mt-4 inline-block">Επιστροφή στις ειδήσεις</Link>
       </div>
     );
   }
@@ -84,8 +84,8 @@ export default function NewsDetail() {
       logo: {
         "@type": "ImageObject",
         url: `${BASE}/logo.png`,
-        width: 1080,
-        height: 1080,
+        width: 512,
+        height: 512,
       },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE}/news/${article.id}` },

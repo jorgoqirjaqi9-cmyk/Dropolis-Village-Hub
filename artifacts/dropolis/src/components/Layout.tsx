@@ -106,36 +106,36 @@ function LanguageSwitcher({ scrolled }: { scrolled: boolean }) {
 
 const navItems = [
   { href: "/", label: "Αρχική", icon: Home },
-  { href: "/news", label: "Ειδήσεις", icon: Newspaper },
-  { href: "/villages", label: "Χωριά", icon: Mountain },
-  { href: "/photos", label: "Φωτογραφίες", icon: Image },
-  { href: "/videos", label: "Βίντεο", icon: Video },
-  { href: "/diaspora", label: "Ομογένεια", icon: Globe },
-  { href: "/finiq", label: "Φοινικαίοι", icon: Landmark },
-  { href: "/about", label: "Σχετικά", icon: Info },
+  { href: "/news/", label: "Ειδήσεις", icon: Newspaper },
+  { href: "/villages/", label: "Χωριά", icon: Mountain },
+  { href: "/photos/", label: "Φωτογραφίες", icon: Image },
+  { href: "/videos/", label: "Βίντεο", icon: Video },
+  { href: "/diaspora/", label: "Ομογένεια", icon: Globe },
+  { href: "/finiq/", label: "Φοινικαίοι", icon: Landmark },
+  { href: "/about/", label: "Σχετικά", icon: Info },
 ];
 
 const legalLinks = [
-  { href: "/privacy", label: "Πολιτική Απορρήτου" },
-  { href: "/terms", label: "Όροι Χρήσης" },
-  { href: "/cookie-policy", label: "Cookies" },
-  { href: "/disclaimer", label: "Αποποίηση Ευθύνης" },
+  { href: "/privacy/", label: "Πολιτική Απορρήτου" },
+  { href: "/terms/", label: "Όροι Χρήσης" },
+  { href: "/cookie-policy/", label: "Cookies" },
+  { href: "/disclaimer/", label: "Αποποίηση Ευθύνης" },
 ];
 
 const resourceLinks = [
-  { href: "/press", label: "Τύπος & Νέα" },
-  { href: "/help", label: "Κέντρο Βοήθειας", rel: "help" },
-  { href: "/faq",  label: "Συχνές Ερωτήσεις", rel: "help" },
-  { href: "/about", label: "Σχετικά με εμάς" },
-  { href: "/contact", label: "Επικοινωνία" },
-  { href: "/sitemap", label: "Χάρτης Ιστοτόπου" },
+  { href: "/press/", label: "Τύπος & Νέα" },
+  { href: "/help/", label: "Κέντρο Βοήθειας", rel: "help" },
+  { href: "/faq/",  label: "Συχνές Ερωτήσεις", rel: "help" },
+  { href: "/about/", label: "Σχετικά με εμάς" },
+  { href: "/contact/", label: "Επικοινωνία" },
+  { href: "/sitemap/", label: "Χάρτης Ιστοτόπου" },
 ];
 
 const trustLinks = [
-  { href: "/editorial-policy", label: "Συντακτική Πολιτική" },
-  { href: "/corrections-policy", label: "Πολιτική Διορθώσεων" },
-  { href: "/contributors", label: "Συνεισφορά" },
-  { href: "/advertise", label: "Διαφήμιση" },
+  { href: "/editorial-policy/", label: "Συντακτική Πολιτική" },
+  { href: "/corrections-policy/", label: "Πολιτική Διορθώσεων" },
+  { href: "/contributors/", label: "Συνεισφορά" },
+  { href: "/advertise/", label: "Διαφήμιση" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -237,7 +237,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </Link>
 
             <Link
-              href="/contact"
+              href="/contact/"
               className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
                 scrolled
                   ? "bg-secondary text-secondary-foreground hover:bg-secondary/90"
@@ -317,7 +317,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <Camera size={16} /> Ανέβασε φωτογραφία
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-muted transition-all"
                 >
                   <Mail size={16} /> Επικοινωνία
@@ -427,7 +427,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </li>
                 ))}
                 <li>
-                  <Link href="/contact" className="text-sm text-background/60 hover:text-secondary transition-colors">Επικοινωνία</Link>
+                  <Link href="/contact/" className="text-sm text-background/60 hover:text-secondary transition-colors">Επικοινωνία</Link>
                 </li>
               </ul>
             </div>
@@ -476,7 +476,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </ul>
               <div className="mt-4 space-y-1 text-xs text-background/40">
                 <p><a href="mailto:info@dropolis.net" className="hover:text-secondary transition-colors">info@dropolis.net</a></p>
-                <p><Link href="/en" className="hover:text-secondary transition-colors">🇬🇧 English</Link></p>
+                <p><Link href="/en/" className="hover:text-secondary transition-colors">🇬🇧 English</Link></p>
               </div>
             </div>
           </div>

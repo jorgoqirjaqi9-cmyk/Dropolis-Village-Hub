@@ -31,7 +31,7 @@ export default function VillageDetail() {
       <div className="container mx-auto px-4 py-8 text-center py-24">
         <h2 className="text-2xl font-bold text-destructive mb-2">Σφάλμα</h2>
         <p className="text-muted-foreground">Το χωριό δεν βρέθηκε.</p>
-        <Link href="/villages" className="text-primary hover:underline mt-4 inline-flex items-center gap-2">
+        <Link href="/villages/" className="text-primary hover:underline mt-4 inline-flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" /> Επιστροφή στα χωριά
         </Link>
       </div>
@@ -110,7 +110,7 @@ export default function VillageDetail() {
         ]}
       />
       
-      <Link href="/villages" className="inline-flex items-center gap-2 text-primary hover:text-secondary text-sm font-medium transition-colors mb-4">
+      <Link href="/villages/" className="inline-flex items-center gap-2 text-primary hover:text-secondary text-sm font-medium transition-colors mb-4">
         <ArrowLeft className="w-4 h-4" /> Πίσω στα χωριά
       </Link>
 

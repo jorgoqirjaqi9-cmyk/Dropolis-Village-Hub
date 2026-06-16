@@ -219,8 +219,8 @@ export function SEO({
       logo: {
         "@type": "ImageObject",
         url: `${SITE.url}/logo.png`,
-        width: 1080,
-        height: 1080,
+        width: 512,
+        height: 512,
       },
       sameAs: [
         "https://www.facebook.com/profile.php?id=61590959938071",

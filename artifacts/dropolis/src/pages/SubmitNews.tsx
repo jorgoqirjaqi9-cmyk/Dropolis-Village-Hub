@@ -91,7 +91,7 @@ export default function SubmitNews() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
           <Link
-            href="/news"
+            href="/news/"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground px-6 py-3 font-semibold hover:bg-primary/90 transition-colors"
           >
             Πίσω στις Ειδήσεις
@@ -322,9 +322,9 @@ export default function SubmitNews() {
             <span className="text-sm text-foreground/80 leading-relaxed group-hover:text-foreground transition-colors">
               Δηλώνω ότι το περιεχόμενο που υποβάλλω είναι αληθές, δεν παραβιάζει πνευματικά δικαιώματα τρίτων και
               αποδέχομαι τους{" "}
-              <Link href="/terms" className="text-primary hover:underline">Όρους Χρήσης</Link>{" "}
+              <Link href="/terms/" className="text-primary hover:underline">Όρους Χρήσης</Link>{" "}
               και την{" "}
-              <Link href="/editorial-policy" className="text-primary hover:underline">Συντακτική Πολιτική</Link>{" "}
+              <Link href="/editorial-policy/" className="text-primary hover:underline">Συντακτική Πολιτική</Link>{" "}
               του Dropolis. <span className="text-destructive">*</span>
             </span>
           </label>

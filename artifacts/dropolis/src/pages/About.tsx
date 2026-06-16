@@ -131,7 +131,7 @@ export default function About() {
         <h2 className="text-3xl font-serif font-bold text-foreground">Η Ομάδα μας</h2>
         <p className="text-foreground/80 leading-relaxed">
           Το Dropolis υποστηρίζεται από μία ομάδα εθελοντών — κατοίκους, απόδημους και φίλους της Δρόπολης — που μοιράζονται κοινό όραμα: να κρατήσουν ζωντανό τον πολιτισμό και τη μνήμη αυτής της μοναδικής περιοχής. Αν θέλετε να συμμετάσχετε,{" "}
-          <Link href="/contact" className="text-primary hover:underline font-medium">επικοινωνήστε μαζί μας</Link>.
+          <Link href="/contact/" className="text-primary hover:underline font-medium">επικοινωνήστε μαζί μας</Link>.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
@@ -240,9 +240,9 @@ export default function About() {
         <h2 className="text-2xl font-serif font-bold text-foreground">Ανακαλύψτε τη Δρόπολη</h2>
         <p className="text-muted-foreground">Εξερευνήστε τα χωριά, διαβάστε τις ειδήσεις, δείτε φωτογραφίες και βίντεο.</p>
         <div className="flex flex-wrap justify-center gap-3 pt-2">
-          <Link href="/news" className="bg-primary text-primary-foreground px-6 py-2.5 rounded-full font-medium hover:bg-primary/90 transition-colors">Ειδήσεις</Link>
-          <Link href="/villages" className="bg-secondary text-secondary-foreground px-6 py-2.5 rounded-full font-medium hover:bg-secondary/90 transition-colors">Χωριά</Link>
-          <Link href="/contact" className="border border-border text-foreground px-6 py-2.5 rounded-full font-medium hover:bg-muted transition-colors">Επικοινωνία</Link>
+          <Link href="/news/" className="bg-primary text-primary-foreground px-6 py-2.5 rounded-full font-medium hover:bg-primary/90 transition-colors">Ειδήσεις</Link>
+          <Link href="/villages/" className="bg-secondary text-secondary-foreground px-6 py-2.5 rounded-full font-medium hover:bg-secondary/90 transition-colors">Χωριά</Link>
+          <Link href="/contact/" className="border border-border text-foreground px-6 py-2.5 rounded-full font-medium hover:bg-muted transition-colors">Επικοινωνία</Link>
         </div>
       </motion.section>
     </div>

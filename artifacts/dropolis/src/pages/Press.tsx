@@ -254,7 +254,7 @@ export default function Press() {
             ))}
           </div>
           <motion.div variants={fadeUp} className="mt-6 text-center">
-            <Link href="/contact">
+            <Link href="/contact/">
               <span className="inline-flex items-center gap-2 text-primary dark:text-secondary font-medium hover:opacity-80 transition-opacity cursor-pointer">
                 Γενική επικοινωνία <ArrowRight size={15} />
               </span>

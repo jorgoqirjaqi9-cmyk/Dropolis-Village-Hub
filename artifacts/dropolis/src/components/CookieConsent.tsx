@@ -65,7 +65,7 @@ export function CookieConsent() {
 
         <p className="text-sm text-muted-foreground leading-relaxed">
           Χρησιμοποιούμε cookies για ανάλυση επισκεψιμότητας και εξατομικευμένες διαφημίσεις (Google AdSense). Διαβάστε την{" "}
-          <Link href="/cookie-policy" className="text-primary hover:underline">Πολιτική Cookies</Link> μας.
+          <Link href="/cookie-policy/" className="text-primary hover:underline">Πολιτική Cookies</Link> μας.
         </p>
 
         <div

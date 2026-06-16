@@ -55,7 +55,7 @@ export default function EnVillages() {
         <p className="text-sm text-muted-foreground">
           The full village directory, with individual pages for each of the 41 villages (in Greek), is available on the main site:
         </p>
-        <Link href="/villages" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
+        <Link href="/villages/" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
           View village directory (Greek) →
         </Link>
       </motion.div>

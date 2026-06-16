@@ -104,7 +104,7 @@ export default function Privacy() {
       </div>
 
       <div className="glass-card rounded-xl p-5 text-sm text-muted-foreground">
-        Δείτε επίσης: <Link href="/terms" className="text-primary hover:underline">Όροι Χρήσης</Link> · <Link href="/cookie-policy" className="text-primary hover:underline">Πολιτική Cookies</Link> · <Link href="/contact" className="text-primary hover:underline">Επικοινωνία</Link>
+        Δείτε επίσης: <Link href="/terms/" className="text-primary hover:underline">Όροι Χρήσης</Link> · <Link href="/cookie-policy/" className="text-primary hover:underline">Πολιτική Cookies</Link> · <Link href="/contact/" className="text-primary hover:underline">Επικοινωνία</Link>
       </div>
     </div>
   );

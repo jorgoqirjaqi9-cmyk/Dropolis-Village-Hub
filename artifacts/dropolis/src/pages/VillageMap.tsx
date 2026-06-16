@@ -190,7 +190,7 @@ export default function VillageMap() {
       <div className="bg-primary text-primary-foreground px-4 py-4 md:px-6">
         <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row md:items-center gap-3">
           <div className="flex items-center gap-3 flex-1">
-            <Link href="/villages" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors shrink-0">
+            <Link href="/villages/" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors shrink-0">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>

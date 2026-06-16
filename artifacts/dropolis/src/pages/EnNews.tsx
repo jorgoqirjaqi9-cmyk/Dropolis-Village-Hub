@@ -75,7 +75,7 @@ export default function EnNews() {
           <h3 className="font-serif font-bold text-foreground mb-1">Browse the news archive</h3>
           <p className="text-sm text-muted-foreground">All articles are in Greek. You can use the category filter to narrow results.</p>
         </div>
-        <Link href="/news" className="shrink-0 bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
+        <Link href="/news/" className="shrink-0 bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
           Open news →
         </Link>
       </motion.div>

@@ -42,13 +42,13 @@ export default function NotFound() {
               <span className="text-sm font-semibold">Αρχική</span>
             </div>
           </Link>
-          <Link href="/news">
+          <Link href="/news/">
             <div className="glass-card rounded-xl p-4 flex flex-col items-center gap-2 hover:border-primary/40 transition-colors cursor-pointer group">
               <Newspaper className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
               <span className="text-sm font-semibold">Ειδήσεις</span>
             </div>
           </Link>
-          <Link href="/villages">
+          <Link href="/villages/">
             <div className="glass-card rounded-xl p-4 flex flex-col items-center gap-2 hover:border-primary/40 transition-colors cursor-pointer group">
               <MapPin className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
               <span className="text-sm font-semibold">Χωριά</span>

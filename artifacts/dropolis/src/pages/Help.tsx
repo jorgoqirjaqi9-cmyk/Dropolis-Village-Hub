@@ -277,7 +277,7 @@ export default function Help() {
           <p className="text-muted-foreground mb-6">
             Η ομάδα μας είναι εδώ να βοηθήσει. Στείλτε μας μήνυμα και θα απαντήσουμε σύντομα.
           </p>
-          <Link href="/contact">
+          <Link href="/contact/">
             <motion.span
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
