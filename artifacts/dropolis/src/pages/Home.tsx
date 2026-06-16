@@ -15,8 +15,8 @@ import { WeatherWidget } from "@/components/WeatherWidget";
 const COMMUNITY_CATEGORY = "Ειδήσεις Κοινότητας";
 
 const HERO_BASE = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4";
-const HERO_IMAGE = `${HERO_BASE}?w=1200&q=75`;
-const HERO_SRCSET = `${HERO_BASE}?w=800&q=70 800w, ${HERO_BASE}?w=1200&q=75 1200w, ${HERO_BASE}?w=1600&q=80 1600w`;
+const HERO_IMAGE = `${HERO_BASE}?w=1200&q=60&fm=webp&auto=format`;
+const HERO_SRCSET = `${HERO_BASE}?w=800&q=55&fm=webp&auto=format 800w, ${HERO_BASE}?w=1200&q=60&fm=webp&auto=format 1200w, ${HERO_BASE}?w=1600&q=65&fm=webp&auto=format 1600w`;
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },

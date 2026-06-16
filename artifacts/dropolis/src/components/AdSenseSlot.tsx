@@ -75,11 +75,11 @@ export function AdSenseSlot({
   const minH = FORMAT_MIN_HEIGHT[adFormat] ?? 100;
 
   return (
-    <div className={`overflow-hidden ${className}`} style={{ minHeight: minH, contain: "layout", ...style }}>
+    <div className={`overflow-hidden ${className}`} style={{ height: minH, contain: "strict", ...style }}>
       <ins
         ref={ref}
         className="adsbygoogle"
-        style={{ display: "block", minHeight: minH }}
+        style={{ display: "block", height: minH }}
         data-ad-client="ca-pub-3960290713410584"
         data-ad-slot={adSlot}
         data-ad-format={adFormat}

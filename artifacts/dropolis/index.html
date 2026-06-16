@@ -75,9 +75,11 @@
     <!-- Preconnect to external origins used at first paint -->
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="dns-prefetch" href="https://images.unsplash.com" />
+    <link rel="preconnect" href="https://api.open-meteo.com" crossorigin />
+    <link rel="dns-prefetch" href="https://api.open-meteo.com" />
 
-    <!-- Preload LCP hero image — 1200px wide, good balance for mobile+desktop -->
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=75" fetchpriority="high" />
+    <!-- Preload LCP hero image — 1200px wide, WebP for smaller payload -->
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60&fm=webp&auto=format" fetchpriority="high" />
 
     <!-- Fonts — async, reduced to essential weights, display=optional eliminates FOUT/CLS -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

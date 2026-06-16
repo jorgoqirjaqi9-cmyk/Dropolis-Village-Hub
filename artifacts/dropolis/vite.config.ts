@@ -64,6 +64,7 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
     cssCodeSplit: true,
+    cssMinify: "lightningcss",
     rollupOptions: {
       output: {
         manualChunks(id) {
