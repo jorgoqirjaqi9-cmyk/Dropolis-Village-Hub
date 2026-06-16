@@ -241,25 +241,29 @@ export default function Home() {
           variants={stagger}
         >
           {[
-            { icon: Newspaper, label: "Άρθρα", value: stats?.totalArticles, color: "text-primary" },
-            { icon: Users, label: "Χωριά", value: stats?.totalVillages, color: "text-accent" },
-            { icon: ImageIcon, label: "Φωτογραφίες", value: stats?.totalPhotos, color: "text-secondary" },
-            { icon: VideoIcon, label: "Βίντεο", value: stats?.totalVideos, color: "text-primary" },
-            { icon: MessageSquare, label: "Μηνύματα", value: stats?.totalMessages, color: "text-accent" },
+            { icon: Newspaper, label: "Άρθρα", value: stats?.totalArticles, color: "text-primary", href: "/news" },
+            { icon: Users, label: "Χωριά", value: stats?.totalVillages, color: "text-accent", href: "/villages" },
+            { icon: ImageIcon, label: "Φωτογραφίες", value: stats?.totalPhotos, color: "text-secondary", href: "/photos" },
+            { icon: VideoIcon, label: "Βίντεο", value: stats?.totalVideos, color: "text-primary", href: "/videos" },
+            { icon: MessageSquare, label: "Μηνύματα", value: stats?.totalMessages, color: "text-accent", href: "/chat" },
           ].map((stat, i) => (
             <motion.div
               key={i}
               variants={fadeUp}
               whileHover={{ y: -4, scale: 1.02 }}
-              className="glass-card rounded-2xl p-5 flex flex-col items-center justify-center text-center cursor-default transition-shadow hover:shadow-md"
             >
-              <stat.icon className={`h-6 w-6 ${stat.color} mb-2.5 opacity-80`} />
-              {statsLoading ? (
-                <Skeleton className="h-8 w-12 mb-1" />
-              ) : (
-                <span className="text-3xl font-bold font-serif text-secondary">{stat.value ?? 0}</span>
-              )}
-              <span className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</span>
+              <Link
+                href={stat.href}
+                className="glass-card rounded-2xl p-5 flex flex-col items-center justify-center text-center transition-shadow hover:shadow-md cursor-pointer block"
+              >
+                <stat.icon className={`h-6 w-6 ${stat.color} mb-2.5 opacity-80`} />
+                {statsLoading ? (
+                  <Skeleton className="h-8 w-12 mb-1" />
+                ) : (
+                  <span className="text-3xl font-bold font-serif text-secondary">{stat.value ?? 0}</span>
+                )}
+                <span className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</span>
+              </Link>
             </motion.div>
           ))}
         </motion.div>
