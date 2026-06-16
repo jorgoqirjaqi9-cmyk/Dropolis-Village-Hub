@@ -54,14 +54,15 @@ const securityHeaders: RequestHandler = (_req, res, next) => {
       "font-src 'self' data: https://fonts.gstatic.com",
       // Images: self + data/blob URIs + all HTTPS (covers object-storage CDN, YouTube thumbs, etc.)
       "img-src 'self' data: blob: https:",
-      // Iframes: YouTube and Google Ads
+      // Iframes: YouTube, Google Ads, OpenStreetMap (village location maps)
       "frame-src" +
         " https://www.youtube.com" +
         " https://youtube-nocookie.com" +
         " https://pagead2.googlesyndication.com" +
         " https://tpc.googlesyndication.com" +
         " https://www.google.com" +
-        " https://googleads.g.doubleclick.net",
+        " https://googleads.g.doubleclick.net" +
+        " https://www.openstreetmap.org",
       // Fetch/XHR: self + all HTTPS (covers API + external services)
       "connect-src 'self' https:",
       // Audio/Video

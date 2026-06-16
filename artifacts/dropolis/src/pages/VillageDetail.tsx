@@ -7,6 +7,7 @@ import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin,
 import { VoteButtons } from "@/components/VoteButtons";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
+import { VILLAGE_COORDINATES } from "@/lib/village-coordinates";
 
 export default function VillageDetail() {
   const [, params] = useRoute("/villages/:id");
@@ -233,20 +234,40 @@ export default function VillageDetail() {
               <Map className="w-5 h-5 text-primary" />
               <h3 className="font-serif text-xl font-bold">Τοποθεσία</h3>
             </div>
-            {village.latitude && village.longitude ? (
-              <div className="aspect-square rounded-lg bg-muted flex items-center justify-center border border-border">
-                {/* Fallback map if no real map integration */}
-                <div className="text-center p-4">
-                  <MapPin className="w-8 h-8 text-primary mx-auto mb-2" />
-                  <div className="font-mono text-xs text-muted-foreground">
-                    {village.latitude.toFixed(4)}, {village.longitude.toFixed(4)}
+            {(() => {
+              const lat = village.latitude ?? VILLAGE_COORDINATES[village.nameEl]?.lat ?? VILLAGE_COORDINATES[village.name]?.lat;
+              const lng = village.longitude ?? VILLAGE_COORDINATES[village.nameEl]?.lng ?? VILLAGE_COORDINATES[village.name]?.lng;
+              const delta = 0.04;
+              if (lat && lng) {
+                const bbox = `${lng - delta},${lat - delta},${lng + delta},${lat + delta}`;
+                const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
+                const osmLink = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=14/${lat}/${lng}`;
+                return (
+                  <div className="space-y-2">
+                    <div className="rounded-lg overflow-hidden border border-border" style={{ height: 260 }}>
+                      <iframe
+                        title={`Χάρτης ${village.nameEl}`}
+                        src={src}
+                        className="w-full h-full"
+                        style={{ border: 0 }}
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <a
+                      href={osmLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <MapPin className="w-3 h-3" />
+                      {lat.toFixed(4)}, {lng.toFixed(4)} — Άνοιγμα σε OpenStreetMap
+                    </a>
                   </div>
-                  <p className="text-sm mt-2 text-muted-foreground">Προβολή στο χάρτη</p>
-                </div>
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">Δεν υπάρχουν διαθέσιμες συντεταγμένες.</p>
-            )}
+                );
+              }
+              return <p className="text-sm text-muted-foreground">Δεν υπάρχουν διαθέσιμες συντεταγμένες.</p>;
+            })()}
           </div>
 
           <div className="bg-card rounded-xl p-6 shadow-sm border border-card-border">
