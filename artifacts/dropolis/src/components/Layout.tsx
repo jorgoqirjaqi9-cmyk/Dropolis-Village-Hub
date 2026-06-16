@@ -355,46 +355,47 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       <footer className="bg-foreground text-background mt-16">
-        <div className="container mx-auto px-4 pt-14 pb-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-            {/* Brand */}
-            <div>
-              <h3 className="font-serif text-2xl font-bold text-secondary mb-3">Δρόπολη</h3>
-              <p className="text-sm text-background/60 leading-relaxed mb-4">
-                Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, ιστορία και πολιτισμός από τα 41 χωριά της Β. Ηπείρου.
-              </p>
-              <div className="flex gap-3">
-                <a href="https://www.facebook.com/profile.php?id=61590717183098" target="_blank" rel="noopener noreferrer"
-                  aria-label="Facebook"
-                  className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-sm font-bold">
-                  f
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
-                  aria-label="YouTube"
-                  className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
-                  ▶
-                </a>
-                <a href="https://www.instagram.com/dropolis_net/" target="_blank" rel="noopener noreferrer"
-                  aria-label="Instagram"
-                  className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
-                  IG
-                </a>
-                <a href="https://www.reddit.com/r/DropolisNet/" target="_blank" rel="noopener noreferrer"
-                  aria-label="Reddit"
-                  className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
-                  r/
-                </a>
-                <a href="mailto:info@dropolis.net"
-                  aria-label="Email"
-                  className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
-                  @
-                </a>
-              </div>
+        <div className="container mx-auto px-4 pt-10 pb-8">
+          {/* Brand row — full width on mobile */}
+          <div className="mb-8">
+            <h3 className="font-serif text-2xl font-bold text-secondary mb-2">Δρόπολη</h3>
+            <p className="text-sm text-background/60 leading-relaxed mb-4 max-w-sm">
+              Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας. Ειδήσεις, ιστορία και πολιτισμός από τα 41 χωριά της Β. Ηπείρου.
+            </p>
+            <div className="flex gap-3">
+              <a href="https://www.facebook.com/profile.php?id=61590717183098" target="_blank" rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-sm font-bold">
+                f
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                aria-label="YouTube"
+                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                ▶
+              </a>
+              <a href="https://www.instagram.com/dropolis_net/" target="_blank" rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                IG
+              </a>
+              <a href="https://www.reddit.com/r/DropolisNet/" target="_blank" rel="noopener noreferrer"
+                aria-label="Reddit"
+                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                r/
+              </a>
+              <a href="mailto:info@dropolis.net"
+                aria-label="Email"
+                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                @
+              </a>
             </div>
+          </div>
 
+          {/* Link columns — 2 cols on mobile, 4 on desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
             {/* Navigation */}
             <div>
-              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Πλοήγηση</h4>
+              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-3">Πλοήγηση</h4>
               <ul className="space-y-2">
                 {navItems.map((item) => (
                   <li key={item.href}>
@@ -411,28 +412,30 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Κατηγορίες */}
             <div>
-              <div className="mt-0">
-                <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Κατηγορίες</h4>
-                <ul className="space-y-2 text-sm text-background/60">
-                  {["Τοπικά Νέα", "Πολιτισμός", "Τουρισμός", "Ιστορία"].map(c => (
-                    <li key={c}>
-                      <Link href={`/news?category=${encodeURIComponent(c)}`} className="hover:text-secondary transition-colors">{c}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-3">Κατηγορίες</h4>
+              <ul className="space-y-2 text-sm text-background/60">
+                {["Τοπικά Νέα", "Πολιτισμός", "Τουρισμός", "Ιστορία"].map(c => (
+                  <li key={c}>
+                    <Link href={`/news?category=${encodeURIComponent(c)}`} className="hover:text-secondary transition-colors">{c}</Link>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* Resources & Legal */}
+            {/* Πληροφορίες */}
             <div>
-              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-4">Πληροφορίες</h4>
-              <ul className="space-y-2 mb-6">
+              <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-3">Πληροφορίες</h4>
+              <ul className="space-y-2 mb-5">
                 {resourceLinks.map(({ href, label, rel }) => (
                   <li key={href}>
                     <Link href={href} rel={rel} className="text-sm text-background/60 hover:text-secondary transition-colors">{label}</Link>
                   </li>
                 ))}
               </ul>
+            </div>
+
+            {/* Δεοντολογία + Νομικά */}
+            <div>
               <h4 className="font-semibold text-secondary/80 text-xs uppercase tracking-widest mb-3">Δεοντολογία</h4>
               <ul className="space-y-2 mb-5">
                 {trustLinks.map(({ href, label }) => (
@@ -449,13 +452,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </li>
                 ))}
               </ul>
-              <div className="mt-5 space-y-1 text-xs text-background/40">
-                <p className="mt-2">
-                  <a href="mailto:info@dropolis.net" className="hover:text-secondary transition-colors">info@dropolis.net</a>
-                </p>
-                <p className="mt-2">
-                  <Link href="/en" className="hover:text-secondary transition-colors">🇬🇧 English</Link>
-                </p>
+              <div className="mt-4 space-y-1 text-xs text-background/40">
+                <p><a href="mailto:info@dropolis.net" className="hover:text-secondary transition-colors">info@dropolis.net</a></p>
+                <p><Link href="/en" className="hover:text-secondary transition-colors">🇬🇧 English</Link></p>
               </div>
             </div>
           </div>
@@ -464,7 +463,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-background/40">
             <span>&copy; {new Date().getFullYear()} Dropolis. Με επιφύλαξη παντός δικαιώματος.</span>
-            <div className="flex items-center gap-4">
+            <div className="hidden sm:flex items-center gap-4">
               {legalLinks.map(({ href, label }) => (
                 <Link key={href} href={href} className="hover:text-secondary transition-colors">{label}</Link>
               ))}

@@ -277,7 +277,7 @@ export function RadioPlayer() {
       {!isVisible && (
         <button
           onClick={() => setIsVisible(true)}
-          className="fixed top-20 left-1/2 -translate-x-1/2 z-50 h-9 px-4 rounded-full bg-primary text-primary-foreground shadow-xl flex items-center gap-2 hover:bg-primary/90 transition-all hover:scale-105 active:scale-95"
+          className="fixed bottom-5 right-4 z-50 h-9 px-4 rounded-full bg-primary text-primary-foreground shadow-xl flex items-center gap-2 hover:bg-primary/90 transition-all hover:scale-105 active:scale-95"
           title="Radio"
         >
           <Radio className="w-4 h-4 text-secondary" />
@@ -287,7 +287,7 @@ export function RadioPlayer() {
 
       {/* ── Minimized pill ── */}
       {isVisible && isMinimized && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-0 rounded-full shadow-2xl border border-border/40 bg-card overflow-hidden">
+        <div className="fixed bottom-5 right-4 z-50 flex items-center gap-0 rounded-full shadow-2xl border border-border/40 bg-card overflow-hidden">
           {/* clickable area → expand */}
           <button
             onClick={() => setIsMinimized(false)}
@@ -307,7 +307,7 @@ export function RadioPlayer() {
                 {listenerCount} ακροατές
               </span>
             )}
-            <ChevronDown className="w-3 h-3 text-muted-foreground -rotate-90" />
+            <ChevronDown className="w-3 h-3 text-muted-foreground rotate-180" />
           </button>
 
           {/* pause button */}
@@ -333,7 +333,7 @@ export function RadioPlayer() {
       {/* ── Full card — always mounted when visible, hidden via CSS when minimized ── */}
       {/* Using `hidden` (display:none) keeps audio running — browsers don't stop audio on display:none */}
       <div
-        className={`fixed top-20 left-1/2 -translate-x-1/2 z-50 w-72 rounded-2xl shadow-2xl overflow-hidden border border-border/40 bg-card ${
+        className={`fixed bottom-5 right-4 z-50 w-[min(18rem,calc(100vw-2rem))] rounded-2xl shadow-2xl overflow-hidden border border-border/40 bg-card ${
           isVisible && !isMinimized ? "block" : "hidden"
         }`}
       >
