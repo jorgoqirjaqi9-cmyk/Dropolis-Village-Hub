@@ -147,24 +147,24 @@ export default function Home() {
 
           <motion.div variants={fadeUp} className="mx-auto mt-8 flex max-w-4xl flex-col items-center gap-4">
             <div className="flex flex-wrap justify-center gap-3">
-              <Link href="/news" className="min-h-12 rounded-full bg-yellow-400 px-6 py-3 font-bold text-slate-950 shadow-lg transition hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-200">
+              <Link href="/news" className="min-h-12 rounded-full bg-amber-400 px-6 py-3 font-bold text-stone-900 shadow-lg shadow-amber-500/30 transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300">
                 Τελευταίες Ειδήσεις
               </Link>
-              <Link href="/villages" className="min-h-12 rounded-full border border-white/40 bg-white/15 px-6 py-3 font-bold text-white backdrop-blur transition hover:bg-white/25 focus:outline-none focus:ring-2 focus:ring-white/70">
+              <Link href="/villages" className="min-h-12 rounded-full border border-emerald-400/50 bg-emerald-600/70 px-6 py-3 font-bold text-white shadow-lg shadow-emerald-900/30 backdrop-blur transition hover:bg-emerald-500/80 focus:outline-none focus:ring-2 focus:ring-emerald-400">
                 Τα Χωριά μας
               </Link>
-              <Link href="/villages/map" className="min-h-12 rounded-full border border-yellow-300/70 bg-blue-950/70 px-6 py-3 font-bold text-yellow-300 backdrop-blur transition hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+              <Link href="/villages/map" className="min-h-12 rounded-full border border-sky-400/50 bg-sky-600/65 px-6 py-3 font-bold text-white shadow-lg shadow-sky-900/30 backdrop-blur transition hover:bg-sky-500/80 focus:outline-none focus:ring-2 focus:ring-sky-400">
                 Διαδραστικός Χάρτης
               </Link>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
-              <Link href="/submit-news" className="min-h-10 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
+              <Link href="/submit-news" className="min-h-10 rounded-full border border-rose-400/40 bg-rose-500/20 px-4 py-2 text-sm font-semibold text-rose-100 backdrop-blur transition hover:bg-rose-500/35 focus:outline-none focus:ring-2 focus:ring-rose-400/60">
                 Στείλτε Είδηση
               </Link>
-              <Link href="/upload-photo" className="min-h-10 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
+              <Link href="/upload-photo" className="min-h-10 rounded-full border border-amber-400/40 bg-amber-500/20 px-4 py-2 text-sm font-semibold text-amber-100 backdrop-blur transition hover:bg-amber-500/35 focus:outline-none focus:ring-2 focus:ring-amber-400/60">
                 Ανέβασε Φωτογραφία
               </Link>
-              <Link href="/submit-video" className="min-h-10 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">
+              <Link href="/submit-video" className="min-h-10 rounded-full border border-violet-400/40 bg-violet-500/20 px-4 py-2 text-sm font-semibold text-violet-100 backdrop-blur transition hover:bg-violet-500/35 focus:outline-none focus:ring-2 focus:ring-violet-400/60">
                 Ανεβάστε Βίντεο
               </Link>
             </div>
