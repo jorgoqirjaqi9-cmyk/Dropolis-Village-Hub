@@ -34,6 +34,7 @@ kind = "api"
     "/upload-photo",
     "/submit-news",
     "/submit-video",
+    "/finiq",
     "/admin",
   ]
 

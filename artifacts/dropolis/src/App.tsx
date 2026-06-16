@@ -38,6 +38,7 @@ const EnContact       = lazy(() => import("@/pages/EnContact"));
 const EnPhotos        = lazy(() => import("@/pages/EnPhotos"));
 const UploadPhoto     = lazy(() => import("@/pages/UploadPhoto"));
 const Diaspora        = lazy(() => import("@/pages/Diaspora"));
+const Finiq           = lazy(() => import("@/pages/Finiq"));
 const SubmitNews      = lazy(() => import("@/pages/SubmitNews"));
 const SubmitVideo     = lazy(() => import("@/pages/SubmitVideo"));
 
@@ -194,6 +195,8 @@ function Router() {
               <Route path="/upload-photo/" component={UploadPhoto} />
               <Route path="/diaspora" component={Diaspora} />
               <Route path="/diaspora/" component={Diaspora} />
+              <Route path="/finiq" component={Finiq} />
+              <Route path="/finiq/" component={Finiq} />
               <Route path="/submit-news" component={SubmitNews} />
               <Route path="/submit-news/" component={SubmitNews} />
               <Route path="/submit-video" component={SubmitVideo} />

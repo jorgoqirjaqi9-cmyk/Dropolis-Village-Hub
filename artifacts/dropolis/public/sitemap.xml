@@ -132,6 +132,12 @@
     <lastmod>2026-06-16</lastmod>
   </url>
   <url>
+    <loc>https://dropolis.net/finiq/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-16</lastmod>
+  </url>
+  <url>
     <loc>https://dropolis.net/submit-news/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

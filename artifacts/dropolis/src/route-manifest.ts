@@ -558,6 +558,23 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     jsonLd: { "@context": "https://schema.org", "@type": "ImageGallery", name: "Photo Gallery — Dropull Villages", url: `${BASE_URL}/en/photos`, inLanguage: "en" },
   },
   {
+    path: "/finiq",
+    title: "Δήμος Φοινικαίων | Βόρεια Ήπειρος",
+    description: "Ο Δήμος Φοινικαίων (Bashkia Finiq) της Βόρειας Ηπείρου. Κοινότητες, χωριά, φωτογραφίες, βίντεο και νέα από τη Φοινίκη, το Δελβινάκι και την ευρύτερη περιοχή.",
+    url: `${BASE_URL}/finiq`,
+    breadcrumbs: [{ name: "Φοινικαίοι", item: `${BASE_URL}/finiq` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "TouristDestination",
+      name: "Δήμος Φοινικαίων",
+      alternateName: "Bashkia Finiq",
+      description: "Δήμος στη νότια Αλβανία (Βόρεια Ήπειρος) με έδρα τη Φοινίκη, που περιλαμβάνει κοινότητες ελληνικής μειονότητας και αρχαία ιστορία.",
+      url: `${BASE_URL}/finiq`,
+      inLanguage: "el",
+      containedInPlace: { "@type": "Country", name: "Αλβανία" },
+    },
+  },
+  {
     path: "/submit-news",
     title: "Στείλτε Είδηση",
     description: "Υποβάλετε είδηση, ανακοίνωση ή ρεπορτάζ από τη Δρόπολη. Η σύνταξη αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
