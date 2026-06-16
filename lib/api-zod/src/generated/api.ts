@@ -485,12 +485,14 @@ export const RequestPhotoUploadUrlResponse = zod.object({
 
 export const SubmitPhotoBody = zod.object({
   "title": zod.string().min(1),
+  "description": zod.string().optional(),
   "objectPath": zod.string().min(1),
   "thumbnailObjectPath": zod.string().optional(),
   "villageId": zod.number().optional(),
   "villageName": zod.string().optional(),
   "photographer": zod.string().optional(),
   "uploaderName": zod.string().optional(),
+  "uploaderEmail": zod.string().optional(),
   "copyrightConfirmed": zod.boolean()
 })
 

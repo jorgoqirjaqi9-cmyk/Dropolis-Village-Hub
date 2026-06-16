@@ -118,7 +118,7 @@ router.post("/photos/submit", submitRateLimit, async (req, res) => {
     return;
   }
 
-  const { title, objectPath, thumbnailObjectPath, villageId, villageName, photographer, uploaderName, copyrightConfirmed } =
+  const { title, description, objectPath, thumbnailObjectPath, villageId, villageName, photographer, uploaderName, uploaderEmail, copyrightConfirmed } =
     parsed.data;
 
   if (!copyrightConfirmed) {
@@ -141,6 +141,7 @@ router.post("/photos/submit", submitRateLimit, async (req, res) => {
 
   const [photo] = await db.insert(photosTable).values({
     title,
+    description: description ?? null,
     url,
     objectPath,
     thumbnailObjectPath: thumbnailObjectPath ?? null,
@@ -148,7 +149,7 @@ router.post("/photos/submit", submitRateLimit, async (req, res) => {
     villageId: villageId ?? null,
     villageName: resolvedVillageName,
     photographer: photographer ?? null,
-    uploaderName: uploaderName ?? null,
+    uploaderName: uploaderName ? (uploaderEmail ? `${uploaderName} <${uploaderEmail}>` : uploaderName) : null,
     copyrightConfirmed,
     status: "pending",
   }).returning();

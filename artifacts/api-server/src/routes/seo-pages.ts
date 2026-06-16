@@ -470,6 +470,14 @@ const STATIC_META: Record<string, PageMeta> = {
     breadcrumbs: [{ name: "Υποβολή Φωτογραφίας", item: `${BASE_URL}/upload-photo/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Υποβολή Φωτογραφίας — Dropolis", url: `${BASE_URL}/upload-photo/`, inLanguage: "el" },
   },
+  "/diaspora": {
+    title: "Έλληνες της Διασποράς | Δρόπολη",
+    description: "Σελίδα για Δροπολίτες, Βορειοηπειρώτες και ελληνική ομογένεια ανά τον κόσμο. Μοιραστείτε φωτογραφίες και ιστορίες από τη ζωή σας στο εξωτερικό.",
+    url: `${BASE_URL}/diaspora/`,
+    noindex: false,
+    breadcrumbs: [{ name: "Ομογένεια", item: `${BASE_URL}/diaspora/` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Έλληνες της Διασποράς — Dropolis", url: `${BASE_URL}/diaspora/`, inLanguage: "el" },
+  },
 };
 
 // ---------------------------------------------------------------------------

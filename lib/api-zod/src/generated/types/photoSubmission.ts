@@ -9,6 +9,7 @@
 export interface PhotoSubmission {
   /** @minLength 1 */
   title: string;
+  description?: string;
   /** @minLength 1 */
   objectPath: string;
   thumbnailObjectPath?: string;
@@ -16,5 +17,6 @@ export interface PhotoSubmission {
   villageName?: string;
   photographer?: string;
   uploaderName?: string;
+  uploaderEmail?: string;
   copyrightConfirmed: boolean;
 }
