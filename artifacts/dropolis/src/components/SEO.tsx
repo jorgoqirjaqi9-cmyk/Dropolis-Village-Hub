@@ -223,7 +223,7 @@ export function SEO({
         height: 512,
       },
       sameAs: [
-        "https://www.facebook.com/profile.php?id=61590717183098",
+        "https://www.facebook.com/profile.php?id=61590959938071",
         "https://www.instagram.com/dropolis_net/",
         "https://www.reddit.com/r/DropolisNet/",
         "https://www.youtube.com/@dropolis",

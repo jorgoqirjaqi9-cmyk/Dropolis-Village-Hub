@@ -111,7 +111,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
         foundingLocation: { "@type": "Place", name: "Δρόπολη, Βόρεια Ήπειρος" },
         publishingPrinciples: `${BASE_URL}/editorial-policy`,
         sameAs: [
-          "https://www.facebook.com/profile.php?id=61590717183098",
+          "https://www.facebook.com/profile.php?id=61590959938071",
           "https://www.youtube.com/@dropolis",
         ],
       },

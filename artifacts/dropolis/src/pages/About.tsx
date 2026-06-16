@@ -175,7 +175,7 @@ export default function About() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <a
-            href="https://www.facebook.com/profile.php?id=61590717183098"
+            href="https://www.facebook.com/profile.php?id=61590959938071"
             target="_blank"
             rel="noopener noreferrer"
             className="glass-card rounded-2xl p-5 flex items-center gap-4 hover:shadow-lg transition-shadow group"
