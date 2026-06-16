@@ -229,6 +229,10 @@ export default function News() {
                   <img
                     src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"}
                     alt={article.title}
+                    loading="lazy"
+                    decoding="async"
+                    width={400}
+                    height={225}
                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                     onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"; }}
                   />

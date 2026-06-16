@@ -9,6 +9,13 @@ interface AdSenseSlotProps {
   style?: React.CSSProperties;
 }
 
+const FORMAT_MIN_HEIGHT: Record<string, number> = {
+  horizontal: 90,
+  rectangle: 280,
+  vertical: 600,
+  auto: 100,
+};
+
 declare global {
   interface Window {
     adsbygoogle: unknown[];
@@ -65,12 +72,14 @@ export function AdSenseSlot({
 
   if (!allowed) return null;
 
+  const minH = FORMAT_MIN_HEIGHT[adFormat] ?? 100;
+
   return (
-    <div className={`overflow-hidden min-h-[120px] ${className}`} style={style}>
+    <div className={`overflow-hidden ${className}`} style={{ minHeight: minH, contain: "layout", ...style }}>
       <ins
         ref={ref}
         className="adsbygoogle"
-        style={{ display: "block", minHeight: 120 }}
+        style={{ display: "block", minHeight: minH }}
         data-ad-client="ca-pub-3960290713410584"
         data-ad-slot={adSlot}
         data-ad-format={adFormat}

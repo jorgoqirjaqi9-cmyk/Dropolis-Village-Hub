@@ -14,7 +14,9 @@ import { WeatherWidget } from "@/components/WeatherWidget";
 
 const COMMUNITY_CATEGORY = "Ειδήσεις Κοινότητας";
 
-const HERO_IMAGE = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80";
+const HERO_BASE = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4";
+const HERO_IMAGE = `${HERO_BASE}?w=1200&q=75`;
+const HERO_SRCSET = `${HERO_BASE}?w=800&q=70 800w, ${HERO_BASE}?w=1200&q=75 1200w, ${HERO_BASE}?w=1600&q=80 1600w`;
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -100,11 +102,15 @@ export default function Home() {
       >
         <img
           src={HERO_IMAGE}
+          srcSet={HERO_SRCSET}
+          sizes="100vw"
           alt=""
           aria-hidden="true"
           fetchPriority="high"
           loading="eager"
-          decoding="sync"
+          decoding="async"
+          width={1200}
+          height={800}
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="hero-gradient absolute inset-0" />
@@ -257,11 +263,13 @@ export default function Home() {
                 className="glass-card rounded-2xl p-5 flex flex-col items-center justify-center text-center transition-shadow hover:shadow-md cursor-pointer block"
               >
                 <stat.icon className={`h-6 w-6 ${stat.color} mb-2.5 opacity-80`} />
-                {statsLoading ? (
-                  <Skeleton className="h-8 w-12 mb-1" />
-                ) : (
-                  <span className="text-3xl font-bold font-serif text-secondary">{stat.value ?? 0}</span>
-                )}
+                <div className="h-10 flex items-center justify-center mb-1">
+                  {statsLoading ? (
+                    <Skeleton className="h-8 w-16" />
+                  ) : (
+                    <span className="text-3xl font-bold font-serif text-secondary">{stat.value ?? 0}</span>
+                  )}
+                </div>
                 <span className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</span>
               </Link>
             </motion.div>

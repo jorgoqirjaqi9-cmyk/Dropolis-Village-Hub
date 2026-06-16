@@ -167,11 +167,16 @@ export default function NewsDetail() {
         </header>
 
         {article.imageUrl && (
-          <figure className="rounded-xl overflow-hidden shadow-lg bg-card">
+          <figure className="rounded-xl overflow-hidden shadow-lg bg-card" style={{ aspectRatio: "16/9", maxHeight: 600 }}>
             <img 
               src={article.imageUrl} 
               alt={article.title} 
-              className="w-full h-auto object-cover max-h-[600px]"
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+              width={1200}
+              height={675}
+              className="w-full h-full object-cover"
             />
           </figure>
         )}

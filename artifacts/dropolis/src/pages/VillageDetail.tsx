@@ -120,6 +120,11 @@ export default function VillageDetail() {
             <img 
               src={village.imageUrl} 
               alt={village.nameEl} 
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+              width={1200}
+              height={514}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>

@@ -134,6 +134,10 @@ export default function Villages() {
                   <img
                     src={village.imageUrl || `https://placehold.co/600x450/1e3a5f/ffffff?text=${encodeURIComponent(village.nameEl)}`}
                     alt={`Χωριό ${village.nameEl}`}
+                    loading="lazy"
+                    decoding="async"
+                    width={600}
+                    height={450}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
