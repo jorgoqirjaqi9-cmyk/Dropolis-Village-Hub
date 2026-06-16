@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
-import { articlesTable, villagesTable, photosTable, videosTable, chatMessagesTable } from "@workspace/db";
+import { articlesTable, villagesTable, photosTable, videosTable, submittedVideosTable, chatMessagesTable } from "@workspace/db";
 import { eq, and, gte, count } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 
@@ -14,7 +14,8 @@ router.get("/stats", async (req, res) => {
     [articlesRow],
     [villagesRow],
     [photosRow],
-    [videosRow],
+    [ytVideosRow],
+    [svVideosRow],
     [messagesRow],
     [recentRow],
     [featuredRow],
@@ -23,6 +24,7 @@ router.get("/stats", async (req, res) => {
     db.select({ count: count() }).from(villagesTable),
     db.select({ count: count() }).from(photosTable).where(eq(photosTable.status, "approved")),
     db.select({ count: count() }).from(videosTable),
+    db.select({ count: count() }).from(submittedVideosTable).where(eq(submittedVideosTable.status, "approved")),
     db.select({ count: count() }).from(chatMessagesTable),
     db.select({ count: count() }).from(articlesTable).where(gte(articlesTable.createdAt, oneWeekAgo)),
     db.select({ count: count() }).from(articlesTable).where(eq(articlesTable.featured, true)),
@@ -32,7 +34,7 @@ router.get("/stats", async (req, res) => {
     totalArticles: articlesRow.count,
     totalVillages: villagesRow.count,
     totalPhotos: photosRow.count,
-    totalVideos: videosRow.count,
+    totalVideos: ytVideosRow.count + svVideosRow.count,
     totalMessages: messagesRow.count,
     recentArticles: recentRow.count,
     featuredCount: featuredRow.count,
