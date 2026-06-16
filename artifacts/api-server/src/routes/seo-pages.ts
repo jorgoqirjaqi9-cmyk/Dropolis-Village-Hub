@@ -487,16 +487,21 @@ const STATIC_META: Record<string, PageMeta> = {
 async function sendPage(
   res: import("express").Response,
   meta: PageMeta,
-  cacheSeconds = 3600
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _cacheSeconds = 3600
 ): Promise<void> {
   try {
     const html = injectMeta(await loadTemplate(), meta);
-    const isDev = process.env.NODE_ENV !== "production";
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.setHeader(
-      "Cache-Control",
-      isDev ? "no-store" : `public, max-age=${cacheSeconds}`
-    );
+    // HTML pages must never be served from a stale browser cache.
+    // After each deployment Vite produces new content-hashed asset filenames;
+    // if the browser serves a cached HTML page that references the old hashes
+    // those assets 404 and React fails to load — the user sees only the
+    // server-side fallback text.  `no-cache` tells the browser to revalidate
+    // with the server on every navigation (304 if unchanged, fresh HTML if
+    // the template changed).  Static assets (/assets/*) retain their own
+    // long-term immutable cache set in app.ts.
+    res.setHeader("Cache-Control", "no-cache, must-revalidate");
     res.send(html);
   } catch (err) {
     logger.warn({ err }, "seo-pages: failed to inject meta — falling back");
