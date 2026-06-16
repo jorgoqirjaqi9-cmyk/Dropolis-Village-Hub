@@ -40,7 +40,12 @@ export default function AdminDashboard() {
     }
   }, []);
 
-  useEffect(() => { if (authenticated && token) fetchData(token); }, [authenticated, token]);
+  useEffect(() => {
+    if (!authenticated || !token) return;
+    fetchData(token);
+    const interval = setInterval(() => fetchData(token), 30_000);
+    return () => clearInterval(interval);
+  }, [authenticated, token, fetchData]);
 
   if (!authenticated) return <AdminAuthGate onAuth={(t) => { login(t); fetchData(t); }} />;
 
@@ -111,17 +116,17 @@ export default function AdminDashboard() {
 
               {/* Stats grid */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard label="Άρθρα συνολικά" value={data.articles.total} icon={Newspaper} color="blue" sub={`${data.articles.published} δημοσιευμένα`} />
-                <StatCard label="Χωριά" value={data.villages.total} icon={MapPin} color="green" />
-                <StatCard label="Φωτογραφίες" value={data.photos.approved} icon={Image} color="purple" sub={data.photos.pending > 0 ? `${data.photos.pending} αναμένουν` : undefined} />
-                <StatCard label="Βίντεο" value={data.videos.total} icon={Video} color="red" />
+                <StatCard label="Άρθρα συνολικά" value={data.articles.total} icon={Newspaper} color="blue" sub={`${data.articles.published} δημοσιευμένα`} href="/admin/articles" />
+                <StatCard label="Χωριά" value={data.villages.total} icon={MapPin} color="green" href="/admin/villages" />
+                <StatCard label="Φωτογραφίες" value={data.photos.approved} icon={Image} color="purple" sub={data.photos.pending > 0 ? `${data.photos.pending} αναμένουν` : undefined} href="/admin/photos" />
+                <StatCard label="Βίντεο" value={data.videos.total} icon={Video} color="red" href="/admin/videos" />
               </div>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard label="Δημοσιευμένα" value={data.articles.published} icon={CheckCircle} color="green" />
-                <StatCard label="Πρόχειρα" value={data.articles.draft} icon={Clock} color="yellow" />
-                <StatCard label="Προτεινόμενα" value={data.articles.featured} icon={Star} color="orange" />
-                <StatCard label="Νέα (7 ημέρες)" value={data.articles.recentWeek} icon={TrendingUp} color="primary" />
+                <StatCard label="Δημοσιευμένα" value={data.articles.published} icon={CheckCircle} color="green" href="/admin/articles" />
+                <StatCard label="Πρόχειρα" value={data.articles.draft} icon={Clock} color="yellow" href="/admin/articles" />
+                <StatCard label="Προτεινόμενα" value={data.articles.featured} icon={Star} color="orange" href="/admin/articles" />
+                <StatCard label="Νέα (7 ημέρες)" value={data.articles.recentWeek} icon={TrendingUp} color="primary" href="/admin/articles" />
               </div>
 
               {/* Quick actions */}

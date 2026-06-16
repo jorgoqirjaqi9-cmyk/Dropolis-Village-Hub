@@ -167,8 +167,8 @@ export function StatusBadge({ status }: { status: string }) {
   );
 }
 
-export function StatCard({ label, value, icon: Icon, color = "primary", sub }: {
-  label: string; value: number | string; icon: React.ElementType; color?: string; sub?: string;
+export function StatCard({ label, value, icon: Icon, color = "primary", sub, href }: {
+  label: string; value: number | string; icon: React.ElementType; color?: string; sub?: string; href?: string;
 }) {
   const colors: Record<string, string> = {
     primary: "bg-primary/10 text-primary",
@@ -179,8 +179,8 @@ export function StatCard({ label, value, icon: Icon, color = "primary", sub }: {
     red: "bg-red-500/10 text-red-500",
     orange: "bg-orange-500/10 text-orange-500",
   };
-  return (
-    <div className="bg-background rounded-xl border border-border p-5 flex items-center gap-4">
+  const inner = (
+    <div className={`bg-background rounded-xl border border-border p-5 flex items-center gap-4 ${href ? "hover:bg-muted/60 transition-colors cursor-pointer" : ""}`}>
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${colors[color] ?? colors.primary}`}>
         <Icon className="w-6 h-6" />
       </div>
@@ -191,6 +191,8 @@ export function StatCard({ label, value, icon: Icon, color = "primary", sub }: {
       </div>
     </div>
   );
+  if (href) return <Link href={href}>{inner}</Link>;
+  return inner;
 }
 
 export function ConfirmModal({ message, onConfirm, onCancel, confirmLabel = "Διαγραφή", danger = true }: {
