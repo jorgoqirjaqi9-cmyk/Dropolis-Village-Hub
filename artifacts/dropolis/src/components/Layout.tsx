@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, MessageSquare, Home, Info, Mail, Download, Share, ChevronDown, Camera, Globe, Landmark } from "lucide-react";
+import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, Home, Info, Mail, Download, Share, ChevronDown, Camera, Globe, Landmark } from "lucide-react";
 import { usePWAInstall } from "../hooks/use-pwa-install";
 import { RadioPlayer } from "./RadioPlayer";
 import { CookieConsent } from "./CookieConsent";
@@ -110,7 +110,6 @@ const navItems = [
   { href: "/villages", label: "Χωριά", icon: Mountain },
   { href: "/photos", label: "Φωτογραφίες", icon: Image },
   { href: "/videos", label: "Βίντεο", icon: Video },
-  { href: "/chat", label: "Ζωντανή Συζήτηση", icon: MessageSquare },
   { href: "/diaspora", label: "Ομογένεια", icon: Globe },
   { href: "/finiq", label: "Φοινικαίοι", icon: Landmark },
   { href: "/about", label: "Σχετικά", icon: Info },
