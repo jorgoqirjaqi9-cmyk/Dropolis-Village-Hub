@@ -447,9 +447,21 @@ export default function Finiq() {
           <label className="block text-sm font-semibold">
             Χωριό / Κοινότητα <span className="text-destructive">*</span>
           </label>
-          <input type="text" required maxLength={100} value={village} onChange={(e) => setVillage(e.target.value)}
-            placeholder="π.χ. Φοινίκη, Δελβινάκι, Αλυκό…"
-            className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+          <select
+            required
+            value={village}
+            onChange={(e) => setVillage(e.target.value)}
+            className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+          >
+            <option value="">— Επιλέξτε χωριό —</option>
+            {MUNICIPAL_UNITS.map((unit) => (
+              <optgroup key={unit.nameAl} label={unit.name}>
+                {unit.villages.map((v) => (
+                  <option key={v} value={v}>{v}</option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
         </div>
 
         {/* Description */}
