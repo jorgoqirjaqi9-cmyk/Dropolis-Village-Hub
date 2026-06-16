@@ -347,7 +347,7 @@ async function main() {
         publisher: {
           "@type": "Organization",
           name: SITE_NAME,
-          logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
+          logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png`, width: 1080, height: 1080 },
         },
         mainEntityOfPage: {
           "@type": "WebPage",

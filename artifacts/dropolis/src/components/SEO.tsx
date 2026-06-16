@@ -218,9 +218,9 @@ export function SEO({
       url: SITE.url,
       logo: {
         "@type": "ImageObject",
-        url: `${SITE.url}/favicon.svg`,
-        width: 512,
-        height: 512,
+        url: `${SITE.url}/logo.png`,
+        width: 1080,
+        height: 1080,
       },
       sameAs: [
         "https://www.facebook.com/profile.php?id=61590959938071",

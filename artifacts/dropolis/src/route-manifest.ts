@@ -98,7 +98,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
           "@id": `${BASE_URL}/#organization`,
           name: "Δρόπολη (Dropolis)",
           url: BASE_URL,
-          logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
+          logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png` },
         },
       },
       {
@@ -107,7 +107,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
         "@id": `${BASE_URL}/#organization`,
         name: "Δρόπολη (Dropolis)",
         url: BASE_URL,
-        logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
+        logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png` },
         foundingLocation: { "@type": "Place", name: "Δρόπολη, Βόρεια Ήπειρος" },
         publishingPrinciples: `${BASE_URL}/editorial-policy`,
         sameAs: [

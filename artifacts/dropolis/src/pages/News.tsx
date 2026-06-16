@@ -110,7 +110,7 @@ export default function News() {
               "@id": "https://dropolis.net/#organization",
               name: "Δρόπολη (Dropolis)",
               url: "https://dropolis.net",
-              logo: { "@type": "ImageObject", url: "https://dropolis.net/favicon.svg" },
+              logo: { "@type": "ImageObject", url: "https://dropolis.net/logo.png" },
               sameAs: ["https://www.facebook.com/profile.php?id=61590959938071"],
             },
           },
@@ -120,7 +120,7 @@ export default function News() {
             "@id": "https://dropolis.net/#organization",
             name: "Δρόπολη (Dropolis)",
             url: "https://dropolis.net",
-            logo: { "@type": "ImageObject", url: "https://dropolis.net/favicon.svg" },
+            logo: { "@type": "ImageObject", url: "https://dropolis.net/logo.png" },
             foundingLocation: { "@type": "Place", name: "Δρόπολη, Βόρεια Ήπειρος" },
             publishingPrinciples: "https://dropolis.net/editorial-policy",
             sameAs: [

@@ -578,7 +578,7 @@ router.get(["/news/:id", "/news/:id/"], async (req, res) => {
         publisher: {
           "@type": "Organization",
           name: SITE_NAME,
-          logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
+          logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png`, width: 1080, height: 1080 },
         },
         mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE_URL}/news/${article.id}` },
         articleSection: article.category,

@@ -83,9 +83,9 @@ export default function NewsDetail() {
       name: "Δρόπολη (Dropolis)",
       logo: {
         "@type": "ImageObject",
-        url: `${BASE}/favicon.svg`,
-        width: 512,
-        height: 512,
+        url: `${BASE}/logo.png`,
+        width: 1080,
+        height: 1080,
       },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE}/news/${article.id}` },

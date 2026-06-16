@@ -76,7 +76,7 @@ export default function Press() {
             name: "Δρόπολη - Dropolis",
             alternateName: ["Dropolis", "Δρόπολη", "Dropull News"],
             url: "https://dropolis.net",
-            logo: { "@type": "ImageObject", url: "https://dropolis.net/favicon.svg" },
+            logo: { "@type": "ImageObject", url: "https://dropolis.net/logo.png" },
             sameAs: [
               "https://www.facebook.com/profile.php?id=61590959938071",
               "https://www.instagram.com/dropolis_net/",
@@ -193,7 +193,7 @@ export default function Press() {
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="/favicon.svg"
+                  href="/logo.png"
                   download="dropolis-logo.svg"
                   className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors shadow-md"
                 >
