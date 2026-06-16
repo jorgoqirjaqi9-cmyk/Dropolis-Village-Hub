@@ -50,7 +50,7 @@ export function AdminLayout({ children, token: _token, onLogout, title }: AdminL
               <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Admin Panel</p>
             </div>
           </Link>
-          <button className="lg:hidden text-muted-foreground" onClick={() => setSidebarOpen(false)}>
+          <button className="lg:hidden text-muted-foreground" aria-label="Κλείσιμο μενού" onClick={() => setSidebarOpen(false)}>
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -92,7 +92,7 @@ export function AdminLayout({ children, token: _token, onLogout, title }: AdminL
 
       <div className="flex-1 flex flex-col min-w-0">
         <header className="bg-background border-b border-border px-4 h-14 flex items-center gap-3 sticky top-0 z-10 shrink-0">
-          <button className="lg:hidden text-muted-foreground hover:text-foreground" onClick={() => setSidebarOpen(true)}>
+          <button className="lg:hidden text-muted-foreground hover:text-foreground" aria-label="Άνοιγμα μενού" onClick={() => setSidebarOpen(true)}>
             <Menu className="w-5 h-5" />
           </button>
           <h1 className="font-semibold text-foreground text-sm">{title}</h1>

@@ -262,6 +262,7 @@ export default function Chat() {
                         disabled={deleteMessage.isPending}
                         className="text-muted-foreground/40 hover:text-destructive transition-colors mb-1 shrink-0"
                         title="Διαγραφή"
+                        aria-label="Διαγραφή μηνύματος"
                       >
                         <X className="w-3 h-3" />
                       </button>

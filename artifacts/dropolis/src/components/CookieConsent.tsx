@@ -58,7 +58,7 @@ export function CookieConsent() {
             <Cookie className="w-5 h-5 text-secondary shrink-0" />
             <h3 className="font-semibold text-foreground">Χρησιμοποιούμε Cookies</h3>
           </div>
-          <button onClick={reject} className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted">
+          <button onClick={reject} aria-label="Κλείσιμο" className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted">
             <X size={16} />
           </button>
         </div>
@@ -112,6 +112,7 @@ export function CookieConsent() {
             onClick={() => setShowDetails(!showDetails)}
             className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             title="Ρυθμίσεις"
+            aria-label="Ρυθμίσεις cookies"
           >
             <Settings size={16} />
           </button>

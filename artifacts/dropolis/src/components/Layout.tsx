@@ -347,7 +347,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-serif text-lg font-bold text-foreground">Εγκατάσταση στο iPhone</h3>
-              <button onClick={() => setShowIOSHint(false)} className="p-1 rounded-full hover:bg-muted">
+              <button onClick={() => setShowIOSHint(false)} aria-label="Κλείσιμο" className="p-1 rounded-full hover:bg-muted">
                 <X size={18} />
               </button>
             </div>
