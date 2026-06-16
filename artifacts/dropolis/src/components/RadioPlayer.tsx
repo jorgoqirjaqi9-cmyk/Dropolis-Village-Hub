@@ -139,14 +139,9 @@ function StationRow({
             {isPlaying && (
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shrink-0" />
             )}
-            <a
-              href={station.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs font-semibold truncate hover:text-primary transition-colors"
-            >
+            <span className="text-xs font-semibold truncate">
               {station.name}
-            </a>
+            </span>
           </div>
           <input
             type="range"
