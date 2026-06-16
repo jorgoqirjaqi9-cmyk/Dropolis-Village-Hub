@@ -198,13 +198,24 @@
     </script>
 
     <!-- AdSense — deferred and gated on advertising consent.
+         Only loads on content pages; excluded on utility/legal/form/chat pages.
          On repeat visits we check localStorage and load immediately if already accepted.
          On first visit CookieConsent.tsx triggers loading after the user accepts. -->
     <script>
+      var NO_ADS_ROUTES = ['/chat','/upload-photo','/submit-news','/submit-video','/privacy','/terms','/cookie-policy','/disclaimer','/diaspora'];
+      function dropolisAdsAllowed(p) {
+        if (!p || p === '/') return true;
+        for (var i = 0; i < NO_ADS_ROUTES.length; i++) {
+          if (p === NO_ADS_ROUTES[i] || p.startsWith(NO_ADS_ROUTES[i] + '/')) return false;
+        }
+        if (p.startsWith('/admin')) return false;
+        return true;
+      }
+      window.__dropolisAdsAllowed = dropolisAdsAllowed;
       window.addEventListener('load', function() {
         var consent = localStorage.getItem('dropolis-cookie-consent');
         var adv    = localStorage.getItem('dropolis-cookie-advertising');
-        if (consent === 'accepted' && adv !== '0') {
+        if (consent === 'accepted' && adv !== '0' && dropolisAdsAllowed(window.location.pathname)) {
           var s = document.createElement('script');
           s.async = true;
           s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3960290713410584';
@@ -213,6 +224,11 @@
         }
       }, { once: true });
     </script>
+    <!-- Hide auto-injected AdSense elements when on no-ads pages (SPA navigation) -->
+    <style>
+      html[data-no-ads] ins.adsbygoogle,
+      html[data-no-ads] .adsbygoogle-noablate { display: none !important; visibility: hidden !important; }
+    </style>
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ"></script>

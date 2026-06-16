@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useLocation } from "wouter";
 
 interface AdSenseSlotProps {
   adSlot: string;
@@ -11,7 +12,20 @@ interface AdSenseSlotProps {
 declare global {
   interface Window {
     adsbygoogle: unknown[];
+    __dropolisAdsAllowed?: (path: string) => boolean;
   }
+}
+
+const AD_EXCLUDED_PREFIXES = [
+  "/chat", "/upload-photo", "/submit-news", "/submit-video",
+  "/admin", "/privacy", "/terms", "/cookie-policy", "/disclaimer", "/diaspora",
+];
+
+function adsAllowedOnPath(path: string): boolean {
+  for (const prefix of AD_EXCLUDED_PREFIXES) {
+    if (path === prefix || path.startsWith(prefix + "/")) return false;
+  }
+  return true;
 }
 
 export function AdSenseSlot({
@@ -21,10 +35,13 @@ export function AdSenseSlot({
   className = "",
   style,
 }: AdSenseSlotProps) {
+  const [location] = useLocation();
   const ref = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
+  const allowed = adsAllowedOnPath(location);
 
   useEffect(() => {
+    if (!allowed) return;
     const el = ref.current;
     if (!el || pushed.current) return;
 
@@ -44,7 +61,9 @@ export function AdSenseSlot({
     const observer = new ResizeObserver(pushAd);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [adSlot]);
+  }, [adSlot, allowed]);
+
+  if (!allowed) return null;
 
   return (
     <div className={`overflow-hidden min-h-[120px] ${className}`} style={style}>

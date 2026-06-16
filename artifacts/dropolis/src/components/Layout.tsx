@@ -5,6 +5,27 @@ import { usePWAInstall } from "../hooks/use-pwa-install";
 import { RadioPlayer } from "./RadioPlayer";
 import { CookieConsent } from "./CookieConsent";
 
+const AD_EXCLUDED_PREFIXES = [
+  "/chat", "/upload-photo", "/submit-news", "/submit-video",
+  "/admin", "/privacy", "/terms", "/cookie-policy", "/disclaimer", "/diaspora",
+];
+
+function AdSenseManager() {
+  const [location] = useLocation();
+  useEffect(() => {
+    const allowed = !AD_EXCLUDED_PREFIXES.some(
+      (p) => location === p || location.startsWith(p + "/")
+    );
+    if (allowed) {
+      document.documentElement.removeAttribute("data-no-ads");
+    } else {
+      document.documentElement.setAttribute("data-no-ads", "");
+    }
+    return () => document.documentElement.removeAttribute("data-no-ads");
+  }, [location]);
+  return null;
+}
+
 const LANGUAGES = [
   { code: "el", label: "Ελληνικά", flag: "🇬🇷" },
   { code: "sq", label: "Shqip",    flag: "🇦🇱" },
@@ -473,6 +494,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+      <AdSenseManager />
       <RadioPlayer />
       <CookieConsent />
     </div>
