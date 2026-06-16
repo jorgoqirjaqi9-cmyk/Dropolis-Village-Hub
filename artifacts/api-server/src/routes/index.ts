@@ -19,6 +19,7 @@ import adminVideosRouter from "./admin-videos";
 import votesRouter from "./votes";
 import adminDashboardRouter from "./admin-dashboard";
 import adminArticlesRouter from "./admin-articles";
+import radioRouter from "./radio";
 
 const router: IRouter = Router();
 
@@ -42,5 +43,6 @@ router.use(adminVideosRouter);
 router.use(votesRouter);
 router.use(adminDashboardRouter);
 router.use(adminArticlesRouter);
+router.use(radioRouter);
 
 export default router;
