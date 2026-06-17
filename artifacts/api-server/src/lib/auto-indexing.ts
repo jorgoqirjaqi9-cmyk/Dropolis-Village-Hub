@@ -110,6 +110,44 @@ function isVillagePrerendered(villageId: number): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// fetchWithRetry — resilient fetch with exponential backoff.
+//
+// Retries up to `maxAttempts` times (default 3). Each attempt has its own
+// AbortSignal timeout (`timeoutMs`, default 30 s). Between attempts the
+// caller waits `baseDelayMs * 2^attempt` ms (default: 2 s → 4 s → 8 s).
+//
+// Throws on the last attempt if it still fails.
+// ---------------------------------------------------------------------------
+async function fetchWithRetry(
+  url: string,
+  init: RequestInit,
+  {
+    maxAttempts = 3,
+    timeoutMs = 30_000,
+    baseDelayMs = 2_000,
+  }: { maxAttempts?: number; timeoutMs?: number; baseDelayMs?: number } = {}
+): Promise<Response> {
+  let lastErr: unknown;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    if (attempt > 0) {
+      const delay = baseDelayMs * Math.pow(2, attempt - 1);
+      await new Promise<void>((r) => setTimeout(r, delay));
+    }
+    try {
+      const res = await fetch(url, {
+        ...init,
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+      return res;
+    } catch (err: unknown) {
+      lastErr = err;
+      logger.warn({ url, attempt: attempt + 1, maxAttempts, err }, "fetchWithRetry: attempt failed");
+    }
+  }
+  throw lastErr;
+}
+
+// ---------------------------------------------------------------------------
 // Sitemap ping — notifies Bing/Yandex of sitemap updates via IndexNow.
 //
 // Note: Google's sitemap ping URL (google.com/ping) was deprecated in 2024.
@@ -125,12 +163,15 @@ export async function pingSitemaps(): Promise<void> {
   };
 
   await Promise.allSettled([
-    fetch(INDEXNOW_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(8000),
-    })
+    fetchWithRetry(
+      INDEXNOW_ENDPOINT,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(payload),
+      },
+      { maxAttempts: 3, timeoutMs: 30_000, baseDelayMs: 2_000 }
+    )
       .then((r) => {
         const ok = r.status === 200 || r.status === 202;
         logEvent({ ts: new Date().toISOString(), type: "bing-ping", status: ok ? "ok" : "fail", detail: `IndexNow sitemap HTTP ${r.status}` });
@@ -138,7 +179,7 @@ export async function pingSitemaps(): Promise<void> {
       })
       .catch((err: unknown) => {
         logEvent({ ts: new Date().toISOString(), type: "bing-ping", status: "fail", detail: String(err) });
-        logger.warn({ err }, "Bing/IndexNow sitemap ping failed");
+        logger.warn({ err }, "Bing/IndexNow sitemap ping failed after retries");
       }),
 
     // Google: no public sitemap ping URL since 2024.
@@ -165,18 +206,21 @@ export async function submitToIndexNow(urls: string[]): Promise<void> {
   };
 
   try {
-    const res = await fetch(INDEXNOW_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(10000),
-    });
+    const res = await fetchWithRetry(
+      INDEXNOW_ENDPOINT,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(payload),
+      },
+      { maxAttempts: 3, timeoutMs: 30_000, baseDelayMs: 2_000 }
+    );
     const ok = res.status === 200 || res.status === 202;
     logEvent({ ts: new Date().toISOString(), type: "indexnow", status: ok ? "ok" : "fail", url: validUrls[0], detail: `HTTP ${res.status}` });
     logger.info({ count: validUrls.length, status: res.status }, "IndexNow submission");
   } catch (err: unknown) {
     logEvent({ ts: new Date().toISOString(), type: "indexnow", status: "fail", url: validUrls[0], detail: String(err) });
-    logger.warn({ err }, "IndexNow submission failed");
+    logger.warn({ err }, "IndexNow submission failed after retries");
   }
 }
 
@@ -216,15 +260,18 @@ async function createGoogleJWT(clientEmail: string, privateKey: string): Promise
 async function getGoogleAccessToken(clientEmail: string, privateKey: string): Promise<string | null> {
   try {
     const jwt = await createGoogleJWT(clientEmail, privateKey);
-    const res = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-        assertion: jwt,
-      }),
-      signal: AbortSignal.timeout(10000),
-    });
+    const res = await fetchWithRetry(
+      "https://oauth2.googleapis.com/token",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+          assertion: jwt,
+        }),
+      },
+      { maxAttempts: 3, timeoutMs: 30_000, baseDelayMs: 2_000 }
+    );
     if (!res.ok) {
       const text = await res.text().catch(() => "");
       logger.warn({ status: res.status, text }, "Google OAuth: token request failed");
@@ -233,7 +280,7 @@ async function getGoogleAccessToken(clientEmail: string, privateKey: string): Pr
     const data = (await res.json()) as { access_token?: string };
     return data.access_token ?? null;
   } catch (err: unknown) {
-    logger.warn({ err }, "Google OAuth: failed to get access token");
+    logger.warn({ err }, "Google OAuth: failed to get access token after retries");
     return null;
   }
 }
@@ -254,15 +301,18 @@ export async function submitToGoogleIndexingApi(url: string): Promise<void> {
   }
 
   try {
-    const res = await fetch("https://indexing.googleapis.com/v3/urlNotifications:publish", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+    const res = await fetchWithRetry(
+      "https://indexing.googleapis.com/v3/urlNotifications:publish",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ url, type: "URL_UPDATED" }),
       },
-      body: JSON.stringify({ url, type: "URL_UPDATED" }),
-      signal: AbortSignal.timeout(10000),
-    });
+      { maxAttempts: 3, timeoutMs: 30_000, baseDelayMs: 2_000 }
+    );
     const data = (await res.json()) as Record<string, unknown>;
     if (res.ok) {
       logEvent({ ts: new Date().toISOString(), type: "google-indexing-api", status: "ok", url, detail: JSON.stringify(data) });

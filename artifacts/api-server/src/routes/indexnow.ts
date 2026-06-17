@@ -44,24 +44,44 @@ router.post("/indexnow/submit", requireAdmin, async (req, res) => {
     urlList: validUrls,
   };
 
-  try {
-    const response = await fetch(INDEXNOW_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify(payload),
-    });
+  const MAX_ATTEMPTS = 3;
+  const TIMEOUT_MS = 30_000;
+  const BASE_DELAY_MS = 2_000;
 
-    if (response.status === 200 || response.status === 202) {
-      req.log.info({ count: validUrls.length }, "IndexNow: URLs submitted successfully");
-      res.json({ ok: true, submitted: validUrls.length, urls: validUrls });
-    } else {
-      const text = await response.text().catch(() => "");
-      req.log.warn({ status: response.status, body: text }, "IndexNow: non-success response");
-      res.status(502).json({ ok: false, status: response.status, message: text });
+  let lastErr: unknown;
+  let response: Response | undefined;
+
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    if (attempt > 0) {
+      await new Promise<void>((r) => setTimeout(r, BASE_DELAY_MS * Math.pow(2, attempt - 1)));
     }
-  } catch (err) {
-    req.log.error({ err }, "IndexNow: fetch failed");
-    res.status(503).json({ ok: false, error: "Failed to reach IndexNow API" });
+    try {
+      response = await fetch(INDEXNOW_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
+      break;
+    } catch (err) {
+      lastErr = err;
+      req.log.warn({ err, attempt: attempt + 1 }, "IndexNow: attempt failed");
+    }
+  }
+
+  if (!response) {
+    req.log.error({ err: lastErr }, "IndexNow: all attempts failed");
+    res.status(503).json({ ok: false, error: "Failed to reach IndexNow API after retries" });
+    return;
+  }
+
+  if (response.status === 200 || response.status === 202) {
+    req.log.info({ count: validUrls.length }, "IndexNow: URLs submitted successfully");
+    res.json({ ok: true, submitted: validUrls.length, urls: validUrls });
+  } else {
+    const text = await response.text().catch(() => "");
+    req.log.warn({ status: response.status, body: text }, "IndexNow: non-success response");
+    res.status(502).json({ ok: false, status: response.status, message: text });
   }
 });
 
