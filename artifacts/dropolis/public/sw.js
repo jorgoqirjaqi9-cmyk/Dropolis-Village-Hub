@@ -38,23 +38,60 @@ function isExternalImage(url) {
   );
 }
 
+/**
+ * Cache-first: serve from cache; on miss fetch and store.
+ * If the network fetch fails and there is nothing cached, returns a generic
+ * 503 response so the SW promise never rejects.
+ */
 async function cacheFirst(request, cacheName) {
-  const cache = await caches.open(cacheName);
-  const cached = await cache.match(request);
-  if (cached) return cached;
-  const response = await fetch(request);
-  if (response.ok) cache.put(request, response.clone());
-  return response;
+  try {
+    const cache = await caches.open(cacheName);
+    const cached = await cache.match(request);
+    if (cached) return cached;
+
+    try {
+      const response = await fetch(request);
+      if (response.ok) {
+        cache.put(request, response.clone());
+      }
+      return response;
+    } catch {
+      return new Response(null, { status: 503, statusText: "Service Unavailable" });
+    }
+  } catch {
+    return new Response(null, { status: 503, statusText: "Service Unavailable" });
+  }
 }
 
+/**
+ * Stale-while-revalidate: serve cached immediately; refresh in background.
+ * The background fetch is fire-and-forget — its errors are swallowed silently.
+ * If nothing is cached and the network fetch fails, returns 503.
+ */
 async function staleWhileRevalidate(request, cacheName) {
-  const cache = await caches.open(cacheName);
-  const cached = await cache.match(request);
-  const fetchPromise = fetch(request).then((response) => {
-    if (response.ok) cache.put(request, response.clone());
-    return response;
-  });
-  return cached ?? fetchPromise;
+  try {
+    const cache = await caches.open(cacheName);
+    const cached = await cache.match(request);
+
+    const networkFetch = fetch(request)
+      .then((response) => {
+        if (response.ok) {
+          cache.put(request, response.clone());
+        }
+        return response;
+      })
+      .catch(() => null);
+
+    if (cached) {
+      networkFetch.catch(() => {});
+      return cached;
+    }
+
+    const response = await networkFetch;
+    return response ?? new Response(null, { status: 503, statusText: "Service Unavailable" });
+  } catch {
+    return new Response(null, { status: 503, statusText: "Service Unavailable" });
+  }
 }
 
 self.addEventListener("fetch", (event) => {
@@ -63,12 +100,28 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
   if (event.request.mode === "navigate") {
-    event.respondWith(fetch(event.request).catch(() => fetch("/")));
+    event.respondWith(
+      fetch(event.request).catch(() =>
+        fetch("/").catch(
+          () => new Response("<h1>Offline</h1>", {
+            status: 503,
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+          })
+        )
+      )
+    );
     return;
   }
 
   if (url.pathname.startsWith("/api/")) {
-    event.respondWith(fetch(event.request));
+    event.respondWith(
+      fetch(event.request).catch(
+        () => new Response(JSON.stringify({ error: "network_error" }), {
+          status: 503,
+          headers: { "Content-Type": "application/json" },
+        })
+      )
+    );
     return;
   }
 
@@ -87,5 +140,9 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  event.respondWith(fetch(event.request));
+  event.respondWith(
+    fetch(event.request).catch(
+      () => new Response(null, { status: 503, statusText: "Service Unavailable" })
+    )
+  );
 });
