@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { SEO } from "@/components/SEO";
-import { RefreshCw, CheckCircle, XCircle, MinusCircle, Search } from "lucide-react";
+import { RefreshCw, CheckCircle, XCircle, MinusCircle, Search, RotateCcw } from "lucide-react";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 import { AdminLayout, AdminAuthGate, useAdminAuth, adminFetch } from "@/components/AdminLayout";
@@ -36,6 +36,8 @@ export default function AdminIndexingLog() {
   const [statusFilter, setStatusFilter] = useState<"all" | IndexingEvent["status"]>("all");
   const [typeFilter, setTypeFilter] = useState<"all" | IndexingEvent["type"]>("all");
   const [search, setSearch] = useState("");
+  const [retrying, setRetrying] = useState<Set<string>>(new Set());
+  const [retryResults, setRetryResults] = useState<Map<string, "ok" | "fail">>(new Map());
 
   const fetchEvents = useCallback(async (t: string) => {
     setLoading(true); setError(null);
@@ -49,6 +51,25 @@ export default function AdminIndexingLog() {
     } catch (e) { setError(e instanceof Error ? e.message : "Σφάλμα."); }
     finally { setLoading(false); }
   }, []);
+
+  const retryUrl = useCallback(async (url: string) => {
+    if (!token) return;
+    setRetrying(prev => new Set(prev).add(url));
+    try {
+      const res = await adminFetch("/api/indexnow/submit", token, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ urls: [url] }),
+      });
+      const ok = res.ok;
+      setRetryResults(prev => new Map(prev).set(url, ok ? "ok" : "fail"));
+      if (ok) await fetchEvents(token);
+    } catch {
+      setRetryResults(prev => new Map(prev).set(url, "fail"));
+    } finally {
+      setRetrying(prev => { const s = new Set(prev); s.delete(url); return s; });
+    }
+  }, [token, fetchEvents]);
 
   useEffect(() => { if (authenticated && token) fetchEvents(token); }, [authenticated, token]);
 
@@ -139,6 +160,7 @@ export default function AdminIndexingLog() {
                       <th className="text-left px-4 py-3 font-medium text-muted-foreground text-xs whitespace-nowrap">Κατάσταση</th>
                       <th className="text-left px-4 py-3 font-medium text-muted-foreground text-xs">URL</th>
                       <th className="text-left px-4 py-3 font-medium text-muted-foreground text-xs">Λεπτομέρεια</th>
+                      <th className="px-4 py-3"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -165,6 +187,21 @@ export default function AdminIndexingLog() {
                           {ev.detail
                             ? <span className={`text-xs break-words ${ev.status === "fail" ? "text-red-700 dark:text-red-400" : "text-muted-foreground"}`}>{ev.detail}</span>
                             : <span className="text-xs text-muted-foreground">—</span>}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          {ev.status === "skipped" && ev.type === "indexnow" && ev.url && (() => {
+                            const result = retryResults.get(ev.url);
+                            const isRetrying = retrying.has(ev.url);
+                            if (result === "ok") return <span className="text-xs text-green-600 font-medium flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5" />Εστάλη</span>;
+                            if (result === "fail") return <span className="text-xs text-red-600 font-medium flex items-center gap-1"><XCircle className="w-3.5 h-3.5" />Σφάλμα</span>;
+                            return (
+                              <button onClick={() => { if (ev.url) void retryUrl(ev.url); }} disabled={isRetrying}
+                                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors text-xs font-medium disabled:opacity-50">
+                                <RotateCcw className={`w-3.5 h-3.5 ${isRetrying ? "animate-spin" : ""}`} />
+                                {isRetrying ? "…" : "Retry"}
+                              </button>
+                            );
+                          })()}
                         </td>
                       </tr>
                     ))}
