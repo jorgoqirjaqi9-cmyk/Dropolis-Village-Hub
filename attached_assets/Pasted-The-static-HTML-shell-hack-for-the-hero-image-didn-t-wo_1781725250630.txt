@@ -1,0 +1,20 @@
+The static HTML shell hack for the hero image didn't work as expected. Performance went down to 71, and LCP is still blocked by a 2,140ms Element Render Delay. Let's revert the static shell approach completely and fix this natively and cleanly. Please execute the following steps:
+
+1. Revert the Static Shell & Cleanup:
+   - Completely remove the `<div id="hero-static-shell">` and its inline script from `index.html`.
+   - Remove the companion `shell.remove()` logic or useEffect hooks from `Home.tsx`.
+
+2. Native LCP Fix (Optimize Font & Render Blocking):
+   - In `index.html`, look at the Google Fonts `<link href="...font-family...">` stylesheet. Ensure it has `&display=swap` at the very end of the URL. If it's missing, add it.
+   - To eliminate the 2.1s element render delay, the browser is waiting for the JS bundle to execute. Ensure the main React script tag in `index.html` uses `defer` instead of `async` (or vice versa depending on your current setup) to optimize the critical rendering path.
+
+3. Fix the Weather API Preconnect (Crucial):
+   - Lighthouse explicitly states: "Unused preconnect. Check that the crossorigin attribute is used properly" for `api.open-meteo.com`.
+   - This happens because the browser initiates a preconnect with credentials/crossorigin, but the actual dynamic `fetch()` in your React code is requested WITHOUT crossorigin (or vice versa).
+   - Find the fetch request for `api.open-meteo.com` in your code. Ensure it doesn't headers that force a CORS preflight unnecessarily, OR change the preconnect tag in `index.html` to simply:
+     `<link rel="preconnect" href="https://api.open-meteo.com">` (Remove the `crossorigin` attribute completely if the fetch is a standard simple GET request).
+
+4. Add Image Decoding Attribute:
+   - Ensure the Hero `<img>` tag in `Home.tsx` has `decoding="async"` alongside `loading="eager"` and `fetchpriority="high"`.
+
+Please apply these clean fixes, run a full production build, and let's get that verified.
