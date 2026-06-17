@@ -1,0 +1,20 @@
+Let's build a robust, 100% FREE, local "Auto-SEO & Content Sanitization Pipeline" directly into our article submission and ingestion workflow. Since we want this to run entirely client/server-side without paying for external AI APIs or requiring managed AI billing, we will use smart local code parsing (Regex, string manipulation, and keyword weights).
+
+Please implement or update our article processing logic (e.g., inside a new or existing file like `utils/seoSanitizer.ts`) to achieve 100/100 Technical SEO perfection automatically every time an article is saved:
+
+1. Stripping External/Old Garbage & Fluff:
+   - Scan the text and completely strip out references to old domains/blogs (like "apenadi.blogspot.com" or similar text leftovers).
+   - Automatically clean up the Title: If a title starts with fluff like "Ειδήσεις - ", "NEWS: ", or "Αποκλειστικό - ", strip that prefix out completely so the core keywords are frontloaded and the title stays strictly below 60 characters for high Google CTR.
+
+2. Enforcing the Trailing Slash / on Internal Links:
+   - Use a regex text-parser to scan the HTML/Markdown body of the article. Any internal relative or absolute links pointing to our site (e.g., `/news/10149` or `https://dropolis.net/news/10149`) MUST have a trailing slash appended automatically (`/news/10149/`).
+   - Ensure the "Read More" (Διαβάστε ακόμη) links at the bottom get their anchor tags updated to use this exact slash-appended structure.
+
+3. Automated Content SEO Enhancements (Google Signals):
+   - Rewrite/inject an automated local Meta Description generator: Extract the first 150-160 characters of the text, clean up any broken tags, and save it in the article data object for the page Header metadata.
+   - Smart Topical Bolding: Automatically wrap high-value regional and structural entities (e.g., "Δρόπολη", "Αλβανία", "κυβέρνηση", "αρχαιολογία", "ανασκαφή") inside `<strong>` tags when they appear in the first 2 paragraphs to show strong topical authority to Google's crawler.
+
+4. Typography & Copy-Paste Fixer:
+   - Automatically strip out duplicate spaces, empty paragraphs (`<p>&nbsp;</p>`), or mixed inline font stylings that accidentally get carried over when copying news from other media portals.
+
+Please write this pure utility function, integrate it directly into the save/publish hook of our article submission workflow, and run a quick type-check to make sure it compiles flawlessly.

@@ -7,6 +7,7 @@ import { prerenderArticle, removeArticlePrerender } from "../lib/on-demand-prere
 import { invalidateSitemapManifestCache } from "./sitemap.js";
 import { requireAdmin } from "../lib/admin-auth.js";
 import { postArticleToFacebook } from "../lib/facebook-poster.js";
+import { sanitizeArticleData } from "../lib/seo-sanitizer.js";
 import {
   ListArticlesQueryParams,
   CreateArticleBody,
@@ -42,23 +43,28 @@ router.get("/articles", async (req, res) => {
 
 router.post("/articles", requireAdmin, async (req, res) => {
   const body = CreateArticleBody.parse(req.body);
+
+  // Full SEO sanitizer pass on create: strips fluff, fixes typography,
+  // enforces trailing slashes in body links, and auto-fills empty
+  // metaDescription and tags so every article ships SEO-ready.
+  const { changes: _c, ...s } = sanitizeArticleData(body, { autoFill: true });
+
   const [article] = await db.insert(articlesTable).values({
-    title: body.title,
-    excerpt: body.excerpt ?? null,
-    content: body.content,
-    category: body.category,
-    author: body.author,
-    imageUrl: body.imageUrl ?? null,
-    villageName: body.villageName ?? null,
-    tags: body.tags ?? null,
-    seoTitle: body.seoTitle ?? null,
-    metaDescription: body.metaDescription ?? null,
-    slug: body.slug ?? null,
-    published: body.published ?? true,
-    featured: body.featured ?? false,
+    title:           s.title           ?? body.title,
+    excerpt:         s.excerpt         ?? body.excerpt         ?? null,
+    content:         s.content         ?? body.content,
+    category:        body.category,
+    author:          body.author,
+    imageUrl:        body.imageUrl                             ?? null,
+    villageName:     s.villageName     ?? body.villageName     ?? null,
+    tags:            s.tags            ?? body.tags            ?? null,
+    seoTitle:        s.seoTitle        ?? body.seoTitle        ?? null,
+    metaDescription: s.metaDescription ?? body.metaDescription ?? null,
+    slug:            body.slug                                 ?? null,
+    published:       body.published                            ?? true,
+    featured:        body.featured                             ?? false,
   }).returning();
-  // Fire-and-forget: prerender HTML first (writes HTML + updates manifest),
-  // then schedule IndexNow/Google Indexing API submission after the delay.
+
   if (article.published) {
     void prerenderArticle({
       id: article.id,
@@ -136,13 +142,32 @@ router.patch("/articles/:id", requireAdmin, async (req, res) => {
   const { id } = UpdateArticleParams.parse({ id: Number(req.params.id) });
   const body = UpdateArticleBody.parse(req.body);
 
+  // Conservative sanitizer pass on update (autoFill:false = never inject new
+  // fields on partial PATCH — only clean what was explicitly provided).
+  const { changes: _c, ...s } = sanitizeArticleData(body, { autoFill: false });
+  const patchBody = {
+    ...body,
+    // Only override a field if the sanitizer produced a non-null value.
+    // title/content are non-nullable DB columns → use != null (excludes both null and undefined).
+    // Nullable columns (excerpt, metaDescription, tags, villageName) use !== undefined.
+    ...(s.title           != null      && { title:           s.title }),
+    ...(s.content         != null      && { content:         s.content }),
+    ...(s.excerpt         !== undefined && { excerpt:         s.excerpt }),
+    ...(s.metaDescription !== undefined && { metaDescription: s.metaDescription }),
+    ...(s.tags            !== undefined && { tags:            s.tags }),
+    ...(s.villageName     !== undefined && { villageName:     s.villageName }),
+  };
+
   // Read current published state before update to detect false → true transition
-  const [existing] = await db.select({ published: articlesTable.published }).from(articlesTable).where(eq(articlesTable.id, id));
+  const [existing] = await db
+    .select({ published: articlesTable.published })
+    .from(articlesTable)
+    .where(eq(articlesTable.id, id));
   const wasPublished = existing?.published ?? false;
 
   const [article] = await db
     .update(articlesTable)
-    .set({ ...body, updatedAt: new Date() })
+    .set({ ...patchBody, updatedAt: new Date() })
     .where(eq(articlesTable.id, id))
     .returning();
   if (!article) {
@@ -162,7 +187,6 @@ router.patch("/articles/:id", requireAdmin, async (req, res) => {
       updatedAt: article.updatedAt.toISOString(),
     });
     void autoIndexArticle(article.id);
-    // Only post to Facebook when an article goes from draft → published
     if (!wasPublished) {
       void postArticleToFacebook(article);
     }
