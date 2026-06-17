@@ -4,6 +4,7 @@ import { db, articlesTable } from "@workspace/db";
 import { eq, sql, like } from "drizzle-orm";
 import { logger } from "./lib/logger.js";
 import { autoIndexArticle } from "./lib/auto-indexing.js";
+import { prerenderArticle } from "./lib/on-demand-prerender.js";
 import { enhanceArticle } from "./lib/article-enhancer.js";
 
 const parser = new Parser({ timeout: 10000, headers: { "User-Agent": "Dropolis/1.0 RSS Reader" } });
@@ -187,8 +188,13 @@ async function fetchFeed(source: FeedSource): Promise<number> {
       }).onConflictDoNothing().returning({
         id: articlesTable.id,
         title: articlesTable.title,
-        imageUrl: articlesTable.imageUrl,
+        excerpt: articlesTable.excerpt,
         content: articlesTable.content,
+        imageUrl: articlesTable.imageUrl,
+        author: articlesTable.author,
+        category: articlesTable.category,
+        createdAt: articlesTable.createdAt,
+        updatedAt: articlesTable.updatedAt,
       });
 
       if (returned.length > 0) {
@@ -198,6 +204,17 @@ async function fetchFeed(source: FeedSource): Promise<number> {
         const score = calcScore(!!art.imageUrl, art.content.length) + enhanced.qualityScore;
         await db.update(articlesTable).set({ slug, score }).where(eq(articlesTable.id, art.id));
         if (enhanced.published) {
+          void prerenderArticle({
+            id: art.id,
+            title: art.title,
+            excerpt: art.excerpt,
+            content: art.content,
+            imageUrl: art.imageUrl,
+            author: art.author,
+            category: art.category,
+            createdAt: art.createdAt.toISOString(),
+            updatedAt: art.updatedAt?.toISOString() ?? null,
+          });
           void autoIndexArticle(art.id);
         } else {
           logger.info({ title: art.title, qualityScore: enhanced.qualityScore }, "RSS article saved as draft — quality score below threshold");
@@ -398,8 +415,13 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
       }).onConflictDoNothing().returning({
         id: articlesTable.id,
         title: articlesTable.title,
-        imageUrl: articlesTable.imageUrl,
+        excerpt: articlesTable.excerpt,
         content: articlesTable.content,
+        imageUrl: articlesTable.imageUrl,
+        author: articlesTable.author,
+        category: articlesTable.category,
+        createdAt: articlesTable.createdAt,
+        updatedAt: articlesTable.updatedAt,
       });
 
       if (returned.length > 0) {
@@ -409,6 +431,17 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
         const score = calcScore(!!art.imageUrl, art.content.length) + enhanced.qualityScore;
         await db.update(articlesTable).set({ slug, score }).where(eq(articlesTable.id, art.id));
         if (enhanced.published) {
+          void prerenderArticle({
+            id: art.id,
+            title: art.title,
+            excerpt: art.excerpt,
+            content: art.content,
+            imageUrl: art.imageUrl,
+            author: art.author,
+            category: art.category,
+            createdAt: art.createdAt.toISOString(),
+            updatedAt: art.updatedAt?.toISOString() ?? null,
+          });
           void autoIndexArticle(art.id);
           logger.info({ url: input.link, title: translated.title }, "Translated article imported");
         } else {
