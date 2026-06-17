@@ -655,7 +655,7 @@ export default function Home() {
                               )}
                               <span className="text-muted-foreground text-xs">• {format(new Date(article.createdAt), "d MMM yyyy", { locale: el })}</span>
                             </div>
-                            <h4 className="font-serif text-lg font-bold mb-1.5 group-hover:text-primary dark:group-hover:text-secondary transition-colors line-clamp-2">{article.title}</h4>
+                            <h3 className="font-serif text-lg font-bold mb-1.5 group-hover:text-primary dark:group-hover:text-secondary transition-colors line-clamp-2">{article.title}</h3>
                             {article.excerpt && <p className="text-muted-foreground text-sm line-clamp-2">{article.excerpt}</p>}
                           </div>
                         </Link>

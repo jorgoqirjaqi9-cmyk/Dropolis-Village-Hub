@@ -258,7 +258,7 @@ export default function News() {
                     </span>
                   </div>
                   <Link href={`/news/${article.id}`} className="flex flex-col flex-grow">
-                    <h3 className="text-xl md:text-2xl font-serif font-bold mb-3 group-hover:text-primary transition-colors">{article.title}</h3>
+                    <h2 className="text-xl md:text-2xl font-serif font-bold mb-3 group-hover:text-primary transition-colors">{article.title}</h2>
                     <p className="text-muted-foreground leading-relaxed line-clamp-3 mb-4">{article.excerpt || article.content.substring(0, 150) + "..."}</p>
                     <div className="mt-auto flex items-center justify-between text-sm">
                       <span className="font-medium text-foreground/80">{article.author}</span>

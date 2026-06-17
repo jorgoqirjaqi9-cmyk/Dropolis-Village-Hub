@@ -372,7 +372,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      <main className="flex-grow">
+      <main className="flex-grow min-h-[85vh]">
         {children}
       </main>
 

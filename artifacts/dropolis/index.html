@@ -232,13 +232,23 @@
       html[data-no-ads] .adsbygoogle-noablate { display: none !important; visibility: hidden !important; }
     </style>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ"></script>
+    <!-- Google Analytics — deferred to idle to reduce TBT on mobile -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-R96FYBFRYQ');
+      function _loadGA() {
+        gtag('js', new Date());
+        gtag('config', 'G-R96FYBFRYQ');
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ';
+        document.head.appendChild(s);
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(_loadGA, { timeout: 4000 });
+      } else {
+        window.addEventListener('load', function() { setTimeout(_loadGA, 1000); });
+      }
     </script>
   </head>
   <body>
