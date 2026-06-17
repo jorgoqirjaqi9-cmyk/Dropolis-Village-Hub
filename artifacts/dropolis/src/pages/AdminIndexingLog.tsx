@@ -38,6 +38,8 @@ export default function AdminIndexingLog() {
   const [search, setSearch] = useState("");
   const [retrying, setRetrying] = useState<Set<string>>(new Set());
   const [retryResults, setRetryResults] = useState<Map<string, "ok" | "fail">>(new Map());
+  const [manualUrl, setManualUrl] = useState("");
+  const [manualStatus, setManualStatus] = useState<"idle" | "loading" | "ok" | "fail">("idle");
 
   const fetchEvents = useCallback(async (t: string) => {
     setLoading(true); setError(null);
@@ -51,6 +53,23 @@ export default function AdminIndexingLog() {
     } catch (e) { setError(e instanceof Error ? e.message : "Σφάλμα."); }
     finally { setLoading(false); }
   }, []);
+
+  const submitManual = useCallback(async () => {
+    const urls = manualUrl.split("\n").map(u => u.trim()).filter(Boolean);
+    if (!token || urls.length === 0) return;
+    setManualStatus("loading");
+    try {
+      const res = await adminFetch("/api/indexnow/submit", token, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ urls }),
+      });
+      setManualStatus(res.ok ? "ok" : "fail");
+      if (res.ok) { setManualUrl(""); await fetchEvents(token); }
+    } catch {
+      setManualStatus("fail");
+    }
+  }, [token, manualUrl, fetchEvents]);
 
   const retryUrl = useCallback(async (url: string) => {
     if (!token) return;
@@ -117,6 +136,29 @@ export default function AdminIndexingLog() {
               Το Google Indexing API δεν είναι ενεργοποιημένο (λείπουν GOOGLE_INDEXING_CLIENT_EMAIL / GOOGLE_INDEXING_PRIVATE_KEY).
             </div>
           )}
+
+          <div className="rounded-xl border border-border bg-background p-4 space-y-3">
+            <p className="text-sm font-medium text-foreground">Χειροκίνητη υποβολή στο IndexNow</p>
+            <p className="text-xs text-muted-foreground">Ένα URL ανά γραμμή — π.χ. https://dropolis.net/news/8916</p>
+            <textarea
+              value={manualUrl}
+              onChange={e => { setManualUrl(e.target.value); setManualStatus("idle"); }}
+              placeholder={"https://dropolis.net/news/8916\nhttps://dropolis.net/news/8919\nhttps://dropolis.net/news/8938"}
+              rows={3}
+              className="w-full rounded-lg border border-border bg-muted/40 px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+            />
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => void submitManual()}
+                disabled={manualStatus === "loading" || !manualUrl.trim()}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-50">
+                <RotateCcw className={`w-3.5 h-3.5 ${manualStatus === "loading" ? "animate-spin" : ""}`} />
+                {manualStatus === "loading" ? "Υποβολή…" : "Υποβολή"}
+              </button>
+              {manualStatus === "ok" && <span className="text-xs text-green-600 font-medium flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5" />Εστάλη επιτυχώς</span>}
+              {manualStatus === "fail" && <span className="text-xs text-red-600 font-medium flex items-center gap-1"><XCircle className="w-3.5 h-3.5" />Αποτυχία — έλεγξε τα URLs</span>}
+            </div>
+          </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex flex-wrap gap-2">
