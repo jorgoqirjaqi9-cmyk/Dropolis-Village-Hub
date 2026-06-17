@@ -145,11 +145,18 @@ function Router() {
               <Route path="/news" component={News} />
               <Route path="/news/" component={News} />
               <Route path="/news/:id" component={NewsDetail} />
+              {/* Trailing-slash variant: dynamic sitemap emits /news/:id/ so
+                  Googlebot crawls that URL — without this route, wouter falls
+                  through to <NotFound> which sets noindex ("Discovered - not
+                  indexed" in GSC). */}
+              <Route path="/news/:id/" component={NewsDetail} />
               <Route path="/villages" component={Villages} />
               <Route path="/villages/" component={Villages} />
               <Route path="/villages/map" component={VillageMap} />
               <Route path="/villages/map/" component={VillageMap} />
               <Route path="/villages/:id" component={VillageDetail} />
+              {/* Same fix for village detail pages */}
+              <Route path="/villages/:id/" component={VillageDetail} />
               <Route path="/photos" component={Photos} />
               <Route path="/photos/" component={Photos} />
               <Route path="/videos" component={Videos} />
@@ -161,12 +168,15 @@ function Router() {
               <Route path="/privacy" component={Privacy} />
               <Route path="/privacy/" component={Privacy} />
               <Route path="/privacy-policy">
-                <Redirect to="/privacy" />
+                {/* Redirect to canonical URL with trailing slash — must match
+                    the server-side 301 in redirects.ts and the SEO.tsx
+                    canonical so Google doesn't flag a redirect chain. */}
+                <Redirect to="/privacy/" />
               </Route>
               <Route path="/terms" component={Terms} />
               <Route path="/terms/" component={Terms} />
               <Route path="/terms-of-service">
-                <Redirect to="/terms" />
+                <Redirect to="/terms/" />
               </Route>
               <Route path="/cookie-policy" component={CookiePolicy} />
               <Route path="/cookie-policy/" component={CookiePolicy} />

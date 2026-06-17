@@ -10,9 +10,13 @@ const router = Router();
 //
 // The artifact.toml for the API server lists these paths alongside /api so the
 // shared proxy routes them here rather than to the static frontend.
+// Targets include the trailing slash so the 301 destination matches the
+// canonical URL that SEO.tsx emits (it always appends "/" to non-root paths).
+// Without this, GSC flags the redirect as a "Redirect error" because the
+// redirect destination doesn't match the canonical declared on that page.
 const PERMANENT_REDIRECTS: Record<string, string> = {
-  "/privacy-policy": "https://dropolis.net/privacy",
-  "/terms-of-service": "https://dropolis.net/terms",
+  "/privacy-policy": "https://dropolis.net/privacy/",
+  "/terms-of-service": "https://dropolis.net/terms/",
 };
 
 for (const [from, to] of Object.entries(PERMANENT_REDIRECTS)) {
