@@ -221,7 +221,7 @@ export default function VillageDetail() {
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-muted/30 py-10 text-center">
-                  <Camera className="w-8 h-8 mx-auto mb-3 text-muted-foreground/50" />
+                  <Camera className="w-8 h-8 mx-auto mb-3 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-4">Δεν υπάρχουν ακόμα φωτογραφίες για αυτό το χωριό.</p>
                   <Link
                     href={`/upload-photo?villageId=${id}`}

@@ -145,7 +145,7 @@ export default function Home() {
 
           <motion.p
             variants={fadeUp}
-            className="text-white/60 text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-white/80 text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed"
           >
             Ειδήσεις, ιστορία, φωτογραφίες και κοινότητα για τα{" "}
             <span className="text-secondary font-semibold">41 χωριά</span> του Δήμου Δρόπολης.
@@ -567,7 +567,7 @@ export default function Home() {
                           {featuredArticles[0].excerpt && (
                             <p className="text-white/75 line-clamp-2 md:text-lg mb-2">{featuredArticles[0].excerpt}</p>
                           )}
-                          <span className="text-white/50 text-sm">
+                          <span className="text-white/80 text-sm">
                             {format(new Date(featuredArticles[0].createdAt), "d MMMM yyyy", { locale: el })}
                           </span>
                         </div>

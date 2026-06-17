@@ -260,7 +260,7 @@ export default function Chat() {
                       <button
                         onClick={() => handleDelete(msg.id)}
                         disabled={deleteMessage.isPending}
-                        className="text-muted-foreground/40 hover:text-destructive transition-colors mb-1 shrink-0"
+                        className="text-muted-foreground hover:text-destructive transition-colors mb-1 shrink-0"
                         title="Διαγραφή"
                         aria-label="Διαγραφή μηνύματος"
                       >
@@ -268,7 +268,7 @@ export default function Chat() {
                       </button>
                     )}
                   </div>
-                  <span className="text-[10px] text-muted-foreground/50 mt-1 mx-1">
+                  <span className="text-[10px] text-muted-foreground mt-1 mx-1">
                     {format(new Date(msg.createdAt), "HH:mm", { locale: el })}
                   </span>
                 </div>

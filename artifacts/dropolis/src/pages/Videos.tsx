@@ -148,7 +148,7 @@ export default function Videos() {
           ))
         ) : (
           <div className="col-span-full text-center py-24 text-muted-foreground bg-card rounded-xl border border-dashed border-border">
-            <Play className="w-10 h-10 mx-auto mb-3 text-muted-foreground/30" />
+            <Play className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
             <p className="mb-4">Δεν υπάρχουν διαθέσιμα βίντεο αυτή τη στιγμή.</p>
             <Link
               href="/submit-video"

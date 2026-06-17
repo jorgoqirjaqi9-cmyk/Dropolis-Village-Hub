@@ -268,7 +268,7 @@ export default function NewsDetail() {
                 {displayTrending.map((a, idx) => (
                   <li key={a.id}>
                     <Link href={`/news/${a.id}`} className="group flex gap-3 items-start">
-                      <span className="text-2xl font-black text-muted-foreground/30 leading-none w-6 shrink-0 select-none">{idx + 1}</span>
+                      <span className="text-2xl font-black text-muted-foreground/60 leading-none w-6 shrink-0 select-none" aria-hidden="true">{idx + 1}</span>
                       <div className="min-w-0">
                         <h4 className="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors leading-snug">{a.seoTitle || a.title}</h4>
                         <span className="text-xs text-muted-foreground mt-0.5 block">{a.viewCount} προβολές</span>

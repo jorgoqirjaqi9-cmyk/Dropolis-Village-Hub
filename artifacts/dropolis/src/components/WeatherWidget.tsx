@@ -77,33 +77,33 @@ export function WeatherWidget() {
       style={{ minHeight: 52, contain: "layout" }}
     >
       {!data ? (
-        <span className="text-white/50 text-sm animate-pulse" style={{ display: "inline-block", width: 160 }}>Φόρτωση καιρού…</span>
+        <span className="text-white/80 text-sm animate-pulse" style={{ display: "inline-block", width: 160 }}>Φόρτωση καιρού…</span>
       ) : (
         <>
           <span className="text-3xl leading-none">{info!.icon}</span>
           <div className="flex flex-col">
             <div className="flex items-baseline gap-1.5">
               <span className="text-2xl font-bold leading-none">{data.temp}°</span>
-              <span className="text-xs text-white/60 font-medium">{info!.label}</span>
+              <span className="text-xs text-white/80 font-medium">{info!.label}</span>
             </div>
             <div className="flex items-center gap-3 mt-1">
-              <span className="flex items-center gap-1 text-xs text-white/60">
+              <span className="flex items-center gap-1 text-xs text-white/80">
                 <Droplets size={11} />
                 {data.humidity}%
               </span>
-              <span className="flex items-center gap-1 text-xs text-white/60">
+              <span className="flex items-center gap-1 text-xs text-white/80">
                 <Wind size={11} />
                 {data.windSpeed} km/h
               </span>
-              <span className="flex items-center gap-1 text-xs text-white/60">
+              <span className="flex items-center gap-1 text-xs text-white/80">
                 <Thermometer size={11} />
                 Αίσθηση {data.feelsLike}°
               </span>
             </div>
           </div>
           <div className="border-l border-white/20 pl-3 hidden sm:block">
-            <p className="text-xs text-white/50 leading-tight">Δρόπολη</p>
-            <p className="text-xs text-white/40 leading-tight">Αλβανία</p>
+            <p className="text-xs text-white/80 leading-tight">Δρόπολη</p>
+            <p className="text-xs text-white/70 leading-tight">Αλβανία</p>
           </div>
         </>
       )}
