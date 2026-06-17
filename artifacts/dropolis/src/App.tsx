@@ -1,10 +1,16 @@
 import { lazy, Suspense } from "react";
 import { Switch, Route, Redirect, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { setBaseUrl } from "@workspace/api-client-react";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/Layout";
 import { ScrollToTop } from "@/components/ScrollToTop";
+
+// Ensure all generated API hooks use the exact origin the browser is connected
+// to. This covers dev preview (proxied iframe), staging, and production without
+// any hardcoded port or hostname.
+setBaseUrl(window.location.origin);
 
 const NotFound        = lazy(() => import("@/pages/not-found"));
 const Home            = lazy(() => import("@/pages/Home"));
