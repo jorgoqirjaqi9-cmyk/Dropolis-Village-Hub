@@ -116,43 +116,35 @@ export default function Home() {
         />
         <div className="hero-gradient absolute inset-0" />
 
-        <motion.div
-          className="relative z-10 text-center px-4 max-w-4xl mx-auto"
-          initial="hidden"
-          animate="show"
-          variants={stagger}
-        >
+        {/* Hero text — CSS animation instead of Framer Motion to avoid the
+            69 ms forced reflow that motion.div triggers by reading layout
+            geometry on mount. hero-anim-N classes provide the staggered
+            fade-up via pure CSS @keyframes (defined in index.css). */}
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
 
-          <motion.div variants={fadeUp} className="mb-4">
+          <div className="mb-4 hero-anim hero-anim-1">
             <span className="inline-block text-xs font-semibold tracking-[0.3em] uppercase text-secondary/90 bg-secondary/10 border border-secondary/30 px-4 py-1.5 rounded-full backdrop-blur-sm">
               Βόρεια Ήπειρος · Αλβανία
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h1
+          <h1
             id="hero-heading"
-            variants={fadeUp}
-            className="font-serif text-5xl sm:text-6xl md:text-7xl font-black text-white text-shadow-hero leading-none tracking-tight mb-4"
+            className="hero-anim hero-anim-2 font-serif text-5xl sm:text-6xl md:text-7xl font-black text-white text-shadow-hero leading-none tracking-tight mb-4"
           >
             Δρόπολη - Dropolis
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            variants={fadeUp}
-            className="text-xl sm:text-2xl text-white/80 font-light text-shadow-hero mb-3 font-serif italic"
-          >
+          <p className="hero-anim hero-anim-3 text-xl sm:text-2xl text-white/80 font-light text-shadow-hero mb-3 font-serif italic">
             Η ψηφιακή πλατφόρμα της ελληνικής μειονότητας
-          </motion.p>
+          </p>
 
-          <motion.p
-            variants={fadeUp}
-            className="text-white/80 text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed"
-          >
+          <p className="hero-anim hero-anim-4 text-white/80 text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed">
             Ειδήσεις, ιστορία, φωτογραφίες και κοινότητα για τα{" "}
             <span className="text-secondary font-semibold">41 χωριά</span> του Δήμου Δρόπολης.
-          </motion.p>
+          </p>
 
-          <motion.div variants={fadeUp} className="mx-auto mt-8 flex max-w-4xl flex-col items-center gap-4">
+          <div className="hero-anim hero-anim-5 mx-auto mt-8 flex max-w-4xl flex-col items-center gap-4">
             <div className="flex flex-wrap justify-center gap-3">
               <Link href="/news/" className="min-h-12 rounded-full bg-amber-400 px-6 py-3 font-bold text-stone-900 shadow-lg shadow-amber-500/30 transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300">
                 Τελευταίες Ειδήσεις
@@ -179,8 +171,8 @@ export default function Home() {
             <div className="md:hidden mt-6 flex justify-center w-full">
               <WeatherWidget />
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Weather overlay — desktop only: bottom left absolute */}
         <div className="hidden md:block absolute bottom-8 left-6 z-10">
@@ -200,13 +192,10 @@ export default function Home() {
       <div id="content-start" className="container mx-auto px-4 py-10 space-y-12">
 
         {/* Breaking News Ticker */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+        <div
           role="region"
           aria-label="Τελευταίες ειδήσεις"
-          className="bg-primary text-primary-foreground py-2.5 px-4 rounded-xl flex items-center gap-4 overflow-hidden shadow-md max-w-full"
+          className="hero-anim hero-anim-1 bg-primary text-primary-foreground py-2.5 px-4 rounded-xl flex items-center gap-4 overflow-hidden shadow-md max-w-full"
         >
           <span className="font-bold whitespace-nowrap bg-secondary text-secondary-foreground px-3 py-1 rounded-lg text-xs uppercase tracking-wider shrink-0" aria-hidden="true">
             Τελευταίες
@@ -229,7 +218,7 @@ export default function Home() {
               )) || <span className="text-sm text-primary-foreground/70">Φόρτωση ειδήσεων...</span>}
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Brand intro — visible to crawlers and users */}
         <p className="text-sm text-muted-foreground text-center leading-relaxed max-w-3xl mx-auto -mt-4">

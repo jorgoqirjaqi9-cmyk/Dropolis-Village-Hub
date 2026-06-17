@@ -6,6 +6,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/Layout";
 import { ScrollToTop } from "@/components/ScrollToTop";
+// Home is imported eagerly so React renders the hero section immediately on
+// mount — no lazy-chunk download on the critical path, which was responsible
+// for the 2,150 ms Element Render Delay seen in Lighthouse.
+import Home from "@/pages/Home";
 
 // Ensure all generated API hooks use the exact origin the browser is connected
 // to. This covers dev preview (proxied iframe), staging, and production without
@@ -13,7 +17,6 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 setBaseUrl(window.location.origin);
 
 const NotFound        = lazy(() => import("@/pages/not-found"));
-const Home            = lazy(() => import("@/pages/Home"));
 const News            = lazy(() => import("@/pages/News"));
 const NewsDetail      = lazy(() => import("@/pages/NewsDetail"));
 const Villages        = lazy(() => import("@/pages/Villages"));
@@ -223,7 +226,7 @@ function App() {
   // setTimeout(2000) after component mount ensures gtag.js injection doesn't
   // create Long Tasks during the critical React initialisation window.
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setTimeout(() => { // 4 s: safely past LCP + React init window
       // Initialise dataLayer and the gtag stub. GA4 requires a conventional
       // function (not an arrow) so `arguments` is the actual Arguments object.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

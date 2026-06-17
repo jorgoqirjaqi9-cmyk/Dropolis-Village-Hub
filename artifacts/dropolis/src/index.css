@@ -263,6 +263,11 @@
     opacity: 1;
     transform: none;
   }
+  .hero-anim {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .delay-100 { animation-delay: 0.1s; }
@@ -270,6 +275,21 @@
 .delay-300 { animation-delay: 0.3s; }
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
+
+/* Hero section CSS animation — replaces Framer Motion for above-the-fold
+   elements so no layout reads happen on the critical render path.
+   animation-fill-mode:both keeps the element at opacity:0 until the delay
+   fires, preventing a flash of fully-visible content before the animation. */
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-anim         { animation: hero-fade-up 0.55s ease both; }
+.hero-anim-1       { animation-delay: 0.00s; }
+.hero-anim-2       { animation-delay: 0.12s; }
+.hero-anim-3       { animation-delay: 0.24s; }
+.hero-anim-4       { animation-delay: 0.36s; }
+.hero-anim-5       { animation-delay: 0.48s; }
 
 /* ─── Google Translate — hide injected banner & highlights ───── */
 .goog-te-banner-frame,

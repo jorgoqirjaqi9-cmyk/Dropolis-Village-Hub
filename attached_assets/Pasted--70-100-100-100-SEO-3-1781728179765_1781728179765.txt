@@ -1,0 +1,264 @@
+Διάγνωση ζητημάτων απόδοσης
+70
+Απόδοση
+100
+Προσβασιμότητα
+100
+Βέλτιστες πρακτικές
+100
+SEO
+3/3
+Περιήγηση μέσω agent
+70
+FCP
++3
+LCP
++7
+TBT
++30
+CLS
++25
+SI
++6
+Απόδοση
+Οι τιμές εκτιμώνται και μπορεί να ποικίλουν. Η βαθμολογία απόδοσης υπολογίζεται απευθείας από αυτές τις μετρήσεις.Προβολή αριθμομηχανής.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Μετρήσεις
+Ανάπτυξη προβολής
+First Contentful Paint
+3,7 δ.
+Largest Contentful Paint
+5,0 δ.
+Total Blocking Time
+50 χλστ.δ.
+Cumulative Layout Shift
+0
+Speed Index
+5,2 δ.
+Captured at 17 Ιουν 2026, 11:27 μ.μ. EEST
+Προσομοιωμένο Moto G Power with Lighthouse 13.4.0
+Περίοδος λειτουργίας σε μία σελίδα
+Αρχική φόρτωση σελίδας
+Ρύθμιση ροής δεδομένων αργού 4G
+Using HeadlessChromium 146.0.7680.177 with lr
+Προβολή δενδροειδούς χάρτη
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Εμφάνιση ελέγχων που σχετίζονται με:
+
+All
+
+FCP
+
+LCP
+
+TBT
+Insight
+Βελτίωση προβολής εικόνων Εκτιμώμενη εξοικονόμηση 82 KiB
+Η μείωση του χρόνου λήψης των εικόνων μπορεί να βελτιώσει τον αντιληπτό χρόνο φόρτωσης της σελίδας και του LCP. Μάθετε περισσότερα σχετικά με τη βελτιστοποίηση του μεγέθους εικόναςLCPFCPΧωρίς βαθμολογία
+URL
+Μέγεθος πόρου
+Εκτιμώμενη εξοικονόμηση
+dropolis.net 1ο μέρος
+136,2 KiB	77,6 KiB
+Οδοιπορικό στη Δρόπολη: Ανακαλύπτοντας τα Ιστορικά Χωριά της Βορείου Ηπείρου
+<img sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px" alt="Οδοιπορικό στη Δρόπολη: Ανακαλύπτοντας τα Ιστορικά Χωριά της Βορείου Ηπείρ…" loading="lazy" decoding="async" class="object-cover w-full h-full transition-transform duration-700 group-hover:s…" srcset="/api/storage/public-objects/articles/stone-bridge-epirus.jpg?w=400&amp;format=…" src="/api/storage/public-objects/articles/stone-bridge-epirus.jpg?w=800&amp;format=…">
+…articles/stone-bridge-epirus.jpg?w=800&format=webp(dropolis.net)
+136,2 KiB
+77,6 KiB
+Η αύξηση του συντελεστή συμπίεσης της εικόνας θα μπορούσε να βελτιώσει το μέγεθος λήψης αυτής της εικόνας.
+77,6 KiB
+unsplash.com
+32,0 KiB	4,5 KiB
+Πανοραμικό τοπίο από τη Δρόπολη, Βόρεια Ήπειρος
+<img sizes="100vw" alt="Πανοραμικό τοπίο από τη Δρόπολη, Βόρεια Ήπειρος" fetchpriority="high" loading="eager" decoding="async" width="1200" height="800" class="absolute inset-0 w-full h-full object-cover object-center" srcset="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&amp;q=55&amp;fm…" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&amp;q=55&amp;fm…">
+/photo-150…-21bda4d32df4?w=800&q=55&fm=webp&auto=format(images.unsplash.com)
+32,0 KiB
+4,5 KiB
+Η αύξηση του συντελεστή συμπίεσης της εικόνας θα μπορούσε να βελτιώσει το μέγεθος λήψης αυτής της εικόνας.
+4,5 KiB
+Επιβολή επανάληψης ροής
+Μια αναγκαστική επανάληψη ροής συμβαίνει όταν η JavaScript υποβάλλει ερωτήματα για γεωμετρικές ιδιότητες (όπως offsetWidth), αφού τα στιλ έχουν καταστεί μη έγκυρα από μια αλλαγή στην κατάσταση DOM. Αυτό μπορεί να οδηγήσει σε κακή απόδοση. Μάθετε περισσότερα σχετικά με τις αναγκαστικές επαναλήψεις ροής και τις πιθανές ενέργειες μετριασμού.Χωρίς βαθμολογία
+Κορυφαία κλήση συνάρτησης
+Συνολικός χρόνος επανάληψης ροής
+/assets/vendor-mo….js:2:2781(dropolis.net)
+69 ms
+Πηγή
+Συνολικός χρόνος επανάληψης ροής
+/assets/vendor-mo….js:1:73437(dropolis.net)
+69 ms
+Δέντρο εξαρτήσεων δικτύου
+Για τη βελτίωση της φόρτωσης σελίδας, αποφύγετε τη δημιουργία αλυσίδων κρίσιμων αιτημάτων, μειώνοντας το μήκος των αλυσίδων ή το μέγεθος λήψης των πόρων ή αναβάλλοντας τη λήψη των μη απαραίτητων πόρων.LCPΧωρίς βαθμολογία
+Μέγιστος λανθάνων χρόνος κρίσιμης διαδρομής: 350 ms
+Αρχική πλοήγηση
+https://dropolis.net - 196 ms, 5,73 KiB
+/assets/index-BvMYNebp.css(dropolis.net) - 350 ms, 25,42 KiB
+/assets/index-BwDmg77i.js(dropolis.net) - 330 ms, 25,27 KiB
+Προσυνδεδεμένες προελεύσεις
+Οι υποδείξεις προσύνδεσης βοηθούν το πρόγραμμα περιήγησης να δημιουργήσει μια σύνδεση νωρίτερα κατά τη φόρτωση της σελίδας, εξοικονομώντας χρόνο όταν υποβάλλεται το πρώτο αίτημα για αυτή την προέλευση. Οι παρακάτω είναι οι προελεύσεις στις οποίες προσυνδεόταν η σελίδα.
+Προέλευση
+Πηγή
+https://images.unsplash.com/
+head > link
+<link rel="preconnect" href="https://images.unsplash.com">
+https://api.open-meteo.com/
+head > link
+<link rel="preconnect" href="https://api.open-meteo.com">
+Προσύνδεση που δεν χρησιμοποιείται. Ελέγξτε ότι το χαρακτηριστικό crossorigin χρησιμοποιείται σωστά.
+https://fonts.googleapis.com/
+head > link
+<link rel="preconnect" href="https://fonts.googleapis.com">
+https://fonts.gstatic.com/
+head > link
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+Υποψήφιες για προσύνδεση
+Προσθέστε υποδείξεις προσύνδεσης στις πιο σημαντικές προελεύσεις σας, αλλά προσπαθήστε να μην χρησιμοποιήσετε πάνω από 4.
+Προέλευση
+Εκτιμώμενη εξοικονόμηση LCP
+https://api.open-meteo.com
+340 ms
+Αιτήματα αποκλεισμού απόδοσης
+Τα αιτήματα αποκλείουν την αρχική απόδοση της σελίδας, κάτι που μπορεί να οδηγήσει σε καθυστέρηση της μέτρησης LCP. Η αναβολή ή η ενσωμάτωση μπορεί να μετακινήσει αυτά τα αιτήματα δικτύου εκτός της κρίσιμης διαδρομής.LCPFCPΧωρίς βαθμολογία
+URL
+Μέγεθος μεταφοράς
+Διάρκεια
+dropolis.net 1ο μέρος
+25,4 KiB	620 ms
+/assets/index-BvMYNebp.css(dropolis.net)
+25,4 KiB
+620 ms
+Βελτιστοποίηση μεγέθους DOM
+Ένα μεγάλο DOM μπορεί να αυξήσει τη διάρκεια των υπολογισμών στιλ και των επαναλήψεων ροών διάταξης και, συνεπώς, να επηρεάσει την απόκριση της σελίδας. Ένα μεγάλο DOM θα αυξήσει επίσης τη χρήση της μνήμης. Μάθετε πώς μπορείτε να αποφύγετε ένα υπερβολικά μεγάλο μέγεθος DOM.Χωρίς βαθμολογία
+Στατιστικό στοιχείο
+Στοιχείο
+Τιμή
+Σύνολο στοιχείων
+704
+Βάθος DOM
+ΠΟΛΙΤΙΣΜΟΣ
+<span class="bg-secondary text-secondary-foreground text-xs font-bold px-3 py-1 rounded…">
+16
+Μέγιστος αριθμός θυγατρικών στοιχείων
+ΤΕΛΕΥΤΑΙΕΣ ◆ Κικίλιας: Μειώνουμε τη γραφειοκρατία και ενισχύουμε τη διαφάνεια γ…
+<div id="content-start" class="container mx-auto px-4 py-10 space-y-12">
+9
+Ανάλυση LCP
+Κάθε επιμέρους τμήμα έχει συγκεκριμένες στρατηγικές βελτίωσης. Ιδανικά, το μεγαλύτερο μέρος του χρόνου LCP θα πρέπει να δαπανάται για τη φόρτωση των πόρων, όχι σε καθυστερήσεις.LCPΧωρίς βαθμολογία
+Επιμέρους τμήμα
+Διάρκεια
+Time to First Byte
+10 ms
+Καθυστέρηση φόρτωσης πόρου
+170 ms
+Διάρκεια φόρτωσης πόρου
+20 ms
+Καθυστέρηση απόδοσης στοιχείων
+2.150 ms
+Πανοραμικό τοπίο από τη Δρόπολη, Βόρεια Ήπειρος
+<img sizes="100vw" alt="Πανοραμικό τοπίο από τη Δρόπολη, Βόρεια Ήπειρος" fetchpriority="high" loading="eager" decoding="async" width="1200" height="800" class="absolute inset-0 w-full h-full object-cover object-center" srcset="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&amp;q=55&amp;fm…" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&amp;q=55&amp;fm…">
+Τρίτα μέρη
+Ο κώδικας τρίτου μέρους μπορεί να επηρεάσει σημαντικά την απόδοση φόρτωσης. Μειώστε και αναβάλετε τη φόρτωση κώδικα τρίτου μέρους, για να δώσετε προτεραιότητα στο περιεχόμενο της σελίδας σας.Χωρίς βαθμολογία
+Τρίτο μέρος
+Μέγεθος μεταφοράς
+Χρόνος κύριου νήματος
+Google Tag Manager tag-manager 
+156 KiB	141 ms
+/gtag/js?id=G-R96FYBFRYQ(www.googletagmanager.com)
+156 KiB
+141 ms
+Google Fonts cdn 
+213 KiB	0 ms
+…v20/UcC73FwrK….woff2(fonts.gstatic.com)
+48 KiB
+0 ms
+…v20/UcC73FwrK….woff2(fonts.gstatic.com)
+48 KiB
+0 ms
+…v40/nuFiD-vYS….woff2(fonts.gstatic.com)
+38 KiB
+0 ms
+…v40/nuFvD-vYS….woff2(fonts.gstatic.com)
+23 KiB
+0 ms
+…v40/nuFRD-vYS….woff2(fonts.gstatic.com)
+22 KiB
+0 ms
+…v20/UcC73FwrK….woff2(fonts.gstatic.com)
+19 KiB
+0 ms
+…v20/UcC73FwrK….woff2(fonts.gstatic.com)
+12 KiB
+0 ms
+/css2?family=…(fonts.googleapis.com)
+2 KiB
+0 ms
+unsplash.com
+89 KiB	0 ms
+/photo-150…-21bda4d32df4?w=800&q=55&fm=webp&auto=format(images.unsplash.com)
+65 KiB
+0 ms
+/photo-150…-e33886168f5c?w=800&q=65&fm=webp&auto=format(images.unsplash.com)
+24 KiB
+0 ms
+open-meteo.com
+1 KiB	0 ms
+/v1/forecast?latitude=…(api.open-meteo.com)
+1 KiB
+0 ms
+Google Analytics analytics 
+1 KiB	0 ms
+/g/collect?v=…(www.google-analytics.com)
+1 KiB
+0 ms
+Αυτά τα insight είναι επίσης διαθέσιμα στο πλαίσιο Απόδοση των Εργαλείων για προγραμματιστές Chrome. Καταγράψτε ένα ίχνος, για να δείτε πιο λεπτομερείς πληροφορίες.
+Διαγνωστικά στοιχεία
+Μείωση στοιχείων JavaScript που δεν χρησιμοποιούνται Εκτιμώμενη εξοικονόμηση 46 KiB
+Μειώστε τα στοιχεία JavaScript που δεν χρησιμοποιούνται και αναβάλετε τη φόρτωση σεναρίων μέχρι να ζητηθούν, προκειμένου να μειωθούν τα byte που καταναλώνονται από τη δραστηριότητα δικτύου. Μάθετε πώς μπορείτε να μειώσετε την JavaScript που δεν χρησιμοποιείται.LCPFCPΧωρίς βαθμολογία
+URL
+Μέγεθος μεταφοράς
+Εκτιμώμενη εξοικονόμηση
+dropolis.net 1ο μέρος
+69,1 KiB	46,1 KiB
+/assets/vendor-mo….js(dropolis.net)
+41,7 KiB
+24,0 KiB
+/assets/vendor-radix-BDPQarUY.js(dropolis.net)
+27,3 KiB
+22,1 KiB
+Αποφύγετε μεγάλες εργασίες στο κύριο νήμα Βρέθηκαν 6 μεγάλες εργασίες
+Παραθέτει τις μεγαλύτερες εργασίες στο κύριο νήμα, κάτι που είναι χρήσιμο για τον εντοπισμό των συνεισφερόντων που συμβάλλουν περισσότερο στην καθυστέρηση εισόδου. Μάθετε πώς μπορείτε να αποφύγετε μεγάλες εργασίες στο κύριο νήμαTBTΧωρίς βαθμολογία
+URL
+Ώρα έναρξης
+Διάρκεια
+dropolis.net 1ο μέρος
+245 ms
+/assets/vendor-react-BVFYIFNx.js(dropolis.net)
+2.735 ms
+76 ms
+/assets/vendor-mo….js(dropolis.net)
+5.088 ms
+58 ms
+https://dropolis.net
+827 ms
+56 ms
+/assets/vendor-react-BVFYIFNx.js(dropolis.net)
+4.990 ms
+55 ms
+Google Tag Manager tag-manager 
+167 ms
+/gtag/js?id=G-R96FYBFRYQ(www.googletagmanager.com)
+6.154 ms
+98 ms
+/gtag/js?id=G-R96FYBFRYQ(www.googletagmanager.com)
+6.252 ms
+69 ms
