@@ -17,19 +17,19 @@ export default function EnContact() {
       <SEO
         title="Contact Dropolis"
         description="Get in touch with the Dropolis team in English — news tips, photo submissions, research enquiries and partnership proposals."
-        breadcrumbs={[{ name: "English", url: "/en" }, { name: "Contact", url: "/en/contact" }]}
+        breadcrumbs={[{ name: "English", url: "/en/" }, { name: "Contact", url: "/en/contact/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "ContactPage",
           name: "Contact Dropolis",
           description: "English-language contact page for the Dropolis community portal.",
-          url: "https://dropolis.net/en/contact",
+          url: "https://dropolis.net/en/contact/",
           inLanguage: "en",
         }}
         hreflang={[
-          { lang: "el-GR", href: "https://dropolis.net/contact" },
-          { lang: "en",    href: "https://dropolis.net/en/contact" },
-          { lang: "x-default", href: "https://dropolis.net/contact" },
+          { lang: "el-GR", href: "https://dropolis.net/contact/" },
+          { lang: "en",    href: "https://dropolis.net/en/contact/" },
+          { lang: "x-default", href: "https://dropolis.net/contact/" },
         ]}
       />
 

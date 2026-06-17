@@ -62,20 +62,20 @@ export default function Villages() {
       <SEO
         title="Τα Χωριά της Δρόπολης"
         description="Ανακαλύψτε και τα 41 ιστορικά χωριά της Δρόπολης. Πληθυσμός, ιστορία και παραδόσεις."
-        breadcrumbs={[{ name: "Χωριά", url: "/villages" }]}
+        breadcrumbs={[{ name: "Χωριά", url: "/villages/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "Τα Χωριά της Δρόπολης",
           description: "41 ιστορικά χωριά του Δήμου Δρόπολης.",
-          url: "https://dropolis.net/villages",
+          url: "https://dropolis.net/villages/",
           inLanguage: "el",
           numberOfItems: 41,
         }}
         hreflang={[
-          { lang: "el-GR", href: "https://dropolis.net/villages" },
-          { lang: "en",    href: "https://dropolis.net/en/villages" },
-          { lang: "x-default", href: "https://dropolis.net/villages" },
+          { lang: "el-GR", href: "https://dropolis.net/villages/" },
+          { lang: "en",    href: "https://dropolis.net/en/villages/" },
+          { lang: "x-default", href: "https://dropolis.net/villages/" },
         ]}
       />
 

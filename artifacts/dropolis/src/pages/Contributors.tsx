@@ -37,7 +37,7 @@ export default function Contributors() {
       <SEO
         title="Συνεισφέρετε στο Dropolis"
         description="Πώς μπορείτε να υποβάλετε ειδήσεις, φωτογραφίες και ιστορικές μαρτυρίες από τη Δρόπολη — οδηγός για τοπικούς ανταποκριτές."
-        breadcrumbs={[{ name: "Συνεισφορά", url: "/contributors" }]}
+        breadcrumbs={[{ name: "Συνεισφορά", url: "/contributors/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",

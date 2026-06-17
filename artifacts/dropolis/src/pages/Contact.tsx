@@ -41,12 +41,12 @@ export default function Contact() {
       <SEO
         title="Επικοινωνία"
         description="Επικοινωνήστε με το Dropolis. Υποβολή άρθρων, φωτογραφιών, ερωτήσεων και συνεργασιών για το portal της Δρόπολης."
-        breadcrumbs={[{ name: "Επικοινωνία", url: "/contact" }]}
+        breadcrumbs={[{ name: "Επικοινωνία", url: "/contact/" }]}
         jsonLd={faqLd}
         hreflang={[
-          { lang: "el-GR", href: "https://dropolis.net/contact" },
-          { lang: "en",    href: "https://dropolis.net/en/contact" },
-          { lang: "x-default", href: "https://dropolis.net/contact" },
+          { lang: "el-GR", href: "https://dropolis.net/contact/" },
+          { lang: "en",    href: "https://dropolis.net/en/contact/" },
+          { lang: "x-default", href: "https://dropolis.net/contact/" },
         ]}
       />
 

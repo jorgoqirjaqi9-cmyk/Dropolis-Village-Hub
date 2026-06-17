@@ -17,7 +17,7 @@ export default function Videos() {
         description={seoPages.videos.description}
         image={seoPages.videos.image}
         keywords="βίντεο Δρόπολης, ντοκιμαντέρ Βόρεια Ήπειρος, YouTube ελληνική μειονότητα, Dropull videos, χορός Δερόπολης, πολυφωνικά τραγούδια"
-        breadcrumbs={[{ name: "Βίντεο", url: "/videos" }]}
+        breadcrumbs={[{ name: "Βίντεο", url: "/videos/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "ItemList",

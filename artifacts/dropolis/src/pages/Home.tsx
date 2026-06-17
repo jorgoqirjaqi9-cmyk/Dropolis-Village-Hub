@@ -89,7 +89,7 @@ export default function Home() {
         }}
         hreflang={[
           { lang: "el-GR",     href: "https://dropolis.net/" },
-          { lang: "en",        href: "https://dropolis.net/en" },
+          { lang: "en",        href: "https://dropolis.net/en/" },
           { lang: "x-default", href: "https://dropolis.net/" },
         ]}
       />

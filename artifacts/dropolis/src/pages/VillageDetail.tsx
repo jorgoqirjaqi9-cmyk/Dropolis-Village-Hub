@@ -57,7 +57,7 @@ export default function VillageDetail() {
         description={village.description || `Ανακαλύψτε το χωριό ${village.nameEl} στη Δρόπολη, Βόρεια Ήπειρος.`}
         image={village.imageUrl || undefined}
         breadcrumbs={[
-          { name: "Χωριά", url: "/villages" },
+          { name: "Χωριά", url: "/villages/" },
           { name: village.nameEl, url: `/villages/${village.id}/` },
         ]}
         jsonLd={[
@@ -67,7 +67,10 @@ export default function VillageDetail() {
             "@id": `https://dropolis.net/villages/${village.id}/`,
             name: village.nameEl,
             alternateName: village.name,
-            description: village.description,
+            // Use ?? undefined so the field is omitted entirely in JSON.stringify
+            // when village.description is null — empty string would pass JSON
+            // parsing but be flagged by Google Rich Results as missing content.
+            description: village.description ?? undefined,
             ...(village.imageUrl ? {
               image: {
                 "@type": "ImageObject",
@@ -101,9 +104,9 @@ export default function VillageDetail() {
             "@context": "https://schema.org",
             "@type": "TouristAttraction",
             name: village.nameEl,
-            description: village.description,
+            description: village.description ?? undefined,
             image: village.imageUrl || undefined,
-            url: `https://dropolis.net/villages/${village.id}`,
+            url: `https://dropolis.net/villages/${village.id}/`,
             touristType: [
               { "@type": "Audience", audienceType: "Cultural tourists" },
               { "@type": "Audience", audienceType: "Greek diaspora" },

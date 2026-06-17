@@ -12,19 +12,19 @@ export default function EnAbout() {
       <SEO
         title="About Dropolis"
         description="Dropolis is the digital community portal for the 41 villages of Dropull, Northern Epirus — news, history and culture of the Greek minority in Albania."
-        breadcrumbs={[{ name: "English", url: "/en" }, { name: "About", url: "/en/about" }]}
+        breadcrumbs={[{ name: "English", url: "/en/" }, { name: "About", url: "/en/about/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "AboutPage",
           name: "About Dropolis",
           description: "Community news portal for the Greek-speaking villages of Dropull, Northern Epirus.",
-          url: "https://dropolis.net/en/about",
+          url: "https://dropolis.net/en/about/",
           inLanguage: "en",
         }}
         hreflang={[
-          { lang: "el-GR", href: "https://dropolis.net/about" },
-          { lang: "en",    href: "https://dropolis.net/en/about" },
-          { lang: "x-default", href: "https://dropolis.net/about" },
+          { lang: "el-GR", href: "https://dropolis.net/about/" },
+          { lang: "en",    href: "https://dropolis.net/en/about/" },
+          { lang: "x-default", href: "https://dropolis.net/about/" },
         ]}
       />
 

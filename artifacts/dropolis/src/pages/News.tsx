@@ -96,14 +96,14 @@ export default function News() {
         description="Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου."
         image="/og-news.png"
         keywords="Δρόπολη ειδήσεις, Βόρεια Ήπειρος νέα, ελληνική μειονότητα Αλβανία, Dropull news, Northern Epirus, Δερόπολη, Δρόπολης χωριά"
-        breadcrumbs={[{ name: "Ειδήσεις", url: "/news" }]}
+        breadcrumbs={[{ name: "Ειδήσεις", url: "/news/" }]}
         jsonLd={[
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             name: "Ειδήσεις — Δρόπολη",
             description: "Τελευταία νέα και ρεπορτάζ από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου.",
-            url: "https://dropolis.net/news",
+            url: "https://dropolis.net/news/",
             inLanguage: "el",
             publisher: {
               "@type": "NewsMediaOrganization",
@@ -130,9 +130,9 @@ export default function News() {
           },
         ]}
         hreflang={[
-          { lang: "el-GR",     href: "https://dropolis.net/news" },
-          { lang: "en",        href: "https://dropolis.net/en/news" },
-          { lang: "x-default", href: "https://dropolis.net/news" },
+          { lang: "el-GR",     href: "https://dropolis.net/news/" },
+          { lang: "en",        href: "https://dropolis.net/en/news/" },
+          { lang: "x-default", href: "https://dropolis.net/news/" },
         ]}
       />
 

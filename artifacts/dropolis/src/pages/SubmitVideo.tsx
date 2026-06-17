@@ -176,7 +176,7 @@ export default function SubmitVideo() {
       <SEO
         title="Ανεβάστε Βίντεο"
         description="Υποβάλετε βίντεο από τα χωριά της Δρόπολης. Κάθε υποβολή ελέγχεται πριν δημοσιευτεί."
-        breadcrumbs={[{ name: "Ανεβάστε Βίντεο", url: "/submit-video" }]}
+        breadcrumbs={[{ name: "Ανεβάστε Βίντεο", url: "/submit-video/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",

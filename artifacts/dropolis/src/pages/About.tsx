@@ -26,7 +26,7 @@ export default function About() {
     "@type": "AboutPage",
     name: "Σχετικά με το Dropolis",
     description: "Portal ειδήσεων και κοινότητας για τα χωριά της Δρόπολης, Βόρεια Ήπειρος.",
-    url: "https://dropolis.net/about",
+    url: "https://dropolis.net/about/",
     mainEntity: {
       "@type": "Organization",
       name: "Dropolis (Δρόπολη)",
@@ -49,12 +49,12 @@ export default function About() {
       <SEO
         title="Σχετικά με το Dropolis"
         description="Μάθετε για το Dropolis — το portal ειδήσεων, φωτογραφιών και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος, Αλβανία)."
-        breadcrumbs={[{ name: "Σχετικά", url: "/about" }]}
+        breadcrumbs={[{ name: "Σχετικά", url: "/about/" }]}
         jsonLd={[jsonLd, faqLd]}
         hreflang={[
-          { lang: "el-GR", href: "https://dropolis.net/about" },
-          { lang: "en",    href: "https://dropolis.net/en/about" },
-          { lang: "x-default", href: "https://dropolis.net/about" },
+          { lang: "el-GR", href: "https://dropolis.net/about/" },
+          { lang: "en",    href: "https://dropolis.net/en/about/" },
+          { lang: "x-default", href: "https://dropolis.net/about/" },
         ]}
       />
 

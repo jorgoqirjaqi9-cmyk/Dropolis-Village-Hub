@@ -262,7 +262,7 @@ export default function UploadPhoto() {
       <SEO
         title="Υποβολή Φωτογραφίας"
         description="Στείλτε τη δική σας φωτογραφία από τα χωριά της Δρόπολης. Γενικό αρχείο ή για συγκεκριμένο χωριό — η ομάδα μας αξιολογεί κάθε υποβολή."
-        breadcrumbs={[{ name: "Υποβολή Φωτογραφίας", url: "/upload-photo" }]}
+        breadcrumbs={[{ name: "Υποβολή Φωτογραφίας", url: "/upload-photo/" }]}
       />
 
       {/* Hero */}

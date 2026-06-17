@@ -34,7 +34,7 @@ export default function CorrectionsPolicy() {
       <SEO
         title="Πολιτική Διορθώσεων"
         description="Πώς μπορείτε να ζητήσετε διόρθωση άρθρου στο Dropolis — διαδικασία αξιολόγησης, χρονοδιάγραμμα και διαφάνεια στις αλλαγές."
-        breadcrumbs={[{ name: "Πολιτική Διορθώσεων", url: "/corrections-policy" }]}
+        breadcrumbs={[{ name: "Πολιτική Διορθώσεων", url: "/corrections-policy/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",

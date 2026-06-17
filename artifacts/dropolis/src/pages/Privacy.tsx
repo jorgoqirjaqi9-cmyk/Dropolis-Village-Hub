@@ -53,7 +53,7 @@ export default function Privacy() {
       <SEO
         title="Πολιτική Απορρήτου"
         description="Πολιτική Απορρήτου του Dropolis. Πληροφορίες για τη συλλογή, χρήση και προστασία των προσωπικών δεδομένων σας."
-        breadcrumbs={[{ name: "Πολιτική Απορρήτου", url: "/privacy" }]}
+        breadcrumbs={[{ name: "Πολιτική Απορρήτου", url: "/privacy/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",

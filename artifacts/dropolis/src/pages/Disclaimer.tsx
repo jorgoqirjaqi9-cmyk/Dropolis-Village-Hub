@@ -9,7 +9,7 @@ export default function Disclaimer() {
       <SEO
         title="Αποποίηση Ευθύνης"
         description="Αποποίηση Ευθύνης του Dropolis. Πληροφορίες για τα όρια ευθύνης του ιστότοπου."
-        breadcrumbs={[{ name: "Αποποίηση Ευθύνης", url: "/disclaimer" }]}
+        breadcrumbs={[{ name: "Αποποίηση Ευθύνης", url: "/disclaimer/" }]}
       />
 
       <motion.header initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">

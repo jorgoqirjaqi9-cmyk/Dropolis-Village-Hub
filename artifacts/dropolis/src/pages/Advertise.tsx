@@ -10,7 +10,7 @@ export default function Advertise() {
       <SEO
         title="Διαφήμιση"
         description="Πληροφορίες για διαφήμιση και χορηγία στο Dropolis — portal ειδήσεων της ελληνικής μειονότητας στη Βόρεια Ήπειρο."
-        breadcrumbs={[{ name: "Διαφήμιση", url: "/advertise" }]}
+        breadcrumbs={[{ name: "Διαφήμιση", url: "/advertise/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",

@@ -72,9 +72,9 @@ const sections = [
     icon: Globe,
     links: [
       { href: "/en", label: "Dropolis in English", desc: "English-language portal for Dropull", icon: Globe },
-      { href: "/en/about", label: "About Dropolis", desc: "What we are and what we cover", icon: Info },
-      { href: "/en/villages", label: "The 41 Villages", desc: "Dropull municipality — geography & history", icon: MapPin },
-      { href: "/en/news", label: "News guide (EN)", desc: "How to navigate our Greek news section", icon: Newspaper },
+      { href: "/en/about/", label: "About Dropolis", desc: "What we are and what we cover", icon: Info },
+      { href: "/en/villages/", label: "The 41 Villages", desc: "Dropull municipality — geography & history", icon: MapPin },
+      { href: "/en/news/", label: "News guide (EN)", desc: "How to navigate our Greek news section", icon: Newspaper },
     ],
   },
 ];
@@ -85,7 +85,7 @@ export default function Sitemap() {
       <SEO
         title="Χάρτης Ιστοτόπου"
         description="Πλήρης χάρτης του ιστοτόπου Dropolis — Δρόπολη. Βρείτε εύκολα όλες τις σελίδες: ειδήσεις, χωριά, φωτογραφίες, βίντεο, chat και πολλά άλλα."
-        breadcrumbs={[{ name: "Χάρτης Ιστοτόπου", url: "/sitemap" }]}
+        breadcrumbs={[{ name: "Χάρτης Ιστοτόπου", url: "/sitemap/" }]}
       />
 
       <div className="max-w-4xl mx-auto px-4 py-10">

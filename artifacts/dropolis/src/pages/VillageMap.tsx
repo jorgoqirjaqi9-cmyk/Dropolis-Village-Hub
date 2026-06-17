@@ -180,8 +180,8 @@ export default function VillageMap() {
         title="Διαδραστικός Χάρτης Χωριών Δρόπολης | Dropolis"
         description="Διαδραστικός χάρτης με τα 41 χωριά της Δρόπολης, πληροφορίες, φωτογραφίες, ειδήσεις και σύνδεση με κάθε χωριό."
         breadcrumbs={[
-          { name: "Χωριά", url: "/villages" },
-          { name: "Χάρτης", url: "/villages/map" },
+          { name: "Χωριά", url: "/villages/" },
+          { name: "Χάρτης", url: "/villages/map/" },
         ]}
         jsonLd={jsonLd}
       />

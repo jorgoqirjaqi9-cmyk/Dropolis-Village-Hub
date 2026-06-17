@@ -36,7 +36,7 @@ export default function CookiePolicy() {
       <SEO
         title="Πολιτική Cookies"
         description="Πολιτική Cookies του Dropolis. Πληροφορίες για τα cookies που χρησιμοποιούμε και τις επιλογές σας."
-        breadcrumbs={[{ name: "Πολιτική Cookies", url: "/cookie-policy" }]}
+        breadcrumbs={[{ name: "Πολιτική Cookies", url: "/cookie-policy/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",

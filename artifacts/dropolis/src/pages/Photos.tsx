@@ -19,21 +19,21 @@ export default function Photos() {
         description={seoPages.photos.description}
         image={seoPages.photos.image}
         keywords="φωτογραφίες Δρόπολης, εικόνες χωριών Βόρεια Ήπειρος, ελληνική μειονότητα φωτογραφίες, Dropull photos, Δερόπολη εικόνες, παραδοσιακά χωριά"
-        breadcrumbs={[{ name: "Φωτογραφίες", url: "/photos" }]}
+        breadcrumbs={[{ name: "Φωτογραφίες", url: "/photos/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "ImageGallery",
           name: "Φωτογραφικό Αρχείο — Δρόπολη",
           description: "Πλούσιο φωτογραφικό αρχείο από τα χωριά, τις εκδηλώσεις και τους ανθρώπους της Δρόπολης, Βόρεια Ήπειρος.",
-          url: "https://dropolis.net/photos",
+          url: "https://dropolis.net/photos/",
           inLanguage: "el",
           about: { "@type": "Place", name: "Δρόπολη", containedInPlace: { "@type": "Place", name: "Βόρεια Ήπειρος, Αλβανία" } },
           publisher: { "@type": "Organization", "@id": "https://dropolis.net/#organization", name: "Δρόπολη (Dropolis)" },
         }}
         hreflang={[
-          { lang: "el-GR",     href: "https://dropolis.net/photos" },
-          { lang: "en",        href: "https://dropolis.net/en/photos" },
-          { lang: "x-default", href: "https://dropolis.net/photos" },
+          { lang: "el-GR",     href: "https://dropolis.net/photos/" },
+          { lang: "en",        href: "https://dropolis.net/en/photos/" },
+          { lang: "x-default", href: "https://dropolis.net/photos/" },
         ]}
       />
 

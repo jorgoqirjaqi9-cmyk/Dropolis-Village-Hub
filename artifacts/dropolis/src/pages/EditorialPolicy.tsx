@@ -34,7 +34,7 @@ export default function EditorialPolicy() {
       <SEO
         title="Συντακτική Πολιτική"
         description="Οι συντακτικές αρχές του Dropolis — πολιτική πηγών, χρήση AI και αυτοματισμών, ανεξαρτησία και διαφάνεια."
-        breadcrumbs={[{ name: "Συντακτική Πολιτική", url: "/editorial-policy" }]}
+        breadcrumbs={[{ name: "Συντακτική Πολιτική", url: "/editorial-policy/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",

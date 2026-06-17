@@ -12,20 +12,20 @@ export default function EnVillages() {
       <SEO
         title="The 41 Villages of Dropull, Northern Epirus"
         description="Explore the 41 villages of the Dropull municipality in southern Albania — geography, history, and the Greek minority heritage of Northern Epirus."
-        breadcrumbs={[{ name: "English", url: "/en" }, { name: "Villages", url: "/en/villages" }]}
+        breadcrumbs={[{ name: "English", url: "/en/" }, { name: "Villages", url: "/en/villages/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "The 41 Villages of Dropull",
           description: "The villages of the Dropull municipality in southern Albania, home to the Greek minority of Northern Epirus.",
-          url: "https://dropolis.net/en/villages",
+          url: "https://dropolis.net/en/villages/",
           inLanguage: "en",
           numberOfItems: 41,
         }}
         hreflang={[
-          { lang: "el-GR", href: "https://dropolis.net/villages" },
-          { lang: "en",    href: "https://dropolis.net/en/villages" },
-          { lang: "x-default", href: "https://dropolis.net/villages" },
+          { lang: "el-GR", href: "https://dropolis.net/villages/" },
+          { lang: "en",    href: "https://dropolis.net/en/villages/" },
+          { lang: "x-default", href: "https://dropolis.net/villages/" },
         ]}
       />
 

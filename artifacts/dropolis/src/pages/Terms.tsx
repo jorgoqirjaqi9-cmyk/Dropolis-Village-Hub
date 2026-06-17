@@ -51,7 +51,7 @@ export default function Terms() {
       <SEO
         title="Όροι Χρήσης"
         description="Όροι Χρήσης του Dropolis — portal ειδήσεων και κοινότητας για τη Δρόπολη, Βόρεια Ήπειρος."
-        breadcrumbs={[{ name: "Όροι Χρήσης", url: "/terms" }]}
+        breadcrumbs={[{ name: "Όροι Χρήσης", url: "/terms/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",

@@ -125,7 +125,7 @@ export default function SubmitNews() {
       <SEO
         title="Στείλτε Είδηση"
         description="Υποβάλετε είδηση για τη Δρόπολη και τα χωριά της. Κάθε υποβολή ελέγχεται από τη συντακτική ομάδα πριν δημοσιευτεί."
-        breadcrumbs={[{ name: "Στείλτε Είδηση", url: "/submit-news" }]}
+        breadcrumbs={[{ name: "Στείλτε Είδηση", url: "/submit-news/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",

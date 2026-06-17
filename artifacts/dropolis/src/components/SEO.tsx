@@ -26,7 +26,7 @@ export const seoPages = {
     description:
       "Φωτογραφικό αρχείο της Δρόπολης με εικόνες από χωριά, τοπία, παραδόσεις, ιστορικά σημεία και την καθημερινότητα της ελληνικής κοινότητας.",
     image: "https://dropolis.net/og-photos.jpg",
-    url: "https://dropolis.net/photos",
+    url: "https://dropolis.net/photos/",
   },
   videos: {
     title: "Βίντεο Δρόπολης | Ρεπορτάζ, Εκδηλώσεις και Ιστορία",
@@ -60,7 +60,7 @@ export interface SEOProps {
   /**
    * hreflang alternate links for multilingual SEO.
    * Use lang codes like "el-GR", "en", "x-default".
-   * Example: [{ lang: "el-GR", href: "https://dropolis.net/" }, { lang: "en", href: "https://dropolis.net/en" }, { lang: "x-default", href: "https://dropolis.net/" }]
+   * Example: [{ lang: "el-GR", href: "https://dropolis.net/" }, { lang: "en", href: "https://dropolis.net/en/" }, { lang: "x-default", href: "https://dropolis.net/" }]
    */
   hreflang?: Array<{ lang: string; href: string }>;
 }
@@ -242,9 +242,9 @@ export function SEO({
         "@type": "Place",
         name: "Δρόπολη, Βόρεια Ήπειρος",
       },
-      masthead: `${SITE.url}/about`,
-      publishingPrinciples: `${SITE.url}/editorial-policy`,
-      ethicsPolicy: `${SITE.url}/editorial-policy`,
+      masthead: `${SITE.url}/about/`,
+      publishingPrinciples: `${SITE.url}/editorial-policy/`,
+      ethicsPolicy: `${SITE.url}/editorial-policy/`,
       contactPoint: {
         "@type": "ContactPoint",
         email: "info@dropolis.net",

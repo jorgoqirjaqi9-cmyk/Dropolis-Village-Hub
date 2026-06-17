@@ -18,18 +18,18 @@ export default function EnPhotos() {
       <SEO
         title="Photo Gallery — Dropull Villages"
         description="Photographs from the 41 villages of Dropull, Northern Epirus — landscapes, village life, cultural heritage, and the Greek minority of Albania."
-        breadcrumbs={[{ name: "English", url: "/en" }, { name: "Photos", url: "/en/photos" }]}
+        breadcrumbs={[{ name: "English", url: "/en/" }, { name: "Photos", url: "/en/photos/" }]}
         hreflang={[
-          { lang: "el-GR", href: "https://dropolis.net/photos" },
-          { lang: "en",    href: "https://dropolis.net/en/photos" },
-          { lang: "x-default", href: "https://dropolis.net/photos" },
+          { lang: "el-GR", href: "https://dropolis.net/photos/" },
+          { lang: "en",    href: "https://dropolis.net/en/photos/" },
+          { lang: "x-default", href: "https://dropolis.net/photos/" },
         ]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "ImageGallery",
           name: "Photo Gallery — Dropull Villages",
           description: "Photographs from the 41 Greek minority villages of Dropull, Northern Epirus, Albania.",
-          url: "https://dropolis.net/en/photos",
+          url: "https://dropolis.net/en/photos/",
           inLanguage: "en",
           about: {
             "@type": "Place",

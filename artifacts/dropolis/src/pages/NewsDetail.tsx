@@ -3,7 +3,7 @@ import { useRoute, Link } from "wouter";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 import { useGetArticle, getGetArticleQueryKey, useListArticles, getListArticlesQueryKey, useGetTrendingArticles, getGetTrendingArticlesQueryKey } from "@workspace/api-client-react";
-import { SEO } from "@/components/SEO";
+import { SEO, SITE } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Clock, User, MapPin, Tag, BookOpen } from "lucide-react";
@@ -86,7 +86,9 @@ export default function NewsDetail() {
     "@type": "NewsArticle",
     "@id": `${BASE}/news/${article.id}/`,
     headline: article.seoTitle || article.title,
-    description: article.metaDescription || article.excerpt || "",
+    // Always provide a meaningful description — empty string passes JSON parsing
+    // but Google Rich Results flags it. Fall back to the site-wide description.
+    description: article.metaDescription || article.excerpt || SITE.description,
     image: {
       "@type": "ImageObject",
       url: absoluteImageUrl,
@@ -100,7 +102,7 @@ export default function NewsDetail() {
     author: {
       "@type": "Person",
       name: article.author || "Dropolis",
-      url: `${BASE}/about`,
+      url: `${BASE}/about/`,
     },
     publisher: {
       "@type": "NewsMediaOrganization",
@@ -136,7 +138,7 @@ export default function NewsDetail() {
           section: article.category,
         }}
         breadcrumbs={[
-          { name: "Ειδήσεις", url: "/news" },
+          { name: "Ειδήσεις", url: "/news/" },
           { name: article.title, url: `/news/${article.id}/` },
         ]}
         jsonLd={articleSchema}

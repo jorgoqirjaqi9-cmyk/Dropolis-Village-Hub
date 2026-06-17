@@ -20,19 +20,19 @@ export default function EnNews() {
       <SEO
         title="News from Dropull, Northern Epirus"
         description="Guide to Dropolis news coverage — what we report on, news categories, and how to find articles about the Greek minority of Dropull, Northern Epirus."
-        breadcrumbs={[{ name: "English", url: "/en" }, { name: "News", url: "/en/news" }]}
+        breadcrumbs={[{ name: "English", url: "/en/" }, { name: "News", url: "/en/news/" }]}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "WebPage",
           name: "News from Dropull — Dropolis",
           description: "Guide to news coverage about Dropull and the Greek minority of Northern Epirus.",
-          url: "https://dropolis.net/en/news",
+          url: "https://dropolis.net/en/news/",
           inLanguage: "en",
         }}
         hreflang={[
-          { lang: "el-GR", href: "https://dropolis.net/news" },
-          { lang: "en",    href: "https://dropolis.net/en/news" },
-          { lang: "x-default", href: "https://dropolis.net/news" },
+          { lang: "el-GR", href: "https://dropolis.net/news/" },
+          { lang: "en",    href: "https://dropolis.net/en/news/" },
+          { lang: "x-default", href: "https://dropolis.net/news/" },
         ]}
       />
 
