@@ -60,8 +60,18 @@ export default function NewsDetail() {
   const wordCount = article.content.split(/\s+/).filter(Boolean).length;
   const readingMinutes = Math.max(1, Math.ceil(wordCount / 180));
 
-  // Split content by paragraphs to insert ad after 2nd paragraph
-  const paragraphs = article.content.split('\n\n').filter(p => p.trim() !== '');
+  // Detect HTML content (articles stored with markup vs plain text)
+  const isHtmlContent = /^[\s\S]*<[a-z][a-zA-Z0-9]*[\s>]/m.test(article.content.trimStart());
+
+  // For plain-text articles: split into paragraphs to insert ad after 2nd
+  const paragraphs = isHtmlContent ? [] : article.content.split('\n\n').filter(p => p.trim() !== '');
+
+  // For HTML articles: split at first </h2> or ~40% mark to inject ad mid-content
+  const htmlAdSplit = isHtmlContent ? (() => {
+    const raw = article.content;
+    const cutIdx = raw.indexOf('</h2>', raw.indexOf('</h2>') + 1);
+    return cutIdx > 0 ? [raw.slice(0, cutIdx + 5), raw.slice(cutIdx + 5)] : [raw, ''];
+  })() : ['', ''];
 
   const BASE = "https://dropolis.net";
   const DEFAULT_IMG = `${BASE}/opengraph-dropolis-2026.jpg`;
@@ -184,17 +194,32 @@ export default function NewsDetail() {
         )}
 
         <div className="prose prose-lg dark:prose-invert max-w-none font-sans text-foreground/90 leading-relaxed">
-          {paragraphs.map((paragraph, idx) => (
-            <React.Fragment key={idx}>
-              <p className="mb-6 whitespace-pre-wrap">{paragraph}</p>
-              {idx === 1 && (
-                <div className="my-8">
-                  <AdSenseSlot adSlot="7994234180" adFormat="horizontal" className="hidden sm:block rounded shadow-sm" />
-                  <AdSenseSlot adSlot="7994234180" adFormat="rectangle" className="sm:hidden rounded shadow-sm" />
-                </div>
+          {isHtmlContent ? (
+            <>
+              <div dangerouslySetInnerHTML={{ __html: htmlAdSplit[0] }} />
+              {htmlAdSplit[1] && (
+                <>
+                  <div className="my-8">
+                    <AdSenseSlot adSlot="7994234180" adFormat="horizontal" className="hidden sm:block rounded shadow-sm" />
+                    <AdSenseSlot adSlot="7994234180" adFormat="rectangle" className="sm:hidden rounded shadow-sm" />
+                  </div>
+                  <div dangerouslySetInnerHTML={{ __html: htmlAdSplit[1] }} />
+                </>
               )}
-            </React.Fragment>
-          ))}
+            </>
+          ) : (
+            paragraphs.map((paragraph, idx) => (
+              <React.Fragment key={idx}>
+                <p className="mb-6 whitespace-pre-wrap">{paragraph}</p>
+                {idx === 1 && (
+                  <div className="my-8">
+                    <AdSenseSlot adSlot="7994234180" adFormat="horizontal" className="hidden sm:block rounded shadow-sm" />
+                    <AdSenseSlot adSlot="7994234180" adFormat="rectangle" className="sm:hidden rounded shadow-sm" />
+                  </div>
+                )}
+              </React.Fragment>
+            ))
+          )}
         </div>
 
         {article.tags && (
