@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useListVillages } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
+import { OptimizedImg } from "@/components/OptimizedImg";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Users, Mountain, Camera, Map } from "lucide-react";
@@ -131,11 +132,9 @@ export default function Villages() {
                 className="group glass-card rounded-2xl overflow-hidden hover:shadow-xl hover:border-primary/40 transition-all duration-300 h-full flex flex-col cursor-pointer"
               >
                 <div className="aspect-[4/3] overflow-hidden relative bg-muted">
-                  <img
+                  <OptimizedImg
                     src={village.imageUrl || `https://placehold.co/600x450/1e3a5f/ffffff?text=${encodeURIComponent(village.nameEl)}`}
                     alt={`Χωριό ${village.nameEl}`}
-                    loading="lazy"
-                    decoding="async"
                     width={600}
                     height={450}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"

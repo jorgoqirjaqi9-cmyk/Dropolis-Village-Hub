@@ -1,0 +1,21 @@
+Create an Automated Production Pipeline for Self-Sustaining Performance and Accessibility
+
+We have achieved great scores, and now I need you to build automated systems within the codebase so the site maintains these optimization levels (59+ Performance, 95+ Accessibility, 100 SEO) completely on its own, regardless of what images, videos, or articles users or admins upload in the future. 
+
+Please implement the following permanent automations:
+
+1. Automatic Client-Side Image Optimization:
+- Wrap the image upload dynamic content or integrate a global component/utility that automatically intercepts image rendering.
+- Ensure all future uploaded user/article images are served using responsive attributes (srcset), forced width/height ratios (aspect-ratio CSS), and optimized query parameters (like converting format to webp and setting quality to q=65 dynamically if external image APIs like Unsplash or a media server are used).
+- Force native lazy loading (loading="lazy") globally on all dynamically rendered images except the first main content image.
+
+2. Static & Media Asset Caching Configuration:
+- Configure server headers, Vite build options, or local storage rules so that static assets, Google Fonts, and core CSS/JS vendor chunks use long-term aggressive browser caching. This prevents the server overhead from dragging down the FCP on subsequent requests.
+
+3. Automated Dynamic Component Bounds (Anti-CLS Guardians):
+- Create strict CSS/HTML container wrapper structures for any dynamic user-generated widgets, weather updates, or news feeds. These wrappers must have fixed or aspect-ratio locked dimensions so that even if a dynamic component delays loading, it cannot cause a Layout Shift (keeping CLS at ~0).
+
+4. Automated Accessibility Linting Rules:
+- Add strict ESLint / Prettier configurations or pre-commit scripts into the project root that automatically flag or enforce 'aria-label' on any new icons, buttons, or interactive elements created in the future.
+
+Build these defensive mechanisms directly into the site framework so it remains fast and optimized forever without any manual intervention.

@@ -11,6 +11,7 @@ import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare
 import { usePWAInstall } from "@/hooks/use-pwa-install";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { WeatherWidget } from "@/components/WeatherWidget";
+import { OptimizedImg } from "@/components/OptimizedImg";
 
 const COMMUNITY_CATEGORY = "Ειδήσεις Κοινότητας";
 
@@ -548,12 +549,11 @@ export default function Home() {
                   <motion.div variants={fadeUp}>
                     <Link href={`/news/${featuredArticles[0].id}`}>
                       <div className="group relative rounded-2xl overflow-hidden shadow-xl aspect-video md:aspect-[21/9] cursor-pointer">
-                        <img
-                          src={featuredArticles[0].imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=70"}
+                        <OptimizedImg
+                          src={featuredArticles[0].imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c"}
                           alt={featuredArticles[0].title}
-                          loading="lazy"
+                          quality={65}
                           className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
-                          onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=70"; }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
@@ -583,12 +583,11 @@ export default function Home() {
                         <Link href={`/news/${article.id}`}>
                           <div className="group rounded-2xl overflow-hidden shadow-md glass-card flex flex-col h-full cursor-pointer hover:shadow-xl transition-all duration-300">
                             <div className="aspect-video overflow-hidden">
-                              <img
-                                src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"}
+                              <OptimizedImg
+                                src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c"}
                                 alt={article.title}
-                                loading="lazy"
+                                quality={65}
                                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
-                                onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"; }}
                               />
                             </div>
                             <div className="p-4 flex flex-col flex-grow">
@@ -639,12 +638,11 @@ export default function Home() {
                           className="group flex flex-col sm:flex-row gap-4 glass-card rounded-xl p-4 hover:shadow-lg transition-all duration-300"
                         >
                           <div className="sm:w-32 md:w-40 aspect-video sm:aspect-square rounded-lg overflow-hidden shrink-0">
-                            <img
-                              src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70"}
+                            <OptimizedImg
+                              src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c"}
                               alt={article.title}
-                              loading="lazy"
+                              quality={60}
                               className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                              onError={e => { (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70"; }}
                             />
                           </div>
                           <div className="flex flex-col flex-grow justify-center">
