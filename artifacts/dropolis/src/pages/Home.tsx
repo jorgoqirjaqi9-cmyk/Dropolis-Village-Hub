@@ -105,8 +105,7 @@ export default function Home() {
           src={HERO_IMAGE}
           srcSet={HERO_SRCSET}
           sizes="100vw"
-          alt=""
-          aria-hidden="true"
+          alt="Πανοραμικό τοπίο από τη Δρόπολη, Βόρεια Ήπειρος"
           fetchPriority="high"
           loading="eager"
           decoding="async"

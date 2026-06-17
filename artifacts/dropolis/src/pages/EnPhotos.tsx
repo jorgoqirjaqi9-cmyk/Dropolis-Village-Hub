@@ -17,7 +17,7 @@ export default function EnPhotos() {
     <div className="container mx-auto px-4 py-10 max-w-3xl space-y-10">
       <SEO
         title="Photo Gallery — Dropull Villages"
-        description="Browse photographs from the 41 villages of Dropull, Northern Epirus — landscapes, village life, cultural heritage, and the Greek minority communities of southern Albania."
+        description="Photographs from the 41 villages of Dropull, Northern Epirus — landscapes, village life, cultural heritage, and the Greek minority of Albania."
         breadcrumbs={[{ name: "English", url: "/en" }, { name: "Photos", url: "/en/photos" }]}
         hreflang={[
           { lang: "el-GR", href: "https://dropolis.net/photos" },

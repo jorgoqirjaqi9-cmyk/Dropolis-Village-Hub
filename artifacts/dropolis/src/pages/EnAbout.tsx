@@ -10,7 +10,7 @@ export default function EnAbout() {
     <div className="container mx-auto px-4 py-10 max-w-3xl space-y-10">
       <SEO
         title="About Dropolis"
-        description="Learn about Dropolis — the digital community platform for the 41 villages of Dropull, Northern Epirus, covering news, history and culture of the Greek minority in Albania."
+        description="Dropolis is the digital community portal for the 41 villages of Dropull, Northern Epirus — news, history and culture of the Greek minority in Albania."
         breadcrumbs={[{ name: "English", url: "/en" }, { name: "About", url: "/en/about" }]}
         jsonLd={{
           "@context": "https://schema.org",
