@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Switch, Route, Redirect, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { setBaseUrl } from "@workspace/api-client-react";
@@ -217,6 +217,30 @@ function Router() {
 }
 
 function App() {
+  // Bootstrap Google Analytics fully after the page has painted.
+  // Keeping all GA code here (not in index.html) means zero synchronous GA
+  // execution at HTML parse time — nothing competes with the LCP hero image.
+  // setTimeout(2000) after component mount ensures gtag.js injection doesn't
+  // create Long Tasks during the critical React initialisation window.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Initialise dataLayer and the gtag stub. GA4 requires a conventional
+      // function (not an arrow) so `arguments` is the actual Arguments object.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const w = window as any;
+      w.dataLayer = w.dataLayer || [];
+      // eslint-disable-next-line prefer-rest-params
+      w.gtag = function () { w.dataLayer.push(arguments); };
+      w.gtag("js", new Date());
+      w.gtag("config", "G-R96FYBFRYQ");
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ";
+      document.head.appendChild(s);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

@@ -52,20 +52,21 @@ export function AdSenseSlot({
     const el = ref.current;
     if (!el || pushed.current) return;
 
-    const pushAd = () => {
+    // ResizeObserver fires AFTER layout — no forced reflow in the critical
+    // render path. Calling el.offsetWidth synchronously inside useEffect was
+    // the root cause of the 56 ms forced reflow flagged by Lighthouse: React
+    // would commit, run effects, hit the offsetWidth read, and stall the main
+    // thread before the hero image could paint.
+    const observer = new ResizeObserver(() => {
       if (pushed.current || el.offsetWidth <= 0) return;
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
         pushed.current = true;
+        observer.disconnect();
       } catch {
-        // Silently ignore push errors, e.g. ad blockers or unfilled inventory.
+        // Silently ignore push errors (ad blockers, unfilled inventory, etc.)
       }
-    };
-
-    pushAd();
-
-    if (pushed.current) return;
-    const observer = new ResizeObserver(pushAd);
+    });
     observer.observe(el);
     return () => observer.disconnect();
   }, [adSlot, allowed]);

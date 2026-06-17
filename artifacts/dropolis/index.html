@@ -139,7 +139,9 @@
     <!-- AdSense — deferred and gated on advertising consent.
          Only loads on content pages; excluded on utility/legal/form/chat pages.
          On repeat visits we check localStorage and load immediately if already accepted.
-         On first visit CookieConsent.tsx triggers loading after the user accepts. -->
+         On first visit CookieConsent.tsx triggers loading after the user accepts.
+         setTimeout(2000) after window.load gives React enough time to complete its
+         initial render and paint the LCP hero before AdSense runs its Long Tasks. -->
     <script>
       var NO_ADS_ROUTES = ['/chat','/upload-photo','/submit-news','/submit-video','/privacy','/terms','/cookie-policy','/disclaimer','/diaspora'];
       function dropolisAdsAllowed(p) {
@@ -152,15 +154,17 @@
       }
       window.__dropolisAdsAllowed = dropolisAdsAllowed;
       window.addEventListener('load', function() {
-        var consent = localStorage.getItem('dropolis-cookie-consent');
-        var adv    = localStorage.getItem('dropolis-cookie-advertising');
-        if (consent === 'accepted' && adv !== '0' && dropolisAdsAllowed(window.location.pathname)) {
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3960290713410584';
-          s.crossOrigin = 'anonymous';
-          document.head.appendChild(s);
-        }
+        setTimeout(function() {
+          var consent = localStorage.getItem('dropolis-cookie-consent');
+          var adv    = localStorage.getItem('dropolis-cookie-advertising');
+          if (consent === 'accepted' && adv !== '0' && dropolisAdsAllowed(window.location.pathname)) {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3960290713410584';
+            s.crossOrigin = 'anonymous';
+            document.head.appendChild(s);
+          }
+        }, 2000);
       }, { once: true });
     </script>
     <!-- Hide auto-injected AdSense elements when on no-ads pages (SPA navigation) -->
@@ -169,26 +173,10 @@
       html[data-no-ads] .adsbygoogle-noablate { display: none !important; visibility: hidden !important; }
     </style>
 
-    <!-- Google Analytics — fully deferred until window.onload + 3 s.
-         requestIdleCallback(timeout:6000) can still fire before LCP on slow 4G
-         because the 6 s deadline can coincide with the critical render window.
-         Hard-wiring to onload + setTimeout guarantees GA never competes with LCP.
-         window.dataLayer and window.gtag are stubbed synchronously so any early
-         gtag() call from other scripts queues correctly, even before GA loads. -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function(){ window.dataLayer.push(arguments); };
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          window.gtag('js', new Date());
-          window.gtag('config', 'G-R96FYBFRYQ');
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ';
-          document.head.appendChild(s);
-        }, 3000);
-      }, { once: true });
-    </script>
+    <!-- Google Analytics — bootstrapped from App.tsx useEffect + setTimeout(2000).
+         Removed from index.html entirely so zero synchronous GA code runs at
+         HTML parse time. The React component initialises dataLayer, defines gtag,
+         and injects the gtag.js script only after the page has painted. -->
   </head>
   <body>
     <div id="root">
