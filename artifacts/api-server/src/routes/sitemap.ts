@@ -247,8 +247,9 @@ router.get("/sitemap.xml", async (req, res) => {
       }
 
       if (a.imageUrl && a.title) {
+        const absoluteImageUrl = a.imageUrl.startsWith("/") ? `${BASE_URL}${a.imageUrl}` : a.imageUrl;
         parts.push(`    <image:image>
-      <image:loc>${escapeXml(a.imageUrl)}</image:loc>
+      <image:loc>${escapeXml(absoluteImageUrl)}</image:loc>
       <image:title>${escapeXml(a.title)}</image:title>
     </image:image>`);
       }
