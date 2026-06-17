@@ -5,6 +5,7 @@ import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera, Send, Video } from "lucide-react";
 import { OptimizedImg } from "@/components/OptimizedImg";
+import "@/styles/prose.css";
 import { VoteButtons } from "@/components/VoteButtons";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";

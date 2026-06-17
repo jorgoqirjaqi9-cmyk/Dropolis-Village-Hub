@@ -1,3 +1,4 @@
+import "@/styles/prose.css";
 import { Link } from "wouter";
 import { SEO } from "@/components/SEO";
 import { motion } from "framer-motion";

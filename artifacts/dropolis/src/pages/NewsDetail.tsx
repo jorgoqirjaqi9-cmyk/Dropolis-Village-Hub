@@ -8,6 +8,7 @@ import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Clock, User, MapPin, Tag, BookOpen } from "lucide-react";
 import { OptimizedImg } from "@/components/OptimizedImg";
+import "@/styles/prose.css";
 
 export default function NewsDetail() {
   const [, params] = useRoute("/news/:id");
