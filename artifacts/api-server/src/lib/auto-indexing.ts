@@ -162,33 +162,27 @@ export async function pingSitemaps(): Promise<void> {
     urlList: [SITEMAP_URL],
   };
 
-  await Promise.allSettled([
-    fetchWithRetry(
-      INDEXNOW_ENDPOINT,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify(payload),
-      },
-      { maxAttempts: 3, timeoutMs: 30_000, baseDelayMs: 2_000 }
-    )
-      .then((r) => {
-        const ok = r.status === 200 || r.status === 202;
-        logEvent({ ts: new Date().toISOString(), type: "bing-ping", status: ok ? "ok" : "fail", detail: `IndexNow sitemap HTTP ${r.status}` });
-        logger.info({ status: r.status }, "Bing/IndexNow sitemap ping sent");
-      })
-      .catch((err: unknown) => {
-        logEvent({ ts: new Date().toISOString(), type: "bing-ping", status: "fail", detail: String(err) });
-        logger.warn({ err }, "Bing/IndexNow sitemap ping failed after retries");
-      }),
-
-    // Google: no public sitemap ping URL since 2024.
-    // Discovery happens via Google Indexing API (called per-article in autoIndexArticle)
-    // or by Googlebot re-crawling the sitemap naturally.
-    Promise.resolve().then(() => {
-      logEvent({ ts: new Date().toISOString(), type: "google-ping", status: "skipped", detail: "Google sitemap ping deprecated in 2024 — use Indexing API" });
-    }),
-  ]);
+  await fetchWithRetry(
+    INDEXNOW_ENDPOINT,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify(payload),
+    },
+    { maxAttempts: 3, timeoutMs: 30_000, baseDelayMs: 2_000 }
+  )
+    .then((r) => {
+      const ok = r.status === 200 || r.status === 202;
+      logEvent({ ts: new Date().toISOString(), type: "bing-ping", status: ok ? "ok" : "fail", detail: `IndexNow sitemap HTTP ${r.status}` });
+      logger.info({ status: r.status }, "Bing/IndexNow sitemap ping sent");
+    })
+    .catch((err: unknown) => {
+      logEvent({ ts: new Date().toISOString(), type: "bing-ping", status: "fail", detail: String(err) });
+      logger.warn({ err }, "Bing/IndexNow sitemap ping failed after retries");
+    });
+  // Google deprecated its public sitemap ping URL in 2024.
+  // Google discovery now happens via the Google Indexing API (per-article)
+  // or by Googlebot naturally re-crawling the sitemap.
 }
 
 // ---------------------------------------------------------------------------
@@ -290,7 +284,9 @@ export async function submitToGoogleIndexingApi(url: string): Promise<void> {
   const privateKey = process.env.GOOGLE_INDEXING_PRIVATE_KEY;
 
   if (!clientEmail || !privateKey) {
-    logEvent({ ts: new Date().toISOString(), type: "google-indexing-api", status: "skipped", url, detail: "Credentials not set — skipping" });
+    // Credentials not configured — silent skip. No log entry to avoid dashboard noise.
+    // Set GOOGLE_INDEXING_CLIENT_EMAIL + GOOGLE_INDEXING_PRIVATE_KEY in Replit Secrets to enable.
+    logger.debug({ url }, "Google Indexing API: credentials not set — skipping");
     return;
   }
 
