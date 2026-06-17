@@ -48,8 +48,9 @@ const EnPhotos        = lazy(() => import("@/pages/EnPhotos"));
 const UploadPhoto     = lazy(() => import("@/pages/UploadPhoto"));
 const Diaspora        = lazy(() => import("@/pages/Diaspora"));
 const Finiq           = lazy(() => import("@/pages/Finiq"));
-const SubmitNews      = lazy(() => import("@/pages/SubmitNews"));
-const SubmitVideo     = lazy(() => import("@/pages/SubmitVideo"));
+const SubmitNews        = lazy(() => import("@/pages/SubmitNews"));
+const SubmitVideo       = lazy(() => import("@/pages/SubmitVideo"));
+const TraditionalFood   = lazy(() => import("@/pages/TraditionalFood"));
 
 // Admin pages — full-screen (no Layout wrapper, include their own AdminLayout)
 const AdminDashboard  = lazy(() => import("@/pages/AdminDashboard"));
@@ -220,6 +221,8 @@ function Router() {
               <Route path="/submit-news/" component={SubmitNews} />
               <Route path="/submit-video" component={SubmitVideo} />
               <Route path="/submit-video/" component={SubmitVideo} />
+              <Route path="/paradosiaka-faghta" component={TraditionalFood} />
+              <Route path="/paradosiaka-faghta/" component={TraditionalFood} />
               <Route component={NotFound} />
             </Switch>
           </PageLoader>
