@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "x_3m0LB4HzDGYMvTmal8o"
@@ -24,3 +23,33 @@ id = "2Bpjf0S7aYHbnLHgIPpZf"
 uri = "file://attached_assets/generated_images/facebook_open_graph_image_64a7.png"
 type = "image"
 title = "generated_image"
+
+[[outputs]]
+id = "BhebROEtCzsYqZVHmd__j"
+uri = "file://attached_assets/stock_images/stock_image_1.jpg"
+type = "image"
+title = "stone village Greece mountains Epirus traditional architecture"
+
+[[outputs]]
+id = "KXd0sJ-l8ZfqSZriqWtap"
+uri = "file://attached_assets/stock_images/stock_image_2.jpg"
+type = "image"
+title = "stone village Greece mountains Epirus traditional architecture"
+
+[[outputs]]
+id = "Zwt_Yux0DMZ1u3U8AoSSr"
+uri = "file://attached_assets/stock_images/stock_image_3.jpg"
+type = "image"
+title = "stone village Greece mountains Epirus traditional architecture"
+
+[[outputs]]
+id = "OCNOvGSRodkpae6ItjR4b"
+uri = "file://attached_assets/stock_images/stock_image_4.jpg"
+type = "image"
+title = "stone village Greece mountains Epirus traditional architecture"
+
+[[outputs]]
+id = "NdaE0qZF5KA65VNnblDVw"
+uri = "file://attached_assets/stock_images/stock_image_5.jpg"
+type = "image"
+title = "traditional stone village Greece Epirus mountains landscape old houses"
