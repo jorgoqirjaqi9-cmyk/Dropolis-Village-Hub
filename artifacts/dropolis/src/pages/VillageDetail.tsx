@@ -4,6 +4,7 @@ import { useGetVillage, getGetVillageQueryKey, useListArticles, getListArticlesQ
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera, Send, Video } from "lucide-react";
+import { OptimizedImg } from "@/components/OptimizedImg";
 import { VoteButtons } from "@/components/VoteButtons";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
@@ -117,12 +118,12 @@ export default function VillageDetail() {
       <div className="relative rounded-3xl overflow-hidden bg-card shadow-lg border border-card-border">
         {village.imageUrl && (
           <div className="aspect-[21/9] w-full relative">
-            <img 
-              src={village.imageUrl} 
-              alt={village.nameEl} 
-              fetchPriority="high"
-              loading="eager"
-              decoding="async"
+            <OptimizedImg
+              src={village.imageUrl}
+              alt={village.nameEl}
+              priority
+              quality={75}
+              sizes="(max-width: 640px) 100vw, (max-width: 1280px) 80vw, 1200px"
               width={1200}
               height={514}
               className="w-full h-full object-cover"

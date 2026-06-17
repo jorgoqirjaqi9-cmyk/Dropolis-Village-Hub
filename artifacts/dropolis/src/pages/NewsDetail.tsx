@@ -7,6 +7,7 @@ import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Clock, User, MapPin, Tag, BookOpen } from "lucide-react";
+import { OptimizedImg } from "@/components/OptimizedImg";
 
 export default function NewsDetail() {
   const [, params] = useRoute("/news/:id");
@@ -168,12 +169,12 @@ export default function NewsDetail() {
 
         {article.imageUrl && (
           <figure className="rounded-xl overflow-hidden shadow-lg bg-card" style={{ aspectRatio: "16/9", maxHeight: 600 }}>
-            <img 
-              src={article.imageUrl} 
-              alt={article.title} 
-              fetchPriority="high"
-              loading="eager"
-              decoding="async"
+            <OptimizedImg
+              src={article.imageUrl}
+              alt={article.title}
+              priority
+              quality={75}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
               width={1200}
               height={675}
               className="w-full h-full object-cover"

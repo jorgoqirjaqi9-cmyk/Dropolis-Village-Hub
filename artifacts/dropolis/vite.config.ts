@@ -81,6 +81,12 @@ export default defineConfig({
           if (id.includes("/node_modules/@radix-ui/")) {
             return "vendor-radix";
           }
+          if (id.includes("/node_modules/@tanstack/")) {
+            return "vendor-query";
+          }
+          if (id.includes("/node_modules/lucide-react/")) {
+            return "vendor-icons";
+          }
           if (id.includes("/node_modules/date-fns/")) {
             return "vendor-date";
           }
