@@ -207,6 +207,14 @@ export function SEO({
       url: SITE.url,
       description: SITE.description,
       inLanguage: "el",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: `${SITE.url}/news?search={search_term_string}`,
+        },
+        "query-input": "required name=search_term_string",
+      },
     };
 
     const orgSchema = {
