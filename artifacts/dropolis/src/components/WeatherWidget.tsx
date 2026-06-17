@@ -74,10 +74,13 @@ export function WeatherWidget() {
   return (
     <div
       className="inline-flex items-center gap-3 bg-black/30 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-2.5 text-white shadow-lg"
-      style={{ minHeight: 52, contain: "layout" }}
+      // minWidth matches the rendered widget width so the container never grows
+      // when data arrives — prevents the CLS caused by the skeleton→content transition.
+      // minHeight reserves vertical space so the widget never shifts content below it.
+      style={{ minHeight: 52, minWidth: 280, contain: "layout" }}
     >
       {!data ? (
-        <span className="text-white/80 text-sm animate-pulse" style={{ display: "inline-block", width: 160 }}>Φόρτωση καιρού…</span>
+        <span className="text-white/80 text-sm animate-pulse" style={{ display: "inline-block", width: 220 }}>Φόρτωση καιρού…</span>
       ) : (
         <>
           <span className="text-3xl leading-none">{info!.icon}</span>

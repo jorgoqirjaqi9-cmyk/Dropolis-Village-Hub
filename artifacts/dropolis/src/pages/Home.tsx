@@ -204,19 +204,21 @@ export default function Home() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          role="region"
+          aria-label="Τελευταίες ειδήσεις"
           className="bg-primary text-primary-foreground py-2.5 px-4 rounded-xl flex items-center gap-4 overflow-hidden shadow-md max-w-full"
         >
-          <span className="font-bold whitespace-nowrap bg-secondary text-secondary-foreground px-3 py-1 rounded-lg text-xs uppercase tracking-wider shrink-0">
+          <span className="font-bold whitespace-nowrap bg-secondary text-secondary-foreground px-3 py-1 rounded-lg text-xs uppercase tracking-wider shrink-0" aria-hidden="true">
             Τελευταίες
           </span>
           <div className="flex-grow overflow-hidden relative min-w-0">
-            <div className="animate-marquee whitespace-nowrap">
+            <div className="animate-marquee whitespace-nowrap" aria-live="off">
               {recentArticles?.slice(0, 5).map((article) => (
                 <span key={article.id} className="mx-6 text-sm inline-flex items-center gap-2">
-                  <span className="opacity-40">◆</span>
+                  <span className="opacity-40" aria-hidden="true">◆</span>
                   {article.category === COMMUNITY_CATEGORY && (
-                    <span className="inline-flex items-center gap-0.5 bg-secondary/30 text-secondary-foreground text-[10px] font-semibold px-1.5 py-0.5 rounded uppercase tracking-wide shrink-0">
-                      <UsersRound className="w-2.5 h-2.5" />
+                    <span className="inline-flex items-center gap-0.5 bg-secondary/30 text-secondary-foreground text-[10px] font-semibold px-1.5 py-0.5 rounded uppercase tracking-wide shrink-0" aria-hidden="true">
+                      <UsersRound className="w-2.5 h-2.5" aria-hidden="true" />
                       Κοινότητα
                     </span>
                   )}
@@ -224,7 +226,7 @@ export default function Home() {
                     {article.title}
                   </Link>
                 </span>
-              )) || <span className="opacity-50 text-sm">Φόρτωση ειδήσεων...</span>}
+              )) || <span className="text-sm text-primary-foreground/70">Φόρτωση ειδήσεων...</span>}
             </div>
           </div>
         </motion.div>

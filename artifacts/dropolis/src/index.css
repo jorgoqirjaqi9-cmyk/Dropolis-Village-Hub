@@ -246,6 +246,25 @@
   animation: scrollBounce 1.5s ease-in-out infinite;
 }
 
+/* WCAG 2.3.3 — Pause all non-essential animations for users who prefer reduced
+   motion. The marquee and bounce arrow are decorative; stopping them removes
+   the vestibular/distraction risk without losing any content. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+    transform: translateX(0);
+  }
+  .animate-scroll-bounce {
+    animation: none;
+  }
+  .animate-fade-up,
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .delay-100 { animation-delay: 0.1s; }
 .delay-200 { animation-delay: 0.2s; }
 .delay-300 { animation-delay: 0.3s; }
