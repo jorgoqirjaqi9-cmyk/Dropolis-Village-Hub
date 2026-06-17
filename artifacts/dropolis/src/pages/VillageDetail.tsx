@@ -117,7 +117,7 @@ export default function VillageDetail() {
 
       <div className="relative rounded-3xl overflow-hidden bg-card shadow-lg border border-card-border">
         {village.imageUrl && (
-          <div className="aspect-[21/9] w-full relative">
+          <div className="aspect-[21/9] w-full relative bg-muted">
             <OptimizedImg
               src={village.imageUrl}
               alt={village.nameEl}
