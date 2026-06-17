@@ -3,6 +3,7 @@ import express, {
   type Express,
   type RequestHandler,
 } from "express";
+import compression from "compression";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import { existsSync } from "node:fs";
@@ -144,6 +145,16 @@ app.use(
 );
 app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
+
+// Gzip/Brotli compression for all text responses (HTML, JS, CSS, JSON, SVG).
+// Applied before static serving and route handlers so every response is covered.
+// Skips responses already compressed (images, etc.) based on Content-Type.
+app.use(compression({
+  // Only compress responses above 1 KB — no point compressing tiny JSON replies
+  threshold: 1024,
+  // Use maximum compression level for text; CPU cost is negligible vs bandwidth saved
+  level: 6,
+}));
 
 // Serve hashed Vite bundles (/assets/*.js, /assets/*.css) with long-term
 // immutable cache. The content hash in every filename guarantees correctness,

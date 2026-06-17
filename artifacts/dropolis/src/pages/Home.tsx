@@ -95,11 +95,12 @@ export default function Home() {
       />
 
       {/* ── HERO ───────────────────────────────────────────────────── */}
+      {/* min-h locks layout space before the image and fonts load, preventing CLS */}
       <section
         ref={heroRef}
         aria-labelledby="hero-heading"
-        className="relative w-full min-h-[92vh] flex items-center justify-center overflow-hidden -mt-0"
-        style={{ marginTop: 0 }}
+        className="relative w-full min-h-[92vh] min-h-[500px] flex items-center justify-center overflow-hidden"
+        style={{ marginTop: 0, contain: "layout" }}
       >
         <img
           src={HERO_IMAGE}
