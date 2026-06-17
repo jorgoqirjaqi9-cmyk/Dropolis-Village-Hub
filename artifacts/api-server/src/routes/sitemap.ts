@@ -40,6 +40,10 @@ const STATIC_ROUTES = [
   { loc: "/upload-photo/",      changefreq: "monthly", priority: "0.6" },
   { loc: "/submit-news/",       changefreq: "monthly", priority: "0.6" },
   { loc: "/submit-video/",      changefreq: "monthly", priority: "0.6" },
+  // These two pages were in public/sitemap.xml but missing from the dynamic
+  // sitemap — adding them keeps both sitemaps in sync.
+  { loc: "/diaspora/",          changefreq: "monthly", priority: "0.7" },
+  { loc: "/finiq/",             changefreq: "weekly",  priority: "0.8" },
 ];
 
 function escapeXml(str: string): string {

@@ -56,7 +56,7 @@ export default function Videos() {
             Ντοκιμαντέρ, εκδηλώσεις και ειδησεογραφικά ρεπορτάζ από τα χωριά της Δρόπολης.
           </p>
           <Link
-            href="/submit-video"
+            href="/submit-video/"
             className="inline-flex items-center gap-2 rounded-xl bg-secondary text-secondary-foreground px-5 py-2.5 text-sm font-semibold hover:bg-secondary/90 transition-colors"
           >
             <Upload className="w-4 h-4" />
@@ -108,7 +108,7 @@ export default function Videos() {
 
                 <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground pt-4 border-t border-border mt-auto">
                   {video.villageId && video.villageName ? (
-                    <Link href={`/villages/${video.villageId}`}>
+                    <Link href={`/villages/${video.villageId}/`}>
                       <span className="flex items-center gap-1 bg-accent/10 text-accent px-2 py-1 rounded font-medium hover:bg-accent/20 transition-colors">
                         <MapPin className="w-3 h-3" /> {video.villageName}
                       </span>
@@ -151,7 +151,7 @@ export default function Videos() {
             <Play className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
             <p className="mb-4">Δεν υπάρχουν διαθέσιμα βίντεο αυτή τη στιγμή.</p>
             <Link
-              href="/submit-video"
+              href="/submit-video/"
               className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors"
             >
               <Upload className="w-4 h-4" />

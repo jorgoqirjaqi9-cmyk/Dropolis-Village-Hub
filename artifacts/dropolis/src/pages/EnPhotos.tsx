@@ -119,9 +119,9 @@ export default function EnPhotos() {
           See also:{" "}
           <Link href="/en/" className="text-primary hover:underline">English overview</Link>
           {" · "}
-          <Link href="/en/villages" className="text-primary hover:underline">Villages</Link>
+          <Link href="/en/villages/" className="text-primary hover:underline">Villages</Link>
           {" · "}
-          <Link href="/en/contact" className="text-primary hover:underline">Contact</Link>
+          <Link href="/en/contact/" className="text-primary hover:underline">Contact</Link>
         </p>
       </motion.div>
     </div>

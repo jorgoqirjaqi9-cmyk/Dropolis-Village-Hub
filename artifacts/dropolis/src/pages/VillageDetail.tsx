@@ -58,7 +58,7 @@ export default function VillageDetail() {
         image={village.imageUrl || undefined}
         breadcrumbs={[
           { name: "Χωριά", url: "/villages" },
-          { name: village.nameEl, url: `/villages/${village.id}` },
+          { name: village.nameEl, url: `/villages/${village.id}/` },
         ]}
         jsonLd={[
           {
@@ -291,7 +291,7 @@ export default function VillageDetail() {
               <>
                 <div className="space-y-4 mb-4">
                   {news.map(article => (
-                    <Link key={article.id} href={`/news/${article.id}`} className="group block border-b border-border last:border-0 pb-4 last:pb-0">
+                    <Link key={article.id} href={`/news/${article.id}/`} className="group block border-b border-border last:border-0 pb-4 last:pb-0">
                       <h4 className="font-bold text-sm leading-snug group-hover:text-primary transition-colors mb-2 line-clamp-2">{article.title}</h4>
                       <span className="text-xs text-muted-foreground block">
                         {format(new Date(article.createdAt), "d MMMM yyyy", { locale: el })}

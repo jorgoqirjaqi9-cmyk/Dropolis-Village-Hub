@@ -137,7 +137,7 @@ export default function NewsDetail() {
         }}
         breadcrumbs={[
           { name: "Ειδήσεις", url: "/news" },
-          { name: article.title, url: `/news/${article.id}` },
+          { name: article.title, url: `/news/${article.id}/` },
         ]}
         jsonLd={articleSchema}
       />
@@ -254,7 +254,7 @@ export default function NewsDetail() {
             <h2 className="text-xl font-serif font-bold mb-5">Διαβάστε επίσης</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {displayTrending.map(a => (
-                <Link key={a.id} href={`/news/${a.id}`} className="group flex gap-3 p-3 rounded-lg bg-muted/40 hover:bg-muted transition-colors">
+                <Link key={a.id} href={`/news/${a.id}/`} className="group flex gap-3 p-3 rounded-lg bg-muted/40 hover:bg-muted transition-colors">
                   {a.imageUrl && (
                     <div className="w-20 h-16 rounded overflow-hidden shrink-0">
                       <img src={a.imageUrl} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
@@ -281,7 +281,7 @@ export default function NewsDetail() {
               <h3 className="font-serif text-lg font-bold mb-4 border-b border-border pb-2">Σχετικά Άρθρα</h3>
               <div className="space-y-4">
                 {displayRelated.map(related => (
-                  <Link key={related.id} href={`/news/${related.id}`} className="group block">
+                  <Link key={related.id} href={`/news/${related.id}/`} className="group block">
                     <div className="flex gap-3">
                       {related.imageUrl && (
                         <div className="w-20 h-20 rounded-md overflow-hidden shrink-0">
@@ -307,7 +307,7 @@ export default function NewsDetail() {
               <ol className="space-y-3">
                 {displayTrending.map((a, idx) => (
                   <li key={a.id}>
-                    <Link href={`/news/${a.id}`} className="group flex gap-3 items-start">
+                    <Link href={`/news/${a.id}/`} className="group flex gap-3 items-start">
                       <span className="text-2xl font-black text-muted-foreground/60 leading-none w-6 shrink-0 select-none" aria-hidden="true">{idx + 1}</span>
                       <div className="min-w-0">
                         <h4 className="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors leading-snug">{a.seoTitle || a.title}</h4>

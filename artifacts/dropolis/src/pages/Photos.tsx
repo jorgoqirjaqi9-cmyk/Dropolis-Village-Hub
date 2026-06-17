@@ -54,7 +54,7 @@ export default function Photos() {
           <p className="text-sm text-muted-foreground mt-0.5">Κάθε υποβολή αξιολογείται από την ομάδα μας πριν δημοσιευτεί.</p>
         </div>
         <Link
-          href="/upload-photo"
+          href="/upload-photo/"
           className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm"
         >
           <Upload className="w-4 h-4" />
@@ -82,7 +82,7 @@ export default function Photos() {
                   <h2 className="text-white font-bold text-lg leading-tight mb-1">{photo.title}</h2>
                   <div className="flex flex-wrap items-center gap-3 text-white/80 text-xs">
                     {photo.villageId && photo.villageName ? (
-                      <Link href={`/villages/${photo.villageId}`} onClick={e => e.stopPropagation()}>
+                      <Link href={`/villages/${photo.villageId}/`} onClick={e => e.stopPropagation()}>
                         <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm hover:bg-primary transition-colors">
                           <MapPin className="w-3 h-3" /> {photo.villageName}
                         </span>

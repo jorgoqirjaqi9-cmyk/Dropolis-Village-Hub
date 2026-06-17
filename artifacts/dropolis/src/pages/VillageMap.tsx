@@ -309,16 +309,16 @@ export default function VillageMap() {
                           </div>
                         )}
                         <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: "8px", display: "flex", flexDirection: "column", gap: "2px" }}>
-                          <a href={`/villages/${v.id}`} style={popupLinkStyle}>
+                          <a href={`/villages/${v.id}/`} style={popupLinkStyle}>
                             🏘 Άνοιγμα χωριού →
                           </a>
                           <a href={`/photos?village=${encodeURIComponent(v.nameEl)}`} style={popupLinkStyle}>
                             📷 Φωτογραφίες
                           </a>
-                          <a href="/submit-news" style={popupLinkStyle}>
+                          <a href="/submit-news/" style={popupLinkStyle}>
                             📰 Στείλτε είδηση
                           </a>
-                          <a href="/upload-photo" style={popupLinkStyle}>
+                          <a href="/upload-photo/" style={popupLinkStyle}>
                             📤 Ανέβασε φωτογραφία
                           </a>
                         </div>

@@ -68,13 +68,13 @@ export default function EnAbout() {
       </div>
 
       <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fade} className="flex flex-wrap gap-3">
-        <Link href="/en/villages" className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
+        <Link href="/en/villages/" className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
           Explore the villages
         </Link>
-        <Link href="/en/news" className="border border-border text-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-muted transition-colors">
+        <Link href="/en/news/" className="border border-border text-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-muted transition-colors">
           News coverage
         </Link>
-        <Link href="/en/contact" className="border border-border text-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-muted transition-colors">
+        <Link href="/en/contact/" className="border border-border text-foreground px-5 py-2.5 rounded-full text-sm font-medium hover:bg-muted transition-colors">
           Contact us
         </Link>
       </motion.div>

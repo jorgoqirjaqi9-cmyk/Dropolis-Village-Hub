@@ -101,14 +101,14 @@ export default function Villages() {
             data-testid="input-village-search"
           />
           <Link
-            href="/villages/map"
+            href="/villages/map/"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/90 px-4 py-2 text-sm font-semibold transition-all shadow-sm"
           >
             <Map size={15} />
             Διαδραστικός χάρτης
           </Link>
           <Link
-            href="/upload-photo"
+            href="/upload-photo/"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/15 border border-white/30 text-white hover:bg-white/25 px-4 py-2 text-sm font-semibold transition-all backdrop-blur-sm"
           >
             <Camera size={15} />
@@ -126,7 +126,7 @@ export default function Villages() {
           ))
         ) : filtered && filtered.length > 0 ? (
           filtered.map(village => (
-            <Link key={village.id} href={`/villages/${village.id}`}>
+            <Link key={village.id} href={`/villages/${village.id}/`}>
               <div
                 data-testid={`card-village-${village.id}`}
                 className="group glass-card rounded-2xl overflow-hidden hover:shadow-xl hover:border-primary/40 transition-all duration-300 h-full flex flex-col cursor-pointer"

@@ -152,18 +152,18 @@ export default function Home() {
               <Link href="/villages/" className="min-h-12 rounded-full border border-emerald-400/50 bg-emerald-600/70 px-6 py-3 font-bold text-white shadow-lg shadow-emerald-900/30 backdrop-blur transition hover:bg-emerald-500/80 focus:outline-none focus:ring-2 focus:ring-emerald-400">
                 Τα Χωριά μας
               </Link>
-              <Link href="/villages/map" className="min-h-12 rounded-full border border-sky-400/50 bg-sky-600/65 px-6 py-3 font-bold text-white shadow-lg shadow-sky-900/30 backdrop-blur transition hover:bg-sky-500/80 focus:outline-none focus:ring-2 focus:ring-sky-400">
+              <Link href="/villages/map/" className="min-h-12 rounded-full border border-sky-400/50 bg-sky-600/65 px-6 py-3 font-bold text-white shadow-lg shadow-sky-900/30 backdrop-blur transition hover:bg-sky-500/80 focus:outline-none focus:ring-2 focus:ring-sky-400">
                 Διαδραστικός Χάρτης
               </Link>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
-              <Link href="/submit-news" className="min-h-10 rounded-full border border-rose-400/40 bg-rose-500/20 px-4 py-2 text-sm font-semibold text-rose-100 backdrop-blur transition hover:bg-rose-500/35 focus:outline-none focus:ring-2 focus:ring-rose-400/60">
+              <Link href="/submit-news/" className="min-h-10 rounded-full border border-rose-400/40 bg-rose-500/20 px-4 py-2 text-sm font-semibold text-rose-100 backdrop-blur transition hover:bg-rose-500/35 focus:outline-none focus:ring-2 focus:ring-rose-400/60">
                 Στείλτε Είδηση
               </Link>
-              <Link href="/upload-photo" className="min-h-10 rounded-full border border-amber-400/40 bg-amber-500/20 px-4 py-2 text-sm font-semibold text-amber-100 backdrop-blur transition hover:bg-amber-500/35 focus:outline-none focus:ring-2 focus:ring-amber-400/60">
+              <Link href="/upload-photo/" className="min-h-10 rounded-full border border-amber-400/40 bg-amber-500/20 px-4 py-2 text-sm font-semibold text-amber-100 backdrop-blur transition hover:bg-amber-500/35 focus:outline-none focus:ring-2 focus:ring-amber-400/60">
                 Ανέβασε Φωτογραφία
               </Link>
-              <Link href="/submit-video" className="min-h-10 rounded-full border border-violet-400/40 bg-violet-500/20 px-4 py-2 text-sm font-semibold text-violet-100 backdrop-blur transition hover:bg-violet-500/35 focus:outline-none focus:ring-2 focus:ring-violet-400/60">
+              <Link href="/submit-video/" className="min-h-10 rounded-full border border-violet-400/40 bg-violet-500/20 px-4 py-2 text-sm font-semibold text-violet-100 backdrop-blur transition hover:bg-violet-500/35 focus:outline-none focus:ring-2 focus:ring-violet-400/60">
                 Ανεβάστε Βίντεο
               </Link>
             </div>
@@ -211,7 +211,7 @@ export default function Home() {
                       Κοινότητα
                     </span>
                   )}
-                  <Link href={`/news/${article.id}`} className="hover:text-secondary transition-colors">
+                  <Link href={`/news/${article.id}/`} className="hover:text-secondary transition-colors">
                     {article.title}
                   </Link>
                 </span>
@@ -300,7 +300,7 @@ export default function Home() {
                 { id: 86, nameEl: "Πολίτσανη", name: "Politsan" },
               ].map((v) => (
                 <motion.div key={v.id} variants={fadeUp}>
-                  <Link href={`/villages/${v.id}`}>
+                  <Link href={`/villages/${v.id}/`}>
                     <div className="group glass-card rounded-xl p-4 flex items-start gap-3 hover:shadow-md transition-all duration-200 cursor-pointer">
                       <div className="flex-grow min-w-0">
                         <p className="font-semibold text-sm text-foreground group-hover:text-primary dark:group-hover:text-secondary transition-colors leading-tight truncate">
@@ -322,7 +322,7 @@ export default function Home() {
                   Όλα τα χωριά
                 </span>
               </Link>
-              <Link href="/villages/map">
+              <Link href="/villages/map/">
                 <span className="inline-flex items-center gap-2 border border-primary text-primary dark:border-secondary dark:text-secondary font-semibold px-5 py-2.5 rounded-full text-sm hover:bg-primary/5 transition-colors min-h-[44px]">
                   <Map size={15} />
                   Διαδραστικός Χάρτης
@@ -538,7 +538,7 @@ export default function Home() {
                 >
                   {/* Hero Featured */}
                   <motion.div variants={fadeUp}>
-                    <Link href={`/news/${featuredArticles[0].id}`}>
+                    <Link href={`/news/${featuredArticles[0].id}/`}>
                       <div className="group relative rounded-2xl overflow-hidden shadow-xl aspect-video md:aspect-[21/9] cursor-pointer">
                         <OptimizedImg
                           src={featuredArticles[0].imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c"}
@@ -571,7 +571,7 @@ export default function Home() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {featuredArticles.slice(1, 3).map((article) => (
                       <motion.div key={article.id} variants={fadeUp}>
-                        <Link href={`/news/${article.id}`}>
+                        <Link href={`/news/${article.id}/`}>
                           <div className="group rounded-2xl overflow-hidden shadow-md glass-card flex flex-col h-full cursor-pointer hover:shadow-xl transition-all duration-300">
                             <div className="aspect-video overflow-hidden">
                               <OptimizedImg
@@ -625,7 +625,7 @@ export default function Home() {
                     {recentArticles.map((article) => (
                       <motion.div key={article.id} variants={fadeUp}>
                         <Link
-                          href={`/news/${article.id}`}
+                          href={`/news/${article.id}/`}
                           className="group flex flex-col sm:flex-row gap-4 glass-card rounded-xl p-4 hover:shadow-lg transition-all duration-300"
                         >
                           <div className="sm:w-32 md:w-40 aspect-video sm:aspect-square rounded-lg overflow-hidden shrink-0">
@@ -698,7 +698,7 @@ export default function Home() {
                 <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
                   Έχεις φωτογραφία από κάποιο χωριό της Δρόπολης; Στείλ' την στο φωτογραφικό αρχείο.
                 </p>
-                <Link href="/upload-photo">
+                <Link href="/upload-photo/">
                   <span className="inline-flex items-center gap-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground px-4 py-2 text-sm font-semibold transition-colors cursor-pointer">
                     <Camera size={14} />
                     Ανέβασε φωτογραφία χωριού

@@ -147,7 +147,7 @@ export default function News() {
           </div>
           <div className="flex flex-wrap gap-3">
             <Link
-              href="/submit-news"
+              href="/submit-news/"
               className="inline-flex items-center gap-2 rounded-xl bg-secondary text-secondary-foreground px-4 py-2.5 text-sm font-semibold hover:bg-secondary/90 transition-colors"
             >
               <Send className="w-4 h-4" />
@@ -225,7 +225,7 @@ export default function News() {
             <React.Fragment key={article.id}>
               {/* Card as div to allow village badge as a real nested link */}
               <div className="group flex flex-col md:flex-row gap-6 glass-card rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
-                <Link href={`/news/${article.id}`} className="md:w-1/3 lg:w-1/4 aspect-video rounded-lg overflow-hidden shrink-0 block">
+                <Link href={`/news/${article.id}/`} className="md:w-1/3 lg:w-1/4 aspect-video rounded-lg overflow-hidden shrink-0 block">
                   <img
                     src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"}
                     alt={article.title}
@@ -257,7 +257,7 @@ export default function News() {
                       {format(new Date(article.createdAt), "d MMMM yyyy", { locale: el })}
                     </span>
                   </div>
-                  <Link href={`/news/${article.id}`} className="flex flex-col flex-grow">
+                  <Link href={`/news/${article.id}/`} className="flex flex-col flex-grow">
                     <h2 className="text-xl md:text-2xl font-serif font-bold mb-3 group-hover:text-primary transition-colors">{article.title}</h2>
                     <p className="text-muted-foreground leading-relaxed line-clamp-3 mb-4">{article.excerpt || article.content.substring(0, 150) + "..."}</p>
                     <div className="mt-auto flex items-center justify-between text-sm">

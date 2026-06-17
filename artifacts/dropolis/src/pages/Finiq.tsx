@@ -362,14 +362,14 @@ export default function Finiq() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
-            href="/submit-news"
+            href="/submit-news/"
             className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-muted hover:bg-muted/70 px-5 py-3 text-sm font-semibold transition-colors"
           >
             <Newspaper className="w-4 h-4" />
             Αποστολή Είδησης
           </Link>
           <Link
-            href="/submit-video"
+            href="/submit-video/"
             className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-muted hover:bg-muted/70 px-5 py-3 text-sm font-semibold transition-colors"
           >
             <Video className="w-4 h-4" />
