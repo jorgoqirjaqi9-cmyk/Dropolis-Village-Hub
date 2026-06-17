@@ -75,24 +75,38 @@ export default function NewsDetail() {
 
   const BASE = "https://dropolis.net";
   const DEFAULT_IMG = `${BASE}/opengraph-dropolis-2026.jpg`;
+  // Ensure imageUrl is always absolute — relative paths (e.g. /api/storage/...) break JSON-LD validators
+  const absoluteImageUrl = article.imageUrl
+    ? article.imageUrl.startsWith("http")
+      ? article.imageUrl
+      : `${BASE}${article.imageUrl}`
+    : DEFAULT_IMG;
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
-    "@id": `${BASE}/news/${article.id}`,
-    headline: article.title,
-    description: article.excerpt || "",
-    image: [article.imageUrl || DEFAULT_IMG],
+    "@id": `${BASE}/news/${article.id}/`,
+    headline: article.seoTitle || article.title,
+    description: article.metaDescription || article.excerpt || "",
+    image: {
+      "@type": "ImageObject",
+      url: absoluteImageUrl,
+      width: 1200,
+      height: 675,
+    },
+    thumbnailUrl: absoluteImageUrl,
     datePublished: article.createdAt,
     dateModified: article.updatedAt ?? article.createdAt,
-    url: `${BASE}/news/${article.id}`,
+    url: `${BASE}/news/${article.id}/`,
     author: {
       "@type": "Person",
       name: article.author || "Dropolis",
+      url: `${BASE}/about`,
     },
     publisher: {
-      "@type": "Organization",
+      "@type": "NewsMediaOrganization",
       "@id": `${BASE}/#organization`,
       name: "Δρόπολη (Dropolis)",
+      url: BASE,
       logo: {
         "@type": "ImageObject",
         url: `${BASE}/logo.png`,
@@ -100,11 +114,12 @@ export default function NewsDetail() {
         height: 512,
       },
     },
-    mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE}/news/${article.id}` },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE}/news/${article.id}/` },
     isPartOf: { "@id": `${BASE}/#website` },
     articleSection: article.category,
     inLanguage: "el",
     keywords: article.tags || article.category,
+    wordCount: wordCount,
   };
 
   return (

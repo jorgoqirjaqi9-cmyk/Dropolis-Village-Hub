@@ -214,8 +214,9 @@ export function SEO({
       "@type": "NewsMediaOrganization",
       "@id": `${SITE.url}/#organization`,
       name: "Δρόπολη - Dropolis",
-      alternateName: "Dropolis",
+      alternateName: ["Dropolis", "Δρόπολη"],
       url: SITE.url,
+      foundingDate: "2026",
       logo: {
         "@type": "ImageObject",
         url: `${SITE.url}/logo.png`,
@@ -233,16 +234,48 @@ export function SEO({
         "@type": "Place",
         name: "Δρόπολη, Βόρεια Ήπειρος",
       },
+      masthead: `${SITE.url}/about`,
       publishingPrinciples: `${SITE.url}/editorial-policy`,
+      ethicsPolicy: `${SITE.url}/editorial-policy`,
       contactPoint: {
         "@type": "ContactPoint",
         email: "info@dropolis.net",
         contactType: "editorial",
         availableLanguage: ["Greek", "English", "Albanian"],
       },
+      areaServed: {
+        "@type": "AdministrativeArea",
+        name: "Δήμος Δρόπολης, Αλβανία",
+      },
     };
 
-    schemas.push(websiteSchema, orgSchema);
+    const destinationSchema = {
+      "@context": "https://schema.org",
+      "@type": "TouristDestination",
+      "@id": `${SITE.url}/#destination`,
+      name: "Δρόπολη",
+      alternateName: ["Dropolis", "Dropull"],
+      description: "Ο Δήμος Δρόπολης βρίσκεται στη Νότια Αλβανία (Βόρεια Ήπειρος) και αποτελεί το κέντρο της ελληνικής μειονότητας. Περιλαμβάνει 41 χωριά με πλούσια ιστορία, βυζαντινές εκκλησίες και παραδοσιακή αρχιτεκτονική.",
+      url: SITE.url,
+      image: `${SITE.url}/og-home.jpg`,
+      touristType: [
+        { "@type": "Audience", audienceType: "Cultural tourists" },
+        { "@type": "Audience", audienceType: "Heritage tourists" },
+        { "@type": "Audience", audienceType: "Greek diaspora" },
+      ],
+      includesAttraction: [
+        { "@type": "TouristAttraction", name: "Αντιγόνεια (αρχαιολογικός χώρος)" },
+        { "@type": "TouristAttraction", name: "Βυζαντινές εκκλησίες Δρόπολης" },
+        { "@type": "TouristAttraction", name: "Πανηγύρι Αγίου Γεωργίου Δερβιτσιάνης" },
+      ],
+      containedInPlace: {
+        "@type": "Country",
+        name: "Αλβανία",
+        sameAs: "https://www.wikidata.org/wiki/Q222",
+      },
+    };
+
+    schemas.push(websiteSchema, orgSchema, destinationSchema);
 
     if (breadcrumbs && breadcrumbs.length > 0) {
       const breadcrumbSchema = {
