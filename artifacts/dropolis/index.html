@@ -101,6 +101,20 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" />
     </noscript>
 
+    <!-- WOFF2 preloads — browser starts fetching the actual font files from the
+         HTML parse itself, before the async Google Fonts CSS is even loaded.
+         Saves one full RTT cascade: HTML→FontCSS→WOFF2 becomes HTML→WOFF2.
+         crossorigin is required: fonts are cross-origin resources loaded via CORS. -->
+    <!-- Inter Latin (ASCII text, stats, buttons) -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" />
+    <!-- Inter Greek (article titles, navigation, body text in Greek) -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2" />
+    <!-- Playfair Display 700 Latin (hero H1 "Dropolis", section headings) -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="https://fonts.gstatic.com/s/playfairdisplay/v40/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKeiunDXbtM.woff2" />
+
     <!-- Dark mode init (no-flash) -->
     <script>
       (function() {
@@ -155,23 +169,25 @@
       html[data-no-ads] .adsbygoogle-noablate { display: none !important; visibility: hidden !important; }
     </style>
 
-    <!-- Google Analytics — deferred to idle to reduce TBT on mobile -->
+    <!-- Google Analytics — fully deferred until window.onload + 3 s.
+         requestIdleCallback(timeout:6000) can still fire before LCP on slow 4G
+         because the 6 s deadline can coincide with the critical render window.
+         Hard-wiring to onload + setTimeout guarantees GA never competes with LCP.
+         window.dataLayer and window.gtag are stubbed synchronously so any early
+         gtag() call from other scripts queues correctly, even before GA loads. -->
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      function _loadGA() {
-        gtag('js', new Date());
-        gtag('config', 'G-R96FYBFRYQ');
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ';
-        document.head.appendChild(s);
-      }
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(_loadGA, { timeout: 6000 });
-      } else {
-        window.addEventListener('load', function() { setTimeout(_loadGA, 2000); });
-      }
+      window.gtag = function(){ window.dataLayer.push(arguments); };
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          window.gtag('js', new Date());
+          window.gtag('config', 'G-R96FYBFRYQ');
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ';
+          document.head.appendChild(s);
+        }, 3000);
+      }, { once: true });
     </script>
   </head>
   <body>
