@@ -474,7 +474,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </li>
                 ))}
               </ul>
-              <div className="mt-4 space-y-1 text-xs text-background/40">
+              <div className="mt-4 space-y-1 text-xs text-background/70">
                 <p><a href="mailto:info@dropolis.net" className="hover:text-secondary transition-colors">info@dropolis.net</a></p>
                 <p><Link href="/en/" className="hover:text-secondary transition-colors">🇬🇧 English</Link></p>
               </div>
@@ -483,14 +483,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="section-divider mb-6" />
 
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-background/40">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-background/70">
             <span>&copy; {new Date().getFullYear()} Dropolis. Με επιφύλαξη παντός δικαιώματος.</span>
             <div className="hidden sm:flex items-center gap-4">
               {legalLinks.map(({ href, label }) => (
                 <Link key={href} href={href} className="hover:text-secondary transition-colors">{label}</Link>
               ))}
             </div>
-            <span className="font-serif italic text-secondary/50">Η φωνή της Δρόπολης</span>
+            <span className="font-serif italic text-secondary/70">Η φωνή της Δρόπολης</span>
           </div>
         </div>
       </footer>
