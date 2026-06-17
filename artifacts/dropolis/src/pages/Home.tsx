@@ -42,6 +42,14 @@ export default function Home() {
   const [showIOSModal, setShowIOSModal] = useState(false);
   const [showGenericModal, setShowGenericModal] = useState(false);
 
+  // Remove the static hero shell injected in index.html once React has mounted
+  // and rendered its own hero section. The browser reuses the already-fetched
+  // image resource (same src), so the visual transition is seamless.
+  useEffect(() => {
+    const shell = document.getElementById("hero-static-shell");
+    if (shell) shell.remove();
+  }, []);
+
   const handleInstallClick = async () => {
     if (isInstalled) return;
     if (canNativeInstall) {

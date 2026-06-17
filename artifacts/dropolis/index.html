@@ -173,6 +173,45 @@
     </script>
   </head>
   <body>
+    <!--
+      Static hero shell — rendered immediately by the browser on HTML parse,
+      BEFORE any JavaScript runs. This makes the LCP element (the hero image)
+      available for first paint without waiting for React to boot.
+
+      • On non-homepage routes an inline script removes it synchronously
+        (before the first paint) so it never flashes on /news, /villages, etc.
+      • On the homepage, Home.tsx removes it via useEffect after React mounts.
+        By then the real React hero has the same src — the browser reuses the
+        already-fetched resource with no visible transition.
+    -->
+    <div id="hero-static-shell" aria-hidden="true" style="
+      position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;
+      background:#111;overflow:hidden;pointer-events:none;
+    ">
+      <img
+        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60&fm=webp&auto=format"
+        srcset="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=55&fm=webp&auto=format 800w, https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60&fm=webp&auto=format 1200w, https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=65&fm=webp&auto=format 1600w"
+        sizes="100vw"
+        alt=""
+        fetchpriority="high"
+        loading="eager"
+        decoding="sync"
+        width="1200"
+        height="800"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;"
+      />
+    </div>
+    <!-- Remove shell synchronously on non-homepage routes — runs before first paint -->
+    <script>
+      (function() {
+        var p = window.location.pathname;
+        if (p !== '/' && p !== '') {
+          var s = document.getElementById('hero-static-shell');
+          if (s) s.remove();
+        }
+      })();
+    </script>
+
     <div id="root">
       <main class="seo-prerender-content" aria-label="Δρόπολη - Portal Ειδήσεων και Κοινότητας">
         <h1>Portal Ειδήσεων και Κοινότητας Δρόπολης — Βόρεια Ήπειρος</h1>
