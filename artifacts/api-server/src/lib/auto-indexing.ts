@@ -1,4 +1,6 @@
 import { createSign } from "crypto";
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { logger } from "./logger.js";
 
 const HOST = "dropolis.net";
@@ -6,7 +8,6 @@ const BASE_URL = `https://${HOST}`;
 const SITEMAP_URL = `${BASE_URL}/api/sitemap.xml`;
 const INDEXNOW_KEY = "a65c5858b7f74b93a331bbe527a487d3";
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/IndexNow";
-const MANIFEST_URL = `${BASE_URL}/prerender-manifest.json`;
 
 export interface IndexingEvent {
   ts: string;
@@ -36,33 +37,41 @@ export function getRecentIndexingEvents(): IndexingEvent[] {
 // (runtime, immediately after article/village create/update). Each entry maps an
 // ID to the timestamp of when its HTML was last prerendered.
 //
-// Staleness check (article):
-//   - If the article ID is absent from the manifest → HTML never existed → SKIP
-//   - If manifest fetch fails → SKIP (fail closed — we can't verify prerender)
-//
-// We do NOT check updatedAt vs prerenderTs here because autoIndexArticle is only
-// called on CREATE (articles.ts). On-demand prerender writes the HTML and updates
-// the manifest immediately, so by the time the INDEXNOW_DELAY_MS timer fires the
-// manifest entry will already reflect the on-demand prerender timestamp.
+// Read directly from disk — same container, same filesystem as on-demand-prerender.ts.
+// This avoids the HTTP round-trip and in-memory cache that caused a stale-cache bug:
+// previously, the 10-minute HTTP cache would return the old manifest (without the
+// new article) when autoIndexArticle checked 60 s after creation, silently skipping
+// articles that had already been prerendered on disk.
 // ---------------------------------------------------------------------------
 
 type PrerenderManifest = {
   articles: Record<string, string>;
   villages: Record<string, string>;
 };
-let cachedManifest: { data: PrerenderManifest; fetchedAt: number } | null = null;
-const MANIFEST_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
-async function fetchManifest(): Promise<PrerenderManifest | null> {
-  if (cachedManifest && Date.now() - cachedManifest.fetchedAt < MANIFEST_CACHE_TTL_MS) {
-    return cachedManifest.data;
-  }
+// ---------------------------------------------------------------------------
+// Manifest — read directly from disk.
+//
+// The API server and on-demand-prerender run in the same container and share
+// the same dist/public directory. Reading from disk is faster and more
+// accurate than HTTP-fetching the manifest from the production URL, which
+// introduced a 10-minute stale-cache window that caused newly prerendered
+// articles to be wrongly classified as "absent" and skipped.
+// ---------------------------------------------------------------------------
+function getDistDir(): string {
+  return (
+    process.env.FRONTEND_DIST_PATH ??
+    resolve(process.cwd(), "artifacts/dropolis/dist/public")
+  );
+}
+
+function readManifestFromDisk(): PrerenderManifest | null {
+  const manifestPath = resolve(getDistDir(), "prerender-manifest.json");
+  if (!existsSync(manifestPath)) return null;
   try {
-    const res = await fetch(MANIFEST_URL, { signal: AbortSignal.timeout(5000) });
-    if (!res.ok) return null;
-    const data = (await res.json()) as PrerenderManifest;
+    const raw = readFileSync(manifestPath, "utf-8");
+    const data = JSON.parse(raw) as PrerenderManifest;
     if (typeof data.articles !== "object" || Array.isArray(data.articles)) return null;
-    cachedManifest = { data, fetchedAt: Date.now() };
     return data;
   } catch {
     return null;
@@ -70,31 +79,31 @@ async function fetchManifest(): Promise<PrerenderManifest | null> {
 }
 
 /**
- * Returns true if the article has prerendered HTML in the currently deployed build.
+ * Returns true if the article has prerendered HTML in the current dist build.
  *
- * Fail-closed: returns false (skip submission) if the manifest cannot be fetched.
- * This prevents crawlers from being pointed at the generic SPA shell.
+ * Reads the manifest directly from disk (same container, same filesystem as
+ * on-demand-prerender.ts) — no HTTP fetch, no stale cache.
+ * Fail-closed: returns false if the manifest file is missing or unreadable.
  */
-async function isArticlePrerendered(articleId: number): Promise<boolean> {
-  const manifest = await fetchManifest();
+function isArticlePrerendered(articleId: number): boolean {
+  const manifest = readManifestFromDisk();
   if (!manifest) {
-    // Manifest unavailable — cannot verify; fail closed to avoid advertising
-    // a URL that might serve the generic SPA shell to crawlers.
-    logger.warn({ articleId }, "auto-indexing: manifest unavailable — failing closed (submission skipped)");
+    logger.warn({ articleId }, "auto-indexing: prerender-manifest.json not found on disk — failing closed");
     return false;
   }
   return String(articleId) in manifest.articles;
 }
 
 /**
- * Returns true if the village has prerendered HTML in the currently deployed build.
+ * Returns true if the village has prerendered HTML in the current dist build.
  *
- * Fail-closed: returns false (skip submission) if the manifest cannot be fetched.
+ * Reads the manifest directly from disk.
+ * Fail-closed: returns false if the manifest file is missing or unreadable.
  */
-async function isVillagePrerendered(villageId: number): Promise<boolean> {
-  const manifest = await fetchManifest();
+function isVillagePrerendered(villageId: number): boolean {
+  const manifest = readManifestFromDisk();
   if (!manifest) {
-    logger.warn({ villageId }, "auto-indexing: manifest unavailable — failing closed (submission skipped)");
+    logger.warn({ villageId }, "auto-indexing: prerender-manifest.json not found on disk — failing closed");
     return false;
   }
   return String(villageId) in manifest.villages;
@@ -280,9 +289,9 @@ export async function submitToGoogleIndexingApi(url: string): Promise<void> {
 //      directory might not be mounted yet.)
 //
 //   2. Manifest check (fail closed):
-//      - Fetch prerender-manifest.json from the deployed frontend.
-//      - If unavailable → SKIP and log. Operator should retry via
-//        POST /api/indexnow/submit once the deployment is confirmed.
+//      - Read prerender-manifest.json from disk (same container, same fs).
+//      - If manifest file missing or unreadable → SKIP and log. Operator
+//        should retry via POST /api/indexnow/submit once confirmed deployed.
 //      - If article ID absent from manifest → SKIP and log.
 //      - If article ID present → proceed with IndexNow + Google Indexing API.
 // ---------------------------------------------------------------------------
@@ -301,15 +310,14 @@ export async function autoIndexArticle(articleId: number): Promise<void> {
 
   // Manifest check — fail closed if the manifest is unavailable or the
   // article is not yet in it (prerendered HTML not confirmed).
-  const prerendered = await isArticlePrerendered(articleId);
+  const prerendered = isArticlePrerendered(articleId);
   if (!prerendered) {
-    // Logged inside isArticlePrerendered (manifest unavailable) or here (absent).
     logEvent({
       ts: new Date().toISOString(),
       type: "indexnow",
       status: "skipped",
       url: articleUrl,
-      detail: "Article absent from prerender-manifest.json or manifest unavailable — retry via POST /api/indexnow/submit",
+      detail: "Article absent from prerender-manifest.json or manifest not found on disk — retry via POST /api/indexnow/submit",
     });
     return;
   }
@@ -342,14 +350,14 @@ export async function autoIndexVillage(villageId: number): Promise<void> {
     await new Promise<void>((resolve) => setTimeout(resolve, INDEXNOW_DELAY_MS));
   }
 
-  const prerendered = await isVillagePrerendered(villageId);
+  const prerendered = isVillagePrerendered(villageId);
   if (!prerendered) {
     logEvent({
       ts: new Date().toISOString(),
       type: "indexnow",
       status: "skipped",
       url: villageUrl,
-      detail: "Village absent from prerender-manifest.json or manifest unavailable — retry via POST /api/indexnow/submit",
+      detail: "Village absent from prerender-manifest.json or manifest not found on disk — retry via POST /api/indexnow/submit",
     });
     return;
   }
