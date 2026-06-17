@@ -65,6 +65,9 @@ export default defineConfig({
     emptyOutDir: true,
     cssCodeSplit: true,
     cssMinify: "lightningcss",
+    // Remove the module-preload polyfill — saves ~1.5 KB; all our target
+    // browsers support <link rel="modulepreload"> natively (2022+).
+    modulePreload: { polyfill: false },
     rollupOptions: {
       output: {
         manualChunks(id) {

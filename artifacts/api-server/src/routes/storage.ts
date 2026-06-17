@@ -7,6 +7,15 @@ import {
 import { ObjectStorageService, ObjectNotFoundError } from "../lib/objectStorage";
 import { ObjectPermission } from "../lib/objectAcl";
 
+const TRANSFORMABLE_TYPES = new Set([
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
+  "image/tiff",
+  "image/webp",
+]);
+
 const router: IRouter = Router();
 const objectStorageService = new ObjectStorageService();
 
@@ -48,7 +57,14 @@ router.post("/storage/uploads/request-url", async (req: Request, res: Response) 
  *
  * Serve public assets from PUBLIC_OBJECT_SEARCH_PATHS.
  * These are unconditionally public — no authentication or ACL checks.
- * IMPORTANT: Always provide this endpoint when object storage is set up.
+ *
+ * Optional query params for image transformation (requires sharp):
+ *   ?w=<pixels>           — resize width, height auto (no upscaling)
+ *   ?format=webp|avif     — convert to modern format
+ *
+ * If no transform params are present, the original bytes are piped through
+ * unchanged. Transformation degrades gracefully: if sharp is unavailable,
+ * the original is served instead.
  */
 router.get("/storage/public-objects/*filePath", async (req: Request, res: Response) => {
   try {
@@ -60,15 +76,55 @@ router.get("/storage/public-objects/*filePath", async (req: Request, res: Respon
       return;
     }
 
+    const wParam = req.query.w ? parseInt(req.query.w as string, 10) : null;
+    const formatParam = (req.query.format as string | undefined)?.toLowerCase();
+    const wantWebP = formatParam === "webp";
+    const wantAvif = formatParam === "avif";
+    const needsTransform = (wParam && wParam > 0) || wantWebP || wantAvif;
+
     const response = await objectStorageService.downloadObject(file);
+    const contentType = (response.headers.get("content-type") ?? "").split(";")[0].trim();
+    const canTransform = needsTransform && TRANSFORMABLE_TYPES.has(contentType);
 
-    res.status(response.status);
-    response.headers.forEach((value, key) => res.setHeader(key, value));
+    if (!canTransform) {
+      res.status(response.status);
+      response.headers.forEach((value, key) => res.setHeader(key, value));
+      if (response.body) {
+        Readable.fromWeb(response.body as ReadableStream<Uint8Array>).pipe(res);
+      } else {
+        res.end();
+      }
+      return;
+    }
 
-    if (response.body) {
-      const nodeStream = Readable.fromWeb(response.body as ReadableStream<Uint8Array>);
-      nodeStream.pipe(res);
-    } else {
+    // Buffer → sharp → respond
+    try {
+      const { default: sharp } = await import("sharp");
+      const buf = Buffer.from(await response.arrayBuffer());
+      let pipeline = sharp(buf);
+      if (wParam && wParam > 0) {
+        pipeline = pipeline.resize(wParam, null, { withoutEnlargement: true });
+      }
+      let outContentType: string;
+      if (wantAvif) {
+        pipeline = pipeline.avif({ quality: 55 });
+        outContentType = "image/avif";
+      } else {
+        pipeline = pipeline.webp({ quality: 75 });
+        outContentType = "image/webp";
+      }
+      const out = await pipeline.toBuffer();
+      res
+        .status(200)
+        .setHeader("Content-Type", outContentType)
+        .setHeader("Cache-Control", "public, max-age=31536000, immutable")
+        .setHeader("Vary", "Accept")
+        .send(out);
+    } catch (sharpErr) {
+      // sharp unavailable or conversion failed — fall back to original
+      req.log.warn({ err: sharpErr }, "Image transform failed, serving original");
+      res.status(response.status);
+      response.headers.forEach((value, key) => res.setHeader(key, value));
       res.end();
     }
   } catch (error) {

@@ -18,6 +18,29 @@ function isUnsplash(src: string): boolean {
   return src.includes("images.unsplash.com");
 }
 
+/** True for images served from our own object-storage route */
+function isStorageUrl(src: string): boolean {
+  return src.includes("/api/storage/public-objects/");
+}
+
+/**
+ * Build a WebP srcset for a storage URL by appending `?w=X&format=webp`.
+ * The API server's sharp middleware will resize + convert on the fly.
+ */
+function buildStorageSrcSet(src: string): string {
+  const base = src.split("?")[0];
+  return [400, 800, 1200]
+    .map((w) => `${base}?w=${w}&format=webp ${w}w`)
+    .join(", ");
+}
+
+function optimizeStorageUrl(src: string, displayWidth: number): string {
+  const base = src.split("?")[0];
+  // Clamp to sensible bucket widths so the browser can reuse cached variants
+  const w = displayWidth <= 400 ? 400 : displayWidth <= 800 ? 800 : 1200;
+  return `${base}?w=${w}&format=webp`;
+}
+
 export interface OptimizedImgProps
   extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "loading" | "decoding"> {
   src: string;
@@ -40,14 +63,28 @@ export function OptimizedImg({
   ...rest
 }: OptimizedImgProps) {
   const unsplash = isUnsplash(src);
+  const storage = !unsplash && isStorageUrl(src);
+  const displayWidth = typeof rest.width === "number" ? rest.width : 800;
 
-  const resolvedSrc = unsplash ? optimizeUnsplash(src, 800, quality) : src;
+  const resolvedSrc = unsplash
+    ? optimizeUnsplash(src, 800, quality)
+    : storage
+    ? optimizeStorageUrl(src, displayWidth)
+    : src;
 
   const resolvedSrcSet =
-    srcSetProp ?? (unsplash ? buildUnsplashSrcSet(src, quality) : undefined);
+    srcSetProp ??
+    (unsplash
+      ? buildUnsplashSrcSet(src, quality)
+      : storage
+      ? buildStorageSrcSet(src)
+      : undefined);
 
   const sizes =
-    rest.sizes ?? (unsplash ? "(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px" : undefined);
+    rest.sizes ??
+    (unsplash || storage
+      ? "(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
+      : undefined);
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     if (unsplash) {

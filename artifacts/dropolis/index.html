@@ -75,8 +75,20 @@
     <!-- Preconnect to external origins used at first paint -->
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="dns-prefetch" href="https://images.unsplash.com" />
-    <!-- open-meteo: dns-prefetch only — not a first-paint resource, no credentials -->
+    <!-- open-meteo: preconnect so TLS is negotiated before WeatherWidget fires -->
+    <link rel="preconnect" href="https://api.open-meteo.com" crossorigin />
     <link rel="dns-prefetch" href="https://api.open-meteo.com" />
+
+    <!-- LCP hero image preload — tells the browser to fetch this before JS loads/runs.
+         Matches exactly the src/srcSet used by Home.tsx so the browser reuses the response. -->
+    <link
+      rel="preload"
+      as="image"
+      fetchpriority="high"
+      href="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60&fm=webp&auto=format"
+      imagesrcset="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=55&fm=webp&auto=format 800w, https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60&fm=webp&auto=format 1200w, https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=65&fm=webp&auto=format 1600w"
+      imagesizes="100vw"
+    />
 
     <!-- Fonts — async, reduced to essential weights, display=optional eliminates FOUT/CLS -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -153,9 +165,9 @@
         document.head.appendChild(s);
       }
       if ('requestIdleCallback' in window) {
-        requestIdleCallback(_loadGA, { timeout: 4000 });
+        requestIdleCallback(_loadGA, { timeout: 6000 });
       } else {
-        window.addEventListener('load', function() { setTimeout(_loadGA, 1000); });
+        window.addEventListener('load', function() { setTimeout(_loadGA, 2000); });
       }
     </script>
   </head>
