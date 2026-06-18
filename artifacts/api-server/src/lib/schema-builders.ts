@@ -223,7 +223,7 @@ export function buildVillageSchema(v: VillageSchemaInput): object[] {
   const webPageSchema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": villageUrl,
+    "@id": `${villageUrl}#webpage`,
     url: villageUrl,
     name: titleEl,
     description: v.description?.slice(0, 160) ??
