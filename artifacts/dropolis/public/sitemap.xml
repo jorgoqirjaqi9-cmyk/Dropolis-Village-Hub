@@ -4,7 +4,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
   <!-- ===== Static Core Routes ===== -->
-  <!-- Dynamic content (articles, villages) is covered by /api/sitemap.xml -->
+  <!-- Dynamic content (articles, villages) is served at /sitemap.xml by the API server -->
   <url>
     <loc>https://dropolis.net/</loc>
     <changefreq>daily</changefreq>

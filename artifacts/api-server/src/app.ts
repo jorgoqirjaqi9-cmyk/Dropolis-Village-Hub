@@ -12,6 +12,7 @@ import http from "node:http";
 import router from "./routes";
 import redirectsRouter from "./routes/redirects.js";
 import seoPagesRouter from "./routes/seo-pages.js";
+import { sitemapRootRouter } from "./routes/sitemap.js";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
@@ -172,8 +173,13 @@ if (existsSync(distAssets)) {
   );
 }
 
+// Dynamic sitemap — must be mounted BEFORE express.static so GET /sitemap.xml
+// is handled here (DB articles + villages with real lastmod dates) and NOT
+// served from the static public/sitemap.xml fallback.
+app.use(sitemapRootRouter);
+
 // Serve all other static files from the frontend build output (favicon, og images,
-// sitemap.xml, robots.txt, .txt verification files, etc.) so that every response —
+// robots.txt, .txt verification files, etc.) so that every response —
 // including the homepage — goes through Express and gets security headers applied.
 const distPublic = resolve(process.cwd(), "artifacts/dropolis/dist/public");
 if (existsSync(distPublic)) {

@@ -70,14 +70,15 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ### Sitemaps
 
-The site exposes two sitemaps:
+The site exposes **one canonical sitemap**:
 
-| URL | Type | Use |
-|-----|------|-----|
-| `https://dropolis.net/sitemap.xml` | Static XML | Core static routes only — built into the production bundle; never lists individual articles or villages |
-| `https://dropolis.net/api/sitemap.xml` | Dynamic XML | Auto-generated from the database; sole authoritative source for article and village pages with real `lastmod` dates |
+| URL | Type | Description |
+|-----|------|-------------|
+| `https://dropolis.net/sitemap.xml` | Dynamic XML | Auto-generated from the database; includes all static routes + article and village pages with real `lastmod` dates |
 
-Submit **both** to search engines. The dynamic one is the authoritative source for all dynamic content (articles, villages). The static one covers only shell routes that never change (news listing, villages listing, about, contact, etc.).
+`GET /api/sitemap.xml` returns a permanent **301 redirect** to `https://dropolis.net/sitemap.xml` for backward compatibility.
+
+Submit only `https://dropolis.net/sitemap.xml` to search engines — it is the sole authoritative source for all content.
 
 ---
 

@@ -1,10 +1,7 @@
 User-agent: *
 Allow: /
 
-# Allow sitemap endpoint explicitly before API block
-Allow: /api/sitemap.xml
-
-# Disallow all other API routes
+# Disallow all API routes (sitemap served at root /sitemap.xml)
 Disallow: /api/
 
 # Allow all indexable content
@@ -92,6 +89,5 @@ Allow: /
 User-agent: DiffBot
 Allow: /
 
-# Sitemaps — dynamic (preferred, real lastmod dates) + static fallback
-Sitemap: https://dropolis.net/api/sitemap.xml
+# Sitemap — single canonical dynamic sitemap with real lastmod dates
 Sitemap: https://dropolis.net/sitemap.xml

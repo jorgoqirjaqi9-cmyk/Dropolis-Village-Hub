@@ -1,9 +1,16 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 import { db } from "@workspace/db";
 import { articlesTable, villagesTable } from "@workspace/db";
 import { desc, eq } from "drizzle-orm";
 
 const router = Router();
+
+/**
+ * Root-level router — mounted in app.ts BEFORE express.static so that
+ * GET /sitemap.xml is served dynamically (DB articles + villages) instead
+ * of the static public/sitemap.xml fallback.
+ */
+export const sitemapRootRouter = Router();
 
 const BASE_URL = "https://dropolis.net";
 
@@ -140,7 +147,7 @@ const SITEMAP_GRACE_MS = (() => {
   return Number.isFinite(v) && v >= 0 ? v : 30 * 60 * 1000;
 })();
 
-router.get("/sitemap.xml", async (req, res) => {
+async function handleSitemapXml(req: Request, res: Response): Promise<void> {
   try {
     const today = new Date().toISOString().slice(0, 10);
     const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
@@ -296,6 +303,14 @@ ${villageEntries.join("\n")}
     req.log.error({ err }, "Failed to generate sitemap");
     res.status(500).send("Failed to generate sitemap");
   }
+}
+
+// Root-level: GET /sitemap.xml → dynamic sitemap (mounted before express.static)
+sitemapRootRouter.get("/sitemap.xml", handleSitemapXml);
+
+// API-level: GET /api/sitemap.xml → 301 permanent redirect to root sitemap
+router.get("/sitemap.xml", (_req, res) => {
+  res.redirect(301, "https://dropolis.net/sitemap.xml");
 });
 
 export default router;
