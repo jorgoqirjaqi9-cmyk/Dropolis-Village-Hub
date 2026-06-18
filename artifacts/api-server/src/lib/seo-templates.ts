@@ -46,6 +46,29 @@ export const TEMPLATES = {
   },
 } as const;
 
+// ─── English template definitions ────────────────────────────────────────────
+
+export const EN_TEMPLATES = {
+  /** Template A — Local news in English */
+  A: {
+    suffix:      ' | Dropull, 41 Villages & Northern Epirus',
+    metaPrefix:  'Read the latest news about ',
+    metaSuffix:  ' with a focus on Dropull, the 41 villages, Northern Epirus and the Greek minority of Albania.',
+  },
+  /** Template B — Village page in English */
+  B: {
+    suffix:      ': news, history and life in Dropull | Dropolis.net',
+    metaPrefix:  'News, photos, history and local information for the village of ',
+    metaSuffix:  ' in Dropull. A living picture of the 41 villages of Northern Epirus.',
+  },
+  /** Template C — International news with local angle, in English */
+  C: {
+    suffix:      ' | What it means for Northern Epirus & Dropull',
+    metaPrefix:  'A brief overview of ',
+    metaSuffix:  ' and its potential connection to Albania, Northern Epirus, Dropull and the Greek minority.',
+  },
+} as const;
+
 // ─── Core entity signals (for template auto-detection) ────────────────────────
 
 const LOCAL_ENTITIES_RX =
@@ -77,69 +100,88 @@ export function detectTemplateType(opts: {
 
 const MAX_SEO_TITLE = 60;
 
+function applyTitleBudget(base: string, suffix: string): string {
+  const candidate = `${base}${suffix}`;
+  if (candidate.length <= MAX_SEO_TITLE) return candidate;
+  const budget = MAX_SEO_TITLE - suffix.length - 1; // 1 for "…"
+  if (budget < 10) {
+    return base.length <= MAX_SEO_TITLE ? base : base.slice(0, MAX_SEO_TITLE - 1) + '…';
+  }
+  return `${base.slice(0, budget)}…${suffix}`;
+}
+
 /**
  * Builds an SEO title using the appropriate template.
- * Strict ≤ 60 char limit. If (rawTitle + suffix) exceeds the limit,
- * the raw title is truncated with "…" so the total stays within budget.
+ * Strict ≤ 60 char limit. Truncates the raw title (with "…") before the suffix
+ * when the combined length would exceed the budget.
+ *
+ * Pass `lang: 'en'` for English-language content to use the English suffix set.
  */
 export function buildSeoTitle(
   title: string,
   type: TemplateType,
   villageName?: string | null,
+  lang?: 'el' | 'en',
 ): string {
   if (!title.trim()) return title;
 
+  if (lang === 'en') {
+    const t = EN_TEMPLATES[type];
+    const base = type === 'B' && villageName ? villageName : title;
+    return applyTitleBudget(base, t.suffix);
+  }
+
   const t = TEMPLATES[type];
   const base = type === 'B' && villageName ? villageName : title;
-
-  const candidate = `${base}${t.suffix}`;
-  if (candidate.length <= MAX_SEO_TITLE) return candidate;
-
-  // Truncate base to fit: budget = MAX - suffix.length - 1 (for "…")
-  const budget = MAX_SEO_TITLE - t.suffix.length - 1;
-  if (budget < 10) {
-    // Suffix itself is too long — fall back to plain title, clipped
-    return base.length <= MAX_SEO_TITLE ? base : base.slice(0, MAX_SEO_TITLE - 1) + '…';
-  }
-  return `${base.slice(0, budget)}…${t.suffix}`;
+  return applyTitleBudget(base, t.suffix);
 }
 
 // ─── Build meta description ───────────────────────────────────────────────────
 
 const MIN_META_DESC = 100;
 const MAX_META_DESC = 155;
-const META_PAD = ' Ειδήσεις και νέα με εγκυρότητα από το Dropolis.net.';
+const META_PAD_EL = ' Ειδήσεις και νέα με εγκυρότητα από το Dropolis.net.';
+const META_PAD_EN = ' Reliable news, history, and cultural heritage from the Dropull region.';
+
+function applyDescBounds(desc: string, pad: string): string {
+  // Enforce upper bound: 152 chars + "…" = 155 total
+  if (desc.length > MAX_META_DESC) {
+    desc = desc.slice(0, MAX_META_DESC - 3) + '…';
+  }
+  // Enforce lower bound: pad with brand sentence, staying ≤ 155
+  if (desc.length < MIN_META_DESC) {
+    const room = MAX_META_DESC - desc.length;
+    const snippet = pad.slice(0, Math.min(pad.length, room));
+    if (MIN_META_DESC - desc.length <= snippet.length) desc = desc + snippet;
+  }
+  return desc;
+}
 
 /**
  * Builds a meta description using the appropriate template.
- * `topic` is a short noun phrase describing the article subject (e.g. "τα νέα μέτρα").
+ * `topic` is a short noun phrase describing the article subject.
  *
  * Guarantees: 100 ≤ result.length ≤ 155
- *   – < 100 chars → padded with a generic SEO sentence (truncated to fit)
+ *   – < 100 chars → padded with a brand SEO sentence (language-aware)
  *   – > 155 chars → hard-truncated to 152 + "…"
+ *
+ * Pass `lang: 'en'` for English-language content.
  */
 export function buildMetaDescription(
   topic: string,
   type: TemplateType,
   villageName?: string | null,
+  lang?: 'el' | 'en',
 ): string {
+  if (lang === 'en') {
+    const t = EN_TEMPLATES[type];
+    const subject = type === 'B' && villageName ? villageName : topic;
+    return applyDescBounds(`${t.metaPrefix}${subject}${t.metaSuffix}`, META_PAD_EN);
+  }
+
   const t = TEMPLATES[type];
   const subject = type === 'B' && villageName ? villageName : topic;
-  let desc = `${t.metaPrefix}${subject}${t.metaSuffix}`;
-
-  // Enforce upper bound: 152 chars + "…" = 155 total
-  if (desc.length > MAX_META_DESC) {
-    desc = desc.slice(0, MAX_META_DESC - 3) + '…';
-  }
-
-  // Enforce lower bound: pad with generic sentence, staying ≤ 155
-  if (desc.length < MIN_META_DESC) {
-    const padNeeded = MIN_META_DESC - desc.length;
-    const pad = META_PAD.slice(0, Math.min(META_PAD.length, MAX_META_DESC - desc.length));
-    if (padNeeded <= pad.length) desc = desc + pad;
-  }
-
-  return desc;
+  return applyDescBounds(`${t.metaPrefix}${subject}${t.metaSuffix}`, META_PAD_EL);
 }
 
 // ─── Long-tail keyword clusters ───────────────────────────────────────────────

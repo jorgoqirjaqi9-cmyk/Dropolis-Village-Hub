@@ -60,6 +60,11 @@ export default function VillageDetail() {
           { name: "Χωριά", url: "/villages/" },
           { name: village.nameEl, url: `/villages/${village.id}/` },
         ]}
+        hreflang={[
+          { lang: "el-GR",     href: `https://dropolis.net/villages/${village.id}/` },
+          { lang: "en",        href: `https://dropolis.net/en/villages/${village.id}/` },
+          { lang: "x-default", href: `https://dropolis.net/villages/${village.id}/` },
+        ]}
         jsonLd={[
           {
             "@context": "https://schema.org",

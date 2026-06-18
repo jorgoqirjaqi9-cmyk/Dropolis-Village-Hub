@@ -47,6 +47,13 @@ export interface SanitizeOptions {
    *   only clean fields that are already present — never inject new ones.
    */
   autoFill?: boolean;
+  /**
+   * Content language — controls which village-name variants and URL prefix
+   * Transform 9 uses when injecting internal links.
+   * 'el' (default) → Greek variants, /villages/:id/
+   * 'en'           → English/Albanian variants, /en/villages/:id/
+   */
+  lang?: 'el' | 'en';
 }
 
 // ─── Title fluff prefixes ─────────────────────────────────────────────────────
@@ -435,7 +442,7 @@ export function sanitizeArticleData(
 
   // 9. Internal link injection — first occurrence of each village name (autoFill only)
   if (out.content && autoFill && isHtmlContent(out.content)) {
-    const linked = injectInternalLinks(out.content);
+    const linked = injectInternalLinks(out.content, options.lang ?? 'el');
     if (linked !== out.content) {
       const count = (linked.match(/class="seo-village-link"/g) ?? []).length;
       changes.push({ field: 'content', reason: `Internal links: ${count} χωριό(-ά) συνδέθηκε(-αν) αυτόματα` });
