@@ -73,7 +73,7 @@ export default function Home() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           "@id": "https://dropolis.net/#webpage",
-          name: "Δρόπολη - Dropolis | Τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο",
+          name: "Δρόπολη Βόρεια Ήπειρος — Ειδήσεις, Χωριά, Φωτογραφίες & Πολιτισμός",
           description: "Το Dropolis.net είναι η ψηφιακή πλατφόρμα για τη Δρόπολη, τα 41 χωριά της Δρόπολης, την ελληνική μειονότητα στη Βόρεια Ήπειρο, με ειδήσεις, φωτογραφίες, ιστορία, βίντεο και διαδραστικό χάρτη.",
           url: "https://dropolis.net/",
           inLanguage: "el",
