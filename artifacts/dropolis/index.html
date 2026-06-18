@@ -164,6 +164,20 @@
          HTML parse time. The React component initialises dataLayer, defines gtag,
          and injects the gtag.js script only after the page has painted. -->
 
+    <!-- Google News Showcase / Subscribe with Google (SWG Basic) — async, non-blocking -->
+    <script async type="application/javascript"
+            src="https://news.google.com/swg/js/v1/swg-basic.js"></script>
+    <script>
+      (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
+        basicSubscriptions.init({
+          type: "NewsArticle",
+          isPartOfType: ["Product"],
+          isPartOfProductId: "CAoww9vLDA:openaccess",
+          clientOptions: { theme: "light", lang: "el" },
+        });
+      });
+    </script>
+
     <!-- Microsoft Clarity — async, non-blocking -->
     <script>
       (function(c,l,a,r,i,t,y){
