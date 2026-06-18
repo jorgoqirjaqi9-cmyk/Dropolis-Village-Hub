@@ -1,0 +1,35 @@
+You are an expert SEO Engineer. Our latest site audit found a few meta descriptions that are either too short (under 120 chars) or slightly too long (over 155 chars for /finiq/). 
+
+Please locate where the SEO metadata for these specific routes is defined (likely in `seo-pages.ts` or a central routing SEO config) and update their descriptions to the following optimized versions:
+
+- /videos/ (135 chars):
+"Δείτε όλα τα τελευταία βίντεο, αφιερώματα, ρεπορτάζ και παραδοσιακές εκδηλώσεις από τα 41 χωριά της Δρόπολης και τη Βόρεια Ήπειρο."
+
+- /contact/ (141 chars):
+"Επικοινωνήστε με την ομάδα του Dropolis.net. Στείλτε μας τις δικές σας ειδήσεις, φωτογραφίες, προτάσεις ή ερωτήματα για τη Δρόπολη."
+
+- /privacy/ (132 chars):
+"Πολιτική Απορρήτου του Dropolis.net. Ενημερωθείτε για την ασφάλεια, την προστασία των προσωπικών δεδομένων και τα δικαιώματά σας."
+
+- /terms/ (128 chars):
+"Όροι Χρήσης της ψηφιακής πλατφόρμας Dropolis.net. Διαβάστε αναλυτικά τους κανόνες λειτουργίας, τα δικαιώματα και τις υποχρεώσεις."
+
+- /cookie-policy/ (130 chars):
+"Πολιτική Cookies του Dropolis.net. Μάθετε πώς χρησιμοποιούμε τα cookies για τη βελτίωση της εμπειρίας πλοήγησης και της ταχύτητας."
+
+- /disclaimer/ (139 chars):
+"Αποποίηση Ευθύνης για το Dropolis.net. Ενημερωθείτε για την εγκυρότητα του περιεχομένου, τις αναδημοσιεύσεις και την ευθύνη των ειδήσεων."
+
+- /help/ (131 chars):
+"Κέντρο Βοήθειας του Dropolis.net. Βρείτε απαντήσεις σε συχνές ερωτήσεις, οδηγίες χρήσης της πλατφόρμας και τεχνική υποστήριξη."
+
+- /press/ (142 chars):
+"Γραφείο Τύπου του Dropolis.net. Διαβάστε δελτία τύπου, ανακοινώσεις, νέα της πλατφόρμας και πληροφορίες για τη συνεργασία με ΜΜΕ."
+
+- /sitemap/ (130 chars):
+"Ολοκληρωμένος χάρτης ιστοτόπου (Sitemap) για το Dropolis.net. Πλοηγηθείτε εύκολα σε όλες τις σελίδες, τα χωριά και τις ειδήσεις μας."
+
+- /finiq/ (136 chars - FIXED SHORT VERSION):
+"Ειδήσεις, νέα και ενημέρωση για τον Δήμο Φοινικαίων. Μάθετε όλα όσα συμβαίνουν στη Φοινίκη και τα χωριά της ελληνικής μειονότητας."
+
+Please apply these updates, ensure that both standard descriptions and OpenGraph/Twitter descriptions reflect these changes, run a build/typecheck, and deploy.
