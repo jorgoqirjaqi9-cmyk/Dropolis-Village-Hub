@@ -1,6 +1,27 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 
+const ARTICLE_SUFFIX = " | Dropolis";
+const MAX_TITLE_LEN = 60;
+
+/**
+ * Produces a page title for a news article that stays within 60 characters.
+ *
+ * Rules (applied in order):
+ *   1. rawTitle + " | Dropolis" ≤ 60 chars  → use it as-is
+ *   2. rawTitle alone ≤ 60 chars             → skip the suffix
+ *   3. rawTitle > 60 chars                   → truncate to 59 chars + "…"
+ */
+export function smartArticleTitle(rawTitle: string): string {
+  if (rawTitle.length + ARTICLE_SUFFIX.length <= MAX_TITLE_LEN) {
+    return rawTitle + ARTICLE_SUFFIX;
+  }
+  if (rawTitle.length <= MAX_TITLE_LEN) {
+    return rawTitle;
+  }
+  return rawTitle.slice(0, MAX_TITLE_LEN - 1).trimEnd() + "…";
+}
+
 export const SITE = {
   name: "Δρόπολη",
   nameEn: "Dropolis",

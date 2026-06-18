@@ -3,7 +3,7 @@ import { useRoute, Link } from "wouter";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 import { useGetArticle, getGetArticleQueryKey, useListArticles, getListArticlesQueryKey, useGetTrendingArticles, getGetTrendingArticlesQueryKey } from "@workspace/api-client-react";
-import { SEO, SITE } from "@/components/SEO";
+import { SEO, SITE, smartArticleTitle } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Clock, User, MapPin, Tag, BookOpen } from "lucide-react";
@@ -127,7 +127,8 @@ export default function NewsDetail() {
   return (
     <article className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-12">
       <SEO
-        title={article.seoTitle || article.title}
+        title={smartArticleTitle(article.seoTitle || article.title)}
+        standalone
         description={article.metaDescription || article.excerpt || `Διαβάστε το άρθρο: ${article.title}`}
         image={article.imageUrl || DEFAULT_IMG}
         type="article"
