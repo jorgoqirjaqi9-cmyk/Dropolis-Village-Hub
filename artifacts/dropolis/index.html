@@ -163,6 +163,15 @@
          Removed from index.html entirely so zero synchronous GA code runs at
          HTML parse time. The React component initialises dataLayer, defines gtag,
          and injects the gtag.js script only after the page has painted. -->
+
+    <!-- Microsoft Clarity — async, non-blocking -->
+    <script>
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "x8zr0riq8m");
+    </script>
   </head>
   <body>
     <div id="root">
