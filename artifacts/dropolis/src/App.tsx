@@ -234,7 +234,7 @@ function App() {
   // setTimeout(2000) after component mount ensures gtag.js injection doesn't
   // create Long Tasks during the critical React initialisation window.
   useEffect(() => {
-    const timer = setTimeout(() => { // 4 s: safely past LCP + React init window
+    const timer = setTimeout(() => { // 4000 ms: safely past LCP + React init window
       // Initialise dataLayer and the gtag stub. GA4 requires a conventional
       // function (not an arrow) so `arguments` is the actual Arguments object.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -248,7 +248,7 @@ function App() {
       s.async = true;
       s.src = "https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ";
       document.head.appendChild(s);
-    }, 2000);
+    }, 4000);
     return () => clearTimeout(timer);
   }, []);
 

@@ -1,0 +1,167 @@
+Διάγνωση ζητημάτων απόδοσης
+72
+Απόδοση
+100
+Προσβασιμότητα
+92
+Βέλτιστες πρακτικές
+100
+SEO
+3/3
+Περιήγηση μέσω agent
+72
+FCP
++3
+LCP
++8
+TBT
++30
+CLS
++25
+SI
++6
+Απόδοση
+Οι τιμές εκτιμώνται και μπορεί να ποικίλουν. Η βαθμολογία απόδοσης υπολογίζεται απευθείας από αυτές τις μετρήσεις.Προβολή αριθμομηχανής.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Μετρήσεις
+Ανάπτυξη προβολής
+First Contentful Paint
+3,6 δ.
+Largest Contentful Paint
+4,8 δ.
+Total Blocking Time
+60 χλστ.δ.
+Cumulative Layout Shift
+0
+Speed Index
+5,1 δ.
+Captured at 18 Ιουν 2026, 9:09 μ.μ. EEST
+Προσομοιωμένο Moto G Power with Lighthouse 13.4.0
+Περίοδος λειτουργίας σε μία σελίδα
+Αρχική φόρτωση σελίδας
+Ρύθμιση ροής δεδομένων αργού 4G
+Using HeadlessChromium 146.0.7680.177 with lr
+Προβολή δενδροειδούς χάρτη
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Εμφάνιση ελέγχων που σχετίζονται με:
+
+All
+
+FCP
+
+LCP
+
+TBT
+Insight
+Βελτίωση προβολής εικόνων Εκτιμώμενη εξοικονόμηση 84 KiB
+Η μείωση του χρόνου λήψης των εικόνων μπορεί να βελτιώσει τον αντιληπτό χρόνο φόρτωσης της σελίδας και του LCP. Μάθετε περισσότερα σχετικά με τη βελτιστοποίηση του μεγέθους εικόναςLCPFCPΧωρίς βαθμολογία
+URL
+Μέγεθος πόρου
+Εκτιμώμενη εξοικονόμηση
+dropolis.net 1ο μέρος
+136,2 KiB	77,6 KiB
+Οδοιπορικό στη Δρόπολη: Ανακαλύπτοντας τα Ιστορικά Χωριά της Βορείου Ηπείρου
+<img sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px" alt="Οδοιπορικό στη Δρόπολη: Ανακαλύπτοντας τα Ιστορικά Χωριά της Βορείου Ηπείρ…" loading="lazy" decoding="async" class="object-cover w-full h-full transition-transform duration-700 group-hover:s…" srcset="/api/storage/public-objects/articles/stone-bridge-epirus.jpg?w=400&amp;format=…" src="/api/storage/public-objects/articles/stone-bridge-epirus.jpg?w=800&amp;format=…">
+…articles/stone-bridge-epirus.jpg?w=800&format=webp(dropolis.net)
+136,2 KiB
+77,6 KiB
+Η αύξηση του συντελεστή συμπίεσης της εικόνας θα μπορούσε να βελτιώσει το μέγεθος λήψης αυτής της εικόνας.
+77,6 KiB
+unsplash.com
+32,0 KiB	6,3 KiB
+Πανοραμικό τοπίο από τη Δρόπολη, Βόρεια Ήπειρος
+<img sizes="100vw" alt="Πανοραμικό τοπίο από τη Δρόπολη, Βόρεια Ήπειρος" fetchpriority="high" loading="eager" decoding="async" width="1200" height="800" class="absolute inset-0 w-full h-full object-cover object-center" srcset="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&amp;q=55&amp;fm…" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&amp;q=55&amp;fm…">
+/photo-150…-21bda4d32df4?w=800&q=55&fm=webp&auto=format(images.unsplash.com)
+32,0 KiB
+6,3 KiB
+Η αύξηση του συντελεστή συμπίεσης της εικόνας θα μπορούσε να βελτιώσει το μέγεθος λήψης αυτής της εικόνας.
+6,3 KiB
+Δέντρο εξαρτήσεων δικτύου
+Για τη βελτίωση της φόρτωσης σελίδας, αποφύγετε τη δημιουργία αλυσίδων κρίσιμων αιτημάτων, μειώνοντας το μήκος των αλυσίδων ή το μέγεθος λήψης των πόρων ή αναβάλλοντας τη λήψη των μη απαραίτητων πόρων.LCPΧωρίς βαθμολογία
+Μέγιστος λανθάνων χρόνος κρίσιμης διαδρομής: 421 ms
+Αρχική πλοήγηση
+https://dropolis.net - 174 ms, 6,34 KiB
+/assets/index-CZddjYxr.css(dropolis.net) - 421 ms, 27,00 KiB
+/assets/index-CeU_v4TU.js(dropolis.net) - 405 ms, 37,34 KiB
+Προσυνδεδεμένες προελεύσεις
+Οι υποδείξεις προσύνδεσης βοηθούν το πρόγραμμα περιήγησης να δημιουργήσει μια σύνδεση νωρίτερα κατά τη φόρτωση της σελίδας, εξοικονομώντας χρόνο όταν υποβάλλεται το πρώτο αίτημα για αυτή την προέλευση. Οι παρακάτω είναι οι προελεύσεις στις οποίες προσυνδεόταν η σελίδα.
+Προέλευση
+Πηγή
+https://images.unsplash.com/
+head > link
+<link rel="preconnect" href="https://images.unsplash.com">
+https://api.open-meteo.com/
+head > link
+<link rel="preconnect" href="https://api.open-meteo.com">
+Προσύνδεση που δεν χρησιμοποιείται. Ελέγξτε ότι το χαρακτηριστικό crossorigin χρησιμοποιείται σωστά.
+https://fonts.googleapis.com/
+head > link
+<link rel="preconnect" href="https://fonts.googleapis.com">
+https://fonts.gstatic.com/
+head > link
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+Υποψήφιες για προσύνδεση
+Προσθέστε υποδείξεις προσύνδεσης στις πιο σημαντικές προελεύσεις σας, αλλά προσπαθήστε να μην χρησιμοποιήσετε πάνω από 4.
+Προέλευση
+Εκτιμώμενη εξοικονόμηση LCP
+https://api.open-meteo.com
+300 ms
+Αιτήματα αποκλεισμού απόδοσης
+Τα αιτήματα αποκλείουν την αρχική απόδοση της σελίδας, κάτι που μπορεί να οδηγήσει σε καθυστέρηση της μέτρησης LCP. Η αναβολή ή η ενσωμάτωση μπορεί να μετακινήσει αυτά τα αιτήματα δικτύου εκτός της κρίσιμης διαδρομής.LCPFCPΧωρίς βαθμολογία
+URL
+Μέγεθος μεταφοράς
+Διάρκεια
+dropolis.net 1ο μέρος
+27,0 KiB	1.090 ms
+/assets/index-CZddjYxr.css(dropolis.net)
+27,0 KiB
+1.090 ms
+Ανάλυση LCP
+Τρίτα μέρη
+Αυτά τα insight είναι επίσης διαθέσιμα στο πλαίσιο Απόδοση των Εργαλείων για προγραμματιστές Chrome. Καταγράψτε ένα ίχνος, για να δείτε πιο λεπτομερείς πληροφορίες.
+Διαγνωστικά στοιχεία
+Μείωση στοιχείων JavaScript που δεν χρησιμοποιούνται Εκτιμώμενη εξοικονόμηση 69 KiB
+Μειώστε τα στοιχεία JavaScript που δεν χρησιμοποιούνται και αναβάλετε τη φόρτωση σεναρίων μέχρι να ζητηθούν, προκειμένου να μειωθούν τα byte που καταναλώνονται από τη δραστηριότητα δικτύου. Μάθετε πώς μπορείτε να μειώσετε την JavaScript που δεν χρησιμοποιείται.LCPFCPΧωρίς βαθμολογία
+URL
+Μέγεθος μεταφοράς
+Εκτιμώμενη εξοικονόμηση
+dropolis.net 1ο μέρος
+125,5 KiB	68,8 KiB
+/assets/vendor-mo….js(dropolis.net)
+41,7 KiB
+25,0 KiB
+/assets/vendor-re….js(dropolis.net)
+57,4 KiB
+22,2 KiB
+/assets/vendor-radix-acEQKkmC.js(dropolis.net)
+26,4 KiB
+21,5 KiB
+Αποφύγετε μεγάλες εργασίες στο κύριο νήμα Βρέθηκαν 3 μεγάλες εργασίες
+Παραθέτει τις μεγαλύτερες εργασίες στο κύριο νήμα, κάτι που είναι χρήσιμο για τον εντοπισμό των συνεισφερόντων που συμβάλλουν περισσότερο στην καθυστέρηση εισόδου. Μάθετε πώς μπορείτε να αποφύγετε μεγάλες εργασίες στο κύριο νήμαTBTΧωρίς βαθμολογία
+URL
+Ώρα έναρξης
+Διάρκεια
+Google Tag Manager tag-manager 
+109 ms
+/gtag/js?id=G-R96FYBFRYQ(www.googletagmanager.com)
+6.444 ms
+59 ms
+/gtag/js?id=G-R96FYBFRYQ(www.googletagmanager.com)
+6.503 ms
+50 ms
+dropolis.net 1ο μέρος
+102 ms
+/assets/vendor-re….js(dropolis.net)
+4.086 ms
+102 ms

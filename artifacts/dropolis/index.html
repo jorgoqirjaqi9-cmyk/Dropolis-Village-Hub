@@ -75,10 +75,9 @@
     <!-- Preconnect to external origins used at first paint -->
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="dns-prefetch" href="https://images.unsplash.com" />
-    <!-- open-meteo: plain preconnect (no crossorigin) because WeatherWidget uses
-         a simple credentialless fetch() — crossorigin would open a separate CORS
-         connection channel that the fetch can't reuse, wasting the preconnect. -->
-    <link rel="preconnect" href="https://api.open-meteo.com" />
+    <!-- open-meteo: needs crossorigin because fetch() is CORS — without it the
+         browser opens a non-CORS connection that the actual fetch can't reuse. -->
+    <link rel="preconnect" href="https://api.open-meteo.com" crossorigin />
     <link rel="dns-prefetch" href="https://api.open-meteo.com" />
 
     <!-- LCP hero image preload — tells the browser to fetch this before JS loads/runs.
