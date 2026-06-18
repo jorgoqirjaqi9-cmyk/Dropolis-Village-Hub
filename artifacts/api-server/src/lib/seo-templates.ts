@@ -75,12 +75,12 @@ export function detectTemplateType(opts: {
 
 // ─── Build SEO title ──────────────────────────────────────────────────────────
 
-const MAX_SEO_TITLE = 65;
+const MAX_SEO_TITLE = 60;
 
 /**
  * Builds an SEO title using the appropriate template.
- * Keeps the result within 65 chars if the plain title already contains
- * local entities (to avoid duplicate-keyword stuffing).
+ * Strict ≤ 60 char limit. If (rawTitle + suffix) exceeds the limit,
+ * the raw title is truncated with "…" so the total stays within budget.
  */
 export function buildSeoTitle(
   title: string,
@@ -90,23 +90,33 @@ export function buildSeoTitle(
   if (!title.trim()) return title;
 
   const t = TEMPLATES[type];
+  const base = type === 'B' && villageName ? villageName : title;
 
-  if (type === 'B' && villageName) {
-    const candidate = `${villageName}${t.suffix}`;
-    return candidate.length <= MAX_SEO_TITLE ? candidate : `${villageName} | Dropolis.net`;
+  const candidate = `${base}${t.suffix}`;
+  if (candidate.length <= MAX_SEO_TITLE) return candidate;
+
+  // Truncate base to fit: budget = MAX - suffix.length - 1 (for "…")
+  const budget = MAX_SEO_TITLE - t.suffix.length - 1;
+  if (budget < 10) {
+    // Suffix itself is too long — fall back to plain title, clipped
+    return base.length <= MAX_SEO_TITLE ? base : base.slice(0, MAX_SEO_TITLE - 1) + '…';
   }
-
-  const candidate = `${title}${t.suffix}`;
-  return candidate.length <= MAX_SEO_TITLE ? candidate : title;
+  return `${base.slice(0, budget)}…${t.suffix}`;
 }
 
 // ─── Build meta description ───────────────────────────────────────────────────
 
+const MIN_META_DESC = 100;
 const MAX_META_DESC = 155;
+const META_PAD = ' Ειδήσεις και νέα με εγκυρότητα από το Dropolis.net.';
 
 /**
  * Builds a meta description using the appropriate template.
  * `topic` is a short noun phrase describing the article subject (e.g. "τα νέα μέτρα").
+ *
+ * Guarantees: 100 ≤ result.length ≤ 155
+ *   – < 100 chars → padded with a generic SEO sentence (truncated to fit)
+ *   – > 155 chars → hard-truncated to 152 + "…"
  */
 export function buildMetaDescription(
   topic: string,
@@ -115,8 +125,21 @@ export function buildMetaDescription(
 ): string {
   const t = TEMPLATES[type];
   const subject = type === 'B' && villageName ? villageName : topic;
-  const candidate = `${t.metaPrefix}${subject}${t.metaSuffix}`;
-  return candidate.length <= MAX_META_DESC ? candidate : candidate.slice(0, MAX_META_DESC - 1) + '…';
+  let desc = `${t.metaPrefix}${subject}${t.metaSuffix}`;
+
+  // Enforce upper bound: 152 chars + "…" = 155 total
+  if (desc.length > MAX_META_DESC) {
+    desc = desc.slice(0, MAX_META_DESC - 3) + '…';
+  }
+
+  // Enforce lower bound: pad with generic sentence, staying ≤ 155
+  if (desc.length < MIN_META_DESC) {
+    const padNeeded = MIN_META_DESC - desc.length;
+    const pad = META_PAD.slice(0, Math.min(META_PAD.length, MAX_META_DESC - desc.length));
+    if (padNeeded <= pad.length) desc = desc + pad;
+  }
+
+  return desc;
 }
 
 // ─── Long-tail keyword clusters ───────────────────────────────────────────────
