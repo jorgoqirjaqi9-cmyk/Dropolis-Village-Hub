@@ -47,11 +47,10 @@ const securityHeaders: RequestHandler = (_req, res, next) => {
         " https://adservice.google.com" +
         " https://www.gstatic.com" +
         " https://www.youtube.com" +
-        " https://news.google.com" +
         " https://www.clarity.ms" +
         " https://scripts.clarity.ms",
-      // Styles: self + Google Fonts + SWG (Google News Showcase injects CSS)
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://news.google.com",
+      // Styles: self + Google Fonts
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Fonts: self + Google Fonts CDN
       "font-src 'self' data: https://fonts.gstatic.com",
       // Images: self + data/blob URIs + all HTTPS (covers object-storage CDN, YouTube thumbs, etc.)
