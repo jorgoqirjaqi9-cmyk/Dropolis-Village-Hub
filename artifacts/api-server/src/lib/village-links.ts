@@ -338,9 +338,12 @@ export const VILLAGE_ENTITY_MAP: readonly VillageEntry[] = [
  * @param lang   'el' (default) → Greek variants + /villages/:id/
  *               'en'           → English variants + /en/villages/:id/
  */
+const MAX_INTERNAL_LINKS = 8;
+
 export function injectInternalLinks(html: string, lang: 'el' | 'en' = 'el'): string {
   const linkedIds = new Set<number>();
   let anchorDepth = 0;
+  let linkedCount = 0;
 
   return html.replace(/<[^>]*>|[^<]+/g, (chunk) => {
     // ── HTML tag chunk ─────────────────────────────────────────────────────────
@@ -352,10 +355,12 @@ export function injectInternalLinks(html: string, lang: 'el' | 'en' = 'el'): str
 
     // ── Text node chunk ────────────────────────────────────────────────────────
     if (anchorDepth > 0) return chunk;
+    if (linkedCount >= MAX_INTERNAL_LINKS) return chunk;
 
     let text = chunk;
     for (const entry of VILLAGE_ENTITY_MAP) {
       if (linkedIds.has(entry.id)) continue;
+      if (linkedCount >= MAX_INTERNAL_LINKS) break;
 
       const activeVariants = lang === 'en' ? entry.enVariants : entry.variants;
       const targetUrl      = lang === 'en' ? entry.enUrl      : entry.url;
@@ -368,6 +373,7 @@ export function injectInternalLinks(html: string, lang: 'el' | 'en' = 'el'): str
             `<a href="${targetUrl}" class="seo-village-link">${variant}</a>`,
           );
           linkedIds.add(entry.id);
+          linkedCount++;
           break;
         }
       }

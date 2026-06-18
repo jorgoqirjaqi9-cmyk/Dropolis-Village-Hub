@@ -259,7 +259,7 @@ export default function NewsDetail() {
                 <Link key={a.id} href={`/news/${a.id}/`} className="group flex gap-3 p-3 rounded-lg bg-muted/40 hover:bg-muted transition-colors">
                   {a.imageUrl && (
                     <div className="w-20 h-16 rounded overflow-hidden shrink-0">
-                      <img src={a.imageUrl} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />
+                      <img src={a.imageUrl} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" decoding="async" />
                     </div>
                   )}
                   <div className="min-w-0">
@@ -287,7 +287,7 @@ export default function NewsDetail() {
                     <div className="flex gap-3">
                       {related.imageUrl && (
                         <div className="w-20 h-20 rounded-md overflow-hidden shrink-0">
-                          <img src={related.imageUrl} alt={related.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform" loading="lazy" />
+                          <img src={related.imageUrl} alt={related.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform" loading="lazy" decoding="async" />
                         </div>
                       )}
                       <div>

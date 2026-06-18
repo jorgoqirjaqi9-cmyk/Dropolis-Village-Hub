@@ -1,0 +1,121 @@
+Θέλω να διορθώσεις τα παρακάτω τεχνικά/SEO θέματα στο Dropolis.net project. Κάνε αλλαγές στον κώδικα, τρέξε typecheck/build και κάνε deploy όταν όλα περάσουν.
+
+1. Διόρθωσε το endpoint /api/photos/pending
+- Αυτή τη στιγμή στο live γυρίζει 400 Invalid request σαν να το πιάνει το /photos/:id.
+- Βεβαιώσου ότι το route /photos/pending δηλώνεται πριν από /photos/:id.
+- Αν ο χρήστης δεν έχει admin token, πρέπει να επιστρέφει 401 Unauthorized, όχι 400.
+- Πρόσθεσε/έλεγξε test ή live check:
+  GET /api/photos/pending χωρίς token => 401
+  GET /api/photos/pending με σωστό admin token => 200
+
+2. Πρόσθεσε hreflang tags για Ελληνικά/Αγγλικά
+Σε κάθε βασική ελληνική και αγγλική SEO σελίδα πρόσθεσε σωστά alternate links:
+- el
+- en
+- x-default
+
+Παράδειγμα για homepage:
+<link rel="alternate" hreflang="el" href="https://dropolis.net/" />
+<link rel="alternate" hreflang="en" href="https://dropolis.net/en/" />
+<link rel="alternate" hreflang="x-default" href="https://dropolis.net/" />
+
+Για /news/:
+el => https://dropolis.net/news/
+en => https://dropolis.net/en/news/
+
+Βεβαιώσου ότι εμφανίζονται στο prerendered HTML, όχι μόνο client-side.
+
+3. Πρόσθεσε JSON-LD στην αρχική σελίδα /
+Η αρχική πρέπει να έχει valid JSON-LD schema:
+- WebSite
+- Organization
+- WebPage
+
+Να περιλαμβάνει:
+name: Δρόπολη / Dropolis
+url: https://dropolis.net/
+logo: https://dropolis.net/logo.png
+sameAs όπου υπάρχουν social links
+description με keywords: Δρόπολη, Βόρεια Ήπειρος, 41 χωριά, ελληνική μειονότητα, Αργυρόκαστρο, Dropull.
+
+Έλεγξε ότι το JSON-LD κάνει parse χωρίς error.
+
+4. Φτιάξε image upload pipeline με sharp
+Στο photo upload flow μην αποθηκεύεις πλέον το αρχικό αρχείο όπως ανέβηκε.
+Χρησιμοποίησε sharp server-side:
+- δέχεται jpeg/png/webp
+- κάνει rotate από EXIF
+- resize max width 1600px χωρίς upscaling
+- convert πάντα σε WebP
+- αρχικό quality περίπου 72
+- προσπάθησε να πέσει κάτω από 150KB
+- αν δεν μπορεί, κράτα hard max π.χ. 300KB ή επέστρεψε καθαρό error στον χρήστη
+- αποθήκευσε filename με .webp
+- thumbnailUrl να δείχνει σε optimized WebP
+- μην επιτρέπεις bypass με ψεύτικο mimeType, κράτα magic-byte validation
+
+5. Πρόσθεσε lazy/async attributes στα images
+Σε όλα τα image components:
+- below-the-fold images: loading="lazy" decoding="async"
+- hero/first viewport image: loading="eager" fetchPriority="high" decoding="async"
+Έλεγξε ειδικά:
+Home.tsx
+News.tsx
+NewsDetail.tsx
+Villages.tsx
+VillageDetail.tsx
+Photos.tsx
+AdminPhotoModeration.tsx
+UploadPhoto.tsx
+Diaspora.tsx
+Finiq.tsx
+
+6. Βελτίωσε SEO για category pages
+Για /news/?category=...:
+- είτε φτιάξε dynamic title/meta/canonical ανά κατηγορία
+- είτε βάλε noindex,follow στα filtered query pages για να μην έχουμε duplicate SEO.
+Προτιμώ dynamic metadata αν μπορεί να γίνει prerender/server-side, αλλιώς noindex.
+
+7. Βελτίωσε TypeScript/lint safety
+- Πρόσθεσε lint script αν λείπει.
+- Τρέξε pnpm run typecheck.
+- Τρέξε pnpm run lint.
+- Αν γίνεται χωρίς μεγάλο refactor, ενεργοποίησε noUnusedLocals ή καθάρισε unused imports.
+- Μην σπάσεις production build.
+
+8. Έλεγξε internal linking transform
+Αν υπάρχει injectInternalLinks / Transform 9:
+- να μη δουλεύει με επικίνδυνο raw regex πάνω σε HTML
+- να κάνει escape όλα τα village names πριν μπουν σε RegExp
+- να χρησιμοποιεί longest-first sorting με normalized Greek text
+- να μην κάνει link μέσα σε ήδη υπάρχοντα <a>
+- να έχει cap π.χ. max 8 internal links ανά άρθρο και max 1 ανά χωριό
+- να μην παθαίνει infinite loop με Unicode, τόνους ή σπασμένα HTML tags.
+Αν δεν υπάρχει στο repo, μην το δημιουργήσεις βιαστικά, απλώς σημείωσε ότι δεν βρέθηκε.
+
+9. Verification πριν το deploy
+Μετά τις αλλαγές τρέξε:
+pnpm run typecheck
+pnpm run build
+
+Κάνε live checks:
+- https://dropolis.net/
+- https://dropolis.net/news/
+- https://dropolis.net/villages/
+- https://dropolis.net/villages/51/
+- https://dropolis.net/en/
+- https://dropolis.net/en/news/
+- https://dropolis.net/api/photos/pending
+
+Επιβεβαίωσε:
+- όλες οι βασικές σελίδες έχουν title, meta description, canonical, og:image, H1
+- / και /en/ έχουν hreflang
+- / έχει JSON-LD
+- /api/photos/pending χωρίς token επιστρέφει 401
+- image upload παράγει WebP optimized αρχείο
+
+Στο τέλος γράψε αναφορά:
+- τι άλλαξες
+- ποια αρχεία πείραξες
+- αποτέλεσμα typecheck/build
+- τι επιβεβαιώθηκε live

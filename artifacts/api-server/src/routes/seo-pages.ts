@@ -107,6 +107,7 @@ interface PageMeta {
   article?: ArticleMeta;
   jsonLd?: object | object[];
   breadcrumbs?: Array<{ name: string; item: string }>;
+  hreflang?: Array<{ lang: string; href: string }>;
   bodyH1?: string;
   bodyP?: string;
   noindex?: boolean;
@@ -198,6 +199,9 @@ function buildSeoTags(m: PageMeta): string {
     `<meta name="twitter:description" content="${desc}" />`,
     `<meta name="twitter:image" content="${img}" />`,
     ...articleTags,
+    ...(m.hreflang ?? []).map(({ lang, href }) =>
+      `<link rel="alternate" hreflang="${esc(lang)}" href="${esc(href)}" />`
+    ),
     schemas.length > 0
       ? `<script type="application/ld+json">${JSON.stringify(schemas.length === 1 ? schemas[0] : schemas)}</script>`
       : "",
@@ -248,6 +252,55 @@ const STATIC_META: Record<string, PageMeta> = {
     type: "website",
     bodyH1: "Δρόπολη Βόρεια Ήπειρος — Ειδήσεις, Χωριά, Φωτογραφίες & Πολιτισμός",
     bodyP: "Ειδήσεις, φωτογραφίες, βίντεο και κοινότητα για τα χωριά της Δρόπολης (Βόρεια Ήπειρος).",
+    hreflang: [
+      { lang: "el",        href: `${BASE_URL}/` },
+      { lang: "en",        href: `${BASE_URL}/en/` },
+      { lang: "x-default", href: `${BASE_URL}/` },
+    ],
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": `${BASE_URL}/#website`,
+        name: "Δρόπολη (Dropolis)",
+        alternateName: "Dropolis — Dropull",
+        url: `${BASE_URL}/`,
+        description: "Portal ειδήσεων, φωτογραφιών και κοινότητας για τα 41 χωριά της Δρόπολης (Βόρεια Ήπειρος). Ελληνική μειονότητα, ιστορία, Αργυρόκαστρο, Dropull.",
+        inLanguage: "el",
+        publisher: { "@id": `${BASE_URL}/#organization` },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": `${BASE_URL}/#organization`,
+        name: "Δρόπολη (Dropolis)",
+        alternateName: "Dropolis",
+        url: `${BASE_URL}/`,
+        logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png` },
+        foundingLocation: { "@type": "Place", name: "Δρόπολη, Βόρεια Ήπειρος, Αλβανία" },
+        sameAs: [
+          "https://www.facebook.com/profile.php?id=61590959938071",
+          "https://www.youtube.com/@dropolis",
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": `${BASE_URL}/#webpage`,
+        name: "Δρόπολη Βόρεια Ήπειρος — Ειδήσεις, Χωριά, Φωτογραφίες & Πολιτισμός",
+        description: "Ειδήσεις, φωτογραφίες, βίντεο και κοινότητα για τα χωριά της Δρόπολης (Βόρεια Ήπειρος). Ελληνική μειονότητα, Αργυρόκαστρο, Dropull.",
+        url: `${BASE_URL}/`,
+        inLanguage: "el",
+        isPartOf: { "@id": `${BASE_URL}/#website` },
+        about: {
+          "@type": "AdministrativeArea",
+          name: "Δήμος Δρόπολης",
+          alternateName: "Municipality of Dropull",
+          containedInPlace: { "@type": "Country", name: "Αλβανία" },
+        },
+        keywords: "Δρόπολη, Dropolis, Dropull, Βόρεια Ήπειρος, 41 χωριά, ελληνική μειονότητα, Αργυρόκαστρο, ειδήσεις",
+      },
+    ],
   },
   "/chat": {
     title: "Ζωντανή Συζήτηση",
@@ -262,6 +315,11 @@ const STATIC_META: Record<string, PageMeta> = {
     description: "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα 41 χωριά της Βόρειας Ηπείρου. Ελληνική μειονότητα Αλβανία, Αργυρόκαστρο, πολιτισμός, εκπαίδευση.",
     url: `${BASE_URL}/news/`,
     breadcrumbs: [{ name: "Ειδήσεις", item: `${BASE_URL}/news/` }],
+    hreflang: [
+      { lang: "el",        href: `${BASE_URL}/news/` },
+      { lang: "en",        href: `${BASE_URL}/en/news/` },
+      { lang: "x-default", href: `${BASE_URL}/news/` },
+    ],
     jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Ειδήσεις Δρόπολης — Τελευταία Νέα & Ρεπορτάζ", description: "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα 41 χωριά της Βόρειας Ηπείρου.", url: `${BASE_URL}/news/`, inLanguage: "el" },
   },
   "/villages": {
@@ -269,6 +327,11 @@ const STATIC_META: Record<string, PageMeta> = {
     description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Δρόπολης (Βόρεια Ήπειρος). Πληθυσμός, ιστορία, παραδόσεις και φωτογραφικό υλικό για κάθε χωριό.",
     url: `${BASE_URL}/villages/`,
     breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages/` }],
+    hreflang: [
+      { lang: "el",        href: `${BASE_URL}/villages/` },
+      { lang: "en",        href: `${BASE_URL}/en/villages/` },
+      { lang: "x-default", href: `${BASE_URL}/villages/` },
+    ],
     jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Τα 41 Χωριά της Δρόπολης", url: `${BASE_URL}/villages/`, inLanguage: "el", numberOfItems: 41 },
   },
   "/villages/map": {
@@ -286,6 +349,11 @@ const STATIC_META: Record<string, PageMeta> = {
     description: "Φωτογραφικό αρχείο από τα χωριά της Δρόπολης — τοπία, παραδοσιακά κτίρια, πολιτιστικές εκδηλώσεις και η καθημερινή ζωή στη Βόρεια Ήπειρο.",
     url: `${BASE_URL}/photos/`,
     breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos/` }],
+    hreflang: [
+      { lang: "el",        href: `${BASE_URL}/photos/` },
+      { lang: "en",        href: `${BASE_URL}/en/photos/` },
+      { lang: "x-default", href: `${BASE_URL}/photos/` },
+    ],
     jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Φωτογραφίες Δρόπολης — Φωτογραφικό Αρχείο", url: `${BASE_URL}/photos/`, inLanguage: "el" },
   },
   "/videos": {

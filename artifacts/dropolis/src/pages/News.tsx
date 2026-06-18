@@ -89,13 +89,26 @@ export default function News() {
     setPage(1);
   }
 
+  const isFiltered = !!(category || village);
+  const seoTitle = isFiltered
+    ? category && village
+      ? `${category} — ${village} | Ειδήσεις Δρόπολης`
+      : category
+        ? `${category} | Ειδήσεις Δρόπολης`
+        : `Ειδήσεις από ${village} | Δρόπολη`
+    : "Ειδήσεις Δρόπολης — Τελευταία Νέα & Ρεπορτάζ";
+  const seoDescription = isFiltered
+    ? `Ειδήσεις και ρεπορτάζ από τη Δρόπολη${village ? ` — ${village}` : ""}${category ? ` κατηγορία: ${category}` : ""}. Βόρεια Ήπειρος, ελληνική μειονότητα.`
+    : "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου.";
+
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO
-        title="Ειδήσεις"
-        description="Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου."
+        title={seoTitle}
+        description={seoDescription}
         image="/og-news.png"
         keywords="Δρόπολη ειδήσεις, Βόρεια Ήπειρος νέα, ελληνική μειονότητα Αλβανία, Dropull news, Northern Epirus, Δερόπολη, Δρόπολης χωριά"
+        noindex={isFiltered}
         breadcrumbs={[{ name: "Ειδήσεις", url: "/news/" }]}
         jsonLd={[
           {

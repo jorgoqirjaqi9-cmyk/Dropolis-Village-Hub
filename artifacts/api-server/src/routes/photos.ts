@@ -18,6 +18,24 @@ import { optimizeToWebP, createThumbnailWebP, slugifyFilename } from "../lib/ima
 const router = Router();
 const objectStorageService = new ObjectStorageService();
 
+// ---------------------------------------------------------------------------
+// Magic-byte validator — prevents mimeType spoofing
+// ---------------------------------------------------------------------------
+
+function validateImageMagicBytes(buf: Buffer): void {
+  if (buf.length < 12) throw new Error("Το αρχείο είναι πολύ μικρό για να αναγνωριστεί.");
+  // JPEG: FF D8 FF
+  if (buf[0] === 0xFF && buf[1] === 0xD8 && buf[2] === 0xFF) return;
+  // PNG: 89 50 4E 47 0D 0A 1A 0A
+  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4E && buf[3] === 0x47) return;
+  // WebP: RIFF....WEBP
+  if (
+    buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46 &&
+    buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50
+  ) return;
+  throw new Error("Μη αποδεκτή μορφή αρχείου. Επιτρέπονται μόνο JPEG, PNG και WebP.");
+}
+
 const DEFAULT_PHOTO_LIMIT = 100;
 const MAX_PHOTO_LIMIT = 300;
 const MAX_PHOTO_OFFSET = 10_000;
@@ -136,6 +154,9 @@ router.post("/photos/process-upload", submitRateLimit, async (req, res) => {
     const response = await objectStorageService.downloadObject(gcsFile);
     const inputBuf = Buffer.from(await response.arrayBuffer());
 
+    // Magic-byte validation — reject spoofed mimeType before touching sharp
+    validateImageMagicBytes(inputBuf);
+
     // Process in parallel: main WebP (≤ 150 KB, max 1600 px) + thumbnail (≤ 120 KB, 600 px)
     const [mainWebP, thumbWebP] = await Promise.all([
       optimizeToWebP(inputBuf, { maxBytes: 150 * 1024, maxPx: 1600 }),
@@ -233,6 +254,19 @@ router.post("/photos", requireAdmin, async (req, res) => {
     status: "approved",
   }).returning();
   res.status(201).json(formatPhoto(photo));
+});
+
+// ---------------------------------------------------------------------------
+// GET /photos/pending — admin-only list of pending submissions
+// IMPORTANT: must be declared BEFORE /photos/:id to avoid param capture
+// ---------------------------------------------------------------------------
+
+router.get("/photos/pending", requireAdmin, async (req, res) => {
+  const photos = await db.select()
+    .from(photosTable)
+    .where(eq(photosTable.status, "pending"))
+    .orderBy(photosTable.createdAt);
+  res.json(photos.map(formatPhoto));
 });
 
 // ---------------------------------------------------------------------------
