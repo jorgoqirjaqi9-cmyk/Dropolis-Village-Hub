@@ -399,7 +399,7 @@ export default function Finiq() {
           </label>
           {preview ? (
             <div className="relative rounded-xl overflow-hidden border">
-              <img src={preview} alt="Προεπισκόπηση" className="w-full max-h-64 object-contain bg-muted" />
+              <img src={preview} alt="Προεπισκόπηση" className="w-full max-h-64 object-contain bg-muted" loading="lazy" decoding="async" />
               <button type="button" onClick={clearFile} disabled={isBusy}
                 className="absolute top-2 right-2 rounded-full bg-black/60 text-white p-1 hover:bg-black/80 transition-colors disabled:opacity-50"
                 aria-label="Αφαίρεση αρχείου">

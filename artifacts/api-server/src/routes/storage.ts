@@ -107,10 +107,10 @@ router.get("/storage/public-objects/*filePath", async (req: Request, res: Respon
       }
       let outContentType: string;
       if (wantAvif) {
-        pipeline = pipeline.avif({ quality: 55 });
+        pipeline = pipeline.avif({ quality: 72 });
         outContentType = "image/avif";
       } else {
-        pipeline = pipeline.webp({ quality: 55 });
+        pipeline = pipeline.webp({ quality: 75 });
         outContentType = "image/webp";
       }
       const out = await pipeline.toBuffer();

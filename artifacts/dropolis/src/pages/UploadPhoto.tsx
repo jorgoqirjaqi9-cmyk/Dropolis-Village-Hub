@@ -8,7 +8,7 @@ const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_RAW_SIZE = 20 * 1024 * 1024; // 20 MB — raw file before compression
 const MAX_COMPRESSED_SIZE = 3 * 1024 * 1024; // 3 MB final limit (server enforces too)
 
-type Step = "form" | "compressing" | "uploading" | "success" | "error";
+type Step = "form" | "compressing" | "uploading" | "processing" | "success" | "error";
 
 // ---------------------------------------------------------------------------
 // Canvas helpers
@@ -140,52 +140,50 @@ export default function UploadPhoto() {
     setSubmitError(null);
 
     try {
-      // ── Compress main image (max 1600px, ≤ 3 MB) ──────────────────────────
+      // ── Light client compression (max 1600px, ≤ 3 MB) for bandwidth reduction
       const mainFile = await compressImage(file, 1600, MAX_COMPRESSED_SIZE, "photo.jpg");
       setCompressedSize(mainFile.size);
       setProgress(20);
 
-      // ── Compress thumbnail (max 600px, ≤ 200 KB) ─────────────────────────
-      const thumbFile = await compressImage(file, 600, 200 * 1024, "thumb.jpg");
-      setProgress(30);
-
       setStep("uploading");
 
-      // ── Get presigned URLs (main + thumbnail in parallel) ─────────────────
-      const [mainUrlRes, thumbUrlRes] = await Promise.all([
-        fetch("/api/photos/upload-url", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: mainFile.name, size: mainFile.size, contentType: "image/jpeg" }),
-        }),
-        fetch("/api/photos/upload-url", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: thumbFile.name, size: thumbFile.size, contentType: "image/jpeg" }),
-        }),
-      ]);
+      // ── Request ONE presigned URL (thumbnail created server-side) ─────────
+      const urlRes = await fetch("/api/photos/upload-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: mainFile.name, size: mainFile.size, contentType: "image/jpeg" }),
+      });
 
-      if (!mainUrlRes.ok) {
-        const err = await mainUrlRes.json().catch(() => ({ error: "Σφάλμα URL." }));
+      if (!urlRes.ok) {
+        const err = await urlRes.json().catch(() => ({ error: "Σφάλμα URL." }));
         throw new Error(err.error || "Αποτυχία δημιουργίας URL αποστολής.");
       }
-      if (!thumbUrlRes.ok) {
-        const err = await thumbUrlRes.json().catch(() => ({ error: "Σφάλμα URL thumbnail." }));
-        throw new Error(err.error || "Αποτυχία δημιουργίας URL thumbnail.");
+
+      const { uploadURL, objectPath: mainObjectPath } = await urlRes.json();
+      setProgress(35);
+
+      // ── Upload raw file to GCS ────────────────────────────────────────────
+      const uploadMain = await fetch(uploadURL, {
+        method: "PUT", body: mainFile, headers: { "Content-Type": "image/jpeg" },
+      });
+      if (!uploadMain.ok) throw new Error("Η αποστολή της φωτογραφίας στο αποθηκευτικό χώρο απέτυχε.");
+      setProgress(55);
+
+      // ── Server-side WebP optimisation + thumbnail creation ─────────────
+      setStep("processing");
+      const processRes = await fetch("/api/photos/process-upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ objectPath: mainObjectPath, originalFilename: file.name }),
+      });
+
+      if (!processRes.ok) {
+        const err = await processRes.json().catch(() => ({ error: "Σφάλμα επεξεργασίας." }));
+        throw new Error(err.error || "Αποτυχία μετατροπής σε WebP.");
       }
 
-      const { uploadURL: mainUploadURL, objectPath: mainObjectPath } = await mainUrlRes.json();
-      const { uploadURL: thumbUploadURL, objectPath: thumbObjectPath } = await thumbUrlRes.json();
-      setProgress(50);
-
-      // ── Upload both to GCS in parallel ───────────────────────────────────
-      const [uploadMain, uploadThumb] = await Promise.all([
-        fetch(mainUploadURL, { method: "PUT", body: mainFile, headers: { "Content-Type": "image/jpeg" } }),
-        fetch(thumbUploadURL, { method: "PUT", body: thumbFile, headers: { "Content-Type": "image/jpeg" } }),
-      ]);
-
-      if (!uploadMain.ok) throw new Error("Η αποστολή της φωτογραφίας στο αποθηκευτικό χώρο απέτυχε.");
-      if (!uploadThumb.ok) throw new Error("Η αποστολή του thumbnail στο αποθηκευτικό χώρο απέτυχε.");
+      const { thumbnailObjectPath, processedSize: webpSize } = await processRes.json();
+      setCompressedSize(webpSize); // show final WebP size in the UI
       setProgress(80);
 
       // ── Submit metadata ───────────────────────────────────────────────────
@@ -196,7 +194,7 @@ export default function UploadPhoto() {
         body: JSON.stringify({
           title: title.trim(),
           objectPath: mainObjectPath,
-          thumbnailObjectPath: thumbObjectPath,
+          thumbnailObjectPath,
           villageId: villageId ? Number(villageId) : undefined,
           villageName: selectedVillage?.name ?? undefined,
           photographer: photographer.trim() || undefined,
@@ -255,7 +253,8 @@ export default function UploadPhoto() {
 
   const isCompressing = step === "compressing";
   const isUploading = step === "uploading";
-  const isBusy = isCompressing || isUploading;
+  const isProcessing = step === "processing";
+  const isBusy = isCompressing || isUploading || isProcessing;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl space-y-8">
@@ -272,7 +271,7 @@ export default function UploadPhoto() {
           <Camera className="w-10 h-10 mx-auto mb-4 text-secondary" />
           <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">Υποβολή Φωτογραφίας</h1>
           <p className="text-primary-foreground/70 text-sm max-w-md mx-auto">
-            Κάθε υποβολή αξιολογείται από την ομάδα πριν δημοσιευτεί. JPG · PNG · WEBP · αυτόματη συμπίεση.
+            Κάθε υποβολή αξιολογείται από την ομάδα πριν δημοσιευτεί. JPG · PNG · WEBP · αυτόματη μετατροπή σε WebP.
           </p>
         </div>
       </div>
@@ -287,7 +286,7 @@ export default function UploadPhoto() {
 
           {preview ? (
             <div className="relative rounded-xl overflow-hidden border">
-              <img src={preview} alt="Προεπισκόπηση" className="w-full max-h-72 object-contain bg-muted" />
+              <img src={preview} alt="Προεπισκόπηση" className="w-full max-h-72 object-contain bg-muted" loading="lazy" decoding="async" />
               <button
                 type="button"
                 onClick={clearFile}
@@ -302,7 +301,7 @@ export default function UploadPhoto() {
                 {file?.name} — {file ? (file.size / 1024 / 1024).toFixed(2) : ""} MB αρχικά
                 {compressedSize !== null && (
                   <span className="ml-auto text-green-600 dark:text-green-400 font-medium">
-                    → {(compressedSize / 1024).toFixed(0)} KB μετά συμπίεση
+                    → {(compressedSize / 1024).toFixed(0)} KB WebP
                   </span>
                 )}
               </div>
@@ -312,7 +311,7 @@ export default function UploadPhoto() {
               <Upload className="w-8 h-8 text-muted-foreground" />
               <div className="text-center">
                 <p className="font-medium text-sm">Κάντε κλικ για επιλογή αρχείου</p>
-                <p className="text-xs text-muted-foreground mt-1">JPG, PNG, WEBP — αυτόματη συμπίεση πριν την αποστολή</p>
+                <p className="text-xs text-muted-foreground mt-1">JPG, PNG, WEBP — αυτόματη μετατροπή σε WebP από τον διακομιστή</p>
               </div>
               <input
                 ref={inputRef}
@@ -417,7 +416,7 @@ export default function UploadPhoto() {
         {isBusy && (
           <div className="space-y-2">
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{isCompressing ? "Συμπίεση εικόνας…" : "Αποστολή στον διακομιστή…"}</span>
+              <span>{isCompressing ? "Προετοιμασία εικόνας…" : isProcessing ? "Μετατροπή σε WebP…" : "Αποστολή στον διακομιστή…"}</span>
               <span>{progress}%</span>
             </div>
             <div className="h-2 rounded-full bg-muted overflow-hidden">
@@ -438,7 +437,7 @@ export default function UploadPhoto() {
           {isBusy ? (
             <>
               <span className="animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white" />
-              {isCompressing ? "Συμπίεση…" : "Αποστολή…"}
+              {isCompressing ? "Προετοιμασία…" : isProcessing ? "Βελτιστοποίηση…" : "Αποστολή…"}
             </>
           ) : (
             <>

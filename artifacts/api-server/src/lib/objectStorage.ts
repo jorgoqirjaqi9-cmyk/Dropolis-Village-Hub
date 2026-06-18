@@ -175,6 +175,36 @@ export class ObjectStorageService {
     return `/objects/${entityId}`;
   }
 
+  /**
+   * Create a fresh /objects/uploads/<uuid> path (no GCS call — path only).
+   * Use with uploadObjectEntityBuffer to store processed buffers directly.
+   */
+  createObjectEntityPath(): string {
+    return `/objects/uploads/${randomUUID()}`;
+  }
+
+  /**
+   * Upload a raw buffer directly to an existing or new entity path.
+   * Overwrites any existing object at that path.
+   */
+  async uploadObjectEntityBuffer(
+    objectPath: string,
+    buffer: Buffer,
+    contentType: string
+  ): Promise<void> {
+    if (!objectPath.startsWith("/objects/")) {
+      throw new Error(`uploadObjectEntityBuffer: invalid path "${objectPath}"`);
+    }
+    const parts = objectPath.slice(1).split("/"); // ["objects", "uploads", "uuid"]
+    const entityId = parts.slice(1).join("/");     // "uploads/uuid"
+    let entityDir = this.getPrivateObjectDir();
+    if (!entityDir.endsWith("/")) entityDir = `${entityDir}/`;
+    const gcsPath = `${entityDir}${entityId}`;
+    const { bucketName, objectName } = parseObjectPath(gcsPath);
+    const file = objectStorageClient.bucket(bucketName).file(objectName);
+    await file.save(buffer, { contentType, resumable: false });
+  }
+
   async deleteObjectEntity(objectPath: string): Promise<void> {
     try {
       const objectFile = await this.getObjectEntityFile(objectPath);

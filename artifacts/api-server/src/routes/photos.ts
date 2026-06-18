@@ -13,6 +13,7 @@ import {
 } from "@workspace/api-zod";
 import { requireAdmin } from "../lib/admin-auth.js";
 import { ObjectStorageService } from "../lib/objectStorage.js";
+import { optimizeToWebP, createThumbnailWebP, slugifyFilename } from "../lib/image-optimizer.js";
 
 const router = Router();
 const objectStorageService = new ObjectStorageService();
@@ -104,6 +105,65 @@ router.post("/photos/upload-url", uploadUrlRateLimit, async (req, res) => {
   } catch (err) {
     req.log.error({ err }, "Error generating photo upload URL");
     res.status(500).json({ error: "Αποτυχία δημιουργίας URL αποστολής." });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// POST /photos/process-upload — server-side WebP optimisation + thumbnail
+// ---------------------------------------------------------------------------
+
+/**
+ * Called by the client after a successful presigned PUT to GCS.
+ * Downloads the raw upload, converts it to WebP ≤ 150 KB, creates a
+ * thumbnail ≤ 120 KB, re-uploads both, and returns the results.
+ *
+ * Body: { objectPath: string, originalFilename?: string }
+ */
+router.post("/photos/process-upload", submitRateLimit, async (req, res) => {
+  const { objectPath, originalFilename } = req.body ?? {};
+
+  if (
+    typeof objectPath !== "string" ||
+    !objectPath.startsWith("/objects/uploads/")
+  ) {
+    res.status(400).json({ error: "objectPath non valido." });
+    return;
+  }
+
+  try {
+    // Download uploaded file from GCS
+    const gcsFile  = await objectStorageService.getObjectEntityFile(objectPath);
+    const response = await objectStorageService.downloadObject(gcsFile);
+    const inputBuf = Buffer.from(await response.arrayBuffer());
+
+    // Process in parallel: main WebP (≤ 150 KB, max 1600 px) + thumbnail (≤ 120 KB, 600 px)
+    const [mainWebP, thumbWebP] = await Promise.all([
+      optimizeToWebP(inputBuf, { maxBytes: 150 * 1024, maxPx: 1600 }),
+      createThumbnailWebP(inputBuf, { maxPx: 600, maxBytes: 120 * 1024 }),
+    ]);
+
+    // Re-upload main (overwrite the original JPEG/PNG with the processed WebP)
+    await objectStorageService.uploadObjectEntityBuffer(objectPath, mainWebP, "image/webp");
+
+    // Upload thumbnail to a new path
+    const thumbnailObjectPath = objectStorageService.createObjectEntityPath();
+    await objectStorageService.uploadObjectEntityBuffer(thumbnailObjectPath, thumbWebP, "image/webp");
+
+    const sluggedFilename = slugifyFilename(
+      typeof originalFilename === "string" && originalFilename.trim()
+        ? originalFilename.trim()
+        : "photo"
+    );
+
+    res.json({
+      processedSize:       mainWebP.length,
+      thumbnailObjectPath,
+      thumbnailUrl:        `/api/storage${thumbnailObjectPath}`,
+      sluggedFilename,
+    });
+  } catch (err) {
+    req.log.error({ err }, "Error processing photo upload");
+    res.status(500).json({ error: "Αποτυχία επεξεργασίας εικόνας." });
   }
 });
 

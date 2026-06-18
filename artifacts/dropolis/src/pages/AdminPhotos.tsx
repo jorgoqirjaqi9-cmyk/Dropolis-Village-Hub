@@ -160,6 +160,7 @@ export default function AdminPhotos() {
                 <div className="sm:w-44 shrink-0 bg-muted">
                   <img src={photo.thumbnailUrl ?? photo.url} alt={photo.title}
                     className="w-full h-44 sm:h-full object-cover"
+                    loading="lazy" decoding="async"
                     onError={e => { (e.target as HTMLImageElement).src = "/opengraph.jpg"; }} />
                 </div>
                 <div className="flex-1 p-4 flex flex-col gap-2">

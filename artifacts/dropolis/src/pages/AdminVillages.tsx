@@ -150,7 +150,7 @@ export default function AdminVillages() {
                     <tr key={v.id} className="hover:bg-muted/30 transition-colors">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          {v.imageUrl && <img src={v.imageUrl} alt="" className="w-8 h-8 rounded-lg object-cover shrink-0" />}
+                          {v.imageUrl && <img src={v.imageUrl} alt="" className="w-8 h-8 rounded-lg object-cover shrink-0" loading="lazy" decoding="async" />}
                           <div>
                             <p className="font-medium text-foreground">{v.nameEl}</p>
                             <p className="text-xs text-muted-foreground md:hidden">{v.name}</p>
