@@ -46,7 +46,9 @@ const securityHeaders: RequestHandler = (_req, res, next) => {
         " https://static.doubleclick.net" +
         " https://adservice.google.com" +
         " https://www.gstatic.com" +
-        " https://www.youtube.com",
+        " https://www.youtube.com" +
+        " https://news.google.com" +
+        " https://www.clarity.ms",
       // Styles: self + Google Fonts
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Fonts: self + Google Fonts CDN
@@ -62,8 +64,8 @@ const securityHeaders: RequestHandler = (_req, res, next) => {
         " https://www.google.com" +
         " https://googleads.g.doubleclick.net" +
         " https://www.openstreetmap.org",
-      // Fetch/XHR: self + all HTTPS (covers API + external services)
-      "connect-src 'self' https:",
+      // Fetch/XHR: self + all HTTPS (covers API + external services + Clarity telemetry)
+      "connect-src 'self' https: https://www.clarity.ms https://c.clarity.ms",
       // Audio/Video
       "media-src 'self' https:",
       // No plugins
