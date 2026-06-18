@@ -24,7 +24,7 @@ const VillageDetail   = lazy(() => import("@/pages/VillageDetail"));
 const VillageMap      = lazy(() => import("@/pages/VillageMap"));
 const Photos          = lazy(() => import("@/pages/Photos"));
 const Videos          = lazy(() => import("@/pages/Videos"));
-const Chat            = lazy(() => import("@/pages/Chat"));
+
 const About           = lazy(() => import("@/pages/About"));
 const Contact         = lazy(() => import("@/pages/Contact"));
 const Privacy         = lazy(() => import("@/pages/Privacy"));
@@ -80,14 +80,6 @@ const queryClient = new QueryClient({
 function Router() {
   return (
     <Switch>
-      {/* Chat — full-screen, no Layout */}
-      <Route path="/chat">
-        <PageLoader><Chat /></PageLoader>
-      </Route>
-      <Route path="/chat/">
-        <PageLoader><Chat /></PageLoader>
-      </Route>
-
       {/* Admin routes — full-screen with AdminLayout sidebar (no public header/footer) */}
       <Route path="/admin">
         <PageLoader><AdminDashboard /></PageLoader>

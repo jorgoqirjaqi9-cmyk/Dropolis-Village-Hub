@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { SEO } from "@/components/SEO";
 import { motion } from "framer-motion";
 import {
-  Home, Newspaper, MapPin, Image, Video, MessageSquare,
+  Home, Newspaper, MapPin, Image, Video,
   Info, Mail, Shield, FileText, Cookie, AlertTriangle,
   Megaphone, HelpCircle, Map, BookOpen, UserPlus, BarChart2, Globe,
 } from "lucide-react";
@@ -22,7 +22,6 @@ const sections = [
       { href: "/villages", label: "Χωριά", desc: "Κατάλογος 41 χωριών του Δήμου", icon: MapPin },
       { href: "/photos", label: "Φωτογραφίες", desc: "Γκαλερί εικόνων από την περιοχή", icon: Image },
       { href: "/videos", label: "Βίντεο", desc: "Βιντεοσκοπημένες στιγμές", icon: Video },
-      { href: "/chat", label: "Chat", desc: "Ζωντανή συνομιλία κοινότητας", icon: MessageSquare },
     ],
   },
   {

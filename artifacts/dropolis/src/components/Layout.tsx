@@ -6,7 +6,7 @@ import { RadioPlayer } from "./RadioPlayer";
 import { CookieConsent } from "./CookieConsent";
 
 const AD_EXCLUDED_PREFIXES = [
-  "/chat", "/upload-photo", "/submit-news", "/submit-video",
+  "/upload-photo", "/submit-news", "/submit-video",
   "/admin", "/privacy", "/terms", "/cookie-policy", "/disclaimer", "/diaspora",
 ];
 

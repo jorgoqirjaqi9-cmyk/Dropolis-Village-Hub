@@ -7,7 +7,7 @@ import { useGetStats, useGetFeaturedArticles, useListArticles } from "@workspace
 import { SEO, seoPages } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, MessageSquare, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera, CheckCircle2, UsersRound, Map } from "lucide-react";
+import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera, CheckCircle2, UsersRound, Map } from "lucide-react";
 import { usePWAInstall } from "@/hooks/use-pwa-install";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { WeatherWidget } from "@/components/WeatherWidget";
@@ -243,7 +243,6 @@ export default function Home() {
             { icon: Users, label: "Χωριά", value: stats?.totalVillages, color: "text-accent", href: "/villages" },
             { icon: ImageIcon, label: "Φωτογραφίες", value: stats?.totalPhotos, color: "text-secondary", href: "/photos" },
             { icon: VideoIcon, label: "Βίντεο", value: stats?.totalVideos, color: "text-primary", href: "/videos" },
-            { icon: MessageSquare, label: "Μηνύματα", value: stats?.totalMessages, color: "text-accent", href: "/chat" },
           ].map((stat, i) => (
             <motion.div
               key={i}
@@ -719,7 +718,6 @@ export default function Home() {
                 {[
                   { href: "/photos", label: "📸 Φωτογραφίες" },
                   { href: "/videos", label: "🎬 Βίντεο" },
-                  { href: "/chat", label: "💬 Συζήτηση" },
                   { href: "/villages", label: "🏘️ Χωριά" },
                 ].map((item) => (
                   <Link key={item.href} href={item.href}>
