@@ -100,6 +100,8 @@ interface ArticleMeta {
 
 interface PageMeta {
   title: string;
+  /** When set, used verbatim as the HTML <title> (no "| SITE_NAME" suffix appended). */
+  titleFinal?: string;
   description: string;
   image?: string | null;
   url: string;
@@ -150,7 +152,10 @@ function generateArticleDesc(a: {
 }
 
 function buildSeoTags(m: PageMeta): string {
-  const title = esc(`${m.title} | ${SITE_NAME}`);
+  // Use titleFinal verbatim when set (no suffix); otherwise append site name.
+  // Hard-truncate to 60 chars as a safety guard against future long titles.
+  const rawTitle = m.titleFinal ?? `${m.title} | ${SITE_NAME}`;
+  const title = esc(rawTitle.length > 60 ? rawTitle.slice(0, 59) + "…" : rawTitle);
   const desc = esc((m.description ?? "").slice(0, 160));
   const img = esc(m.image || DEFAULT_IMG);
   // Enforce trailing slash on all page URLs for canonical consistency
@@ -571,8 +576,9 @@ const STATIC_META: Record<string, PageMeta> = {
     bodyP: "Ανακαλύψτε τα κορυφαία παραδοσιακά φαγητά της Δρόπολης και της Βορείου Ηπείρου — Κασιόπιτα, κρέατα στη γάστρα, πασούλ και άλλες τοπικές συνταγές.",
   },
   "/ta-41-xoria-tis-dropolis": {
-    title: "Τα 41 Χωριά της Δρόπολης: Ιστορία, Πολιτισμός & Αξιοθέατα | Dropolis.net",
-    description: "Πλήρης οδηγός για τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο. Ιστορία, πολιτισμός, αξιοθέατα, φωτογραφίες και νέα για κάθε χωριό της ελληνικής μειονότητας στο Αργυρόκαστρο.",
+    title: "Τα 41 Χωριά της Δρόπολης — Ιστορία & Παράδοση",
+    titleFinal: "Τα 41 Χωριά της Δρόπολης — Ιστορία & Παράδοση",
+    description: "Ανακαλύψτε τα 41 ελληνικά χωριά της Δρόπολης στη Βόρεια Ήπειρο. Ιστορία, αξιοθέατα, φωτογραφίες και πολιτιστική κληρονομιά της ομογένειας.",
     url: `${BASE_URL}/ta-41-xoria-tis-dropolis/`,
     breadcrumbs: [
       { name: "Αρχική",        item: `${BASE_URL}/` },
