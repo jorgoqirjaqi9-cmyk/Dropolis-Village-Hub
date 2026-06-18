@@ -99,7 +99,7 @@ export function buildNewsArticleSchema(a: ArticleSchemaInput): object {
   const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
-    "@id": articleUrl,
+    "@id": `${articleUrl}#article`,
     url: articleUrl,
     headline: a.title.slice(0, 110),
     description: a.description.slice(0, 160),
@@ -135,6 +135,52 @@ export function buildNewsArticleSchema(a: ArticleSchemaInput): object {
   }
 
   return schema;
+}
+
+// ---------------------------------------------------------------------------
+// Static pages (WebPage / CollectionPage / AboutPage / etc.)
+// ---------------------------------------------------------------------------
+
+export interface StaticPageSchemaInput {
+  /** Schema.org @type — single string or multi-type array. */
+  type: string | string[];
+  /** Canonical URL of the page (with trailing slash). */
+  url: string;
+  /** Schema name (usually the page title). */
+  name: string;
+  /** Optional short description. */
+  description?: string;
+  /** Page language — defaults to "el". */
+  lang?: "el" | "en";
+  /** Any extra schema.org fields for this type (e.g. numberOfItems, alternateName). */
+  extra?: Record<string, unknown>;
+}
+
+/**
+ * Builds a complete schema for any static page.
+ *
+ * Automatically fills in:
+ *   - @context, @type, @id (`${url}#webpage`)
+ *   - url, name, description, inLanguage
+ *   - isPartOf → WebSite @id reference
+ *   - publisher  → Organization @id reference
+ *
+ * Usage — adding a new page requires only one call:
+ *   jsonLd: buildStaticPageSchema({ type: "WebPage", url: `${BASE_URL}/my-page/`, name: "My Page" })
+ */
+export function buildStaticPageSchema(opts: StaticPageSchemaInput): object {
+  return {
+    "@context": "https://schema.org",
+    "@type": opts.type,
+    "@id": `${opts.url}#webpage`,
+    url: opts.url,
+    name: opts.name,
+    ...(opts.description ? { description: opts.description } : {}),
+    inLanguage: opts.lang ?? "el",
+    isPartOf: { "@id": `${BASE_URL}/#website` },
+    publisher: { "@id": `${BASE_URL}/#organization` },
+    ...(opts.extra ?? {}),
+  };
 }
 
 // ---------------------------------------------------------------------------

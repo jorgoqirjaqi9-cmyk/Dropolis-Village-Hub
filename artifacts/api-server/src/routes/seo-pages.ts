@@ -18,7 +18,7 @@ import { resolve } from "node:path";
 import { db, articlesTable, villagesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { logger } from "../lib/logger.js";
-import { buildNewsArticleSchema, buildVillageSchema } from "../lib/schema-builders.js";
+import { buildNewsArticleSchema, buildVillageSchema, buildStaticPageSchema } from "../lib/schema-builders.js";
 
 const BASE_URL = "https://dropolis.net";
 const SITE_NAME = "Δρόπολη (Dropolis)";
@@ -116,9 +116,51 @@ interface PageMeta {
   noindex?: boolean;
 }
 
-function jsonLdItems(v?: object | object[]): object[] {
+/**
+ * Schema @type values that represent a web page entity.
+ * These receive automatic enrichment (@id, isPartOf, publisher, inLanguage)
+ * if the fields are absent — so new pages never need to specify them manually.
+ */
+const PAGE_SCHEMA_TYPES = new Set([
+  "WebPage", "CollectionPage", "AboutPage", "ContactPage", "FAQPage",
+  "ItemPage", "ImageGallery", "ProfilePage", "QAPage", "SearchResultsPage",
+]);
+
+function isPageSchemaType(type: unknown): boolean {
+  if (typeof type === "string") return PAGE_SCHEMA_TYPES.has(type);
+  if (Array.isArray(type)) {
+    return (type as unknown[]).some(
+      (t) => typeof t === "string" && PAGE_SCHEMA_TYPES.has(t)
+    );
+  }
+  return false;
+}
+
+/**
+ * Auto-enrich a WebPage-like schema with standard fields if they are missing.
+ * Existing values are NEVER overwritten — this is additive only.
+ */
+function enrichPageSchema(
+  schema: Record<string, unknown>,
+  pageUrl: string
+): Record<string, unknown> {
+  if (!isPageSchemaType(schema["@type"])) return schema;
+  return {
+    ...schema,
+    "@id": schema["@id"] ?? `${pageUrl}#webpage`,
+    inLanguage: schema["inLanguage"] ?? "el",
+    isPartOf: schema["isPartOf"] ?? { "@id": `${BASE_URL}/#website` },
+    publisher: schema["publisher"] ?? { "@id": `${BASE_URL}/#organization` },
+  };
+}
+
+function jsonLdItems(v?: object | object[], pageUrl?: string): object[] {
   if (!v) return [];
-  return Array.isArray(v) ? v : [v];
+  const items: object[] = Array.isArray(v) ? v : [v];
+  if (!pageUrl) return items;
+  return items.map((item) =>
+    enrichPageSchema(item as Record<string, unknown>, pageUrl)
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -183,7 +225,7 @@ function buildSeoTags(m: PageMeta): string {
       }
     : null;
 
-  const schemas = [...jsonLdItems(m.jsonLd), ...(breadcrumbLd ? [breadcrumbLd] : [])];
+  const schemas = [...jsonLdItems(m.jsonLd, normalizedUrl), ...(breadcrumbLd ? [breadcrumbLd] : [])];
 
   return [
     m.noindex ? `<meta name="robots" content="noindex,follow" />` : "",
@@ -586,20 +628,12 @@ const STATIC_META: Record<string, PageMeta> = {
       { name: "Χωριά",         item: `${BASE_URL}/villages/` },
       { name: "Τα 41 Χωριά",  item: `${BASE_URL}/ta-41-xoria-tis-dropolis/` },
     ],
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "@id": `${BASE_URL}/ta-41-xoria-tis-dropolis/`,
-      name: "Τα 41 Χωριά της Δρόπολης — Dropolis",
+    jsonLd: buildStaticPageSchema({
+      type: "WebPage",
       url: `${BASE_URL}/ta-41-xoria-tis-dropolis/`,
-      inLanguage: "el",
+      name: "Τα 41 Χωριά της Δρόπολης — Dropolis",
       description: "Πλήρης οδηγός για τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο — ιστορία, πολιτισμός, αξιοθέατα, ελληνική μειονότητα, Αργυρόκαστρο.",
-      publisher: {
-        "@type": "Organization",
-        name: "Δρόπολη — Dropolis",
-        url: `${BASE_URL}/`,
-      },
-    },
+    }),
     bodyH1: "Τα 41 Χωριά της Δρόπολης: Ιστορία, Πολιτισμός & Αξιοθέατα",
     bodyP: "Πλήρης οδηγός για τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο — ιστορία, πολιτισμός, αξιοθέατα και νέα για κάθε χωριό της ελληνικής μειονότητας στο Αργυρόκαστρο.",
   },
