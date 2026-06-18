@@ -132,7 +132,7 @@ export default function Home() {
             id="hero-heading"
             className="hero-anim hero-anim-2 font-serif text-5xl sm:text-6xl md:text-7xl font-black text-white text-shadow-hero leading-none tracking-tight mb-4"
           >
-            Δρόπολη - Dropolis
+            Dropolis — Τα Νέα της Δρόπολης
           </h1>
 
           <p className="hero-anim hero-anim-3 text-xl sm:text-2xl text-white/80 font-light text-shadow-hero mb-3 font-serif italic">
