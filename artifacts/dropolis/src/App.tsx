@@ -228,15 +228,16 @@ function Router() {
 }
 
 function App() {
-  // Bootstrap Google Analytics fully after the page has painted.
-  // Keeping all GA code here (not in index.html) means zero synchronous GA
-  // execution at HTML parse time — nothing competes with the LCP hero image.
-  // setTimeout(2000) after component mount ensures gtag.js injection doesn't
-  // create Long Tasks during the critical React initialisation window.
+  // GA4 + Clarity: load lazily after first user interaction OR 5 s timeout —
+  // whichever comes first. Nothing analytics-related runs at parse/paint time.
   useEffect(() => {
-    const timer = setTimeout(() => { // 4000 ms: safely past LCP + React init window
-      // Initialise dataLayer and the gtag stub. GA4 requires a conventional
-      // function (not an arrow) so `arguments` is the actual Arguments object.
+    let loaded = false;
+
+    const loadAnalytics = () => {
+      if (loaded) return;
+      loaded = true;
+
+      // Google Analytics 4
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const w = window as any;
       w.dataLayer = w.dataLayer || [];
@@ -244,12 +245,32 @@ function App() {
       w.gtag = function () { w.dataLayer.push(arguments); };
       w.gtag("js", new Date());
       w.gtag("config", "G-R96FYBFRYQ");
-      const s = document.createElement("script");
-      s.async = true;
-      s.src = "https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ";
-      document.head.appendChild(s);
-    }, 4000);
-    return () => clearTimeout(timer);
+      const gaScript = document.createElement("script");
+      gaScript.async = true;
+      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-R96FYBFRYQ";
+      document.head.appendChild(gaScript);
+
+      // Microsoft Clarity
+      w.clarity = w.clarity || function () {
+        // eslint-disable-next-line prefer-rest-params
+        (w.clarity.q = w.clarity.q || []).push(arguments);
+      };
+      const clarityScript = document.createElement("script");
+      clarityScript.async = true;
+      clarityScript.src = "https://www.clarity.ms/tag/x8zr0riq8m";
+      document.head.appendChild(clarityScript);
+    };
+
+    const EVENTS = ["click", "scroll", "keydown", "touchstart"] as const;
+    EVENTS.forEach((e) =>
+      window.addEventListener(e, loadAnalytics, { once: true, passive: true }),
+    );
+    const timer = setTimeout(loadAnalytics, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      EVENTS.forEach((e) => window.removeEventListener(e, loadAnalytics));
+    };
   }, []);
 
   return (

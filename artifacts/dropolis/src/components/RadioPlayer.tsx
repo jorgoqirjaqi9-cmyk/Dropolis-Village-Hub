@@ -265,6 +265,21 @@ export function RadioPlayer() {
     return () => window.removeEventListener("radio-play", handler);
   }, []);
 
+  // Stop heartbeat when the page is hidden or unloaded (tab close, navigation).
+  // pagehide fires reliably on mobile and in bfcache scenarios; beforeunload does not.
+  useEffect(() => {
+    const handlePageHide = () => stopHeartbeat();
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") stopHeartbeat();
+    };
+    window.addEventListener("pagehide", handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      window.removeEventListener("pagehide", handlePageHide);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [stopHeartbeat]);
+
   // cleanup on unmount
   useEffect(() => {
     return () => {

@@ -1,7 +1,7 @@
 const CACHE_PREFIX = "dropolis-";
-const STATIC_CACHE = CACHE_PREFIX + "static-v2";
-const IMAGE_CACHE  = CACHE_PREFIX + "images-v2";
-const FONT_CACHE   = CACHE_PREFIX + "fonts-v2";
+const STATIC_CACHE = CACHE_PREFIX + "static-v3";
+const IMAGE_CACHE  = CACHE_PREFIX + "images-v3";
+const FONT_CACHE   = CACHE_PREFIX + "fonts-v3";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
