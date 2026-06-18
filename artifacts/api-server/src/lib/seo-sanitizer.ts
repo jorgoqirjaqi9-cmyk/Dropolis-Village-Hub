@@ -84,8 +84,12 @@ const TOPICAL_ENTITIES: readonly string[] = [
   'Αντιγόνεια',
   'Γκιρόκαστρο',
   'Αγία Σαράντα',
+  'Αργυροκάστρου',
+  'Αργυρόκαστρο',
   'Δρόπολης',
   'Δρόπολη',
+  'Dropull',
+  '41 χωριά',
   'Αλβανίας',
   'Αλβανία',
   'Ελλάδα',
@@ -116,7 +120,34 @@ const TAG_MAP: ReadonlyArray<[string, string]> = [
   ['εκκλησία',        'εκκλησία'],
   ['πολιτισμός',      'πολιτισμός'],
   ['κυβέρνηση',       'κυβέρνηση'],
+  ['Αργυρόκαστρο',   'Αργυρόκαστρο'],
+  ['Αργυροκάστρου',  'Αργυρόκαστρο'],
+  ['Dropull',         'Dropull'],
+  ['41 χωριά',        '41 χωριά'],
+  ['ομογένεια',       'ομογένεια'],
+  ['διασπορά',        'ομογένεια'],
+  ['αξιοθέατα',       'τουρισμός'],
+  ['πανηγύρι',        'παράδοση'],
+  ['μνημεία',         'ιστορία'],
+  ['ιστορία',         'ιστορία'],
 ];
+
+// ─── Local context injection (Transform 8) ───────────────────────────────────
+// Appended to international articles that lack any core Dropolë entity.
+// The paragraph signals topical relevance to Dropolë for every auto-imported article.
+
+const LOCAL_CONTEXT_HTML =
+  '<p class="local-context-note">' +
+  '<strong>Dropolis.net:</strong> Παρακολουθούμε την είδηση με ενδιαφέρον, καθώς κάθε εξέλιξη ' +
+  'στην <strong>Αλβανία</strong>, τα Βαλκάνια και την περιοχή του ' +
+  '<strong>Αργυροκάστρου</strong> μπορεί να επηρεάζει άμεσα ή έμμεσα τη ' +
+  '<strong>Δρόπολη</strong>, τα 41 χωριά και την ' +
+  '<strong>ελληνική μειονότητα</strong> της <strong>Βορείου Ηπείρου</strong>.' +
+  '</p>';
+
+// Presence of ANY one of these means the article is already topically anchored.
+const CORE_TOPICAL_RX =
+  /Δρόπολη|Δρόπολης|Dropull|Βόρεια\s+Ήπειρος|Βορείου\s+Ηπείρου|ελληνική\s+μειονότητα|Ελληνικής\s+Μειονότητας|Αργυρόκαστρο|Αργυροκάστρου/;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -235,6 +266,16 @@ function boldTopicalEntitiesFirst2Paragraphs(html: string): string {
       return t;
     });
   });
+}
+
+// ─── Transform: 8 — inject local context into international articles ──────────
+// Fires only when autoFill=true, content is HTML, and none of the core
+// topical entities appear in title + first 500 plain-text chars.
+
+function injectLocalContext(content: string, title: string): string {
+  const scan = `${title} ${stripHtml(content).slice(0, 500)}`;
+  if (CORE_TOPICAL_RX.test(scan)) return content;
+  return `${content}\n${LOCAL_CONTEXT_HTML}`;
 }
 
 // ─── Transform: 6 — generate meta description ────────────────────────────────
@@ -376,6 +417,15 @@ export function sanitizeArticleData(
     if (enriched !== out.tags && newCount > prevCount) {
       changes.push({ field: 'tags', reason: `Tags: ${prevCount} → ${newCount} (${enriched})` });
       out.tags = enriched;
+    }
+  }
+
+  // 8. Inject local context for international articles (autoFill mode only)
+  if (out.content && out.title && autoFill && isHtmlContent(out.content)) {
+    const injected = injectLocalContext(out.content, out.title);
+    if (injected !== out.content) {
+      changes.push({ field: 'content', reason: 'Τοπικό πλαίσιο: εισαγωγή παραγράφου σύνδεσης με Δρόπολη (διεθνές άρθρο χωρίς τοπικές οντότητες)' });
+      out.content = injected;
     }
   }
 
