@@ -315,21 +315,18 @@ const STATIC_META: Record<string, PageMeta> = {
         url: `${BASE_URL}/`,
         description: "Portal ειδήσεων, φωτογραφιών και κοινότητας για τα 41 χωριά της Δρόπολης (Βόρεια Ήπειρος). Ελληνική μειονότητα, ιστορία, Αργυρόκαστρο, Dropull.",
         inLanguage: "el",
-        publisher: { "@id": `${BASE_URL}/#organization` },
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "@id": `${BASE_URL}/#organization`,
-        name: "Δρόπολη (Dropolis)",
-        alternateName: "Dropolis",
-        url: `${BASE_URL}/`,
-        logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png` },
-        foundingLocation: { "@type": "Place", name: "Δρόπολη, Βόρεια Ήπειρος, Αλβανία" },
-        sameAs: [
-          "https://www.facebook.com/profile.php?id=61590959938071",
-          "https://www.youtube.com/@dropolis",
-        ],
+        publisher: {
+          "@type": "Organization",
+          "@id": `${BASE_URL}/#organization`,
+          name: "Δρόπολη (Dropolis)",
+          alternateName: "Dropolis",
+          logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png` },
+          foundingLocation: { "@type": "Place", name: "Δρόπολη, Βόρεια Ήπειρος, Αλβανία" },
+          sameAs: [
+            "https://www.facebook.com/profile.php?id=61590959938071",
+            "https://www.youtube.com/@dropolis",
+          ],
+        },
       },
       {
         "@context": "https://schema.org",

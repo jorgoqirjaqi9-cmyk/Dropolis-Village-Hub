@@ -18,13 +18,17 @@
 const BASE_URL = "https://dropolis.net";
 const SITE_NAME = "Δρόπολη (Dropolis)";
 
-/** Canonical publisher node — referenced by @id from article schemas. */
+/**
+ * Canonical publisher node embedded in article/village schemas.
+ * Intentionally omits `url` — the @id is the canonical identifier and
+ * duplicating url/name across both Organization and WebSite on the same
+ * page triggers "Duplicate field" warnings in Google Rich Results Test.
+ */
 const PUBLISHER = {
   "@type": "Organization",
   "@id": `${BASE_URL}/#organization`,
   name: SITE_NAME,
   alternateName: "Dropolis",
-  url: BASE_URL,
   logo: {
     "@type": "ImageObject",
     url: `${BASE_URL}/logo.png`,
@@ -38,12 +42,14 @@ const PUBLISHER = {
   ],
 } as const;
 
-/** Canonical WebSite node — used as isPartOf reference. */
+/**
+ * WebSite reference used as `isPartOf` in article/village schemas.
+ * Kept as @id-only to avoid duplicating name/url across multiple inline
+ * entities on the same page (would trigger "Duplicate field" warnings).
+ */
 const WEBSITE_REF = {
   "@type": "WebSite",
   "@id": `${BASE_URL}/#website`,
-  name: SITE_NAME,
-  url: BASE_URL,
 } as const;
 
 // ---------------------------------------------------------------------------
