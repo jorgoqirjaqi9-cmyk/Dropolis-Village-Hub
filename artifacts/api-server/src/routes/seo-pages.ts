@@ -18,6 +18,7 @@ import { resolve } from "node:path";
 import { db, articlesTable, villagesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { logger } from "../lib/logger.js";
+import { buildNewsArticleSchema, buildVillageSchema } from "../lib/schema-builders.js";
 
 const BASE_URL = "https://dropolis.net";
 const SITE_NAME = "Δρόπολη (Dropolis)";
@@ -695,24 +696,18 @@ router.get(["/news/:id", "/news/:id/"], async (req, res) => {
         { name: "Ειδήσεις", item: `${BASE_URL}/news` },
         { name: article.title, item: `${BASE_URL}/news/${article.id}` },
       ],
-      jsonLd: {
-        "@context": "https://schema.org",
-        "@type": "NewsArticle",
-        headline: article.title,
+      jsonLd: buildNewsArticleSchema({
+        id: article.id,
+        title: article.title,
         description: cleanedDesc,
-        image: [article.imageUrl || DEFAULT_IMG],
-        datePublished: article.createdAt.toISOString(),
-        dateModified: (article.updatedAt ?? article.createdAt).toISOString(),
-        author: { "@type": "Person", name: article.author || "Dropolis" },
-        publisher: {
-          "@type": "Organization",
-          name: SITE_NAME,
-          logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png`, width: 1080, height: 1080 },
-        },
-        mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE_URL}/news/${article.id}` },
-        articleSection: article.category,
-        inLanguage: "el",
-      },
+        imageUrl: article.imageUrl,
+        author: article.author,
+        category: article.category,
+        tags: article.tags,
+        villageName: article.villageName,
+        createdAt: article.createdAt,
+        updatedAt: article.updatedAt,
+      }),
       bodyH1: article.title,
       bodyP: cleanedDesc,
     };
@@ -748,27 +743,6 @@ router.get(["/villages/:id", "/villages/:id/"], async (req, res) => {
       : `Ανακαλύψτε το χωριό ${village.nameEl} στη Δρόπολη, Βόρεια Ήπειρος.`
     );
 
-    const jsonLd: Record<string, unknown> = {
-      "@context": "https://schema.org",
-      "@type": "City",
-      name: village.nameEl,
-      alternateName: village.name,
-      description: village.description,
-      url: `${BASE_URL}/villages/${village.id}`,
-      containedInPlace: {
-        "@type": "AdministrativeArea",
-        name: "Δήμος Δρόπολης",
-        containedInPlace: { "@type": "Country", name: "Αλβανία" },
-      },
-    };
-    if (village.latitude && village.longitude) {
-      jsonLd["geo"] = {
-        "@type": "GeoCoordinates",
-        latitude: village.latitude,
-        longitude: village.longitude,
-      };
-    }
-
     const meta: PageMeta = {
       title: `${village.nameEl} — Χωριό της Δρόπολης`,
       description,
@@ -778,7 +752,18 @@ router.get(["/villages/:id", "/villages/:id/"], async (req, res) => {
         { name: "Χωριά", item: `${BASE_URL}/villages` },
         { name: village.nameEl, item: `${BASE_URL}/villages/${village.id}` },
       ],
-      jsonLd,
+      jsonLd: buildVillageSchema({
+        id: village.id,
+        nameEl: village.nameEl,
+        name: village.name,
+        description: village.description,
+        imageUrl: village.imageUrl,
+        latitude: village.latitude,
+        longitude: village.longitude,
+        population: village.population,
+        elevation: village.elevation,
+        municipalUnit: village.municipalUnit,
+      }),
       bodyH1: village.nameEl,
       bodyP: description,
     };
