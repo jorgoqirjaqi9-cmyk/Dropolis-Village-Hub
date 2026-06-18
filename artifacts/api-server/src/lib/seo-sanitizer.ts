@@ -11,7 +11,11 @@
  *  5. boldTopicalEntities — wrap key Greek entities in <strong> in first 2 <p>s
  *  6. generateMetaDesc    — auto-fill metaDescription if empty (autoFill mode)
  *  7. autoTags            — extract topical tags from content   (autoFill mode)
+ *  8. injectLocalContext  — append local-context para to international articles
+ *  9. injectInternalLinks — link first occurrence of each village name (autoFill)
  */
+
+import { injectInternalLinks } from './village-links.js';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -426,6 +430,16 @@ export function sanitizeArticleData(
     if (injected !== out.content) {
       changes.push({ field: 'content', reason: 'Τοπικό πλαίσιο: εισαγωγή παραγράφου σύνδεσης με Δρόπολη (διεθνές άρθρο χωρίς τοπικές οντότητες)' });
       out.content = injected;
+    }
+  }
+
+  // 9. Internal link injection — first occurrence of each village name (autoFill only)
+  if (out.content && autoFill && isHtmlContent(out.content)) {
+    const linked = injectInternalLinks(out.content);
+    if (linked !== out.content) {
+      const count = (linked.match(/class="seo-village-link"/g) ?? []).length;
+      changes.push({ field: 'content', reason: `Internal links: ${count} χωριό(-ά) συνδέθηκε(-αν) αυτόματα` });
+      out.content = linked;
     }
   }
 
