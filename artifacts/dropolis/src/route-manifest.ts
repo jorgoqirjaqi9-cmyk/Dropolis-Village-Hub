@@ -67,6 +67,7 @@ export const STATIC_ROUTES: StaticRoute[] = [
   { loc: "/en/news/",           changefreq: "monthly", priority: "0.5" },
   { loc: "/en/contact/",        changefreq: "monthly", priority: "0.5" },
   { loc: "/en/photos/",         changefreq: "weekly",  priority: "0.5" },
+  { loc: "/en/travel-guide/",   changefreq: "monthly", priority: "0.8" },
   { loc: "/villages/map/",      changefreq: "weekly",  priority: "0.8" },
   { loc: "/upload-photo/",      changefreq: "monthly", priority: "0.6" },
   { loc: "/submit-news/",       changefreq: "monthly", priority: "0.6" },
