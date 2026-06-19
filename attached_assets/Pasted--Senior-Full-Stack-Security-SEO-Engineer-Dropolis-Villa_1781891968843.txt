@@ -1,0 +1,94 @@
+Είσαι Senior Full-Stack Security & SEO Engineer. Διόρθωσε τα παρακάτω στο Dropolis-Village-Hub και κάνε deploy μόνο αφού περάσουν typecheck/build.
+
+1. SECURITY: Κλείδωμα write/admin endpoints
+Πρόσθεσε requireAdmin σε όλα τα μη δημόσια API endpoints:
+- POST /api/articles
+- PATCH /api/articles/:id
+- DELETE /api/articles/:id
+- POST /api/articles/recalculate-scores
+- POST /api/villages
+- PATCH /api/villages/:id
+- DELETE /api/villages/:id
+- POST /api/videos
+- DELETE/PATCH video endpoints αν υπάρχουν ή αν προστεθούν
+- POST /api/rss/import
+- POST /api/rss/retranslate
+- POST /api/indexing/trigger
+- POST /api/indexnow/submit
+- POST /api/social/publish/:id
+
+Μην κλειδώσεις τα δημόσια GET endpoints που χρειάζεται το site.
+
+2. VIDEO MODERATION
+Κάνε τα user-submitted videos να λειτουργούν όπως οι φωτογραφίες:
+- status: pending / approved / rejected
+- δημόσιο GET /api/videos να εμφανίζει μόνο approved
+- admin endpoints για pending, approve, reject, delete
+- create από χρήστη να πηγαίνει pending
+- admin panel ή admin route για διαχείριση videos
+- like/dislike να παραμείνει ασφαλές αν υπάρχει
+
+3. PHOTO UPLOAD PERFORMANCE
+Στο backend, πριν αποθηκευτεί φωτογραφία:
+- έλεγξε πραγματικό MIME/signature
+- μετατροπή σε WebP με sharp
+- δημιούργησε thumbnail
+- μέγιστο τελικό αρχείο στόχος κάτω από 250KB όπου είναι λογικό
+- κράτα max upload 5MB
+- κράτα pending moderation
+- μην επιτρέπεις SVG ή executable content
+
+4. RATE LIMIT / SPAM PROTECTION
+Πρόσθεσε rate limit σε:
+- photo upload
+- video submit
+- news submit
+- chat messages
+- contact form αν υπάρχει backend
+Χρησιμοποίησε IP based limit και καθαρά error messages.
+
+5. MOBILE UX FIX
+Στην αρχική:
+- το weather widget να μην πατάει πάνω στα κουμπιά σε κινητό
+- σε mobile να γίνεται compact ή να μεταφέρεται κάτω από τα CTA
+- έλεγξε κουμπιά, nav menu, upload forms, stats cards για overflow/overlap σε 360px, 390px, 412px πλάτος.
+
+6. CONTENT QUALITY / ADSENSE
+Για αυτόματα RSS άρθρα:
+- πρόσθεσε δική μας εισαγωγή 2-3 προτάσεων πριν το σώμα
+- εμφάνισε καθαρά πηγή και source/canonical link
+- μην αντιγράφεις πλήρες άρθρο
+- κράτα περίληψη/μετάφραση και link προς πηγή
+- φίλτραρε άσχετα διεθνή άρθρα ώστε να μη χαλάει το topical authority της Δρόπολης.
+
+7. SEO ΧΩΡΙΩΝ
+Για κάθε χωριό:
+- meta description 120-155 χαρακτήρες
+- title κάτω από 60 χαρακτήρες
+- canonical, og:title, og:description, og:image
+- όπου δεν υπάρχει αρκετό κείμενο, πρόσθεσε fallback SEO περιγραφή με Δρόπολη, Βόρεια Ήπειρος, Ελληνική μειονότητα, Αργυρόκαστρο.
+Μην βάλεις keyword stuffing.
+
+8. BACKUPS
+Πρόσθεσε τεκμηριωμένο backup script ή docs:
+- database backup
+- uploads backup
+- restore instructions
+- env vars που χρειάζονται
+Να υπάρχει αρχείο π.χ. docs/BACKUP.md και script αν ταιριάζει στο project.
+
+9. VERIFICATION
+Τρέξε:
+- typecheck
+- build
+- prerender
+- sitemap generation/check
+- έλεγχο βασικών routes: /, /news/, /villages/, /photos/, /videos/, /upload-photo/, /submit-news/, /submit-video/, /diaspora/, /admin/photos/
+- έλεγχο ότι τα public GET δουλεύουν
+- έλεγχο ότι τα protected POST/PATCH/DELETE χωρίς admin token επιστρέφουν 401/503 και με σωστό token δουλεύουν.
+
+Στο τέλος δώσε αναφορά:
+- τι διορθώθηκε
+- ποια αρχεία άλλαξαν
+- αποτελέσματα typecheck/build
+- production URL μετά το deploy
