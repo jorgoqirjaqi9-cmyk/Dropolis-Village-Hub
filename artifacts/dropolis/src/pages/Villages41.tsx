@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { SEO } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
@@ -5,6 +6,7 @@ import { useListVillages } from "@workspace/api-client-react";
 import {
   ChevronRight, MapPin, Church, Mountain, Camera,
   Users, HelpCircle, Map, BookOpen, Star, Home,
+  Search, ArrowUpDown, ArrowUp, ArrowDown,
 } from "lucide-react";
 
 // ─── SEO constants ────────────────────────────────────────────────────────────
@@ -151,8 +153,49 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 
+type SortField = "nameEl" | "name" | "population";
+type SortDir = "asc" | "desc";
+
 export default function Villages41() {
   const { data: villages, isLoading: villagesLoading } = useListVillages();
+  const [query, setQuery] = useState("");
+  const [sortField, setSortField] = useState<SortField>("nameEl");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
+
+  const filteredVillages = useMemo(() => {
+    if (!villages) return [];
+    const q = query.trim().toLowerCase();
+    const list = q
+      ? villages.filter(
+          v =>
+            (v.nameEl ?? "").toLowerCase().includes(q) ||
+            (v.name ?? "").toLowerCase().includes(q) ||
+            (v.municipalUnit ?? "").toLowerCase().includes(q),
+        )
+      : [...villages];
+    list.sort((a, b) => {
+      let va: string | number = "";
+      let vb: string | number = "";
+      if (sortField === "nameEl") { va = a.nameEl ?? a.name ?? ""; vb = b.nameEl ?? b.name ?? ""; }
+      else if (sortField === "name") { va = a.name ?? ""; vb = b.name ?? ""; }
+      else if (sortField === "population") { va = a.population ?? -1; vb = b.population ?? -1; }
+      if (typeof va === "number") return sortDir === "asc" ? va - (vb as number) : (vb as number) - va;
+      return sortDir === "asc" ? va.localeCompare(vb as string, "el") : (vb as string).localeCompare(va, "el");
+    });
+    return list;
+  }, [villages, query, sortField, sortDir]);
+
+  function toggleSort(field: SortField) {
+    if (sortField === field) setSortDir(d => (d === "asc" ? "desc" : "asc"));
+    else { setSortField(field); setSortDir("asc"); }
+  }
+
+  function SortIcon({ field }: { field: SortField }) {
+    if (sortField !== field) return <ArrowUpDown className="w-3.5 h-3.5 opacity-40" />;
+    return sortDir === "asc"
+      ? <ArrowUp className="w-3.5 h-3.5 text-primary" />
+      : <ArrowDown className="w-3.5 h-3.5 text-primary" />;
+  }
 
   return (
     <>
@@ -334,33 +377,87 @@ export default function Villages41() {
             </p>
           </Prose>
 
-          {/* Dynamic village grid */}
-          {!villagesLoading && villages && villages.length > 0 && (
-            <div className="mt-6">
-              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                Εξερευνήστε τα χωριά
-              </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                {villages.map((v) => (
-                  <Link
-                    key={v.id}
-                    href={`/villages/${v.id}/`}
-                    className="flex items-center gap-1.5 rounded-lg border border-border bg-muted/40 hover:bg-primary/5 hover:border-primary/30 px-3 py-2 text-sm text-foreground/80 hover:text-primary transition-colors group"
-                  >
-                    <MapPin className="w-3 h-3 text-muted-foreground group-hover:text-primary shrink-0" />
-                    <span className="truncate">{v.nameEl ?? v.name}</span>
-                  </Link>
+          {/* ── Searchable / sortable village table ── */}
+          <div className="mt-6 space-y-3">
+            {/* Search bar */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+              <input
+                type="search"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Αναζήτηση χωριού (ελληνικά ή αλβανικά)…"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+              />
+            </div>
+
+            {/* Table */}
+            {villagesLoading ? (
+              <div className="grid grid-cols-1 gap-1.5">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="h-11 rounded-lg bg-muted animate-pulse" />
                 ))}
               </div>
-            </div>
-          )}
-          {villagesLoading && (
-            <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="h-9 rounded-lg bg-muted animate-pulse" />
-              ))}
-            </div>
-          )}
+            ) : (
+              <div className="rounded-xl border border-border overflow-hidden">
+                {/* Header */}
+                <div className="grid grid-cols-[2fr_2fr_1fr] bg-muted/60 text-xs font-semibold text-muted-foreground uppercase tracking-wide divide-x divide-border border-b border-border">
+                  <button
+                    type="button"
+                    onClick={() => toggleSort("nameEl")}
+                    className="flex items-center gap-1.5 px-4 py-3 hover:text-foreground transition-colors text-left"
+                  >
+                    Ελληνικό Όνομα <SortIcon field="nameEl" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => toggleSort("name")}
+                    className="flex items-center gap-1.5 px-4 py-3 hover:text-foreground transition-colors text-left"
+                  >
+                    Αλβανικό Όνομα <SortIcon field="name" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => toggleSort("population")}
+                    className="flex items-center gap-1.5 px-4 py-3 hover:text-foreground transition-colors text-left"
+                  >
+                    Πληθ. <SortIcon field="population" />
+                  </button>
+                </div>
+
+                {/* Rows */}
+                {filteredVillages.length === 0 ? (
+                  <div className="py-10 text-center text-sm text-muted-foreground">
+                    Δεν βρέθηκαν χωριά για «{query}».
+                  </div>
+                ) : (
+                  filteredVillages.map((v, idx) => (
+                    <Link
+                      key={v.id}
+                      href={`/villages/${v.id}/`}
+                      className={`grid grid-cols-[2fr_2fr_1fr] divide-x divide-border text-sm hover:bg-primary/5 transition-colors group ${idx % 2 === 0 ? "bg-background" : "bg-muted/20"}`}
+                    >
+                      <span className="flex items-center gap-2 px-4 py-3 font-medium text-foreground group-hover:text-primary transition-colors">
+                        <MapPin className="w-3 h-3 shrink-0 text-muted-foreground group-hover:text-primary" />
+                        {v.nameEl ?? v.name}
+                      </span>
+                      <span className="flex items-center px-4 py-3 text-muted-foreground">
+                        {v.name ?? "—"}
+                      </span>
+                      <span className="flex items-center px-4 py-3 text-muted-foreground tabular-nums">
+                        {v.population != null ? v.population.toLocaleString("el-GR") : "—"}
+                      </span>
+                    </Link>
+                  ))
+                )}
+
+                {/* Footer count */}
+                <div className="px-4 py-2 border-t border-border bg-muted/30 text-xs text-muted-foreground">
+                  {filteredVillages.length} από {villages?.length ?? 0} χωριά
+                </div>
+              </div>
+            )}
+          </div>
         </H2Section>
 
         <AdSenseSlot adSlot="7994234180" adFormat="horizontal" className="rounded-xl" />

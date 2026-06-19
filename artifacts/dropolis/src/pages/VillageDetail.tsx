@@ -56,7 +56,7 @@ export default function VillageDetail() {
   return (
     <div className="container mx-auto px-4 py-8 space-y-12">
       <SEO
-        title={`${village.nameEl} - Δρόπολη`}
+        title={`${village.nameEl} Δρόπολης — Ιστορία, Φωτογραφίες & Πληροφορίες`}
         description={village.description || `Ανακαλύψτε το χωριό ${village.nameEl} στη Δρόπολη, Βόρεια Ήπειρος.`}
         image={village.imageUrl || undefined}
         breadcrumbs={[

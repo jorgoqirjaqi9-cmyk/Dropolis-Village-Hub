@@ -60,8 +60,9 @@ export default function Villages() {
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
       <SEO
-        title="Τα Χωριά της Δρόπολης"
-        description="Ανακαλύψτε και τα 41 ιστορικά χωριά της Δρόπολης. Πληθυσμός, ιστορία και παραδόσεις."
+        title="41 Χωριά Δρόπολης — Ιστορία, Χάρτης & Πληροφορίες | Βόρεια Ήπειρος"
+        standalone
+        description="Πλήρης κατάλογος και των 41 χωριών της Δρόπολης (Βόρεια Ήπειρος). Ιστορία, πληθυσμός, φωτογραφίες και χάρτης για κάθε χωριό της ελληνικής μειονότητας."
         breadcrumbs={[{ name: "Χωριά", url: "/villages/" }]}
         jsonLd={{
           "@context": "https://schema.org",
