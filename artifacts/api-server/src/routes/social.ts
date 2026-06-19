@@ -43,7 +43,7 @@ router.post("/social/publish/:id", requireAdmin, async (req, res) => {
 - "hashtags": πίνακας 12-15 hashtags (mix ελληνικών και αγγλικών, σχετικά με Δρόπολη/Αλβανία/Β.Ήπειρο)`;
 
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash-lite",
+        model: "gemini-1.5-flash",
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         config: { responseMimeType: "application/json", maxOutputTokens: 2048 },
       });
