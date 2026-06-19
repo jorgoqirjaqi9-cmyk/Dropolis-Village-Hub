@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { db, articlesTable } from "@workspace/db";
-import { desc, eq, ilike, or, and, SQL } from "drizzle-orm";
+import { db, articlesTable, villagesTable } from "@workspace/db";
+import { desc, eq, ilike, or, and, SQL, sql, lt, isNull } from "drizzle-orm";
 import { requireAdmin } from "../lib/admin-auth.js";
 
 const router = Router();
@@ -61,5 +61,39 @@ function formatArticle(a: typeof articlesTable.$inferSelect) {
     createdAt: a.createdAt.toISOString(), updatedAt: a.updatedAt.toISOString(),
   };
 }
+
+// One-time bulk data fix: unpublish thin articles + set village imageUrls + fix village 69
+router.post("/admin/bulk-fix", requireAdmin, async (req, res) => {
+  // 1. Unpublish all published articles with content < 300 chars
+  const unpublished = await db
+    .update(articlesTable)
+    .set({ published: false })
+    .where(and(eq(articlesTable.published, true), lt(sql`length(${articlesTable.content})`, 300)))
+    .returning({ id: articlesTable.id });
+
+  // 2. Set default imageUrl for villages missing one
+  const defaultImage = "/images/travel-guide/dropolis-stone-village.webp";
+  const villagesUpdated = await db
+    .update(villagesTable)
+    .set({ imageUrl: defaultImage })
+    .where(isNull(villagesTable.imageUrl))
+    .returning({ id: villagesTable.id });
+
+  // 3. Fix village 69 (Βουλιαράτες): trim description to 149 chars
+  const village69Desc =
+    "Οι Βουλιαράτες αποτελούν ένα από τα πιο γνωστά χωριά της Άνω Δρόπολης, στην περιοχή της Βόρειας Ηπείρου. Το χωριό συνδέεται στενά με την ιστορία, την";
+  await db
+    .update(villagesTable)
+    .set({ description: village69Desc })
+    .where(eq(villagesTable.id, 69));
+
+  res.json({
+    ok: true,
+    articlesUnpublished: unpublished.length,
+    articleIds: unpublished.map((a) => a.id),
+    villagesImageUpdated: villagesUpdated.length,
+    village69DescLength: village69Desc.length,
+  });
+});
 
 export default router;
