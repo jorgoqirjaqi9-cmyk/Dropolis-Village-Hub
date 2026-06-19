@@ -6,24 +6,71 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { seoCrawlerPlugin } from "./plugins/seo-crawler";
 
 /**
- * Inject <link rel="preload" as="style"> hints for every CSS file that Vite
- * emits as a <link rel="stylesheet"> in index.html.
+ * Minimal above-the-fold CSS inlined in <head>.
  *
- * The browser's preload scanner picks up the hint immediately during HTML
- * parsing and starts fetching the CSS file in parallel with other resources,
- * reducing the effective render-blocking delay by allowing the CSS download
- * to start sooner in the waterfall.
+ * Prevents white flash (hardcoded theme colors), gives the SEO prerender
+ * content a legible layout, and sets min-height:100vh on the prerender block
+ * so its height matches the React hero section — keeping CLS near zero when
+ * React mounts and replaces the prerender markup with the real app.
  */
-function cssPreloadPlugin(): Plugin {
+const CRITICAL_CSS =
+  "*,::before,::after{box-sizing:border-box}" +
+  "html{scroll-behavior:smooth}" +
+  "body{margin:0;-webkit-font-smoothing:antialiased;" +
+  "font-family:'Inter Variable',Inter,ui-sans-serif,system-ui,sans-serif;" +
+  "background:hsl(210,30%,98%);color:hsl(222,47%,11%);min-height:100vh}" +
+  "html.dark body{background:hsl(222,47%,7%);color:hsl(210,20%,92%)}" +
+  "#root{min-height:100vh}" +
+  ".seo-prerender-content{padding:80px 1rem 2rem;font-size:.875rem;" +
+  "line-height:1.6;max-width:720px;margin:0 auto;min-height:100vh}" +
+  ".seo-prerender-content h1{font-size:1.5rem;font-weight:700;" +
+  "margin:0 0 .75rem;line-height:1.2}" +
+  ".seo-prerender-content h2{font-size:1.125rem;font-weight:600;" +
+  "margin:1.25rem 0 .5rem;line-height:1.3}" +
+  ".seo-prerender-content p{margin:0 0 .75rem}";
+
+/**
+ * Make every Vite-generated CSS file async and inject the critical CSS inline.
+ *
+ * For each <link rel="stylesheet" href="*.css"> Vite emits in index.html:
+ *   1. A <link rel="preload" as="style"> hint — browser fetches CSS ASAP.
+ *      Includes crossorigin when the stylesheet has it (prevents double-fetch
+ *      from credential mismatch that was previously hurting the score).
+ *   2. The stylesheet itself with media="print" onload="this.media='all'" —
+ *      removes render-blocking, CSS is applied once downloaded.
+ *   3. A <noscript> fallback for non-JS contexts.
+ *
+ * Only matches Vite-hashed *.css hrefs (e.g. /assets/index-abc123.css).
+ * Google Fonts URLs (?display=swap…) are intentionally excluded.
+ */
+function cssAsyncPlugin(): Plugin {
   return {
-    name: "vite-plugin-css-preload",
+    name: "vite-plugin-css-async",
     transformIndexHtml: {
       order: "post",
       handler(html: string) {
-        return html.replace(
-          /(<link rel="stylesheet"([^>]+)href="([^"]+\.css)"([^>]*)\/?>)/g,
-          (_match, full, _before, href) =>
-            `<link rel="preload" as="style" href="${href}" />\n    ${full}`,
+        const processed = html.replace(
+          /<link rel="stylesheet"([^>]*)href="([^"]+\.css)"([^>]*)>/g,
+          (_match, before) => {
+            // Preserve crossorigin so preload and stylesheet share the same
+            // cache entry — omitting it causes the browser to fetch twice.
+            const co = before.includes("crossorigin") ? " crossorigin" : "";
+            // Extract the href value again from the full match (captured above)
+            const hrefMatch = _match.match(/href="([^"]+\.css)"/);
+            if (!hrefMatch) return _match;
+            const href = hrefMatch[1];
+            return (
+              `<link rel="preload" as="style"${co} href="${href}" />\n    ` +
+              `<link rel="stylesheet"${co} href="${href}" media="print" onload="this.media='all'" />\n    ` +
+              `<noscript><link rel="stylesheet"${co} href="${href}" /></noscript>`
+            );
+          },
+        );
+        // Inject critical CSS into <head> so above-the-fold content is styled
+        // immediately, before the async main CSS file is parsed.
+        return processed.replace(
+          "</head>",
+          `  <style id="critical-css">${CRITICAL_CSS}</style>\n</head>`,
         );
       },
     },
@@ -63,7 +110,7 @@ export default defineConfig({
     tailwindcss(),
     runtimeErrorOverlay(),
     seoCrawlerPlugin({ apiPort: 8080 }),
-    cssPreloadPlugin(),
+    cssAsyncPlugin(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [

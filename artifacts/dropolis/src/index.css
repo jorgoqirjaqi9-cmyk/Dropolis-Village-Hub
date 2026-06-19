@@ -1,3 +1,8 @@
+/* Self-hosted Inter Variable — replaces Google Fonts Inter.
+   Covers Latin, Latin-ext, Greek, Greek-ext, Cyrillic, Vietnamese.
+   Single variable font file per script range (100–900 weight axis).    */
+@import "@fontsource-variable/inter/wght.css";
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -79,7 +84,7 @@
   --input: 215 20% 88%;
   --ring: 222 72% 28%;
 
-  --app-font-sans: "Inter", system-ui, sans-serif;
+  --app-font-sans: "Inter Variable", "Inter", system-ui, sans-serif;
   --app-font-serif: "Playfair Display", Georgia, serif;
   --app-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 

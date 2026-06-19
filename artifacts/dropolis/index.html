@@ -72,14 +72,15 @@
     <meta name="theme-color" content="#0d2560" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#080f24" media="(prefers-color-scheme: dark)" />
 
-    <!-- Preconnect to external origins used at first paint -->
+    <!-- Preconnect — limited to 3 origins on the critical path.
+         More than ~3 preconnects waste TCP/TLS slots and hurt overall load.
+         Fonts are async (display=swap) so they don't need preconnects here. -->
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="dns-prefetch" href="https://images.unsplash.com" />
-    <!-- dropolinews.gr: article images load from this domain — preconnect saves ~360ms -->
+    <!-- dropolinews.gr: article images loaded from this domain -->
     <link rel="preconnect" href="https://dropolinews.gr" />
     <link rel="dns-prefetch" href="https://dropolinews.gr" />
-    <!-- open-meteo: needs crossorigin because fetch() is CORS — without it the
-         browser opens a non-CORS connection that the actual fetch can't reuse. -->
+    <!-- open-meteo: crossorigin required (CORS fetch) — reuses this connection -->
     <link rel="preconnect" href="https://api.open-meteo.com" crossorigin />
     <link rel="dns-prefetch" href="https://api.open-meteo.com" />
 
@@ -94,13 +95,14 @@
       imagesizes="100vw"
     />
 
-    <!-- Fonts — async load to avoid render-blocking; display=swap renders system
-         font immediately then swaps (no FOIT), eliminating FCP delay from fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <!-- Fonts:
+         • Inter — self-hosted via @fontsource-variable/inter (bundled in CSS,
+           served from our CDN, zero external connection overhead).
+         • Playfair Display — Google Fonts only (no Greek subset in fontsource);
+           loaded async so it never blocks rendering.                          -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" media="print" onload="this.media='all'" />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" />
     </noscript>
 
     <!-- Dark mode init (no-flash) -->
