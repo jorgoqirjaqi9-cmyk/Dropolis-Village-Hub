@@ -84,7 +84,7 @@ function LanguageSwitcher({ scrolled }: { scrolled: boolean }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+6px)] min-w-[140px] rounded-lg border border-border bg-popover shadow-xl overflow-hidden">
+        <div className="absolute right-0 top-[calc(100%+6px)] min-w-[180px] rounded-lg border border-border bg-popover shadow-xl overflow-hidden">
           {LANGUAGES.map(lang => (
             <button
               key={lang.code}
@@ -98,6 +98,23 @@ function LanguageSwitcher({ scrolled }: { scrolled: boolean }) {
               <span>{lang.label}</span>
             </button>
           ))}
+          <div className="border-t border-border" />
+          <Link
+            href="/en/travel-guide/"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+          >
+            <span>🗺️</span>
+            <span>Travel Guide</span>
+          </Link>
+          <Link
+            href="/en/"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+          >
+            <span>🇬🇧</span>
+            <span>English pages</span>
+          </Link>
         </div>
       )}
     </div>
@@ -480,7 +497,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </ul>
               <div className="mt-4 space-y-1 text-xs text-background/70">
                 <p><a href="mailto:info@dropolis.net" className="hover:text-secondary transition-colors">info@dropolis.net</a></p>
-                <p><Link href="/en/" className="hover:text-secondary transition-colors">🇬🇧 English</Link></p>
+                <p className="font-semibold text-secondary/80 uppercase tracking-widest mt-3 mb-1">English</p>
+                <p><Link href="/en/travel-guide/" className="hover:text-secondary transition-colors">🗺️ Travel Guide</Link></p>
+                <p><Link href="/en/villages/" className="hover:text-secondary transition-colors">🏘️ Villages</Link></p>
+                <p><Link href="/en/news/" className="hover:text-secondary transition-colors">📰 News</Link></p>
+                <p><Link href="/en/" className="hover:text-secondary transition-colors">🇬🇧 English Home</Link></p>
               </div>
             </div>
           </div>
