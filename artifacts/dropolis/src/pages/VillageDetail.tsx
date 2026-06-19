@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRoute, Link } from "wouter";
 import { useGetVillage, getGetVillageQueryKey, useListArticles, getListArticlesQueryKey, useListPhotos, getListPhotosQueryKey } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
@@ -8,6 +8,7 @@ import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin,
 import { OptimizedImg } from "@/components/OptimizedImg";
 import "@/styles/prose.css";
 import { VoteButtons } from "@/components/VoteButtons";
+import { Lightbox } from "@/components/Lightbox";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 import { VILLAGE_COORDINATES } from "@/lib/village-coordinates";
@@ -15,6 +16,7 @@ import { VILLAGE_COORDINATES } from "@/lib/village-coordinates";
 export default function VillageDetail() {
   const [, params] = useRoute("/villages/:id");
   const id = params?.id ? parseInt(params.id, 10) : 0;
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   
   const { data: village, isLoading, isError } = useGetVillage(id, { 
     query: { enabled: !!id, queryKey: getGetVillageQueryKey(id) } 
@@ -212,10 +214,15 @@ export default function VillageDetail() {
               </div>
               {photos && photos.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {photos.map(photo => (
+                  {photos.map((photo, idx) => (
                     <div key={photo.id} className="rounded-xl bg-card shadow-sm border border-border/40 overflow-hidden">
                       {/* Image */}
-                      <div className="aspect-square overflow-hidden relative group cursor-pointer">
+                      <button
+                        type="button"
+                        className="aspect-square w-full overflow-hidden relative group cursor-zoom-in"
+                        onClick={() => setLightboxIndex(idx)}
+                        aria-label={`Άνοιγμα φωτογραφίας: ${photo.title}`}
+                      >
                         <img
                           src={photo.thumbnailUrl || photo.url}
                           alt={photo.title}
@@ -225,7 +232,7 @@ export default function VillageDetail() {
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
                           <span className="text-white text-sm font-medium line-clamp-1">{photo.title}</span>
                         </div>
-                      </div>
+                      </button>
                       {/* Like / dislike */}
                       <div className="px-2 py-1.5 border-t border-border/40">
                         <VoteButtons
@@ -341,6 +348,16 @@ export default function VillageDetail() {
           </div>
         </aside>
       </div>
+
+      {lightboxIndex !== null && photos && (
+        <Lightbox
+          photos={photos}
+          currentIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onPrev={() => setLightboxIndex(i => (i !== null && i > 0 ? i - 1 : i))}
+          onNext={() => setLightboxIndex(i => (i !== null && i < photos.length - 1 ? i + 1 : i))}
+        />
+      )}
     </div>
   );
 }

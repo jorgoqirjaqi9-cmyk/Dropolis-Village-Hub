@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "wouter";
 import { useListPhotos } from "@workspace/api-client-react";
 import { SEO, seoPages } from "@/components/SEO";
@@ -7,9 +7,11 @@ import { VoteButtons } from "@/components/VoteButtons";
 import { Camera, MapPin, Upload } from "lucide-react";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
+import { Lightbox } from "@/components/Lightbox";
 
 export default function Photos() {
   const { data: photos, isLoading } = useListPhotos();
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
@@ -68,10 +70,15 @@ export default function Photos() {
             <Skeleton key={i} className="w-full h-48 rounded-xl" />
           ))
         ) : photos && photos.length > 0 ? (
-          photos.map(photo => (
+          photos.map((photo, idx) => (
             <div key={photo.id} className="break-inside-avoid mb-4 bg-card rounded-2xl shadow-md">
-              {/* Image with hover overlay */}
-              <div className="relative group overflow-hidden rounded-t-2xl">
+              {/* Image with hover overlay — clickable to open lightbox */}
+              <button
+                type="button"
+                className="relative group overflow-hidden rounded-t-2xl w-full cursor-zoom-in text-left"
+                onClick={() => setLightboxIndex(idx)}
+                aria-label={`Άνοιγμα φωτογραφίας: ${photo.title}`}
+              >
                 <img
                   src={photo.thumbnailUrl || photo.url}
                   alt={photo.title}
@@ -83,11 +90,9 @@ export default function Photos() {
                   <h2 className="text-white font-bold text-lg leading-tight mb-1">{photo.title}</h2>
                   <div className="flex flex-wrap items-center gap-3 text-white/80 text-xs">
                     {photo.villageId && photo.villageName ? (
-                      <Link href={`/villages/${photo.villageId}/`} onClick={e => e.stopPropagation()}>
-                        <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm hover:bg-primary transition-colors">
-                          <MapPin className="w-3 h-3" /> {photo.villageName}
-                        </span>
-                      </Link>
+                      <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm">
+                        <MapPin className="w-3 h-3" /> {photo.villageName}
+                      </span>
                     ) : photo.villageName ? (
                       <span className="flex items-center gap-1 bg-primary/80 px-2 py-0.5 rounded backdrop-blur-sm">
                         <MapPin className="w-3 h-3" /> {photo.villageName}
@@ -103,7 +108,7 @@ export default function Photos() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </button>
               {/* Like / dislike bar */}
               <div className="px-3 py-2 border-t border-border/40">
                 <VoteButtons
@@ -121,6 +126,16 @@ export default function Photos() {
           </div>
         )}
       </div>
+
+      {lightboxIndex !== null && photos && (
+        <Lightbox
+          photos={photos}
+          currentIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onPrev={() => setLightboxIndex(i => (i !== null && i > 0 ? i - 1 : i))}
+          onNext={() => setLightboxIndex(i => (i !== null && i < photos.length - 1 ? i + 1 : i))}
+        />
+      )}
     </div>
   );
 }
