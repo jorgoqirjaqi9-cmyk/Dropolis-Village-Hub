@@ -175,6 +175,10 @@ if (existsSync(distAssets)) {
   );
 }
 
+// Browsers always request /favicon.ico even when <link rel="icon"> is set.
+// Redirect to the SVG favicon so the request doesn't produce a 404.
+app.get("/favicon.ico", (_req, res) => res.redirect(301, "/favicon.svg"));
+
 // Dynamic sitemap — must be mounted BEFORE express.static so GET /sitemap.xml
 // is handled here (DB articles + villages with real lastmod dates) and NOT
 // served from the static public/sitemap.xml fallback.
