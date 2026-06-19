@@ -238,7 +238,7 @@ export default function News() {
           displayArticles.map((article, index) => (
             <React.Fragment key={article.id}>
               {/* Card as div to allow village badge as a real nested link */}
-              <div className="group flex flex-col md:flex-row gap-6 glass-card rounded-2xl p-6 hover:shadow-xl transition-all duration-300">
+              <div className="group flex flex-col md:flex-row gap-4 md:gap-6 glass-card rounded-2xl p-4 md:p-6 hover:shadow-xl transition-all duration-300">
                 <Link href={articleUrl(article)} className="md:w-1/3 lg:w-1/4 aspect-video rounded-lg overflow-hidden shrink-0 block">
                   <img
                     src={article.imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=70"}

@@ -239,7 +239,7 @@ export default function VillageMap() {
       {/* Map + list */}
       <div className="flex-1 flex flex-col lg:flex-row min-h-0">
         {/* Map */}
-        <div className="flex-1 relative" style={{ minHeight: "400px" }}>
+        <div className="flex-1 relative" style={{ minHeight: "clamp(320px, 50vw, 400px)" }}>
           {!mounted || isLoading ? (
             <div className="absolute inset-0 bg-muted flex items-center justify-center">
               <div className="text-center text-muted-foreground">

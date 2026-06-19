@@ -276,7 +276,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               {isDark ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button
-              className={`md:hidden p-2 rounded-full transition-all ${
+              className={`md:hidden p-2.5 rounded-full transition-all ${
                 scrolled
                   ? "text-foreground/70 hover:text-foreground hover:bg-muted"
                   : "text-primary-foreground/70 hover:text-white hover:bg-white/15"
@@ -284,7 +284,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Μενού"
             >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>

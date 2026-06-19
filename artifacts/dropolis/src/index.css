@@ -306,6 +306,30 @@ body,
   overflow-x: hidden;
 }
 
+/* ─── Mobile base improvements ───────────────────────────────── */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  /* Scale down oversized headings on small screens */
+  h1 { font-size: clamp(1.4rem, 6vw, 2rem); line-height: 1.25; }
+  h2 { font-size: clamp(1.2rem, 5vw, 1.6rem); line-height: 1.3; }
+  h3 { font-size: clamp(1.05rem, 4.5vw, 1.35rem); line-height: 1.35; }
+
+  /* Ensure all interactive elements meet the 44 × 44 px WCAG touch target */
+  button, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Leaflet map — taller on mobile so the map is usable */
+  .leaflet-container {
+    min-height: 320px !important;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
