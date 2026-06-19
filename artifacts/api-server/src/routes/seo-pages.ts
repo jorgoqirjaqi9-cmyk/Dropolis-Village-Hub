@@ -199,7 +199,7 @@ function buildSeoTags(m: PageMeta): string {
   // Hard-truncate to 60 chars as a safety guard against future long titles.
   const rawTitle = m.titleFinal ?? `${m.title} | ${SITE_NAME}`;
   const title = esc(rawTitle.length > 60 ? rawTitle.slice(0, 59) + "…" : rawTitle);
-  const desc = esc((m.description ?? "").slice(0, 160));
+  const desc = esc((m.description ?? "").slice(0, 155));
   const img = esc(m.image || DEFAULT_IMG);
   // Enforce trailing slash on all page URLs for canonical consistency
   const normalizedUrl = m.url === `${BASE_URL}/` ? m.url : (m.url.endsWith("/") ? m.url : m.url + "/");
@@ -703,8 +703,21 @@ router.get(["/news/:idOrSlug", "/news/:idOrSlug/"], async (req, res) => {
     id = parseInt(param, 10);
   } else {
     const match = param.match(/-(\d+)$/);
-    if (!match) { res.status(404).send("Not found"); return; }
-    id = parseInt(match[1], 10);
+    if (match) {
+      id = parseInt(match[1], 10);
+    } else {
+      // Slug without a trailing numeric ID — fall back to a full-slug DB lookup
+      try {
+        const [bySlug] = await db
+          .select({ id: articlesTable.id })
+          .from(articlesTable)
+          .where(eq(articlesTable.slug, param))
+          .limit(1);
+        id = bySlug?.id ?? 0;
+      } catch {
+        id = 0;
+      }
+    }
   }
 
   if (!Number.isInteger(id) || id <= 0) {
@@ -791,10 +804,20 @@ router.get(["/villages/:id", "/villages/:id/"], async (req, res) => {
       return;
     }
 
-    const description = (village.description
-      ? village.description.slice(0, 155)
-      : `Ανακαλύψτε το χωριό ${village.nameEl} στη Δρόπολη, Βόρεια Ήπειρος.`
-    );
+    // Build a rich 120-155 char description from available village fields.
+    // Villages without a DB description get an auto-generated one using
+    // population, elevation and municipalUnit so crawlers see useful content.
+    const description = (() => {
+      if (village.description && village.description.length >= 80) {
+        return village.description.slice(0, 155);
+      }
+      const parts: string[] = [`${village.nameEl}: χωριό της Δρόπολης στη Βόρεια Ήπειρο.`];
+      if (village.municipalUnit) parts.push(`Κοινότητα ${village.municipalUnit}.`);
+      if (village.population) parts.push(`Πληθυσμός ${village.population} κάτοικοι.`);
+      if (village.elevation) parts.push(`Υψόμετρο ${village.elevation} μ.`);
+      parts.push(`Ειδήσεις, φωτογραφίες και ιστορία από τα χωριά της Δρόπολης.`);
+      return parts.join(" ").slice(0, 155);
+    })();
 
     const meta: PageMeta = {
       title: `${village.nameEl} — Χωριό της Δρόπολης`,
