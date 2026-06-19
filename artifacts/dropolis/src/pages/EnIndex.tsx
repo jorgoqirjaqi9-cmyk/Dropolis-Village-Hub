@@ -8,6 +8,7 @@ const fade = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transiti
 const sections = [
   { icon: Newspaper, title: "News", desc: "Greek-language news from Dropull — local events, politics affecting the minority, cultural life.", href: "/en/news/", cta: "Browse news coverage" },
   { icon: MapPin, title: "41 Villages", desc: "Explore the villages of Dropull municipality — history, geography, and the Greek communities that call them home.", href: "/en/villages/", cta: "Explore the villages" },
+  { icon: Globe, title: "Travel Guide", desc: "Planning a visit to Northern Epirus? Discover the 41 villages, Byzantine churches, mountain landscapes and Greek-minority heritage of Dropolis.", href: "/en/travel-guide/", cta: "Open travel guide" },
   { icon: Image, title: "Photo Gallery", desc: "Photographs from Dropull — landscapes, village life, cultural heritage, and the Greek minority communities of southern Albania.", href: "/en/photos/", cta: "Browse photos" },
   { icon: Globe, title: "About Dropolis", desc: "Learn who we are, what we cover, and why this community platform exists.", href: "/en/about/", cta: "About us" },
   { icon: Mail, title: "Contact", desc: "Submit a news tip, photo, or reach us for any inquiry. We respond to English messages.", href: "/en/contact/", cta: "Get in touch" },

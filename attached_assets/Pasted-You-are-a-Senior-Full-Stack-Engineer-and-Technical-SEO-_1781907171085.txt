@@ -1,0 +1,217 @@
+You are a Senior Full-Stack Engineer and Technical SEO Expert.
+
+Create a rich, SEO-focused English travel page for Dropolis.
+
+Page route:
+/en/travel-guide
+
+Component:
+TravelGuide.tsx
+
+Navigation:
+Add a visible link in the English navigation/menu if an English nav exists. If not, add an internal link from /en and from the footer/resources section.
+
+1. SEO Metadata
+
+Title:
+Visit Dropolis: Northern Epirus Travel Guide | 41 Villages
+
+Meta description:
+Discover Dropolis in Northern Epirus, Southern Albania: 41 Greek-minority villages, Byzantine churches, polyphonic music, mountain landscapes and authentic Balkan culture.
+
+Keywords:
+Northern Epirus travel, Dropolis travel guide, Greek minority Albania, Dropolis villages, Southern Albania tourism, Byzantine churches Albania, Balkan cultural heritage, Gjirokaster district, Epirus villages, polyphonic music Albania, Orthodox heritage Albania, authentic Albania travel
+
+Canonical:
+https://dropolis.net/en/travel-guide/
+
+Open Graph:
+og:title:
+Visit Dropolis: Northern Epirus Travel Guide | 41 Villages
+
+og:description:
+Explore the 41 traditional villages of Dropolis in Northern Epirus, with Byzantine heritage, Greek-minority culture, mountain landscapes and authentic Balkan gastronomy.
+
+og:type:
+article
+
+og:url:
+https://dropolis.net/en/travel-guide/
+
+og:image:
+Use the existing main Dropolis OpenGraph image unless a better travel image already exists.
+
+Hreflang:
+Add:
+<link rel="alternate" hreflang="en" href="https://dropolis.net/en/travel-guide/" />
+<link rel="alternate" hreflang="el" href="https://dropolis.net/" />
+<link rel="alternate" hreflang="x-default" href="https://dropolis.net/en/travel-guide/" />
+
+Robots:
+index, follow
+
+2. Page Content
+
+Use a responsive Tailwind CSS layout.
+
+Use correct semantic structure:
+- one H1 only
+- multiple H2 sections
+- H3 cards/subsections where useful
+- readable paragraphs
+- internal links
+- CTA buttons
+
+Hero H1:
+Dropolis: The Hidden Heart of Northern Epirus
+
+Hero subtitle:
+Experience the timeless charm of 41 historic villages, where Hellenic culture, Byzantine history and mountain serenity meet in Southern Albania.
+
+Hero CTA buttons:
+Explore the 41 Villages -> /en/villages
+View the Interactive Map -> /villages/map
+Browse Photo Archive -> /photos
+
+Main body:
+
+H2: Why Visit Dropolis?
+
+Paragraph:
+Nestled in the Gjirokaster district of Southern Albania, Dropolis is one of the most meaningful cultural regions of Northern Epirus. Across 41 traditional villages, visitors encounter a living landscape of Greek-minority heritage, stone-built architecture, Orthodox Christian landmarks, mountain scenery and local traditions that continue through families, festivals and the diaspora.
+
+Paragraph:
+For travelers who want something more authentic than a crowded tourist route, Dropolis offers a quiet and deeply human experience. It is a place for history lovers, cultural explorers, photographers, genealogists, hikers and anyone interested in the shared heritage of Epirus and the Balkans.
+
+H2: What Makes the Dropolis Region Unique?
+
+Create 4 feature cards with H3 headings:
+
+H3: Greek-Minority Heritage
+Text:
+Dropolis is strongly connected with the historic Greek minority of Albania. The Greek language, local customs, family memories and Orthodox traditions remain central to the identity of many villages.
+
+H3: Byzantine and Orthodox Landmarks
+Text:
+Visitors can discover churches, monasteries, old cemeteries and sacred places that reflect centuries of Orthodox Christian life in Northern Epirus.
+
+H3: Polyphonic Music and Living Tradition
+Text:
+The region is known for its polyphonic singing, a powerful musical tradition of Epirus and Southern Albania. This sound carries the memory of villages, families and generations.
+
+H3: Mountain Landscapes and Village Life
+Text:
+From hillside settlements to valleys and stone paths, Dropolis is ideal for slow travel, photography, walking routes and meaningful encounters with local life.
+
+H2: Things to Do in Dropolis
+
+Use H3 subsections:
+
+H3: Explore the 41 Villages
+Text:
+Each village has its own character, history and family roots. Travelers can use the Dropolis village directory to discover names, locations, stories, photographs and community updates.
+
+Internal link:
+Explore the 41 Villages -> /en/villages
+
+H3: Visit the Interactive Map
+Text:
+The interactive map helps visitors understand the geography of Dropolis, find villages, plan routes and explore the wider region near Gjirokaster and the Greek border.
+
+Internal link:
+Open the Map -> /villages/map
+
+H3: Discover Local History and Family Roots
+Text:
+Dropolis is especially important for the Greek diaspora and families from Northern Epirus. The platform helps preserve memories, photographs, oral histories and village identity for future generations.
+
+Internal link:
+Diaspora Memories -> /diaspora
+
+H3: Taste Epirus and Balkan Gastronomy
+Text:
+Traditional pies, mountain herbs, homemade products, local spirits and seasonal dishes are part of the everyday culture of the region. Food in Dropolis is tied to hospitality, family gatherings and village celebrations.
+
+H2: Where Is Dropolis?
+
+Text:
+Dropolis is located in the Gjirokaster district of Southern Albania, close to the Greek-Albanian border at Kakavia. Its position makes it accessible for travelers coming from Greece, Gjirokaster, Saranda, Tirana or the wider Epirus region.
+
+H2: Best For
+
+Use bullet list:
+- cultural travelers interested in Northern Epirus
+- visitors exploring Greek-minority villages in Albania
+- photographers and documentary creators
+- people researching family history and genealogy
+- travelers looking for authentic Southern Albania beyond mass tourism
+- diaspora families reconnecting with village roots
+
+H2: Plan Your Visit
+
+Text:
+Use Dropolis.net as a starting point for your visit. Browse the villages, read local news, explore photographs, open the interactive map and discover stories from the community.
+
+CTA:
+Start Exploring Dropolis -> /en/villages
+
+3. JSON-LD Structured Data
+
+Add JSON-LD for:
+
+A) TouristAttraction
+{
+  "@context": "https://schema.org",
+  "@type": "TouristAttraction",
+  "name": "Dropolis Region",
+  "alternateName": ["Dropull", "Droupoli", "Dropolis Northern Epirus"],
+  "description": "Dropolis is a cultural and travel region in the Gjirokaster district of Southern Albania, known for its 41 traditional villages, Greek-minority heritage, Byzantine and Orthodox landmarks, polyphonic music and mountain landscapes.",
+  "url": "https://dropolis.net/en/travel-guide/",
+  "touristType": ["Cultural tourism", "Heritage tourism", "Genealogy tourism", "Slow travel"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressRegion": "Gjirokaster District",
+    "addressCountry": "AL"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 39.95,
+    "longitude": 20.25
+  },
+  "isPartOf": {
+    "@type": "Place",
+    "name": "Northern Epirus"
+  }
+}
+
+B) BreadcrumbList
+Home -> /en/
+Travel Guide -> /en/travel-guide/
+
+C) WebPage
+name:
+Visit Dropolis: Northern Epirus Travel Guide
+
+inLanguage:
+en
+
+about:
+Dropolis Region, Northern Epirus, Greek minority Albania, cultural heritage
+
+4. Technical Requirements
+
+- Ensure page returns 200.
+- Ensure it is included in sitemap.xml.
+- Ensure canonical uses trailing slash.
+- Ensure no duplicate H1.
+- Ensure all internal links use existing valid routes.
+- Ensure mobile responsive layout.
+- Ensure no text overflow on 360px width.
+- Ensure CTA buttons wrap nicely on mobile.
+- Ensure meta title is under 60 characters if possible.
+- Ensure meta description is 120-155 characters.
+- Run typecheck/build/prerender.
+- Verify:
+  /en/travel-guide/
+  /en/
+  /sitemap.xml

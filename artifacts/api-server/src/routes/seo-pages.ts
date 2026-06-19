@@ -542,6 +542,32 @@ const STATIC_META: Record<string, PageMeta> = {
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en/` }, { name: "Photos", item: `${BASE_URL}/en/photos/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "ImageGallery", name: "Photo Gallery — Dropull Villages", url: `${BASE_URL}/en/photos/`, inLanguage: "en" },
   },
+  "/en/travel-guide": {
+    title: "Visit Dropolis: Northern Epirus Travel Guide | 41 Villages",
+    description: "Discover Dropolis in Northern Epirus, Southern Albania: 41 Greek-minority villages, Byzantine churches, polyphonic music, mountain landscapes and authentic Balkan culture.",
+    url: `${BASE_URL}/en/travel-guide/`,
+    breadcrumbs: [{ name: "English", item: `${BASE_URL}/en/` }, { name: "Travel Guide", item: `${BASE_URL}/en/travel-guide/` }],
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "TouristAttraction",
+        name: "Dropolis Region",
+        alternateName: ["Dropull", "Droupoli", "Dropolis Northern Epirus"],
+        description: "Dropolis is a cultural and travel region in the Gjirokaster district of Southern Albania, known for its 41 traditional villages, Greek-minority heritage, Byzantine and Orthodox landmarks, polyphonic music and mountain landscapes.",
+        url: `${BASE_URL}/en/travel-guide/`,
+        address: { "@type": "PostalAddress", addressRegion: "Gjirokaster District", addressCountry: "AL" },
+        geo: { "@type": "GeoCoordinates", latitude: 39.95, longitude: 20.25 },
+        isPartOf: { "@type": "Place", name: "Northern Epirus" },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: "Visit Dropolis: Northern Epirus Travel Guide",
+        url: `${BASE_URL}/en/travel-guide/`,
+        inLanguage: "en",
+      },
+    ],
+  },
   "/faq": {
     title: "Συχνές Ερωτήσεις — Dropolis",
     description: "Απαντήσεις σε συχνές ερωτήσεις για το Dropolis — πώς να υποβάλετε ειδήσεις, φωτογραφίες και βίντεο από τη Δρόπολη.",

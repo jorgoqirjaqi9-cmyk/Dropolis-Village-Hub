@@ -192,6 +192,20 @@ if (existsSync(distPublic)) {
   app.use(express.static(distPublic, { maxAge: "1h", index: false }));
 }
 
+// In development, dist/public may not exist (Vite serves in memory).
+// Fall back to the Vite public/ source directory so images, favicons and other
+// public assets resolve correctly through the shared proxy.
+// Note: use import.meta.dirname (reliable regardless of CWD) rather than
+// process.cwd() which varies between dev (package dir) and prod (workspace root).
+if (process.env.NODE_ENV !== "production") {
+  // dist/index.mjs lives at artifacts/api-server/dist/ — go up 3 levels to workspace root
+  const workspaceRoot = resolve(import.meta.dirname, "../../..");
+  const viteSrcPublic = resolve(workspaceRoot, "artifacts/dropolis/public");
+  if (existsSync(viteSrcPublic)) {
+    app.use(express.static(viteSrcPublic, { maxAge: 0, index: false }));
+  }
+}
+
 // Mount legacy redirect handlers at root level (not under /api) so the shared
 // proxy can route /privacy-policy and /terms-of-service to this server and
 // return genuine HTTP 301 redirects to bots and clients.
