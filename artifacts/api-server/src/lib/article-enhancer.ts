@@ -215,6 +215,9 @@ export function enhanceArticle(input: ArticleEnhancerInput): ArticleEnhancerOutp
   const metaDescription = excerpt.slice(0, 155);
   const seoTitle = title.slice(0, 60);
 
+  // Task 1: articles under 300 chars stay draft regardless of quality score
+  const isTooShort = cleanContent.length < 300;
+
   let qualityScore = 0;
   if (title.length >= 20) qualityScore += 20;
   if (excerpt.length >= 60) qualityScore += 20;
@@ -241,6 +244,6 @@ export function enhanceArticle(input: ArticleEnhancerInput): ArticleEnhancerOutp
     villageName,
     tags,
     qualityScore,
-    published: qualityScore >= 55,
+    published: !isTooShort && qualityScore >= 55,
   };
 }
