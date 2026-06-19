@@ -156,6 +156,7 @@ async function handleSitemapXml(req: Request, res: Response): Promise<void> {
       db
         .select({
           id: articlesTable.id,
+          slug: articlesTable.slug,
           title: articlesTable.title,
           imageUrl: articlesTable.imageUrl,
           createdAt: articlesTable.createdAt,
@@ -183,7 +184,7 @@ async function handleSitemapXml(req: Request, res: Response): Promise<void> {
     //   "withheld" — excluded; content updated since last prerender or too new
     //   "unknown"  — manifest unavailable and article is within grace window
     // ---------------------------------------------------------------------------
-    type ArticleRow = { id: number; title: string | null; imageUrl: string | null; createdAt: Date; updatedAt: Date };
+    type ArticleRow = { id: number; slug: string | null; title: string | null; imageUrl: string | null; createdAt: Date; updatedAt: Date };
     type ArticleEntry = { row: ArticleRow; lastmod: string };
 
     const visibleArticles: ArticleEntry[] = [];
@@ -268,7 +269,7 @@ async function handleSitemapXml(req: Request, res: Response): Promise<void> {
       }
 
       return urlEntry(
-        `${BASE_URL}/news/${a.id}/`,
+        `${BASE_URL}/news/${a.slug ?? a.id}/`,
         lastmod,
         "monthly",
         "0.8",

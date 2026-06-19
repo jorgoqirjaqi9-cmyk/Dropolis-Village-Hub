@@ -2,6 +2,7 @@ import React from "react";
 import { useRoute, Link } from "wouter";
 import { useGetVillage, getGetVillageQueryKey, useListArticles, getListArticlesQueryKey, useListPhotos, getListPhotosQueryKey } from "@workspace/api-client-react";
 import { SEO } from "@/components/SEO";
+import { articleUrl } from "@/lib/article-url";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, Mountain, Map, ArrowLeft, Image as ImageIcon, Newspaper, MapPin, Camera, Send, Video } from "lucide-react";
 import { OptimizedImg } from "@/components/OptimizedImg";
@@ -299,7 +300,7 @@ export default function VillageDetail() {
               <>
                 <div className="space-y-4 mb-4">
                   {news.map(article => (
-                    <Link key={article.id} href={`/news/${article.id}/`} className="group block border-b border-border last:border-0 pb-4 last:pb-0">
+                    <Link key={article.id} href={articleUrl(article)} className="group block border-b border-border last:border-0 pb-4 last:pb-0">
                       <h4 className="font-bold text-sm leading-snug group-hover:text-primary transition-colors mb-2 line-clamp-2">{article.title}</h4>
                       <span className="text-xs text-muted-foreground block">
                         {format(new Date(article.createdAt), "d MMMM yyyy", { locale: el })}

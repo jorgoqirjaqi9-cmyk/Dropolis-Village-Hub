@@ -138,12 +138,12 @@ function Router() {
               <Route path="/" component={Home} />
               <Route path="/news" component={News} />
               <Route path="/news/" component={News} />
-              <Route path="/news/:id" component={NewsDetail} />
-              {/* Trailing-slash variant: dynamic sitemap emits /news/:id/ so
+              <Route path="/news/:slug" component={NewsDetail} />
+              {/* Trailing-slash variant: dynamic sitemap emits /news/:slug/ so
                   Googlebot crawls that URL — without this route, wouter falls
                   through to <NotFound> which sets noindex ("Discovered - not
                   indexed" in GSC). */}
-              <Route path="/news/:id/" component={NewsDetail} />
+              <Route path="/news/:slug/" component={NewsDetail} />
               <Route path="/villages" component={Villages} />
               <Route path="/villages/" component={Villages} />
               <Route path="/villages/map" component={VillageMap} />

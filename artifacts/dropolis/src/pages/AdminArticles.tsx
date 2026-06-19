@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearch } from "wouter";
 import { SEO } from "@/components/SEO";
+import { articleUrl } from "@/lib/article-url";
 import {
   Plus, Pencil, Trash2, Eye, EyeOff, RefreshCw, Search,
   Star, StarOff, AlertCircle, CheckCircle, X, ExternalLink,
@@ -313,7 +314,7 @@ export default function AdminArticles() {
                         <td className="px-4 py-3">
                           <div className="flex items-center justify-end gap-1">
                             {a.published && (
-                              <a href={`/news/${a.id}`} target="_blank" rel="noopener noreferrer"
+                              <a href={articleUrl(a)} target="_blank" rel="noopener noreferrer"
                                 className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                                 <ExternalLink className="w-3.5 h-3.5" />
                               </a>

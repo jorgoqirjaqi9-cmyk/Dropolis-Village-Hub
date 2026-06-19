@@ -58,6 +58,7 @@ const WEBSITE_REF = {
 
 export interface ArticleSchemaInput {
   id: number;
+  slug?: string | null;
   title: string;
   description: string;
   imageUrl?: string | null;
@@ -70,7 +71,7 @@ export interface ArticleSchemaInput {
 }
 
 /**
- * Builds a full NewsArticle schema for `/news/:id` pages.
+ * Builds a full NewsArticle schema for `/news/:slug` pages.
  *
  * Returns a single object. Embed alongside a BreadcrumbList for best results.
  *
@@ -78,7 +79,7 @@ export interface ArticleSchemaInput {
  * dateModified, author, publisher (with logo).
  */
 export function buildNewsArticleSchema(a: ArticleSchemaInput): object {
-  const articleUrl = `${BASE_URL}/news/${a.id}/`;
+  const articleUrl = `${BASE_URL}/news/${a.slug ?? a.id}/`;
   const datePublished = a.createdAt.toISOString();
   const dateModified = (a.updatedAt ?? a.createdAt).toISOString();
 

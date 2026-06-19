@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link } from "wouter";
+import { articleUrl } from "@/lib/article-url";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
@@ -211,7 +212,7 @@ export default function Home() {
                       Κοινότητα
                     </span>
                   )}
-                  <Link href={`/news/${article.id}/`} className="hover:text-secondary transition-colors">
+                  <Link href={articleUrl(article)} className="hover:text-secondary transition-colors">
                     {article.title}
                   </Link>
                 </span>
@@ -537,7 +538,7 @@ export default function Home() {
                 >
                   {/* Hero Featured */}
                   <motion.div variants={fadeUp}>
-                    <Link href={`/news/${featuredArticles[0].id}/`}>
+                    <Link href={articleUrl(featuredArticles[0])}>
                       <div className="group relative rounded-2xl overflow-hidden shadow-xl aspect-video md:aspect-[21/9] cursor-pointer">
                         <OptimizedImg
                           src={featuredArticles[0].imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c"}
@@ -570,7 +571,7 @@ export default function Home() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {featuredArticles.slice(1, 3).map((article) => (
                       <motion.div key={article.id} variants={fadeUp}>
-                        <Link href={`/news/${article.id}/`}>
+                        <Link href={articleUrl(article)}>
                           <div className="group rounded-2xl overflow-hidden shadow-md glass-card flex flex-col h-full cursor-pointer hover:shadow-xl transition-all duration-300">
                             <div className="aspect-video overflow-hidden">
                               <OptimizedImg
@@ -624,7 +625,7 @@ export default function Home() {
                     {recentArticles.map((article) => (
                       <motion.div key={article.id} variants={fadeUp}>
                         <Link
-                          href={`/news/${article.id}/`}
+                          href={articleUrl(article)}
                           className="group flex flex-col sm:flex-row gap-4 glass-card rounded-xl p-4 hover:shadow-lg transition-all duration-300"
                         >
                           <div className="sm:w-32 md:w-40 aspect-video sm:aspect-square rounded-lg overflow-hidden shrink-0">

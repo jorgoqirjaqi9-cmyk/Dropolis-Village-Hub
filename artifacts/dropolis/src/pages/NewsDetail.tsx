@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { el } from "date-fns/locale";
 import { useGetArticle, getGetArticleQueryKey, useListArticles, getListArticlesQueryKey, useGetTrendingArticles, getGetTrendingArticlesQueryKey } from "@workspace/api-client-react";
 import { SEO, SITE, smartArticleTitle } from "@/components/SEO";
+import { articleUrl, parseArticleParam } from "@/lib/article-url";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Clock, User, MapPin, Tag, BookOpen } from "lucide-react";
@@ -11,8 +12,10 @@ import { OptimizedImg } from "@/components/OptimizedImg";
 import "@/styles/prose.css";
 
 export default function NewsDetail() {
-  const [, params] = useRoute("/news/:id");
-  const id = params?.id ? parseInt(params.id, 10) : 0;
+  const [, params] = useRoute("/news/:slug");
+  const [, paramsSlash] = useRoute("/news/:slug/");
+  const rawSlug = params?.slug ?? paramsSlash?.slug ?? "";
+  const id = rawSlug ? parseArticleParam(rawSlug) : 0;
   
   const { data: article, isLoading, isError } = useGetArticle(id, { 
     query: { enabled: !!id, queryKey: getGetArticleQueryKey(id) } 
@@ -81,10 +84,11 @@ export default function NewsDetail() {
       ? article.imageUrl
       : `${BASE}${article.imageUrl}`
     : DEFAULT_IMG;
+  const canonicalArticleUrl = `${BASE}/news/${article.slug ?? article.id}/`;
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
-    "@id": `${BASE}/news/${article.id}/`,
+    "@id": canonicalArticleUrl,
     headline: article.seoTitle || article.title,
     // Always provide a meaningful description — empty string passes JSON parsing
     // but Google Rich Results flags it. Fall back to the site-wide description.
@@ -98,7 +102,7 @@ export default function NewsDetail() {
     thumbnailUrl: absoluteImageUrl,
     datePublished: article.createdAt,
     dateModified: article.updatedAt ?? article.createdAt,
-    url: `${BASE}/news/${article.id}/`,
+    url: canonicalArticleUrl,
     author: {
       "@type": "Person",
       name: article.author || "Dropolis",
@@ -116,7 +120,7 @@ export default function NewsDetail() {
         height: 512,
       },
     },
-    mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE}/news/${article.id}/` },
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalArticleUrl },
     isPartOf: { "@id": `${BASE}/#website` },
     articleSection: article.category,
     inLanguage: "el",
@@ -140,7 +144,7 @@ export default function NewsDetail() {
         }}
         breadcrumbs={[
           { name: "Ειδήσεις", url: "/news/" },
-          { name: article.title, url: `/news/${article.id}/` },
+          { name: article.title, url: articleUrl(article) },
         ]}
         jsonLd={articleSchema}
       />
@@ -257,7 +261,7 @@ export default function NewsDetail() {
             <h2 className="text-xl font-serif font-bold mb-5">Διαβάστε επίσης</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {displayTrending.map(a => (
-                <Link key={a.id} href={`/news/${a.id}/`} className="group flex gap-3 p-3 rounded-lg bg-muted/40 hover:bg-muted transition-colors">
+                <Link key={a.id} href={articleUrl(a)} className="group flex gap-3 p-3 rounded-lg bg-muted/40 hover:bg-muted transition-colors">
                   {a.imageUrl && (
                     <div className="w-20 h-16 rounded overflow-hidden shrink-0">
                       <img src={a.imageUrl} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" decoding="async" />
@@ -284,7 +288,7 @@ export default function NewsDetail() {
               <h3 className="font-serif text-lg font-bold mb-4 border-b border-border pb-2">Σχετικά Άρθρα</h3>
               <div className="space-y-4">
                 {displayRelated.map(related => (
-                  <Link key={related.id} href={`/news/${related.id}/`} className="group block">
+                  <Link key={related.id} href={articleUrl(related)} className="group block">
                     <div className="flex gap-3">
                       {related.imageUrl && (
                         <div className="w-20 h-20 rounded-md overflow-hidden shrink-0">
@@ -310,7 +314,7 @@ export default function NewsDetail() {
               <ol className="space-y-3">
                 {displayTrending.map((a, idx) => (
                   <li key={a.id}>
-                    <Link href={`/news/${a.id}/`} className="group flex gap-3 items-start">
+                    <Link href={articleUrl(a)} className="group flex gap-3 items-start">
                       <span className="text-2xl font-black text-muted-foreground/60 leading-none w-6 shrink-0 select-none" aria-hidden="true">{idx + 1}</span>
                       <div className="min-w-0">
                         <h4 className="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors leading-snug">{a.seoTitle || a.title}</h4>

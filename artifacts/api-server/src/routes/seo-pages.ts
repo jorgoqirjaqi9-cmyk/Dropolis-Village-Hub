@@ -691,9 +691,22 @@ router.get(/^\/admin(\/.*)?$/, (_req, res) => {
   );
 });
 
-// /news/:id — article detail
-router.get(["/news/:id", "/news/:id/"], async (req, res) => {
-  const id = parseInt(String(req.params.id), 10);
+// /news/:idOrSlug — article detail
+// Accepts both legacy numeric IDs ("/news/10362") and slug URLs ("/news/my-title-10362").
+// Numeric-only requests are permanently redirected to the slug URL when a slug exists.
+router.get(["/news/:idOrSlug", "/news/:idOrSlug/"], async (req, res) => {
+  const param = String(req.params.idOrSlug);
+
+  // Extract numeric ID — works for "10362" and "my-title-10362"
+  let id: number;
+  if (/^\d+$/.test(param)) {
+    id = parseInt(param, 10);
+  } else {
+    const match = param.match(/-(\d+)$/);
+    if (!match) { res.status(404).send("Not found"); return; }
+    id = parseInt(match[1], 10);
+  }
+
   if (!Number.isInteger(id) || id <= 0) {
     res.status(404).send("Not found");
     return;
@@ -710,13 +723,20 @@ router.get(["/news/:id", "/news/:id/"], async (req, res) => {
       return;
     }
 
+    // Permanent redirect: /news/10362 → /news/my-title-10362/
+    if (/^\d+$/.test(param) && article.slug) {
+      res.redirect(301, `${BASE_URL}/news/${article.slug}/`);
+      return;
+    }
+
+    const canonicalUrl = `${BASE_URL}/news/${article.slug ?? article.id}/`;
     const cleanedDesc = generateArticleDesc(article);
 
     const meta: PageMeta = {
       title: article.seoTitle || article.title,
       description: cleanedDesc,
       image: article.imageUrl,
-      url: `${BASE_URL}/news/${article.id}`,
+      url: canonicalUrl,
       type: "article",
       article: {
         publishedTime: article.createdAt.toISOString(),
@@ -726,10 +746,11 @@ router.get(["/news/:id", "/news/:id/"], async (req, res) => {
       },
       breadcrumbs: [
         { name: "Ειδήσεις", item: `${BASE_URL}/news` },
-        { name: article.title, item: `${BASE_URL}/news/${article.id}` },
+        { name: article.title, item: canonicalUrl },
       ],
       jsonLd: buildNewsArticleSchema({
         id: article.id,
+        slug: article.slug,
         title: article.title,
         description: cleanedDesc,
         imageUrl: article.imageUrl,
