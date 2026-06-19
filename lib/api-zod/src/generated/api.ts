@@ -265,11 +265,11 @@ export const CreateVillageBody = zod.object({
   "nameEl": zod.string(),
   "description": zod.string(),
   "municipalUnit": zod.string().optional(),
-  "population": zod.number().optional(),
-  "elevation": zod.number().optional(),
+  "population": zod.number().nullish(),
+  "elevation": zod.number().nullish(),
   "imageUrl": zod.string().optional(),
-  "latitude": zod.number().optional(),
-  "longitude": zod.number().optional()
+  "latitude": zod.number().nullish(),
+  "longitude": zod.number().nullish()
 })
 
 
@@ -316,11 +316,11 @@ export const UpdateVillageBody = zod.object({
   "nameEl": zod.string().optional(),
   "description": zod.string().optional(),
   "municipalUnit": zod.string().optional(),
-  "population": zod.number().optional(),
-  "elevation": zod.number().optional(),
+  "population": zod.number().nullish(),
+  "elevation": zod.number().nullish(),
   "imageUrl": zod.string().nullish(),
-  "latitude": zod.number().optional(),
-  "longitude": zod.number().optional()
+  "latitude": zod.number().nullish(),
+  "longitude": zod.number().nullish()
 })
 
 export const UpdateVillageResponse = zod.object({

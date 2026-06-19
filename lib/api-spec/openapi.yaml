@@ -1244,14 +1244,18 @@ components:
           type: string
         population:
           type: integer
+          nullable: true
         elevation:
           type: integer
+          nullable: true
         imageUrl:
           type: string
         latitude:
           type: number
+          nullable: true
         longitude:
           type: number
+          nullable: true
 
     VillageUpdateInput:
       type: object
@@ -1266,15 +1270,19 @@ components:
           type: string
         population:
           type: integer
+          nullable: true
         elevation:
           type: integer
+          nullable: true
         imageUrl:
           type: string
           nullable: true
         latitude:
           type: number
+          nullable: true
         longitude:
           type: number
+          nullable: true
 
     Photo:
       type: object

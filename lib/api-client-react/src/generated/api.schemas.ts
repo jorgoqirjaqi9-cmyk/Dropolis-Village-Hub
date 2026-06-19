@@ -120,11 +120,11 @@ export interface VillageInput {
   nameEl: string;
   description: string;
   municipalUnit?: string;
-  population?: number;
-  elevation?: number;
+  population?: number | null;
+  elevation?: number | null;
   imageUrl?: string;
-  latitude?: number;
-  longitude?: number;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 export interface VillageUpdateInput {
@@ -132,11 +132,11 @@ export interface VillageUpdateInput {
   nameEl?: string;
   description?: string;
   municipalUnit?: string;
-  population?: number;
-  elevation?: number;
+  population?: number | null;
+  elevation?: number | null;
   imageUrl?: string | null;
-  latitude?: number;
-  longitude?: number;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 export interface Photo {
