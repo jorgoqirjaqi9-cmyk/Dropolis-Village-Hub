@@ -269,7 +269,19 @@ async function main() {
 
   const [articles, villages] = await Promise.all([
     db.select().from(articlesTable).where(eq(articlesTable.published, true)).orderBy(desc(articlesTable.createdAt)),
-    db.select().from(villagesTable).orderBy(villagesTable.id),
+    db.select({
+      id: villagesTable.id,
+      name: villagesTable.name,
+      nameEl: villagesTable.nameEl,
+      description: villagesTable.description,
+      municipalUnit: villagesTable.municipalUnit,
+      population: villagesTable.population,
+      elevation: villagesTable.elevation,
+      imageUrl: villagesTable.imageUrl,
+      latitude: villagesTable.latitude,
+      longitude: villagesTable.longitude,
+      createdAt: villagesTable.createdAt,
+    }).from(villagesTable).orderBy(villagesTable.id),
   ]);
 
   let count = 0;
