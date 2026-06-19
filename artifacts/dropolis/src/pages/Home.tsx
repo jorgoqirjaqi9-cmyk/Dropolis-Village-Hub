@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { articleUrl } from "@/lib/article-url";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
-import { motion, AnimatePresence } from "framer-motion";
+import { Reveal } from "@/components/Reveal";
 import { useGetStats, useGetFeaturedArticles, useListArticles } from "@workspace/api-client-react";
 import { SEO, seoPages } from "@/components/SEO";
 import { AdSenseSlot } from "@/components/AdSenseSlot";
@@ -20,14 +20,6 @@ const HERO_BASE = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4"
 const HERO_IMAGE = `${HERO_BASE}?w=1200&q=60&fm=webp&auto=format`;
 const HERO_SRCSET = `${HERO_BASE}?w=800&q=55&fm=webp&auto=format 800w, ${HERO_BASE}?w=1200&q=60&fm=webp&auto=format 1200w, ${HERO_BASE}?w=1600&q=65&fm=webp&auto=format 1600w`;
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0 },
-};
-
-const stagger = {
-  show: { transition: { staggerChildren: 0.12 } },
-};
 
 const mediaMentions = [
   { name: "Greek Reporter", url: "https://greekreporter.com", abbr: "GR" },
@@ -232,23 +224,17 @@ export default function Home() {
         </p>
 
         {/* Stats Bar */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-5 gap-4"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={stagger}
-        >
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {[
             { icon: Newspaper, label: "Άρθρα", value: stats?.totalArticles, color: "text-primary", href: "/news" },
             { icon: Users, label: "Χωριά", value: stats?.totalVillages, color: "text-accent", href: "/villages" },
             { icon: ImageIcon, label: "Φωτογραφίες", value: stats?.totalPhotos, color: "text-secondary", href: "/photos" },
             { icon: VideoIcon, label: "Βίντεο", value: stats?.totalVideos, color: "text-primary", href: "/videos" },
           ].map((stat, i) => (
-            <motion.div
+            <Reveal
               key={i}
-              variants={fadeUp}
-              whileHover={{ y: -4, scale: 1.02 }}
+              delay={i * 80}
+              className="hover:-translate-y-1 hover:scale-[1.02] transition-transform duration-200"
             >
               <Link
                 href={stat.href}
@@ -264,19 +250,14 @@ export default function Home() {
                 </div>
                 <span className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</span>
               </Link>
-            </motion.div>
+            </Reveal>
           ))}
-        </motion.div>
+        </div>
 
         {/* ── 41 VILLAGES SECTION ─────────────────────────────────── */}
         <section aria-labelledby="villages-heading">
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.15 }}
-            variants={stagger}
-          >
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+          <div>
+            <Reveal className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
               <div>
                 <h2 id="villages-heading" className="font-serif text-3xl font-bold text-foreground relative inline-block">
                   Τα 41 χωριά της Δρόπολης
@@ -286,7 +267,7 @@ export default function Home() {
                   Ανακαλύψτε τα χωριά της Δρόπολης μέσα από ειδήσεις, φωτογραφίες, ιστορία και τον διαδραστικό χάρτη.
                 </p>
               </div>
-            </motion.div>
+            </Reveal>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
               {[
@@ -298,8 +279,8 @@ export default function Home() {
                 { id: 65, nameEl: "Βραχογοραντζή", name: "Vraho-Goranxi" },
                 { id: 84, nameEl: "Άγιος Νικόλαος", name: "Dritë" },
                 { id: 86, nameEl: "Πολίτσανη", name: "Politsan" },
-              ].map((v) => (
-                <motion.div key={v.id} variants={fadeUp}>
+              ].map((v, i) => (
+                <Reveal key={v.id} delay={i * 60}>
                   <Link href={`/villages/${v.id}/`}>
                     <div className="group glass-card rounded-xl p-4 flex items-start gap-3 hover:shadow-md transition-all duration-200 cursor-pointer">
                       <div className="flex-grow min-w-0">
@@ -311,11 +292,11 @@ export default function Home() {
                       <ArrowRight size={14} className="shrink-0 mt-1 text-muted-foreground group-hover:text-primary dark:group-hover:text-secondary transition-colors" />
                     </div>
                   </Link>
-                </motion.div>
+                </Reveal>
               ))}
             </div>
 
-            <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
+            <Reveal className="flex flex-wrap gap-3">
               <Link href="/villages/">
                 <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-5 py-2.5 rounded-full text-sm hover:bg-primary/90 transition-colors min-h-[44px]">
                   <Users size={15} />
@@ -328,16 +309,13 @@ export default function Home() {
                   Διαδραστικός Χάρτης
                 </span>
               </Link>
-            </motion.div>
-          </motion.div>
+            </Reveal>
+          </div>
         </section>
 
         {/* PWA Install Button — always visible */}
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className={`rounded-2xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-md border ${
+        <div
+          className={`animate-fade-up rounded-2xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-md border ${
             isInstalled
               ? "bg-muted/60 border-border text-muted-foreground"
               : "bg-primary text-primary-foreground border-primary/20"
@@ -367,7 +345,7 @@ export default function Home() {
               <Download size={14} /> Εγκατάσταση εφαρμογής
             </button>
           )}
-        </motion.div>
+        </div>
 
         {/* iOS install modal */}
         <Dialog open={showIOSModal} onOpenChange={setShowIOSModal}>
@@ -435,13 +413,7 @@ export default function Home() {
         </Dialog>
 
         {/* Media Mentions Bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="glass-card rounded-2xl px-6 py-5"
-        >
+        <Reveal className="glass-card rounded-2xl px-6 py-5">
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap shrink-0">
               Αναφέρθηκε σε
@@ -469,25 +441,19 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </motion.div>
+        </Reveal>
 
         {/* Trust Badges */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-3"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={stagger}
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { icon: Shield, title: "GDPR Συμμόρφωση", desc: "Πλήρης προστασία δεδομένων", color: "text-accent" },
             { icon: Globe, title: "Β. Ήπειρος", desc: "41 χωριά — πλήρης κάλυψη", color: "text-secondary" },
             { icon: Smartphone, title: "PWA Εφαρμογή", desc: "Εγκαταστήστε στο κινητό", color: "text-primary dark:text-secondary" },
             { icon: Newspaper, title: "Δωρεάν Πρόσβαση", desc: "Πάντα δωρεάν για όλους", color: "text-accent" },
           ].map((badge, i) => (
-            <motion.div
+            <Reveal
               key={i}
-              variants={fadeUp}
+              delay={i * 60}
               className="glass-card rounded-xl p-4 flex items-start gap-3"
             >
               <div className="w-8 h-8 rounded-lg bg-current/5 flex items-center justify-center shrink-0 mt-0.5">
@@ -497,9 +463,9 @@ export default function Home() {
                 <p className="text-xs font-bold leading-tight">{badge.title}</p>
                 <p className="text-xs text-muted-foreground mt-0.5 leading-tight">{badge.desc}</p>
               </div>
-            </motion.div>
+            </Reveal>
           ))}
-        </motion.div>
+        </div>
 
         {/* AdSense */}
         <div>
@@ -529,15 +495,9 @@ export default function Home() {
                   </div>
                 </div>
               ) : featuredArticles && featuredArticles.length > 0 ? (
-                <motion.div
-                  className="space-y-6"
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, amount: 0.1 }}
-                  variants={stagger}
-                >
+                <div className="space-y-6">
                   {/* Hero Featured */}
-                  <motion.div variants={fadeUp}>
+                  <Reveal>
                     <Link href={articleUrl(featuredArticles[0])}>
                       <div className="group relative rounded-2xl overflow-hidden shadow-xl aspect-video md:aspect-[21/9] cursor-pointer">
                         <OptimizedImg
@@ -565,12 +525,12 @@ export default function Home() {
                         </div>
                       </div>
                     </Link>
-                  </motion.div>
+                  </Reveal>
 
                   {/* Secondary featured */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {featuredArticles.slice(1, 3).map((article) => (
-                      <motion.div key={article.id} variants={fadeUp}>
+                    {featuredArticles.slice(1, 3).map((article, i) => (
+                      <Reveal key={article.id} delay={i * 80}>
                         <Link href={articleUrl(article)}>
                           <div className="group rounded-2xl overflow-hidden shadow-md glass-card flex flex-col h-full cursor-pointer hover:shadow-xl transition-all duration-300">
                             <div className="aspect-video overflow-hidden">
@@ -590,10 +550,10 @@ export default function Home() {
                             </div>
                           </div>
                         </Link>
-                      </motion.div>
+                      </Reveal>
                     ))}
                   </div>
-                </motion.div>
+                </div>
               ) : (
                 <p className="text-muted-foreground italic">Δεν υπάρχουν κύριες ειδήσεις.</p>
               )}
@@ -615,15 +575,9 @@ export default function Home() {
                 {recentLoading ? (
                   Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-32 w-full rounded-xl" />)
                 ) : recentArticles && recentArticles.length > 0 ? (
-                  <motion.div
-                    className="space-y-4"
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.1 }}
-                    variants={stagger}
-                  >
-                    {recentArticles.map((article) => (
-                      <motion.div key={article.id} variants={fadeUp}>
+                  <div className="space-y-4">
+                    {recentArticles.map((article, i) => (
+                      <Reveal key={article.id} delay={i * 50}>
                         <Link
                           href={articleUrl(article)}
                           className="group flex flex-col sm:flex-row gap-4 glass-card rounded-xl p-4 hover:shadow-lg transition-all duration-300"
@@ -651,9 +605,9 @@ export default function Home() {
                             {article.excerpt && <p className="text-muted-foreground text-sm line-clamp-2">{article.excerpt}</p>}
                           </div>
                         </Link>
-                      </motion.div>
+                      </Reveal>
                     ))}
-                  </motion.div>
+                  </div>
                 ) : (
                   <p className="text-muted-foreground italic">Δεν βρέθηκαν ειδήσεις.</p>
                 )}
@@ -663,13 +617,7 @@ export default function Home() {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="glass-card rounded-2xl p-6 shadow-sm"
-            >
+            <Reveal className="glass-card rounded-2xl p-6 shadow-sm">
               <h3 className="font-serif text-xl font-bold mb-1 text-foreground">Σχετικά με τη Δρόπολη</h3>
               <div className="w-8 h-0.5 bg-secondary rounded mb-4" />
               <p className="text-sm text-muted-foreground leading-relaxed mb-5">
@@ -705,15 +653,9 @@ export default function Home() {
                   </span>
                 </Link>
               </div>
-            </motion.div>
+            </Reveal>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="glass-card rounded-2xl p-5 shadow-sm"
-            >
+            <Reveal delay={100} className="glass-card rounded-2xl p-5 shadow-sm">
               <h4 className="font-serif text-base font-bold mb-3 text-foreground">Γρήγορη Πλοήγηση</h4>
               <div className="grid grid-cols-2 gap-2">
                 {[
@@ -728,7 +670,7 @@ export default function Home() {
                   </Link>
                 ))}
               </div>
-            </motion.div>
+            </Reveal>
 
             <div className="sticky top-24">
               <AdSenseSlot adSlot="7994234180" adFormat="rectangle" className="rounded-xl shadow-sm" />

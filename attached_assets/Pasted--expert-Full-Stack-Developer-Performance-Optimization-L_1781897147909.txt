@@ -1,0 +1,54 @@
+Είσαι expert Full-Stack Developer με ειδίκευση σε Performance Optimization (Lighthouse / Core Web Vitals).
+
+Το project είναι το https://dropolis.net – ένα σύγχρονο Next.js / Vite site (βλέπω assets/index-*.js και .css).
+
+**Πρόβλημα:**
+Το Mobile Performance στο PageSpeed Insights είναι 71/100. Τα κύρια προβλήματα είναι:
+
+- LCP 5.1s (κυρίως από μεγάλη hero εικόνα)
+- Render-blocking CSS
+- Μεγάλα vendor JS bundles (vendor-react, vendor-modal κλπ.)
+- Unused JavaScript (~69 KiB)
+- Πολλά 3rd party requests (Unsplash, Google Fonts, dropolinews.gr)
+- Μεγάλη εικόνα: /api/storage/public-objects/articles/stone-bridge-epirus.jpg (~115 KiB)
+
+**Στόχος:**
+Να ανέβει το Mobile Performance τουλάχιστον στο **90+**.
+
+### Εργασίες που πρέπει να κάνεις:
+
+1. **Hero Image Optimization**
+   - Βελτίωσε την κύρια εικόνα (stone-bridge-epirus.jpg) → καλύτερο WebP, σωστά sizes & srcset
+   - Πρόσθεσε σωστά attributes (width, height, fetchpriority, loading)
+
+2. **Critical CSS & Render Blocking**
+   - Inline ή Preload το κρίσιμο CSS
+   - Βελτίωσε το loading των fonts (font-display: swap)
+
+3. **JavaScript Optimization**
+   - Code splitting / dynamic imports όπου χρειάζεται
+   - Defer ή Lazy load μη-κρίσιμα vendor bundles
+   - Μείωσε unused JS
+
+4. **Performance Best Practices**
+   - Πρόσθεσε Preconnect & Preload hints
+   - Βελτίωσε image delivery (sizes, quality)
+   - Βελτίωσε το DOM size αν είναι απαραίτητο
+
+5. **Γενικές Βελτιώσεις**
+   - Προσθήκη κατάλληλων meta tags για performance
+   - Βελτιστοποίηση του viewport
+
+Παρακάτω είναι τα πιο πρόσφατα Lighthouse insights. Χρησιμοποίησέ τα:
+
+[Εδώ επικόλλησε ολόκληρο το Lighthouse report που μου έστειλες]
+
+---
+
+**Οδηγίες:**
+- Πρότεινε **συγκεκριμένες αλλαγές** σε αρχεία (π.χ. layout.tsx, page.tsx, globals.css κλπ.)
+- Δώσε έτοιμο κώδικα όπου χρειάζεται
+- Ξεκίνα με τις αλλαγές που θα δώσουν το μεγαλύτερο κέρδος (Quick Wins)
+- Μετά τις αλλαγές, πρότεινε πώς να τις τεστάρω με PageSpeed Insights
+
+Ξεκίνα τώρα με ανάλυση και προτάσεις.

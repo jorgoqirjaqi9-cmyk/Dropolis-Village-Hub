@@ -113,6 +113,11 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  if (url.pathname.startsWith("/api/storage/")) {
+    event.respondWith(staleWhileRevalidate(event.request, IMAGE_CACHE));
+    return;
+  }
+
   if (url.pathname.startsWith("/api/")) {
     event.respondWith(
       fetch(event.request).catch(
