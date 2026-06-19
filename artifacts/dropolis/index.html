@@ -75,6 +75,9 @@
     <!-- Preconnect to external origins used at first paint -->
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="dns-prefetch" href="https://images.unsplash.com" />
+    <!-- dropolinews.gr: article images load from this domain — preconnect saves ~360ms -->
+    <link rel="preconnect" href="https://dropolinews.gr" />
+    <link rel="dns-prefetch" href="https://dropolinews.gr" />
     <!-- open-meteo: needs crossorigin because fetch() is CORS — without it the
          browser opens a non-CORS connection that the actual fetch can't reuse. -->
     <link rel="preconnect" href="https://api.open-meteo.com" crossorigin />

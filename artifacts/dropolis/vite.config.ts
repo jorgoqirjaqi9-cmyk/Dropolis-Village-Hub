@@ -1,9 +1,34 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { seoCrawlerPlugin } from "./plugins/seo-crawler";
+
+/**
+ * Inject <link rel="preload" as="style"> hints for every CSS file that Vite
+ * emits as a <link rel="stylesheet"> in index.html.
+ *
+ * The browser's preload scanner picks up the hint immediately during HTML
+ * parsing and starts fetching the CSS file in parallel with other resources,
+ * reducing the effective render-blocking delay by allowing the CSS download
+ * to start sooner in the waterfall.
+ */
+function cssPreloadPlugin(): Plugin {
+  return {
+    name: "vite-plugin-css-preload",
+    transformIndexHtml: {
+      order: "post",
+      handler(html: string) {
+        return html.replace(
+          /(<link rel="stylesheet"([^>]+)href="([^"]+\.css)"([^>]*)\/?>)/g,
+          (_match, full, _before, href) =>
+            `<link rel="preload" as="style" href="${href}" />\n    ${full}`,
+        );
+      },
+    },
+  };
+}
 
 const rawPort = process.env.PORT;
 const port = rawPort ? Number(rawPort) : 20727;
@@ -38,6 +63,7 @@ export default defineConfig({
     tailwindcss(),
     runtimeErrorOverlay(),
     seoCrawlerPlugin({ apiPort: 8080 }),
+    cssPreloadPlugin(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [

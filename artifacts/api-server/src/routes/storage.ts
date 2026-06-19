@@ -89,6 +89,10 @@ router.get("/storage/public-objects/*filePath", async (req: Request, res: Respon
     if (!canTransform) {
       res.status(response.status);
       response.headers.forEach((value, key) => res.setHeader(key, value));
+      // Ensure images always get a usable cache TTL even when no transform is applied
+      if (!res.getHeader("Cache-Control")) {
+        res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+      }
       if (response.body) {
         Readable.fromWeb(response.body as ReadableStream<Uint8Array>).pipe(res);
       } else {
@@ -125,6 +129,9 @@ router.get("/storage/public-objects/*filePath", async (req: Request, res: Respon
       req.log.warn({ err: sharpErr }, "Image transform failed, serving original");
       res.status(response.status);
       response.headers.forEach((value, key) => res.setHeader(key, value));
+      if (!res.getHeader("Cache-Control")) {
+        res.setHeader("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+      }
       res.end();
     }
   } catch (error) {
