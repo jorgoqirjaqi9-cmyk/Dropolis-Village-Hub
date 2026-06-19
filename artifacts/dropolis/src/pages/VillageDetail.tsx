@@ -185,9 +185,15 @@ export default function VillageDetail() {
         <div className="lg:col-span-2 space-y-10">
           <section>
             <h2 className="text-2xl font-serif font-bold text-foreground border-b-2 border-primary inline-block pb-2 mb-6">Ιστορία & Πληροφορίες</h2>
-            <div className="prose prose-lg dark:prose-invert text-foreground/90 font-sans leading-relaxed whitespace-pre-wrap">
-              {village.description}
-            </div>
+            {village.richContent ? (
+              <div className="prose prose-lg dark:prose-invert text-foreground/90 font-sans leading-relaxed whitespace-pre-wrap">
+                {village.richContent}
+              </div>
+            ) : (
+              <div className="prose prose-lg dark:prose-invert text-foreground/90 font-sans leading-relaxed whitespace-pre-wrap">
+                {village.description}
+              </div>
+            )}
           </section>
 
           <section>

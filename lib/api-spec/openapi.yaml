@@ -1213,6 +1213,8 @@ components:
           type: string
         description:
           type: string
+        richContent:
+          type: ["string", "null"]
         municipalUnit:
           type: ["string", "null"]
         population:

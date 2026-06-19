@@ -99,6 +99,8 @@ export interface Village {
   nameEl: string;
   description: string;
   /** @nullable */
+  richContent?: string | null;
+  /** @nullable */
   municipalUnit?: string | null;
   /** @nullable */
   population: number | null;

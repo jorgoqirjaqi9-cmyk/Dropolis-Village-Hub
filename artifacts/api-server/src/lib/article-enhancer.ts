@@ -93,6 +93,16 @@ export interface ArticleEnhancerOutput {
   published: boolean;
 }
 
+function appendSourceAttribution(content: string, sourceName: string, sourceUrl: string | null | undefined): string {
+  const hasAttribution = /\bΠηγή\b|\bSource\b|dropolinews\.gr|epirusonline\.gr|news\.gr|apenadi\.blogspot/i.test(content);
+  if (hasAttribution) return content;
+
+  const label = sourceUrl
+    ? `\n\n---\n📰 Πηγή: [${sourceName}](${sourceUrl})`
+    : `\n\n---\n📰 Πηγή: ${sourceName}`;
+  return content + label;
+}
+
 export function enhanceArticle(input: ArticleEnhancerInput): ArticleEnhancerOutput {
   const title = input.title
     .replace(/\s+/g, " ")
@@ -103,10 +113,17 @@ export function enhanceArticle(input: ArticleEnhancerInput): ArticleEnhancerOutp
   const hadBoilerplate = hasBoilerplate(input.content);
   const cleanContent = stripBoilerplate(input.content);
 
+  const contentWithAttribution = appendSourceAttribution(cleanContent, input.sourceName, input.sourceUrl);
+
   const textLower = (title + " " + cleanContent).toLowerCase();
 
   const villageName = detectVillage(textLower);
-  const tags = buildTags(input.category, villageName, textLower);
+
+  const category = input.category && input.category.trim().length > 0
+    ? input.category
+    : "Επικαιρότητα";
+
+  const tags = buildTags(category, villageName, textLower);
 
   const rawExcerpt = input.excerpt
     ? input.excerpt.replace(/\s+/g, " ").trim()
@@ -126,7 +143,7 @@ export function enhanceArticle(input: ArticleEnhancerInput): ArticleEnhancerOutp
 
   return {
     title,
-    content: cleanContent,
+    content: contentWithAttribution,
     excerpt,
     metaDescription,
     seoTitle,

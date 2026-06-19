@@ -13,6 +13,7 @@ export const villagesTable = pgTable("villages", {
   imageUrl: text("image_url"),
   latitude: real("latitude"),
   longitude: real("longitude"),
+  richContent: text("rich_content"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

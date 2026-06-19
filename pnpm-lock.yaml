@@ -727,6 +727,9 @@ importers:
 
   scripts:
     dependencies:
+      '@google/genai':
+        specifier: ^2.8.0
+        version: 2.8.0
       '@workspace/db':
         specifier: workspace:*
         version: link:../lib/db
