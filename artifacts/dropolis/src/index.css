@@ -328,6 +328,20 @@ body,
   .leaflet-container {
     min-height: 320px !important;
   }
+
+  /* Consistent white-space between major content blocks */
+  section, .content-section {
+    margin-bottom: 24px;
+  }
+
+  /* Footer: tighter on mobile, larger text for readability */
+  footer {
+    font-size: 15px;
+  }
+  footer .container {
+    padding-top: 24px !important;
+    padding-bottom: 20px !important;
+  }
 }
 
 * {

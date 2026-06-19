@@ -146,7 +146,7 @@ export default function Villages() {
                     </div>
                   )}
                 </div>
-                <div className="p-5 flex flex-col flex-grow">
+                <div className="p-4 md:p-5 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-2">
                     <h2 className="text-xl font-serif font-bold group-hover:text-primary transition-colors">
                       {village.nameEl}

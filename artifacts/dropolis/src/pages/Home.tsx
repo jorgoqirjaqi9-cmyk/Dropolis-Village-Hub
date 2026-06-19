@@ -190,7 +190,7 @@ export default function Home() {
       </section>
 
       {/* ── CONTENT ───────────────────────────────────────────────── */}
-      <div id="content-start" className="container mx-auto px-4 py-10 space-y-12">
+      <div id="content-start" className="container mx-auto px-4 py-8 md:py-10 space-y-8 md:space-y-12">
 
         {/* Breaking News Ticker */}
         <div
