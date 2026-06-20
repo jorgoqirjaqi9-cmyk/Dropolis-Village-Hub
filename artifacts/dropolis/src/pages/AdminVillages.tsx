@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { SEO } from "@/components/SEO";
-import { Pencil, X, RefreshCw, Search, AlertCircle, CheckCircle, MapPin } from "lucide-react";
+import { Pencil, X, RefreshCw, Search, AlertCircle, CheckCircle, MapPin, Images, Check } from "lucide-react";
 import { AdminLayout, AdminAuthGate, ConfirmModal, useAdminAuth, adminFetch } from "@/components/AdminLayout";
 
 type Village = {
@@ -14,6 +14,14 @@ type VillageForm = {
   name: string; nameEl: string; description: string;
   municipalUnit: string; population: string; elevation: string;
   imageUrl: string; latitude: string; longitude: string;
+};
+
+type Photo = {
+  id: number;
+  url: string;
+  thumbnailUrl: string | null;
+  title: string | null;
+  villageId: number | null;
 };
 
 const EMPTY_FORM: VillageForm = {
@@ -43,6 +51,11 @@ export default function AdminVillages() {
   const [saving, setSaving] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
 
+  // Photo picker state
+  const [showPhotoPicker, setShowPhotoPicker] = useState(false);
+  const [villagePhotos, setVillagePhotos] = useState<Photo[]>([]);
+  const [photosLoading, setPhotosLoading] = useState(false);
+
   const fetchVillages = useCallback(async (t: string) => {
     setLoading(true); setError(null);
     try {
@@ -57,8 +70,34 @@ export default function AdminVillages() {
 
   const showMsg = (m: string) => { setMessage(m); setTimeout(() => setMessage(null), 3000); };
 
-  function openEdit(v: Village) { setEditing(v); setForm(toForm(v)); }
-  function closeModal() { setEditing(null); }
+  function openEdit(v: Village) {
+    setEditing(v);
+    setForm(toForm(v));
+    setShowPhotoPicker(false);
+    setVillagePhotos([]);
+  }
+  function closeModal() { setEditing(null); setShowPhotoPicker(false); setVillagePhotos([]); }
+
+  async function openPhotoPicker() {
+    if (!editing) return;
+    setShowPhotoPicker(true);
+    setPhotosLoading(true);
+    try {
+      const res = await fetch(`/api/photos?village_id=${editing.id}&limit=60`);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setVillagePhotos(Array.isArray(data) ? data : (data.photos ?? []));
+    } catch {
+      setVillagePhotos([]);
+    } finally {
+      setPhotosLoading(false);
+    }
+  }
+
+  function selectPhoto(photo: Photo) {
+    setForm(f => ({ ...f, imageUrl: photo.url }));
+    setShowPhotoPicker(false);
+  }
 
   async function saveVillage() {
     if (!editing) return;
@@ -150,7 +189,10 @@ export default function AdminVillages() {
                     <tr key={v.id} className="hover:bg-muted/30 transition-colors">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          {v.imageUrl && <img src={v.imageUrl} alt="" className="w-8 h-8 rounded-lg object-cover shrink-0" loading="lazy" decoding="async" />}
+                          {v.imageUrl
+                            ? <img src={v.imageUrl} alt="" className="w-8 h-8 rounded-lg object-cover shrink-0" loading="lazy" decoding="async" />
+                            : <div className="w-8 h-8 rounded-lg bg-muted shrink-0 flex items-center justify-center"><Images className="w-3.5 h-3.5 text-muted-foreground" /></div>
+                          }
                           <div>
                             <p className="font-medium text-foreground">{v.nameEl}</p>
                             <p className="text-xs text-muted-foreground md:hidden">{v.name}</p>
@@ -199,7 +241,6 @@ export default function AdminVillages() {
                     { key: "nameEl", label: "Ελληνικό Όνομα *", placeholder: "Δερβιτσάνη" },
                     { key: "name", label: "Latin Όνομα *", placeholder: "Dervician" },
                     { key: "municipalUnit", label: "Δημοτική Ενότητα", placeholder: "" },
-                    { key: "imageUrl", label: "Εικόνα (URL)", placeholder: "https://..." },
                     { key: "population", label: "Πληθυσμός", placeholder: "350", type: "number" },
                     { key: "elevation", label: "Υψόμετρο (μ)", placeholder: "600", type: "number" },
                     { key: "latitude", label: "Γεωγρ. Πλάτος", placeholder: "40.1234", type: "number" },
@@ -224,7 +265,110 @@ export default function AdminVillages() {
                       className="w-full px-3 py-2.5 rounded-xl border border-border bg-muted/50 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
                   </div>
                 </div>
+
+                {/* ── Κεντρική Φωτογραφία ── */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-medium text-muted-foreground">Κεντρική Φωτογραφία</label>
+
+                  {/* Preview + URL input */}
+                  <div className="flex gap-3 items-start">
+                    <div className="shrink-0 w-20 h-20 rounded-xl border border-border overflow-hidden bg-muted flex items-center justify-center">
+                      {form.imageUrl
+                        ? <img src={form.imageUrl} alt="preview" className="w-full h-full object-cover" />
+                        : <Images className="w-6 h-6 text-muted-foreground" />
+                      }
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <input
+                        type="text"
+                        value={form.imageUrl}
+                        onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))}
+                        placeholder="https://..."
+                        className="w-full px-3 py-2.5 rounded-xl border border-border bg-muted/50 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={openPhotoPicker}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors"
+                        >
+                          <Images className="w-3.5 h-3.5" />
+                          Επιλογή από γκαλερί
+                        </button>
+                        {form.imageUrl && (
+                          <button
+                            type="button"
+                            onClick={() => setForm(f => ({ ...f, imageUrl: "" }))}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-muted-foreground text-xs hover:bg-muted transition-colors"
+                          >
+                            <X className="w-3 h-3" />
+                            Καθαρισμός
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Photo picker grid */}
+                  {showPhotoPicker && (
+                    <div className="rounded-xl border border-border overflow-hidden">
+                      <div className="flex items-center justify-between px-3 py-2 bg-muted/50 border-b border-border">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Φωτογραφίες {editing.nameEl} ({villagePhotos.length})
+                        </span>
+                        <button onClick={() => setShowPhotoPicker(false)} className="text-muted-foreground hover:text-foreground">
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className="p-3 max-h-64 overflow-y-auto">
+                        {photosLoading ? (
+                          <div className="flex items-center justify-center py-8 text-sm text-muted-foreground">
+                            <RefreshCw className="w-4 h-4 animate-spin mr-2" /> Φόρτωση...
+                          </div>
+                        ) : villagePhotos.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center py-8 text-sm text-muted-foreground gap-2">
+                            <Images className="w-8 h-8 opacity-40" />
+                            <p>Δεν υπάρχουν φωτογραφίες για αυτό το χωριό</p>
+                            <p className="text-xs">Μπορείς να εισάγεις URL χειροκίνητα παραπάνω</p>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                            {villagePhotos.map(photo => {
+                              const isSelected = form.imageUrl === photo.url;
+                              return (
+                                <button
+                                  key={photo.id}
+                                  type="button"
+                                  onClick={() => selectPhoto(photo)}
+                                  title={photo.title ?? ""}
+                                  className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
+                                    isSelected
+                                      ? "border-primary shadow-md shadow-primary/30"
+                                      : "border-transparent hover:border-primary/50"
+                                  }`}
+                                >
+                                  <img
+                                    src={photo.thumbnailUrl ?? photo.url}
+                                    alt={photo.title ?? ""}
+                                    className="w-full h-full object-cover"
+                                    loading="lazy"
+                                  />
+                                  {isSelected && (
+                                    <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
+                                      <Check className="w-5 h-5 text-white drop-shadow" />
+                                    </div>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
+
               <div className="flex gap-3 px-6 py-4 border-t border-border">
                 <button onClick={closeModal} className="flex-1 px-4 py-2.5 rounded-xl border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">
                   Ακύρωση
