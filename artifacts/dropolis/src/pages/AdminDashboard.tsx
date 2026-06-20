@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { SEO } from "@/components/SEO";
 import {
   Newspaper, Image, Video, MapPin, Clock, CheckCircle,
-  TrendingUp, AlertCircle, RefreshCw, ExternalLink, Star,
+  TrendingUp, AlertCircle, RefreshCw, ExternalLink, Star, Download,
 } from "lucide-react";
 import { AdminLayout, AdminAuthGate, StatCard, StatusBadge, useAdminAuth, adminFetch } from "@/components/AdminLayout";
 import { format } from "date-fns";
@@ -24,6 +24,26 @@ export default function AdminDashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fetchMsg, setFetchMsg] = useState<string | null>(null);
+  const [fetching, setFetching] = useState(false);
+
+  async function triggerRssFetch() {
+    setFetching(true);
+    setFetchMsg(null);
+    try {
+      const res = await adminFetch("/api/rss/import", token, { method: "POST" });
+      if (res.ok) {
+        setFetchMsg("✓ Φόρτωση νέων άρθρων ξεκίνησε — θα εμφανιστούν σε 1-2 λεπτά");
+      } else {
+        setFetchMsg("✗ Αποτυχία εκκίνησης");
+      }
+    } catch {
+      setFetchMsg("✗ Σφάλμα σύνδεσης");
+    } finally {
+      setFetching(false);
+      setTimeout(() => setFetchMsg(null), 8000);
+    }
+  }
 
   const fetchData = useCallback(async (t: string) => {
     setLoading(true);
@@ -139,6 +159,14 @@ export default function AdminDashboard() {
                       Νέο Άρθρο
                     </span>
                   </Link>
+                  <button
+                    onClick={triggerRssFetch}
+                    disabled={fetching}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-60"
+                  >
+                    <Download className={`w-4 h-4 ${fetching ? "animate-bounce" : ""}`} />
+                    {fetching ? "Φόρτωση..." : "Άντλησε νέα άρθρα τώρα"}
+                  </button>
                   <Link href="/admin/photos">
                     <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer">
                       <Image className="w-4 h-4" />
@@ -158,6 +186,11 @@ export default function AdminDashboard() {
                     </span>
                   </Link>
                 </div>
+                {fetchMsg && (
+                  <p className={`mt-3 text-sm font-medium ${fetchMsg.startsWith("✓") ? "text-green-600" : "text-red-600"}`}>
+                    {fetchMsg}
+                  </p>
+                )}
               </div>
 
               {/* Latest articles */}

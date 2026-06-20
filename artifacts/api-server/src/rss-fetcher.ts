@@ -564,22 +564,13 @@ export function startRssFetcher(): void {
   // Run once at startup (after 10s delay)
   setTimeout(() => void fetchAllFeeds(), 10000);
 
-  // Then every 24 hours at 06:00 server time
-  const INTERVAL_MS = 24 * 60 * 60 * 1000;
-  const now = new Date();
-  const next6am = new Date(now);
-  next6am.setHours(6, 0, 0, 0);
-  if (next6am <= now) next6am.setDate(next6am.getDate() + 1);
+  // Then every 3 hours
+  const INTERVAL_MS = 3 * 60 * 60 * 1000;
+  setInterval(() => void fetchAllFeeds(), INTERVAL_MS);
 
-  const msUntil6am = next6am.getTime() - now.getTime();
-
-  setTimeout(() => {
-    void fetchAllFeeds();
-    setInterval(() => void fetchAllFeeds(), INTERVAL_MS);
-  }, msUntil6am);
-
+  const nextRun = new Date(Date.now() + INTERVAL_MS);
   logger.info(
-    { nextRunAt: next6am.toISOString(), intervalHours: 24 },
-    "RSS fetcher scheduled — daily at 06:00"
+    { nextRunAt: nextRun.toISOString(), intervalHours: 3 },
+    "RSS fetcher scheduled — every 3 hours"
   );
 }
