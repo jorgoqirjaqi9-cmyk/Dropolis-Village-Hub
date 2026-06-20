@@ -77,7 +77,7 @@ export default function NewsDetail() {
   })() : ['', ''];
 
   const BASE = "https://dropolis.net";
-  const DEFAULT_IMG = `${BASE}/opengraph-dropolis-2026.jpg`;
+  const DEFAULT_IMG = `${BASE}/og-home.jpg`;
   // Ensure imageUrl is always absolute — relative paths (e.g. /api/storage/...) break JSON-LD validators
   const absoluteImageUrl = article.imageUrl
     ? article.imageUrl.startsWith("http")
