@@ -141,11 +141,6 @@ export default function Villages() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  {village.municipalUnit && (
-                    <div className="absolute top-3 left-3 bg-primary/90 text-primary-foreground text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
-                      {"Δρόπολη"}
-                    </div>
-                  )}
                 </div>
                 <div className="p-4 md:p-5 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-2">
