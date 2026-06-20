@@ -99,7 +99,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
           "@id": `${BASE_URL}/#organization`,
           name: "Δρόπολη (Dropolis)",
           url: BASE_URL,
-          logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.png` },
+          logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.webp` },
         },
       },
       {

@@ -115,7 +115,7 @@ export default function NewsDetail() {
       url: BASE,
       logo: {
         "@type": "ImageObject",
-        url: `${BASE}/logo.png`,
+        url: `${BASE}/logo.webp`,
         width: 512,
         height: 512,
       },

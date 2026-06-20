@@ -124,7 +124,7 @@ export default function News() {
               "@id": "https://dropolis.net/#organization",
               name: "Δρόπολη (Dropolis)",
               url: "https://dropolis.net",
-              logo: { "@type": "ImageObject", url: "https://dropolis.net/logo.png" },
+              logo: { "@type": "ImageObject", url: "https://dropolis.net/logo.webp" },
               sameAs: ["https://www.facebook.com/profile.php?id=61590959938071"],
             },
           },

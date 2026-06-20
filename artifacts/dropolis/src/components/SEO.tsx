@@ -248,7 +248,7 @@ export function SEO({
       foundingDate: "2026",
       logo: {
         "@type": "ImageObject",
-        url: `${SITE.url}/logo.png`,
+        url: `${SITE.url}/logo.webp`,
         width: 512,
         height: 512,
       },
