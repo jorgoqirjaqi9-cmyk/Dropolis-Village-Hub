@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import { X, ChevronLeft, ChevronRight, Camera, MapPin } from "lucide-react";
 import { Link } from "wouter";
 import { VoteButtons } from "@/components/VoteButtons";
@@ -29,6 +29,10 @@ export function Lightbox({ photos, currentIndex, onClose, onPrev, onNext }: Ligh
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < photos.length - 1;
 
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const [dragX, setDragX] = useState(0);
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === "Escape") onClose();
     if (e.key === "ArrowLeft" && hasPrev) onPrev();
@@ -43,6 +47,37 @@ export function Lightbox({ photos, currentIndex, onClose, onPrev, onNext }: Ligh
       document.body.style.overflow = "";
     };
   }, [handleKeyDown]);
+
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    setDragX(0);
+  }
+
+  function handleTouchMove(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const dx = e.touches[0].clientX - touchStartX.current;
+    const dy = e.touches[0].clientY - (touchStartY.current ?? 0);
+    if (Math.abs(dx) > Math.abs(dy)) {
+      setDragX(dx);
+    }
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - (touchStartY.current ?? 0);
+    setDragX(0);
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      if (dx < 0 && hasNext) onNext();
+      else if (dx > 0 && hasPrev) onPrev();
+    } else if (Math.abs(dy) > 80 && Math.abs(dx) < 40) {
+      onClose();
+    }
+  }
 
   if (!photo) return null;
 
@@ -62,7 +97,7 @@ export function Lightbox({ photos, currentIndex, onClose, onPrev, onNext }: Ligh
       {hasPrev && (
         <button
           onClick={(e) => { e.stopPropagation(); onPrev(); }}
-          className="absolute left-3 md:left-6 z-10 rounded-full bg-white/10 hover:bg-white/25 text-white p-3 transition-colors"
+          className="absolute left-3 md:left-6 z-10 rounded-full bg-white/10 hover:bg-white/25 text-white p-3 transition-colors hidden sm:flex"
           aria-label="Προηγούμενη"
         >
           <ChevronLeft className="w-7 h-7" />
@@ -72,7 +107,7 @@ export function Lightbox({ photos, currentIndex, onClose, onPrev, onNext }: Ligh
       {hasNext && (
         <button
           onClick={(e) => { e.stopPropagation(); onNext(); }}
-          className="absolute right-3 md:right-6 z-10 rounded-full bg-white/10 hover:bg-white/25 text-white p-3 transition-colors"
+          className="absolute right-3 md:right-6 z-10 rounded-full bg-white/10 hover:bg-white/25 text-white p-3 transition-colors hidden sm:flex"
           aria-label="Επόμενη"
         >
           <ChevronRight className="w-7 h-7" />
@@ -80,8 +115,15 @@ export function Lightbox({ photos, currentIndex, onClose, onPrev, onNext }: Ligh
       )}
 
       <div
-        className="relative flex flex-col items-center w-full h-full px-16 md:px-24 py-4"
+        className="relative flex flex-col items-center w-full h-full px-2 sm:px-16 md:px-24 py-4"
         onClick={(e) => e.stopPropagation()}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{
+          transform: dragX !== 0 ? `translateX(${dragX * 0.3}px)` : undefined,
+          transition: dragX === 0 ? "transform 0.2s ease" : "none",
+        }}
       >
         <div className="flex-1 flex items-center justify-center w-full min-h-0">
           <img
@@ -90,6 +132,7 @@ export function Lightbox({ photos, currentIndex, onClose, onPrev, onNext }: Ligh
             alt={photo.title}
             className="max-h-full max-w-full object-contain rounded-lg shadow-2xl"
             style={{ maxHeight: "calc(100vh - 160px)" }}
+            draggable={false}
           />
         </div>
 
@@ -114,6 +157,9 @@ export function Lightbox({ photos, currentIndex, onClose, onPrev, onNext }: Ligh
                 )}
                 <span className="text-white/40">{currentIndex + 1} / {photos.length}</span>
               </div>
+              {photos.length > 1 && (
+                <p className="text-white/30 text-xs mt-1 sm:hidden">← Σύρε για επόμενη · ↓ Σύρε για κλείσιμο</p>
+              )}
             </div>
             <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
               <VoteButtons
