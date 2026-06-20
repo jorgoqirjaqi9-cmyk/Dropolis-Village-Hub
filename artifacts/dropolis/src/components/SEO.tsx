@@ -181,6 +181,9 @@ export function SEO({
     setMeta("property", "og:type", type);
     setMeta("property", "og:url", canonicalUrl);
     setMeta("property", "og:image", ogImage);
+    setMeta("property", "og:image:width", "1200");
+    setMeta("property", "og:image:height", "630");
+    setMeta("property", "og:image:type", "image/jpeg");
     setMeta("property", "og:site_name", `${SITE.name} - ${SITE.nameEn}`);
     setMeta("property", "og:locale", SITE.locale);
 
