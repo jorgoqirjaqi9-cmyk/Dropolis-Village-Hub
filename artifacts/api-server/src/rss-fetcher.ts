@@ -67,6 +67,18 @@ const TRANSLATION_FEEDS: FeedSource[] = [
 
 const MAX_PER_TRANSLATION_FEED = 5;
 
+const PROMO_PATTERNS: RegExp[] = [
+  /Εγγραφείτε στο κανάλι του Apenadi\.Blogspot στο Youtube[^\n.]*/gi,
+  /Apenadi\.Blogspot[^\n.]*/gi,
+  /Subscribe to[^\n.]*channel[^\n.]*/gi,
+];
+
+function stripPromo(text: string): string {
+  let out = text;
+  for (const pat of PROMO_PATTERNS) out = out.replace(pat, "");
+  return out.replace(/\s{2,}/g, " ").trim();
+}
+
 function stripHtml(html: string): string {
   return html
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
@@ -156,7 +168,7 @@ async function fetchFeed(source: FeedSource): Promise<number> {
         ?? item.summary
         ?? "";
 
-      const content = stripHtml(rawContent);
+      const content = stripPromo(stripHtml(rawContent));
       if (content.length < 30) continue;
 
       const cats = item.categories ?? [];
@@ -366,7 +378,7 @@ async function fetchTranslationFeed(source: FeedSource, ai: GoogleGenAI): Promis
       const rawContent = item.contentSnippet ?? item.content ?? item.summary ?? "";
       articleInputs.push({
         title: item.title,
-        content: stripHtml(rawContent) || item.title,
+        content: stripPromo(stripHtml(rawContent)) || item.title,
         link: item.link,
         imageUrl: extractImage(item as Parser.Item & Record<string, unknown>),
       });
