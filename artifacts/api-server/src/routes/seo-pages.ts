@@ -294,8 +294,8 @@ function injectMeta(template: string, m: PageMeta): string {
 
 const STATIC_META: Record<string, PageMeta> = {
   "/": {
-    title: "Dropolis | Δρόπολη - Τα Νέα της Δρόπολης & Ειδήσεις",
-    titleFinal: "Dropolis | Δρόπολη - Τα Νέα της Δρόπολης & Ειδήσεις",
+    title: "Δρόπολη: Τα Νέα, ο Πολιτισμός & η Ομογένεια | Dropolis",
+    titleFinal: "Δρόπολη: Τα Νέα, ο Πολιτισμός & η Ομογένεια | Dropolis",
     description: "Μάθετε όλα τα τελευταία νέα για τη Δρόπολη (Dropolis). Ειδήσεις, ενημέρωση και όλα τα νέα της Δρόπολης στην Αλβανία εύκολα και γρήγορα με ένα κλικ.",
     url: `${BASE_URL}/`,
     type: "website",
@@ -333,7 +333,7 @@ const STATIC_META: Record<string, PageMeta> = {
         "@context": "https://schema.org",
         "@type": "WebPage",
         "@id": `${BASE_URL}/#webpage`,
-        name: "Dropolis | Δρόπολη - Τα Νέα της Δρόπολης & Ειδήσεις",
+        name: "Δρόπολη: Τα Νέα, ο Πολιτισμός & η Ομογένεια | Dropolis",
         description: "Τα τελευταία νέα για τη Δρόπολη (Dropolis) — ειδήσεις, φωτογραφίες, βίντεο και κοινότητα για τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο, Αλβανία.",
         url: `${BASE_URL}/`,
         inLanguage: "el",
