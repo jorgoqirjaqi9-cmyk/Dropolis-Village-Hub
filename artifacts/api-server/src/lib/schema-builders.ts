@@ -101,7 +101,7 @@ export function buildNewsArticleSchema(a: ArticleSchemaInput): object {
         height: 630,
         caption: a.title,
       }
-    : `${BASE_URL}/opengraph-dropolis-2026.jpg`;
+    : `${BASE_URL}/og-home.jpg`;
 
   const schema: Record<string, unknown> = {
     "@context": "https://schema.org",

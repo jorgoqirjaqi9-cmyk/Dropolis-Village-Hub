@@ -22,7 +22,7 @@ import { buildNewsArticleSchema, buildVillageSchema, buildStaticPageSchema } fro
 
 const BASE_URL = "https://dropolis.net";
 const SITE_NAME = "Δρόπολη (Dropolis)";
-const DEFAULT_IMG = `${BASE_URL}/opengraph-dropolis-2026.jpg`;
+const DEFAULT_IMG = `${BASE_URL}/og-home.jpg`;
 
 // ---------------------------------------------------------------------------
 // Template loader (cached in production)
