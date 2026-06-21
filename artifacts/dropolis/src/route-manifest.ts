@@ -481,7 +481,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
   {
     path: "/editorial-policy",
     title: "Συντακτική Πολιτική",
-    description: "Οι συντακτικές αρχές του Dropolis — πολιτική πηγών, χρήση AI και αυτοματισμών, ανεξαρτησία και διαφάνεια.",
+    description: "Η συντακτική πολιτική του Dropolis εξηγεί πώς επιλέγουμε, ελέγχουμε και δημοσιεύουμε ειδήσεις, ιστορίες και περιεχόμενο για τη Δρόπολη.",
     url: `${BASE_URL}/editorial-policy`,
     breadcrumbs: [{ name: "Συντακτική Πολιτική", item: `${BASE_URL}/editorial-policy` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Συντακτική Πολιτική — Dropolis", url: `${BASE_URL}/editorial-policy`, inLanguage: "el" },
@@ -489,7 +489,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
   {
     path: "/corrections-policy",
     title: "Πολιτική Διορθώσεων",
-    description: "Πώς μπορείτε να ζητήσετε διόρθωση άρθρου στο Dropolis — διαδικασία αξιολόγησης, χρονοδιάγραμμα και διαφάνεια.",
+    description: "Η πολιτική διορθώσεων του Dropolis εξηγεί πώς διαχειριζόμαστε λάθη, ενημερώσεις και διορθώσεις σε ειδήσεις, άρθρα και κοινοτικό περιεχόμενο.",
     url: `${BASE_URL}/corrections-policy`,
     breadcrumbs: [{ name: "Πολιτική Διορθώσεων", item: `${BASE_URL}/corrections-policy` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Πολιτική Διορθώσεων — Dropolis", url: `${BASE_URL}/corrections-policy`, inLanguage: "el" },
