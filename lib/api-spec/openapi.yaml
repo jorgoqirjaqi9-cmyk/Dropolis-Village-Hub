@@ -1266,6 +1266,9 @@ components:
           type: string
         description:
           type: string
+        richContent:
+          type: string
+          nullable: true
         municipalUnit:
           type: string
         population:

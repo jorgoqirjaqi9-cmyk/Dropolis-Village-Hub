@@ -315,6 +315,7 @@ export const UpdateVillageBody = zod.object({
   "name": zod.string().optional(),
   "nameEl": zod.string().optional(),
   "description": zod.string().optional(),
+  "richContent": zod.string().nullish(),
   "municipalUnit": zod.string().optional(),
   "population": zod.number().nullish(),
   "elevation": zod.number().nullish(),

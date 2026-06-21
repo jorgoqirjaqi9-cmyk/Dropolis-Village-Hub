@@ -57,6 +57,7 @@ router.patch("/villages/:id", requireAdmin, async (req, res) => {
     ...(body.name !== undefined && { name: body.name }),
     ...(body.nameEl !== undefined && { nameEl: body.nameEl }),
     ...(body.description !== undefined && { description: body.description }),
+    ...("richContent" in body && { richContent: body.richContent ?? null }),
     ...(body.municipalUnit !== undefined && { municipalUnit: body.municipalUnit }),
     ...(body.population !== undefined && { population: body.population }),
     ...(body.elevation !== undefined && { elevation: body.elevation }),
