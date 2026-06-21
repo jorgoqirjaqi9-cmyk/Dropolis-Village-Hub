@@ -1,0 +1,74 @@
+AdSense final cleanup needed.
+
+Live audit results:
+- Sitemap: OK, 196 URLs, 0 errors
+- Legal pages: OK
+- Admin pages: noindex OK
+- Mobile responses: OK
+- Thin articles under 300 chars: 0 OK
+Remaining issues:
+1. Around 14 articles are thematically unrelated to Dropolis / Northern Epirus / Greek minority / diaspora.
+2. editorial-policy and corrections-policy meta descriptions are too short, around 105-109 chars.
+
+Please fix:
+
+1. Clean unrelated articles for AdSense
+Find and hide/unpublish/noindex articles that are not related to:
+- Δρόπολη / Dropolis / Dropull
+- Βόρεια Ήπειρος / Northern Epirus
+- Ελληνική μειονότητα / Greek minority
+- Αργυρόκαστρο / Gjirokaster
+- Ήπειρος / Epirus
+- Ομογένεια / diaspora
+- χωριά / villages
+- Αλβανία when regionally relevant
+- τοπικός πολιτισμός, ιστορία, μνημεία, εκκλησίες, παράδοση
+
+Do not publicly index unrelated generic articles about:
+- Trump / Iran / USA politics
+- generic Greece politics
+- celebrity/crime stories unrelated to the region
+- generic economy/oil stories
+- generic weather articles not related to Dropolis/Epirus
+- general international news with no local relevance
+
+Implementation options:
+- Preferred: set published=false for unrelated articles.
+- Also ensure unpublished articles do not appear in:
+  /news/
+  /api/articles
+  sitemap.xml
+  internal links
+- If you cannot unpublish safely, add noindex and exclude from sitemap.
+
+2. Add a topic filter for future auto-imported articles
+Before publishing/importing RSS articles, require at least one relevance keyword:
+Greek keywords:
+Δρόπολη, Δρόπολης, Δροπολίτης, Δροπολίτες, Βόρεια Ήπειρος, Βορειοηπειρώτης, Ελληνική μειονότητα, Αργυρόκαστρο, Ήπειρος, Ομογένεια, χωριό, χωριά, Κακαβιά, Δερβιτσάνη, Βουλιαράτες, Γεωργουτσάτες, Άνω Επισκοπή, Κρα
+English/Albanian keywords:
+Dropolis, Dropull, Droupoli, Northern Epirus, Greek minority, Gjirokaster, Gjirokastër, Epirus, diaspora, Kakavia
+
+If article does not match relevance filter:
+- do not publish it
+- optionally save as draft/pending for admin review
+
+3. Improve policy meta descriptions
+
+Update editorial-policy meta description to 120-155 chars:
+"Η συντακτική πολιτική του Dropolis εξηγεί πώς επιλέγουμε, ελέγχουμε και δημοσιεύουμε ειδήσεις, ιστορίες και περιεχόμενο για τη Δρόπολη."
+
+Update corrections-policy meta description to 120-155 chars:
+"Η πολιτική διορθώσεων του Dropolis εξηγεί πώς διαχειριζόμαστε λάθη, ενημερώσεις και διορθώσεις σε ειδήσεις, άρθρα και κοινοτικό περιεχόμενο."
+
+4. Rebuild and verify
+Run:
+- typecheck
+- build
+- prerender
+- regenerate sitemap
+
+Verify live:
+- GET https://dropolis.net/sitemap.xml
+- GET https://dropolis.net/api/articles?limit=150
+- Confirm no unrelated articles in recent indexed/public list
+- Confirm editorial-policy and corrections-policy descriptions are 120-155 chars

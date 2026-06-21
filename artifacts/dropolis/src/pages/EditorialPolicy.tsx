@@ -33,7 +33,7 @@ export default function EditorialPolicy() {
     <div className="container mx-auto px-4 py-10 max-w-3xl space-y-12">
       <SEO
         title="Συντακτική Πολιτική"
-        description="Οι συντακτικές αρχές του Dropolis — πολιτική πηγών, χρήση AI και αυτοματισμών, ανεξαρτησία και διαφάνεια."
+        description="Η συντακτική πολιτική του Dropolis εξηγεί πώς επιλέγουμε, ελέγχουμε και δημοσιεύουμε ειδήσεις, ιστορίες και περιεχόμενο για τη Δρόπολη."
         breadcrumbs={[{ name: "Συντακτική Πολιτική", url: "/editorial-policy/" }]}
         jsonLd={{
           "@context": "https://schema.org",

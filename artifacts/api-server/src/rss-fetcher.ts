@@ -67,6 +67,40 @@ const TRANSLATION_FEEDS: FeedSource[] = [
 
 const MAX_PER_TRANSLATION_FEED = 5;
 
+// Sources that publish exclusively Dropolis/regional content — no topic filter needed
+const TRUSTED_SOURCES = new Set(["DropoliNews", "Αποκλειστικό Δρόπολη", "Epirus Online"]);
+
+/**
+ * Broad relevance keywords — at least one must appear in title + opening content
+ * for an article from an untrusted (general-news) source to be imported.
+ * Covers Dropolis, Northern Epirus, Albanian politics, and the Greek minority.
+ */
+const BROAD_RELEVANCE_KEYWORDS: string[] = [
+  // Dropolis-specific
+  "δρόπολ", "dropol", "dropull", "droupoli",
+  // Northern Epirus / Greek minority
+  "βόρεια ήπειρ", "northern epirus", "βορειοηπειρ",
+  "ελληνική μειονότητ", "greek minority", "μειονότητ",
+  // Major cities/crossings
+  "αργυρόκαστρ", "gjirokastr", "κακαβιά", "kakavia",
+  "χιμάρ", "himara", "σαράντα", "saranda",
+  // Albania broadly (portal covers Albanian news affecting the community)
+  "αλβαν", "albania",
+  // Tirana — most Albanian news originates here
+  "τίραν", "tirana",
+  // Epirus region
+  "ήπειρ", "epirus",
+  // Diaspora / community organisations
+  "ομογέν", "diaspora", "ομόνοια", "omonoia",
+  // Specific villages / places
+  "δερβιτσάν", "βουλιαράτ", "γεωργουτσάτ",
+];
+
+function isTopicRelevant(title: string, content: string): boolean {
+  const text = (title + " " + content.slice(0, 800)).toLowerCase();
+  return BROAD_RELEVANCE_KEYWORDS.some((kw) => text.includes(kw));
+}
+
 const PROMO_PATTERNS: RegExp[] = [
   /Εγγραφείτε στο κανάλι του Apenadi\.Blogspot στο Youtube[^\n.]*/gi,
   /Apenadi\.Blogspot[^\n.]*/gi,
@@ -170,6 +204,12 @@ async function fetchFeed(source: FeedSource): Promise<number> {
 
       const content = stripPromo(stripHtml(rawContent));
       if (content.length < 30) continue;
+
+      // Topic relevance gate — only for non-trusted general-news sources (e.g. news.gr)
+      if (!TRUSTED_SOURCES.has(source.name) && !isTopicRelevant(item.title, content)) {
+        logger.info({ title: item.title, source: source.name }, "RSS article skipped — not topically relevant to Dropolis/Northern Epirus");
+        continue;
+      }
 
       const cats = item.categories ?? [];
       const category = mapCategory(cats, item.title, source.defaultCategory);

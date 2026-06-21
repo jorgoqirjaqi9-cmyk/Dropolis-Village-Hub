@@ -33,7 +33,7 @@ export default function CorrectionsPolicy() {
     <div className="container mx-auto px-4 py-10 max-w-3xl space-y-12">
       <SEO
         title="Πολιτική Διορθώσεων"
-        description="Πώς μπορείτε να ζητήσετε διόρθωση άρθρου στο Dropolis — διαδικασία αξιολόγησης, χρονοδιάγραμμα και διαφάνεια στις αλλαγές."
+        description="Η πολιτική διορθώσεων του Dropolis εξηγεί πώς διαχειριζόμαστε λάθη, ενημερώσεις και διορθώσεις σε ειδήσεις, άρθρα και κοινοτικό περιεχόμενο."
         breadcrumbs={[{ name: "Πολιτική Διορθώσεων", url: "/corrections-policy/" }]}
         jsonLd={{
           "@context": "https://schema.org",
