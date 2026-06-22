@@ -91,6 +91,10 @@ export default function News() {
   }
 
   const isFiltered = !!(category || village);
+  // Single-dimension archive views (village only OR category only) are stable editorial
+  // hubs that should be indexed. Only suppress indexing for multi-filter combinations
+  // (both category AND village set) which behave like ad-hoc search results.
+  const isMultiFiltered = !!(category && village);
   const seoTitle = isFiltered
     ? category && village
       ? `${category} — ${village} | Ειδήσεις Δρόπολης`
@@ -109,7 +113,7 @@ export default function News() {
         description={seoDescription}
         image="/og-news.png"
         keywords="Δρόπολη ειδήσεις, Βόρεια Ήπειρος νέα, ελληνική μειονότητα Αλβανία, Dropull news, Northern Epirus, Δερόπολη, Δρόπολης χωριά"
-        noindex={isFiltered}
+        noindex={isMultiFiltered}
         breadcrumbs={[{ name: "Ειδήσεις", url: "/news/" }]}
         jsonLd={[
           {
