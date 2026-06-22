@@ -615,6 +615,37 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     jsonLd: { "@context": "https://schema.org", "@type": "ImageGallery", name: "Photo Gallery — Dropull Villages", url: `${BASE_URL}/en/photos`, inLanguage: "en" },
   },
   {
+    path: "/en/travel-guide",
+    title: "Visit Dropolis: Northern Epirus Travel Guide | 41 Villages",
+    description: "Discover Dropolis in Northern Epirus, Southern Albania: 41 Greek-minority villages, Byzantine churches, polyphonic music, mountain landscapes and authentic Balkan culture.",
+    url: `${BASE_URL}/en/travel-guide`,
+    breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Travel Guide", item: `${BASE_URL}/en/travel-guide` }],
+    hreflang: [
+      { lang: "en",        href: `${BASE_URL}/en/travel-guide/` },
+      { lang: "x-default", href: `${BASE_URL}/en/travel-guide/` },
+    ],
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "TouristAttraction",
+        name: "Dropolis Region",
+        alternateName: ["Dropull", "Droupoli", "Dropolis Northern Epirus"],
+        description: "Dropolis is a cultural and travel region in the Gjirokaster district of Southern Albania, known for its 41 traditional villages, Greek-minority heritage, Byzantine and Orthodox landmarks, polyphonic music and mountain landscapes.",
+        url: `${BASE_URL}/en/travel-guide`,
+        address: { "@type": "PostalAddress", addressRegion: "Gjirokaster District", addressCountry: "AL" },
+        geo: { "@type": "GeoCoordinates", latitude: 39.95, longitude: 20.25 },
+        isPartOf: { "@type": "Place", name: "Northern Epirus" },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: "Visit Dropolis: Northern Epirus Travel Guide",
+        url: `${BASE_URL}/en/travel-guide`,
+        inLanguage: "en",
+      },
+    ],
+  },
+  {
     path: "/finiq",
     title: "Δήμος Φοινικαίων | Βόρεια Ήπειρος",
     description: "Ο Δήμος Φοινικαίων (Bashkia Finiq) της Βόρειας Ηπείρου. Κοινότητες, χωριά, φωτογραφίες, βίντεο και νέα από τη Φοινίκη, το Δελβινάκι και την ευρύτερη περιοχή.",

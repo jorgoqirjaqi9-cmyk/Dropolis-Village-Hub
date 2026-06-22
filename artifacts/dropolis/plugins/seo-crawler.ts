@@ -219,6 +219,10 @@ async function fetchMeta(urlPath: string, apiPort: number): Promise<Meta | null>
           { name: "Χωριά", item: `${BASE_URL}/villages` },
           { name: v.nameEl, item: `${BASE_URL}/villages/${id}` },
         ],
+        hreflang: [
+          { lang: "el-GR",     href: `${BASE_URL}/villages/${id}/` },
+          { lang: "x-default", href: `${BASE_URL}/villages/${id}/` },
+        ],
         jsonLd: {
           "@context": "https://schema.org",
           "@type": "City",

@@ -547,6 +547,10 @@ const STATIC_META: Record<string, PageMeta> = {
     description: "Discover Dropolis in Northern Epirus, Southern Albania: 41 Greek-minority villages, Byzantine churches, polyphonic music, mountain landscapes and authentic Balkan culture.",
     url: `${BASE_URL}/en/travel-guide/`,
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en/` }, { name: "Travel Guide", item: `${BASE_URL}/en/travel-guide/` }],
+    hreflang: [
+      { lang: "en",        href: `${BASE_URL}/en/travel-guide/` },
+      { lang: "x-default", href: `${BASE_URL}/en/travel-guide/` },
+    ],
     jsonLd: [
       {
         "@context": "https://schema.org",
@@ -853,6 +857,10 @@ router.get(["/villages/:id", "/villages/:id/"], async (req, res) => {
       breadcrumbs: [
         { name: "Χωριά", item: `${BASE_URL}/villages` },
         { name: village.nameEl, item: `${BASE_URL}/villages/${village.id}` },
+      ],
+      hreflang: [
+        { lang: "el-GR",     href: `${BASE_URL}/villages/${village.id}/` },
+        { lang: "x-default", href: `${BASE_URL}/villages/${village.id}/` },
       ],
       jsonLd: buildVillageSchema({
         id: village.id,

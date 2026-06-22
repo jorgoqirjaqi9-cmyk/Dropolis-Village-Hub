@@ -393,6 +393,10 @@ async function main() {
         { name: "Χωριά", item: `${BASE_URL}/villages/` },
         { name: v.nameEl, item: `${BASE_URL}/villages/${v.id}/` },
       ],
+      hreflang: [
+        { lang: "el-GR",     href: `${BASE_URL}/villages/${v.id}/` },
+        { lang: "x-default", href: `${BASE_URL}/villages/${v.id}/` },
+      ],
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "City",
