@@ -160,16 +160,6 @@ export default function Sitemap() {
           </h2>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
-              href="/api/sitemap.xml"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 flex items-center gap-2 px-4 py-3 rounded-xl bg-background border border-border hover:border-primary/40 hover:bg-primary/5 transition-all text-sm font-medium text-muted-foreground hover:text-primary"
-            >
-              <FileText className="w-4 h-4 flex-shrink-0" />
-              <span>/api/sitemap.xml</span>
-              <span className="ml-auto text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">Δυναμικό</span>
-            </a>
-            <a
               href="/sitemap.xml"
               target="_blank"
               rel="noopener noreferrer"
@@ -177,7 +167,7 @@ export default function Sitemap() {
             >
               <FileText className="w-4 h-4 flex-shrink-0" />
               <span>/sitemap.xml</span>
-              <span className="ml-auto text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full">Στατικό</span>
+              <span className="ml-auto text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">Δυναμικό</span>
             </a>
           </div>
         </motion.div>
