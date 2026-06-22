@@ -36,6 +36,9 @@ kind = "api"
     "/submit-video",
     "/finiq",
     "/admin",
+    "/diaspora",
+    "/paradosiaka-faghta",
+    "/ta-41-xoria-tis-dropolis",
   ]
 
   [services.development]

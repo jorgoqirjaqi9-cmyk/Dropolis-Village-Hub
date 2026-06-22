@@ -70,9 +70,12 @@ export const STATIC_ROUTES: StaticRoute[] = [
   { loc: "/en/photos/",         changefreq: "weekly",  priority: "0.5" },
   { loc: "/en/travel-guide/",   changefreq: "monthly", priority: "0.8" },
   { loc: "/villages/map/",      changefreq: "weekly",  priority: "0.8" },
-  { loc: "/upload-photo/",      changefreq: "monthly", priority: "0.6" },
-  { loc: "/submit-news/",       changefreq: "monthly", priority: "0.6" },
-  { loc: "/submit-video/",      changefreq: "monthly", priority: "0.6" },
+  { loc: "/upload-photo/",               changefreq: "monthly", priority: "0.6" },
+  { loc: "/submit-news/",               changefreq: "monthly", priority: "0.6" },
+  { loc: "/submit-video/",              changefreq: "monthly", priority: "0.6" },
+  { loc: "/diaspora/",                  changefreq: "monthly", priority: "0.7" },
+  { loc: "/paradosiaka-faghta/",        changefreq: "monthly", priority: "0.8" },
+  { loc: "/ta-41-xoria-tis-dropolis/",  changefreq: "monthly", priority: "0.9" },
 ];
 
 /**
@@ -685,6 +688,57 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     url: `${BASE_URL}/submit-video`,
     breadcrumbs: [{ name: "Ανεβάστε Βίντεο", item: `${BASE_URL}/submit-video` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ανεβάστε Βίντεο — Dropolis", url: `${BASE_URL}/submit-video`, inLanguage: "el" },
+  },
+  {
+    path: "/diaspora",
+    title: "Έλληνες της Διασποράς | Δρόπολη",
+    description: "Σελίδα για Δροπολίτες, Βορειοηπειρώτες και ελληνική ομογένεια ανά τον κόσμο. Μοιραστείτε φωτογραφίες και ιστορίες από τη ζωή σας στο εξωτερικό.",
+    url: `${BASE_URL}/diaspora`,
+    breadcrumbs: [{ name: "Ομογένεια", item: `${BASE_URL}/diaspora` }],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Έλληνες της Διασποράς — Dropolis",
+      url: `${BASE_URL}/diaspora/`,
+      inLanguage: "el",
+    },
+  },
+  {
+    path: "/paradosiaka-faghta",
+    title: "Παραδοσιακά Φαγητά της Δρόπολης: Η Αυθεντική Γαστρονομία της Βορείου Ηπείρου",
+    description: "Ανακαλύψτε τα κορυφαία παραδοσιακά φαγητά της Δρόπολης και της Βορείου Ηπείρου. Από την αυθεντική Κασιόπιτα μέχρι τα μελωμένα κρέατα στη γάστρα!",
+    url: `${BASE_URL}/paradosiaka-faghta`,
+    breadcrumbs: [
+      { name: "Αρχική",             item: `${BASE_URL}/` },
+      { name: "Παραδοσιακά Φαγητά", item: `${BASE_URL}/paradosiaka-faghta` },
+    ],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Παραδοσιακά Φαγητά της Δρόπολης — Dropolis",
+      url: `${BASE_URL}/paradosiaka-faghta/`,
+      inLanguage: "el",
+      description: "Παραδοσιακά φαγητά της Δρόπολης, Βορείου Ηπείρου και ελληνικής μειονότητας.",
+    },
+  },
+  {
+    path: "/ta-41-xoria-tis-dropolis",
+    title: "Τα 41 Χωριά της Δρόπολης — Ιστορία & Παράδοση",
+    description: "Ανακαλύψτε τα 41 ελληνικά χωριά της Δρόπολης στη Βόρεια Ήπειρο. Ιστορία, αξιοθέατα, φωτογραφίες και πολιτιστική κληρονομιά της ομογένειας.",
+    url: `${BASE_URL}/ta-41-xoria-tis-dropolis`,
+    breadcrumbs: [
+      { name: "Αρχική",       item: `${BASE_URL}/` },
+      { name: "Χωριά",        item: `${BASE_URL}/villages/` },
+      { name: "Τα 41 Χωριά", item: `${BASE_URL}/ta-41-xoria-tis-dropolis` },
+    ],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Τα 41 Χωριά της Δρόπολης — Dropolis",
+      url: `${BASE_URL}/ta-41-xoria-tis-dropolis/`,
+      inLanguage: "el",
+      description: "Πλήρης οδηγός για τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο — ιστορία, πολιτισμός, αξιοθέατα, ελληνική μειονότητα, Αργυρόκαστρο.",
+    },
   },
   {
     path: "/villages/map",
