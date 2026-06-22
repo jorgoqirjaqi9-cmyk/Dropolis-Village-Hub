@@ -3,7 +3,7 @@
 ## In scope
 - Public marketing and informational pages (`/`, `/about`, `/contact`, `/press`, `/help`)
 - Public content hubs (`/news`, `/villages`, `/photos`, `/videos`)
-- Public detail pages for news articles and villages (`/news/:id`, `/villages/:id`)
+- Public detail pages for news articles and villages (`/news/:slug-id`, `/villages/:id`)
 - Crawlability assets (`robots.txt`, `sitemap.xml`, favicon, manifest, social metadata, structured data, AI crawler readiness)
 
 ## Out of scope
@@ -26,6 +26,7 @@
 
 ## Notes
 - The frontend is a Vite + React SPA using `wouter`.
-- Public SEO is hybrid: a shared client-side `SEO.tsx` layer exists for all pages, while `prerender.ts` and the dev `seo-crawler` plugin provide crawler-friendly HTML for only a subset of public routes.
-- Public routes that depend on JavaScript rendering should be treated as at risk for social bots and AI crawlers even if Google can render them eventually.
-- The dynamic `/api/sitemap.xml` is live against the database, while prerendered article and village HTML is generated only at frontend build time. Future scans should check for drift between newly published content and crawler-ready HTML.
+- Public SEO is hybrid: `artifacts/api-server/src/routes/seo-pages.ts` serves route-specific HTML for many production public routes, while frontend prerendering (`artifacts/dropolis/prerender.ts` plus `route-manifest.ts`) covers another subset of frontend-served static routes.
+- Public routes that are neither proxied through the Express SEO layer nor included in the prerender inventory should be treated as at risk for social bots and AI crawlers even if Google can render them eventually.
+- The authoritative sitemap is the root `https://dropolis.net/sitemap.xml`; `/api/sitemap.xml` exists only as a backward-compatible redirect.
+- Article canonicals are slug-based when a slug exists, with numeric article URLs retained only as legacy redirects.
