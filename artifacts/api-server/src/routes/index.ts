@@ -20,6 +20,7 @@ import votesRouter from "./votes";
 import adminDashboardRouter from "./admin-dashboard";
 import adminArticlesRouter from "./admin-articles";
 import adminSeoRouter from "./admin-seo";
+import adminInternalLinksRouter from "./admin-internal-links";
 import radioRouter from "./radio";
 
 const router: IRouter = Router();
@@ -45,6 +46,7 @@ router.use(votesRouter);
 router.use(adminDashboardRouter);
 router.use(adminArticlesRouter);
 router.use(adminSeoRouter);
+router.use(adminInternalLinksRouter);
 router.use(radioRouter);
 
 export default router;

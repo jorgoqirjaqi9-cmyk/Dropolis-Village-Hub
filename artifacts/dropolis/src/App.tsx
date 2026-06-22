@@ -63,6 +63,7 @@ const AdminNews       = lazy(() => import("@/pages/AdminNews"));
 const AdminVillages   = lazy(() => import("@/pages/AdminVillages"));
 const AdminCaptions   = lazy(() => import("@/pages/AdminCaptions"));
 const AdminIndexingLog = lazy(() => import("@/pages/AdminIndexingLog"));
+const AdminInternalLinks = lazy(() => import("@/pages/AdminInternalLinks"));
 
 export function PageLoader({ children }: { children: React.ReactNode }) {
   return (
@@ -129,6 +130,12 @@ function Router() {
       </Route>
       <Route path="/admin/indexing/">
         <PageLoader><AdminIndexingLog /></PageLoader>
+      </Route>
+      <Route path="/admin/internal-links">
+        <PageLoader><AdminInternalLinks /></PageLoader>
+      </Route>
+      <Route path="/admin/internal-links/">
+        <PageLoader><AdminInternalLinks /></PageLoader>
       </Route>
 
       {/* All other pages use the standard public Layout */}

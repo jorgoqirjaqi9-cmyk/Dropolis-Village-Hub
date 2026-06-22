@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import {
   LayoutDashboard, Newspaper, Image, Video, MapPin,
   FileText, Share2, LogOut, Menu, X, Shield, ChevronRight,
-  ExternalLink,
+  ExternalLink, Link2,
 } from "lucide-react";
 
 const NAV = [
@@ -14,6 +14,7 @@ const NAV = [
   { path: "/admin/villages", label: "Χωριά", icon: MapPin },
   { path: "/admin/news", label: "Υποβολές Ειδήσεων", icon: FileText },
   { path: "/admin/captions", label: "Social Captions", icon: Share2 },
+  { path: "/admin/internal-links", label: "Internal Linking", icon: Link2 },
   { path: "/admin/indexing", label: "Indexing Log", icon: Shield },
 ];
 
