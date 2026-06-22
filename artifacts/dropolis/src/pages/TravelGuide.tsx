@@ -174,8 +174,7 @@ export default function TravelGuide() {
           { name: "Travel Guide", url: "/en/travel-guide/" },
         ]}
         hreflang={[
-          { lang: "en", href: "https://dropolis.net/en/travel-guide/" },
-          { lang: "el", href: "https://dropolis.net/" },
+          { lang: "en",        href: "https://dropolis.net/en/travel-guide/" },
           { lang: "x-default", href: "https://dropolis.net/en/travel-guide/" },
         ]}
       />

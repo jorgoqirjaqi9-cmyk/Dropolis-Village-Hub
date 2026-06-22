@@ -95,6 +95,9 @@ function buildSeoTags(m: Meta): string {
     `<meta name="twitter:description" content="${desc}" />`,
     `<meta name="twitter:image" content="${img}" />`,
     ...articleTags,
+    ...(m.hreflang ?? []).map(({ lang, href }) =>
+      `<link rel="alternate" hreflang="${esc(lang)}" href="${esc(href)}" />`
+    ),
     schemas.length > 0
       ? `<script type="application/ld+json">${JSON.stringify(schemas.length === 1 ? schemas[0] : schemas)}</script>`
       : "",

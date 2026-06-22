@@ -33,6 +33,7 @@ export type Meta = {
   article?: ArticleMeta;
   jsonLd?: object | object[];
   breadcrumbs?: Array<{ name: string; item: string }>;
+  hreflang?: Array<{ lang: string; href: string }>;
 };
 
 export type StaticPrerender = Meta & { path: string };
@@ -86,6 +87,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     image: `${BASE_URL}/og-news.png`,
     url: `${BASE_URL}/news`,
     breadcrumbs: [{ name: "Ειδήσεις", item: `${BASE_URL}/news` }],
+    hreflang: [
+      { lang: "el",        href: `${BASE_URL}/news/` },
+      { lang: "en",        href: `${BASE_URL}/en/news/` },
+      { lang: "x-default", href: `${BASE_URL}/news/` },
+    ],
     jsonLd: [
       {
         "@context": "https://schema.org",
@@ -124,6 +130,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Δρόπολης. Πληθυσμός, ιστορία και παραδόσεις.",
     url: `${BASE_URL}/villages`,
     breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages` }],
+    hreflang: [
+      { lang: "el",        href: `${BASE_URL}/villages/` },
+      { lang: "en",        href: `${BASE_URL}/en/villages/` },
+      { lang: "x-default", href: `${BASE_URL}/villages/` },
+    ],
     jsonLd: {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
@@ -141,6 +152,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     image: `${BASE_URL}/og-photos.jpg`,
     url: `${BASE_URL}/photos`,
     breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos` }],
+    hreflang: [
+      { lang: "el",        href: `${BASE_URL}/photos/` },
+      { lang: "en",        href: `${BASE_URL}/en/photos/` },
+      { lang: "x-default", href: `${BASE_URL}/photos/` },
+    ],
     jsonLd: {
       "@context": "https://schema.org",
       "@type": "ImageGallery",
@@ -176,6 +192,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Μάθετε για το Dropolis — το portal ειδήσεων, φωτογραφιών και κοινότητας για τα χωριά της Δρόπολης (Βόρεια Ήπειρος, Αλβανία).",
     url: `${BASE_URL}/about`,
     breadcrumbs: [{ name: "Σχετικά", item: `${BASE_URL}/about` }],
+    hreflang: [
+      { lang: "el",        href: `${BASE_URL}/about/` },
+      { lang: "en",        href: `${BASE_URL}/en/about/` },
+      { lang: "x-default", href: `${BASE_URL}/about/` },
+    ],
     jsonLd: [
       {
         "@context": "https://schema.org",
@@ -235,6 +256,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Επικοινωνήστε με το Dropolis. Υποβολή άρθρων, φωτογραφιών, ερωτήσεων και συνεργασιών για το portal της Δρόπολης.",
     url: `${BASE_URL}/contact`,
     breadcrumbs: [{ name: "Επικοινωνία", item: `${BASE_URL}/contact` }],
+    hreflang: [
+      { lang: "el",        href: `${BASE_URL}/contact/` },
+      { lang: "en",        href: `${BASE_URL}/en/contact/` },
+      { lang: "x-default", href: `${BASE_URL}/contact/` },
+    ],
     jsonLd: [
       {
         "@context": "https://schema.org",
@@ -516,6 +542,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "English-language guide to Dropolis — the digital community portal for Dropull (Northern Epirus, Albania) and the Greek minority villages.",
     url: `${BASE_URL}/en`,
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }],
+    hreflang: [
+      { lang: "en",        href: `${BASE_URL}/en/` },
+      { lang: "el",        href: `${BASE_URL}/` },
+      { lang: "x-default", href: `${BASE_URL}/` },
+    ],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Dropolis — Northern Epirus in English", url: `${BASE_URL}/en`, inLanguage: "en" },
   },
   {
@@ -524,6 +555,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Learn about Dropolis — the digital community platform for the 41 villages of Dropull, Northern Epirus, covering news, history and culture of the Greek minority in Albania.",
     url: `${BASE_URL}/en/about`,
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "About", item: `${BASE_URL}/en/about` }],
+    hreflang: [
+      { lang: "en",        href: `${BASE_URL}/en/about/` },
+      { lang: "el",        href: `${BASE_URL}/about/` },
+      { lang: "x-default", href: `${BASE_URL}/about/` },
+    ],
     jsonLd: { "@context": "https://schema.org", "@type": "AboutPage", name: "About Dropolis", url: `${BASE_URL}/en/about`, inLanguage: "en" },
   },
   {
@@ -532,6 +568,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Explore the 41 villages of the Dropull municipality in southern Albania — geography, history, and the Greek minority heritage of Northern Epirus.",
     url: `${BASE_URL}/en/villages`,
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Villages", item: `${BASE_URL}/en/villages` }],
+    hreflang: [
+      { lang: "en",        href: `${BASE_URL}/en/villages/` },
+      { lang: "el",        href: `${BASE_URL}/villages/` },
+      { lang: "x-default", href: `${BASE_URL}/villages/` },
+    ],
     jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "The 41 Villages of Dropull", url: `${BASE_URL}/en/villages`, inLanguage: "en" },
   },
   {
@@ -540,6 +581,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Guide to Dropolis news coverage — what we report on, news categories, and how to find articles about the Greek minority of Dropull, Northern Epirus.",
     url: `${BASE_URL}/en/news`,
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "News", item: `${BASE_URL}/en/news` }],
+    hreflang: [
+      { lang: "en",        href: `${BASE_URL}/en/news/` },
+      { lang: "el",        href: `${BASE_URL}/news/` },
+      { lang: "x-default", href: `${BASE_URL}/news/` },
+    ],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "News from Dropull — Dropolis", url: `${BASE_URL}/en/news`, inLanguage: "en" },
   },
   {
@@ -548,6 +594,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Get in touch with the Dropolis team in English — news tips, photo submissions, research enquiries and partnership proposals.",
     url: `${BASE_URL}/en/contact`,
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Contact", item: `${BASE_URL}/en/contact` }],
+    hreflang: [
+      { lang: "en",        href: `${BASE_URL}/en/contact/` },
+      { lang: "el",        href: `${BASE_URL}/contact/` },
+      { lang: "x-default", href: `${BASE_URL}/contact/` },
+    ],
     jsonLd: { "@context": "https://schema.org", "@type": "ContactPage", name: "Contact Dropolis", url: `${BASE_URL}/en/contact`, inLanguage: "en" },
   },
   {
@@ -556,6 +607,11 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     description: "Browse photographs from the 41 villages of Dropull, Northern Epirus — landscapes, village life, cultural heritage, and the Greek minority communities of southern Albania.",
     url: `${BASE_URL}/en/photos`,
     breadcrumbs: [{ name: "English", item: `${BASE_URL}/en` }, { name: "Photos", item: `${BASE_URL}/en/photos` }],
+    hreflang: [
+      { lang: "en",        href: `${BASE_URL}/en/photos/` },
+      { lang: "el",        href: `${BASE_URL}/photos/` },
+      { lang: "x-default", href: `${BASE_URL}/photos/` },
+    ],
     jsonLd: { "@context": "https://schema.org", "@type": "ImageGallery", name: "Photo Gallery — Dropull Villages", url: `${BASE_URL}/en/photos`, inLanguage: "en" },
   },
   {
