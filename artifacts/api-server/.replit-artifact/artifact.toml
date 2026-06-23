@@ -39,6 +39,7 @@ kind = "api"
     "/diaspora",
     "/paradosiaka-faghta",
     "/ta-41-xoria-tis-dropolis",
+    "/dropoli-voreia-ipeiros",
   ]
 
   [services.development]
