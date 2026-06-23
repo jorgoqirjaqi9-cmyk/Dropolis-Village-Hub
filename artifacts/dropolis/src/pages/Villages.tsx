@@ -153,7 +153,7 @@ export default function Villages() {
                   </div>
 
                   <p className="text-muted-foreground text-sm line-clamp-2 mb-4 flex-grow">
-                    {village.description}
+                    {(village.description ?? "").replace(/^#{1,6}\s+[^\n]*\n?/, "").replace(/\*\*/g, "").trim()}
                   </p>
 
                   <div className="flex items-center gap-4 text-xs font-medium text-foreground/70 border-t border-border pt-4 mt-auto">
