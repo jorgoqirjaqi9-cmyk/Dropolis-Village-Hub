@@ -309,6 +309,11 @@ export default function Home() {
                   Διαδραστικός Χάρτης
                 </span>
               </Link>
+              <Link href="/dropoli-voreia-ipeiros/">
+                <span className="inline-flex items-center gap-2 border border-muted-foreground/30 text-muted-foreground font-semibold px-5 py-2.5 rounded-full text-sm hover:bg-muted transition-colors min-h-[44px]">
+                  Ιστορία & Πολιτισμός
+                </span>
+              </Link>
             </Reveal>
           </div>
         </section>

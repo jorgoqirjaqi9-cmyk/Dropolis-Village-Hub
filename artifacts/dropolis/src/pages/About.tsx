@@ -243,6 +243,7 @@ export default function About() {
         <div className="flex flex-wrap justify-center gap-3 pt-2">
           <Link href="/news/" className="bg-primary text-primary-foreground px-6 py-2.5 rounded-full font-medium hover:bg-primary/90 transition-colors">Ειδήσεις</Link>
           <Link href="/villages/" className="bg-secondary text-secondary-foreground px-6 py-2.5 rounded-full font-medium hover:bg-secondary/90 transition-colors">Χωριά</Link>
+          <Link href="/dropoli-voreia-ipeiros/" className="border border-primary text-primary px-6 py-2.5 rounded-full font-medium hover:bg-primary/5 transition-colors">Δρόπολη & Β. Ήπειρος</Link>
           <Link href="/contact/" className="border border-border text-foreground px-6 py-2.5 rounded-full font-medium hover:bg-muted transition-colors">Επικοινωνία</Link>
         </div>
       </motion.section>

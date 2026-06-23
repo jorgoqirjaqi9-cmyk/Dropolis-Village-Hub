@@ -54,6 +54,7 @@ const STATIC_ROUTES = [
   { loc: "/finiq/",                 changefreq: "weekly",  priority: "0.8" },
   { loc: "/paradosiaka-faghta/",          changefreq: "monthly", priority: "0.8" },
   { loc: "/ta-41-xoria-tis-dropolis/",    changefreq: "monthly", priority: "0.9" },
+  { loc: "/dropoli-voreia-ipeiros/",      changefreq: "monthly", priority: "0.9" },
 ];
 
 function escapeXml(str: string): string {

@@ -75,7 +75,8 @@ export const STATIC_ROUTES: StaticRoute[] = [
   { loc: "/submit-video/",              changefreq: "monthly", priority: "0.6" },
   { loc: "/diaspora/",                  changefreq: "monthly", priority: "0.7" },
   { loc: "/paradosiaka-faghta/",        changefreq: "monthly", priority: "0.8" },
-  { loc: "/ta-41-xoria-tis-dropolis/",  changefreq: "monthly", priority: "0.9" },
+  { loc: "/ta-41-xoria-tis-dropolis/",      changefreq: "monthly", priority: "0.9" },
+  { loc: "/dropoli-voreia-ipeiros/",        changefreq: "monthly", priority: "0.9" },
 ];
 
 /**
@@ -739,6 +740,55 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
       inLanguage: "el",
       description: "Πλήρης οδηγός για τα 41 χωριά της Δρόπολης στη Βόρεια Ήπειρο — ιστορία, πολιτισμός, αξιοθέατα, ελληνική μειονότητα, Αργυρόκαστρο.",
     },
+  },
+  {
+    path: "/dropoli-voreia-ipeiros",
+    title: "Δρόπολη & Βόρεια Ήπειρος: 41 Χωριά, Ιστορία και Πολιτισμός",
+    description: "Ανακαλύψτε τη Δρόπολη και τη Βόρεια Ήπειρο: τα 41 ελληνικά χωριά, την ιστορία, την παράδοση, την ομογένεια, τα αξιοθέατα και τα νέα της περιοχής.",
+    image: `${BASE_URL}/og-home.jpg`,
+    url: `${BASE_URL}/dropoli-voreia-ipeiros`,
+    breadcrumbs: [
+      { name: "Αρχική",                    item: `${BASE_URL}/` },
+      { name: "Δρόπολη & Βόρεια Ήπειρος", item: `${BASE_URL}/dropoli-voreia-ipeiros` },
+    ],
+    hreflang: [
+      { lang: "el-GR",     href: `${BASE_URL}/dropoli-voreia-ipeiros/` },
+      { lang: "x-default", href: `${BASE_URL}/dropoli-voreia-ipeiros/` },
+    ],
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": `${BASE_URL}/dropoli-voreia-ipeiros/`,
+        name: "Δρόπολη & Βόρεια Ήπειρος: 41 Χωριά, Ιστορία και Πολιτισμός",
+        description: "Ανακαλύψτε τη Δρόπολη και τη Βόρεια Ήπειρο: τα 41 ελληνικά χωριά, την ιστορία, την παράδοση, την ομογένεια, τα αξιοθέατα και τα νέα της περιοχής.",
+        url: `${BASE_URL}/dropoli-voreia-ipeiros/`,
+        inLanguage: "el",
+        isPartOf: { "@id": `${BASE_URL}/#website` },
+        image: { "@type": "ImageObject", url: `${BASE_URL}/og-home.jpg` },
+        about: {
+          "@type": "TouristDestination",
+          name: "Δρόπολη",
+          description: "Ιστορική περιοχή στη νότια Αλβανία με ισχυρή παρουσία της ελληνικής μειονότητας.",
+          containedInPlace: { "@type": "Country", name: "Αλβανία" },
+        },
+        publisher: {
+          "@type": "NewsMediaOrganization",
+          "@id": `${BASE_URL}/#organization`,
+          name: "Dropolis",
+          url: BASE_URL,
+          logo: { "@type": "ImageObject", url: `${BASE_URL}/logo.webp` },
+        },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Αρχική",                    item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: "Δρόπολη & Βόρεια Ήπειρος", item: `${BASE_URL}/dropoli-voreia-ipeiros/` },
+        ],
+      },
+    ],
   },
   {
     path: "/villages/map",

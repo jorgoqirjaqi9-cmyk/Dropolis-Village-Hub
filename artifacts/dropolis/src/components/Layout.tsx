@@ -448,6 +448,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <Link href="/ta-41-xoria-tis-dropolis/" className="text-sm text-background/60 hover:text-secondary transition-colors">Τα 41 Χωριά</Link>
                 </li>
                 <li>
+                  <Link href="/dropoli-voreia-ipeiros/" className="text-sm text-background/60 hover:text-secondary transition-colors">Δρόπολη & Β. Ήπειρος</Link>
+                </li>
+                <li>
                   <Link href="/contact/" className="text-sm text-background/60 hover:text-secondary transition-colors">Επικοινωνία</Link>
                 </li>
               </ul>

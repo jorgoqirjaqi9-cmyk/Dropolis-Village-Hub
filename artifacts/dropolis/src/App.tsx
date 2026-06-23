@@ -50,9 +50,10 @@ const Diaspora        = lazy(() => import("@/pages/Diaspora"));
 const Finiq           = lazy(() => import("@/pages/Finiq"));
 const SubmitNews        = lazy(() => import("@/pages/SubmitNews"));
 const SubmitVideo       = lazy(() => import("@/pages/SubmitVideo"));
-const TraditionalFood   = lazy(() => import("@/pages/TraditionalFood"));
-const Villages41        = lazy(() => import("@/pages/Villages41"));
-const TravelGuide       = lazy(() => import("@/pages/TravelGuide"));
+const TraditionalFood         = lazy(() => import("@/pages/TraditionalFood"));
+const Villages41              = lazy(() => import("@/pages/Villages41"));
+const TravelGuide             = lazy(() => import("@/pages/TravelGuide"));
+const DropoliVoreiaIpeiros    = lazy(() => import("@/pages/DropoliVoreiaIpeiros"));
 
 // Admin pages — full-screen (no Layout wrapper, include their own AdminLayout)
 const AdminDashboard  = lazy(() => import("@/pages/AdminDashboard"));
@@ -228,6 +229,8 @@ function Router() {
               <Route path="/paradosiaka-faghta/" component={TraditionalFood} />
               <Route path="/ta-41-xoria-tis-dropolis" component={Villages41} />
               <Route path="/ta-41-xoria-tis-dropolis/" component={Villages41} />
+              <Route path="/dropoli-voreia-ipeiros" component={DropoliVoreiaIpeiros} />
+              <Route path="/dropoli-voreia-ipeiros/" component={DropoliVoreiaIpeiros} />
               <Route component={NotFound} />
             </Switch>
           </PageLoader>
