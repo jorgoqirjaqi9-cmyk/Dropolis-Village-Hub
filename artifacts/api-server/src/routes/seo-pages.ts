@@ -243,6 +243,7 @@ function buildSeoTags(m: PageMeta): string {
     `<meta property="og:site_name" content="${esc(SITE_NAME)}" />`,
     `<meta property="og:locale" content="el_GR" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:site" content="@dropolis_net" />`,
     `<meta name="twitter:title" content="${title}" />`,
     `<meta name="twitter:description" content="${desc}" />`,
     `<meta name="twitter:image" content="${img}" />`,

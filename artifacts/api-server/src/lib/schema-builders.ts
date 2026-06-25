@@ -39,6 +39,8 @@ const PUBLISHER = {
   sameAs: [
     "https://www.facebook.com/profile.php?id=61590959938071",
     "https://www.youtube.com/@dropolis",
+    "https://x.com/dropolis_net",
+    "https://www.instagram.com/dropolis_net/",
   ],
 } as const;
 

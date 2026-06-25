@@ -19,18 +19,6 @@ expertMode = true
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
 
-[[ports]]
-localPort = 8080
-externalPort = 8080
-
-[[ports]]
-localPort = 8081
-externalPort = 8081
-
-[[ports]]
-localPort = 20727
-externalPort = 80
-
 [nix]
 channel = "stable-25_05"
 
@@ -40,3 +28,15 @@ channel = "stable-25_05"
 ADMIN_EMAIL = "dropolis9@gmail.com"
 FACEBOOK_AUTO_POST_ENABLED = "true"
 FACEBOOK_PAGE_ID = "1599082574478566"
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
+
+[[ports]]
+localPort = 8081
+externalPort = 80
+
+[[ports]]
+localPort = 20727
+externalPort = 3000

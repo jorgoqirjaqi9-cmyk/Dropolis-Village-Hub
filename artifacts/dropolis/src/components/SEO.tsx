@@ -188,6 +188,7 @@ export function SEO({
     setMeta("property", "og:locale", SITE.locale);
 
     setMeta("name", "twitter:card", "summary_large_image");
+    setMeta("name", "twitter:site", "@dropolis_net");
     setMeta("name", "twitter:title", fullTitle);
     setMeta("name", "twitter:description", socialDesc);
     setMeta("name", "twitter:image", ogImage);
