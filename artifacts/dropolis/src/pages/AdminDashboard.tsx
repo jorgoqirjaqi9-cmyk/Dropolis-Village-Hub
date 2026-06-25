@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { SEO } from "@/components/SEO";
 import {
   Newspaper, Image, Video, MapPin, Clock, CheckCircle,
-  TrendingUp, AlertCircle, RefreshCw, ExternalLink, Star, Download,
+  TrendingUp, AlertCircle, RefreshCw, ExternalLink, Star, Download, CalendarDays,
 } from "lucide-react";
 import { AdminLayout, AdminAuthGate, StatCard, StatusBadge, useAdminAuth, adminFetch } from "@/components/AdminLayout";
 import { format } from "date-fns";
@@ -14,6 +14,7 @@ type DashboardData = {
   villages: { total: number };
   photos: { approved: number; pending: number };
   videos: { total: number; pendingSubmissions: number };
+  events: { approved: number; pending: number };
   pendingApprovals: number;
   pendingNewsSubmissions: number;
   latestArticles: { id: number; title: string; category: string; published: boolean; createdAt: string }[];
@@ -130,6 +131,13 @@ export default function AdminDashboard() {
                         </span>
                       </Link>
                     )}
+                    {data.events.pending > 0 && (
+                      <Link href="/admin/events">
+                        <span className="px-3 py-1.5 rounded-lg bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 hover:bg-yellow-500/30 transition-colors cursor-pointer font-medium">
+                          {data.events.pending} εκδηλώσεις
+                        </span>
+                      </Link>
+                    )}
                   </div>
                 </div>
               )}
@@ -140,6 +148,9 @@ export default function AdminDashboard() {
                 <StatCard label="Χωριά" value={data.villages.total} icon={MapPin} color="green" href="/admin/villages" />
                 <StatCard label="Φωτογραφίες" value={data.photos.approved} icon={Image} color="purple" sub={data.photos.pending > 0 ? `${data.photos.pending} αναμένουν` : undefined} href="/admin/photos" />
                 <StatCard label="Βίντεο" value={data.videos.total} icon={Video} color="red" href="/admin/videos" />
+              </div>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <StatCard label="Εκδηλώσεις" value={data.events.approved} icon={CalendarDays} color="primary" sub={data.events.pending > 0 ? `${data.events.pending} αναμένουν` : undefined} href="/admin/events" />
               </div>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -183,6 +194,12 @@ export default function AdminDashboard() {
                     <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer">
                       <MapPin className="w-4 h-4" />
                       Χωριά
+                    </span>
+                  </Link>
+                  <Link href="/admin/events">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer">
+                      <CalendarDays className="w-4 h-4" />
+                      Εκδηλώσεις
                     </span>
                   </Link>
                 </div>

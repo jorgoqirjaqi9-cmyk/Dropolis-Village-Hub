@@ -2,7 +2,7 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import {
   articlesTable, villagesTable, photosTable, videosTable,
-  newsSubmissionsTable, submittedVideosTable,
+  newsSubmissionsTable, submittedVideosTable, eventsTable,
 } from "@workspace/db";
 import { eq, and, count, desc, gte } from "drizzle-orm";
 import { requireAdmin } from "../lib/admin-auth.js";
@@ -25,6 +25,8 @@ router.get("/admin/dashboard", requireAdmin, async (req, res) => {
     [pendingSubmittedVideos],
     [pendingNews],
     [recentArticles],
+    [approvedEvents],
+    [pendingEvents],
     latestArticles,
   ] = await Promise.all([
     db.select({ count: count() }).from(articlesTable),
@@ -38,6 +40,8 @@ router.get("/admin/dashboard", requireAdmin, async (req, res) => {
     db.select({ count: count() }).from(submittedVideosTable).where(eq(submittedVideosTable.status, "pending")),
     db.select({ count: count() }).from(newsSubmissionsTable).where(eq(newsSubmissionsTable.status, "pending")),
     db.select({ count: count() }).from(articlesTable).where(gte(articlesTable.createdAt, oneWeekAgo)),
+    db.select({ count: count() }).from(eventsTable).where(eq(eventsTable.status, "approved")),
+    db.select({ count: count() }).from(eventsTable).where(eq(eventsTable.status, "pending")),
     db.select({
       id: articlesTable.id, title: articlesTable.title,
       category: articlesTable.category, published: articlesTable.published,
@@ -48,7 +52,8 @@ router.get("/admin/dashboard", requireAdmin, async (req, res) => {
   const pendingApprovals =
     (pendingPhotos?.count ?? 0) +
     (pendingSubmittedVideos?.count ?? 0) +
-    (pendingNews?.count ?? 0);
+    (pendingNews?.count ?? 0) +
+    (pendingEvents?.count ?? 0);
 
   res.json({
     articles: {
@@ -61,6 +66,7 @@ router.get("/admin/dashboard", requireAdmin, async (req, res) => {
     villages: { total: totalVillages?.count ?? 0 },
     photos: { approved: approvedPhotos?.count ?? 0, pending: pendingPhotos?.count ?? 0 },
     videos: { total: totalVideos?.count ?? 0, pendingSubmissions: pendingSubmittedVideos?.count ?? 0 },
+    events: { approved: approvedEvents?.count ?? 0, pending: pendingEvents?.count ?? 0 },
     pendingApprovals,
     pendingNewsSubmissions: pendingNews?.count ?? 0,
     latestArticles: latestArticles.map((a) => ({
