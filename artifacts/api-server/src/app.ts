@@ -16,6 +16,7 @@ import { sitemapRootRouter } from "./routes/sitemap.js";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
+app.disable("x-powered-by");
 const allowedOrigins = new Set(
   (process.env.CORS_ORIGINS ?? "https://dropolis.net,https://www.dropolis.net,https://dropolis-village.replit.app")
     .split(",")
