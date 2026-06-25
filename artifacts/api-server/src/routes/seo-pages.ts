@@ -580,6 +580,20 @@ const STATIC_META: Record<string, PageMeta> = {
     breadcrumbs: [{ name: "Συχνές Ερωτήσεις", item: `${BASE_URL}/faq/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "FAQPage", name: "Συχνές Ερωτήσεις — Dropolis", url: `${BASE_URL}/faq/`, inLanguage: "el" },
   },
+  "/events": {
+    title: "Εκδηλώσεις & Πανηγύρια — Dropolis",
+    description: "Εκδηλώσεις, πανηγύρια και πολιτιστικές εκδηλώσεις από τα χωριά της Δρόπολης Β. Ηπείρου.",
+    url: `${BASE_URL}/events/`,
+    breadcrumbs: [{ name: "Εκδηλώσεις", item: `${BASE_URL}/events/` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Εκδηλώσεις & Πανηγύρια — Dropolis", url: `${BASE_URL}/events/`, inLanguage: "el" },
+  },
+  "/submit-event": {
+    title: "Καταχώρηση Εκδήλωσης — Dropolis",
+    description: "Υποβάλετε εκδήλωση ή πανηγύρι από τα χωριά της Δρόπολης. Η ομάδα μας αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
+    url: `${BASE_URL}/submit-event/`,
+    breadcrumbs: [{ name: "Καταχώρηση Εκδήλωσης", item: `${BASE_URL}/submit-event/` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Καταχώρηση Εκδήλωσης — Dropolis", url: `${BASE_URL}/submit-event/`, inLanguage: "el" },
+  },
   "/submit-news": {
     title: "Στείλτε Είδηση — Dropolis",
     description: "Υποβάλετε είδηση ή ανακοίνωση από τα χωριά της Δρόπολης. Η ομάδα μας αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",

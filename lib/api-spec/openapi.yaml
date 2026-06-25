@@ -23,6 +23,7 @@ tags:
     description: Dashboard stats
   - name: social
     description: Social media post generation
+  - name: events
   - name: news-submissions
     description: User news submissions for editorial review
   - name: video-submissions
@@ -580,6 +581,135 @@ paths:
       responses:
         "204":
           description: Rejected and deleted
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /events:
+    get:
+      operationId: listEvents
+      tags: [events]
+      summary: List approved upcoming events (public)
+      parameters:
+        - name: villageId
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: past
+          in: query
+          description: If true, return past events instead of upcoming
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of approved events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventPublic"
+
+  /events/submit:
+    post:
+      operationId: submitEvent
+      tags: [events]
+      summary: Submit an event for review (public)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventCreate"
+      responses:
+        "201":
+          description: Submission received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventResult"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /admin/events:
+    get:
+      operationId: listEventSubmissions
+      tags: [events]
+      summary: List all event submissions (admin only)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected]
+      responses:
+        "200":
+          description: List of submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventSubmission"
+        "401":
+          description: Unauthorized
+
+  /admin/events/{id}:
+    patch:
+      operationId: updateEventSubmission
+      tags: [events]
+      summary: Approve or reject an event submission (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventStatusUpdate"
+      responses:
+        "200":
+          description: Updated submission
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSubmission"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteEventSubmission
+      tags: [events]
+      summary: Delete an event submission (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
         "401":
           description: Unauthorized
         "404":
@@ -1728,3 +1858,111 @@ components:
           type: integer
         featuredCount:
           type: integer
+
+    EventPublic:
+      type: object
+      required: [id, title, eventDate, description, status, submittedAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        eventDate:
+          type: string
+        eventTime:
+          type: ["string", "null"]
+        villageId:
+          type: ["integer", "null"]
+        location:
+          type: ["string", "null"]
+        description:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        contactInfo:
+          type: ["string", "null"]
+        status:
+          type: string
+        submittedAt:
+          type: string
+
+    EventCreate:
+      type: object
+      required: [title, eventDate, description, senderName, consentGiven]
+      properties:
+        title:
+          type: string
+          minLength: 3
+        eventDate:
+          type: string
+        eventTime:
+          type: string
+        villageId:
+          type: integer
+        location:
+          type: string
+        description:
+          type: string
+          minLength: 20
+        imageUrl:
+          type: string
+        contactInfo:
+          type: string
+        senderName:
+          type: string
+          minLength: 2
+        consentGiven:
+          type: boolean
+        website:
+          type: string
+          description: Honeypot field — must be empty
+
+    EventResult:
+      type: object
+      required: [id, status]
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+
+    EventSubmission:
+      type: object
+      required: [id, title, eventDate, description, senderName, status, consentGiven, submittedAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        eventDate:
+          type: string
+        eventTime:
+          type: ["string", "null"]
+        villageId:
+          type: ["integer", "null"]
+        location:
+          type: ["string", "null"]
+        description:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        contactInfo:
+          type: ["string", "null"]
+        senderName:
+          type: string
+        status:
+          type: string
+        consentGiven:
+          type: boolean
+        submittedAt:
+          type: string
+        reviewedAt:
+          type: ["string", "null"]
+
+    EventStatusUpdate:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [approved, rejected]

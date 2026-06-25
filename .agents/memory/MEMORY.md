@@ -1,3 +1,4 @@
 - [Crawler SEO Architecture](crawler-seo.md) — Vite dev plugin + build-time prerender; no proxy routing change needed.
 - [Canonical domain](domain-migration.md) — Production domain is dropolis.net; all BASE_URL constants must use this, never dropolis.replit.app. Affects: SEO.tsx, prerender.ts, seo-crawler.ts plugin, sitemap.ts, indexnow.ts, sitemap.xml, robots.txt, index.html, all page JSON-LD, dist/ prerendered HTML.
 - [Slug-based article URLs](slug-urls.md) — Articles use /news/{slug}-{id}/ URLs; ID always at end after last "-". Utility in dropolis/src/lib/article-url.ts. seo-pages.ts handles slugs without IDs via full-slug DB fallback. buildSeoTags trims desc to 155 chars, title to 60 chars.
+- [Orval codegen broken on Node 24](codegen-broken.md) — codegen fails; add Zod schemas to lib/api-zod/src/<feature>.ts, write inline React Query hooks with fetch() for new features.

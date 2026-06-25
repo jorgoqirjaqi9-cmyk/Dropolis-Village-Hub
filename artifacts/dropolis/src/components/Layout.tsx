@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, Home, Info, Mail, Download, Share, ChevronDown, Camera, Globe, Landmark, UtensilsCrossed } from "lucide-react";
+import { Menu, X, Sun, Moon, Newspaper, Mountain, Image, Video, Home, Info, Mail, Download, Share, ChevronDown, Camera, Globe, Landmark, UtensilsCrossed, CalendarDays } from "lucide-react";
 import { usePWAInstall } from "../hooks/use-pwa-install";
 import { RadioPlayer } from "./RadioPlayer";
 import { CookieConsent } from "./CookieConsent";
 
 const AD_EXCLUDED_PREFIXES = [
-  "/upload-photo", "/submit-news", "/submit-video",
+  "/upload-photo", "/submit-news", "/submit-video", "/submit-event",
   "/admin", "/privacy", "/terms", "/cookie-policy", "/disclaimer", "/diaspora",
 ];
 
@@ -130,6 +130,7 @@ const navItems = [
   { href: "/diaspora/", label: "Ομογένεια", icon: Globe },
   { href: "/finiq/", label: "Φοινικαίοι", icon: Landmark },
   { href: "/paradosiaka-faghta/", label: "Γαστρονομία", icon: UtensilsCrossed },
+  { href: "/events/", label: "Εκδηλώσεις", icon: CalendarDays },
   { href: "/about/", label: "Σχετικά", icon: Info },
 ];
 

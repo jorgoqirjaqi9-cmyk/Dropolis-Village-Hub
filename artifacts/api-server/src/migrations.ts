@@ -82,6 +82,25 @@ export async function runMigrations(): Promise<void> {
       CREATE UNIQUE INDEX IF NOT EXISTS content_votes_unique
         ON content_votes(content_type, content_id, voter_key)
     `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS events (
+        id serial PRIMARY KEY,
+        title text NOT NULL,
+        event_date text NOT NULL,
+        event_time text,
+        village_id integer REFERENCES villages(id) ON DELETE SET NULL,
+        location text,
+        description text NOT NULL,
+        image_url text,
+        image_object_path text,
+        contact_info text,
+        sender_name text NOT NULL,
+        status text NOT NULL DEFAULT 'pending',
+        consent_given boolean NOT NULL DEFAULT false,
+        submitted_at timestamp NOT NULL DEFAULT now(),
+        reviewed_at timestamp
+      )
+    `);
     logger.info("DB migrations applied");
   } catch (err) {
     logger.error({ err }, "Migration failed");

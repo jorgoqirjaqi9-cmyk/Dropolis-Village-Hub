@@ -54,6 +54,8 @@ const TraditionalFood         = lazy(() => import("@/pages/TraditionalFood"));
 const Villages41              = lazy(() => import("@/pages/Villages41"));
 const TravelGuide             = lazy(() => import("@/pages/TravelGuide"));
 const DropoliVoreiaIpeiros    = lazy(() => import("@/pages/DropoliVoreiaIpeiros"));
+const Events                  = lazy(() => import("@/pages/Events"));
+const SubmitEvent             = lazy(() => import("@/pages/SubmitEvent"));
 
 // Admin pages — full-screen (no Layout wrapper, include their own AdminLayout)
 const AdminDashboard  = lazy(() => import("@/pages/AdminDashboard"));
@@ -61,6 +63,7 @@ const AdminArticles   = lazy(() => import("@/pages/AdminArticles"));
 const AdminPhotos     = lazy(() => import("@/pages/AdminPhotos"));
 const AdminVideos     = lazy(() => import("@/pages/AdminVideos"));
 const AdminNews       = lazy(() => import("@/pages/AdminNews"));
+const AdminEvents_    = lazy(() => import("@/pages/AdminEvents"));
 const AdminVillages   = lazy(() => import("@/pages/AdminVillages"));
 const AdminCaptions   = lazy(() => import("@/pages/AdminCaptions"));
 const AdminIndexingLog = lazy(() => import("@/pages/AdminIndexingLog"));
@@ -113,6 +116,12 @@ function Router() {
       </Route>
       <Route path="/admin/news/">
         <PageLoader><AdminNews /></PageLoader>
+      </Route>
+      <Route path="/admin/events">
+        <PageLoader><AdminEvents_ /></PageLoader>
+      </Route>
+      <Route path="/admin/events/">
+        <PageLoader><AdminEvents_ /></PageLoader>
       </Route>
       <Route path="/admin/villages">
         <PageLoader><AdminVillages /></PageLoader>
@@ -231,6 +240,10 @@ function Router() {
               <Route path="/ta-41-xoria-tis-dropolis/" component={Villages41} />
               <Route path="/dropoli-voreia-ipeiros" component={DropoliVoreiaIpeiros} />
               <Route path="/dropoli-voreia-ipeiros/" component={DropoliVoreiaIpeiros} />
+              <Route path="/events" component={Events} />
+              <Route path="/events/" component={Events} />
+              <Route path="/submit-event" component={SubmitEvent} />
+              <Route path="/submit-event/" component={SubmitEvent} />
               <Route component={NotFound} />
             </Switch>
           </PageLoader>

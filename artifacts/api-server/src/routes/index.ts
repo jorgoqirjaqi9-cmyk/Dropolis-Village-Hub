@@ -22,6 +22,7 @@ import adminArticlesRouter from "./admin-articles";
 import adminSeoRouter from "./admin-seo";
 import adminInternalLinksRouter from "./admin-internal-links";
 import radioRouter from "./radio";
+import eventsRouter from "./events";
 
 const router: IRouter = Router();
 
@@ -48,5 +49,6 @@ router.use(adminArticlesRouter);
 router.use(adminSeoRouter);
 router.use(adminInternalLinksRouter);
 router.use(radioRouter);
+router.use(eventsRouter);
 
 export default router;
