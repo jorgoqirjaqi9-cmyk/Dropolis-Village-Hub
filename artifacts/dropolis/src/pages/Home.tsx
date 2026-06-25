@@ -159,6 +159,9 @@ export default function Home() {
               <Link href="/submit-video/" className="min-h-10 rounded-full border border-violet-400/40 bg-violet-500/20 px-4 py-2 text-sm font-semibold text-violet-100 backdrop-blur transition hover:bg-violet-500/35 focus:outline-none focus:ring-2 focus:ring-violet-400/60">
                 Ανεβάστε Βίντεο
               </Link>
+              <Link href="/events/" className="min-h-10 rounded-full border border-teal-400/40 bg-teal-500/20 px-4 py-2 text-sm font-semibold text-teal-100 backdrop-blur transition hover:bg-teal-500/35 focus:outline-none focus:ring-2 focus:ring-teal-400/60">
+                Εκδηλώσεις & Πανηγύρια
+              </Link>
             </div>
             {/* Weather widget — mobile only: in-flow below all buttons */}
             <div className="md:hidden mt-6 flex justify-center w-full">
