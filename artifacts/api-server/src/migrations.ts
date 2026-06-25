@@ -101,6 +101,12 @@ export async function runMigrations(): Promise<void> {
         reviewed_at timestamp
       )
     `);
+    // Data fix: replace wrong spelling Ποκόνι/Ποκονίου → Πωγώνι/Πωγωνίου in village rich_content
+    await client.query(`
+      UPDATE villages
+      SET rich_content = REPLACE(REPLACE(rich_content, 'Ποκονίου', 'Πωγωνίου'), 'Ποκόνι', 'Πωγώνι')
+      WHERE rich_content ILIKE '%Ποκόν%' OR rich_content ILIKE '%Ποκον%'
+    `);
     logger.info("DB migrations applied");
   } catch (err) {
     logger.error({ err }, "Migration failed");
