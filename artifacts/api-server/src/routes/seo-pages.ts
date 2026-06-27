@@ -16,8 +16,9 @@ import { Router } from "express";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { db, articlesTable, villagesTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { logger } from "../lib/logger.js";
+import { hasCyrillicLookalike, latinizeCyrillicSlug } from "../lib/cyrillic.js";
 import { buildNewsArticleSchema, buildVillageSchema, buildStaticPageSchema } from "../lib/schema-builders.js";
 
 const BASE_URL = "https://dropolis.net";
@@ -767,6 +768,14 @@ router.get(/^\/admin(\/.*)?$/, (_req, res) => {
 router.get(["/news/:idOrSlug", "/news/:idOrSlug/"], async (req, res) => {
   const param = String(req.params.idOrSlug);
 
+  // Safety net: if param itself contains Cyrillic lookalikes, redirect to the
+  // latinized URL. redirectsRouter upstream catches most cases via req.path,
+  // but Express also decodes route params so Cyrillic bytes arrive as Unicode.
+  if (hasCyrillicLookalike(param)) {
+    res.redirect(301, `${BASE_URL}/news/${latinizeCyrillicSlug(param)}/`);
+    return;
+  }
+
   // Extract numeric ID — works for "10362" and "my-title-10362"
   let id: number;
   if (/^\d+$/.test(param)) {
@@ -776,14 +785,29 @@ router.get(["/news/:idOrSlug", "/news/:idOrSlug/"], async (req, res) => {
     if (match) {
       id = parseInt(match[1], 10);
     } else {
-      // Slug without a trailing numeric ID — fall back to a full-slug DB lookup
+      // Slug without a trailing numeric ID — fall back to a full-slug DB lookup.
+      // Try exact match first; if not found, also search after normalizing Cyrillic
+      // lookalike characters in the stored slug to their Latin equivalents via SQL.
+      // This handles articles whose DB slug contains Cyrillic (e.g. U+0430 'а')
+      // being accessed via their latinized canonical URL after a 301 redirect.
       try {
         const [bySlug] = await db
           .select({ id: articlesTable.id })
           .from(articlesTable)
           .where(eq(articlesTable.slug, param))
           .limit(1);
-        id = bySlug?.id ?? 0;
+        if (bySlug) {
+          id = bySlug.id;
+        } else {
+          const [byCyrSlug] = await db
+            .select({ id: articlesTable.id })
+            .from(articlesTable)
+            .where(
+              sql`replace(replace(replace(replace(replace(replace(replace(${articlesTable.slug},'а','a'),'е','e'),'о','o'),'р','r'),'с','c'),'х','x'),'у','u') = ${param}`
+            )
+            .limit(1);
+          id = byCyrSlug?.id ?? 0;
+        }
       } catch {
         id = 0;
       }
@@ -806,13 +830,18 @@ router.get(["/news/:idOrSlug", "/news/:idOrSlug/"], async (req, res) => {
       return;
     }
 
-    // Permanent redirect: /news/10362 → /news/my-title-10362/
+    // Permanent redirect: /news/10362 → /news/my-title-10362/ (latinized)
     if (/^\d+$/.test(param) && article.slug) {
-      res.redirect(301, `${BASE_URL}/news/${article.slug}/`);
+      res.redirect(301, `${BASE_URL}/news/${latinizeCyrillicSlug(article.slug)}/`);
       return;
     }
 
-    const canonicalUrl = `${BASE_URL}/news/${article.slug ?? article.id}/`;
+    // Always emit the latinized slug as canonical so Cyrillic chars never
+    // appear in canonical URLs, og:url, or JSON-LD @id fields.
+    const canonicalSlug = article.slug
+      ? latinizeCyrillicSlug(article.slug)
+      : String(article.id);
+    const canonicalUrl = `${BASE_URL}/news/${canonicalSlug}/`;
     const cleanedDesc = generateArticleDesc(article);
 
     const meta: PageMeta = {

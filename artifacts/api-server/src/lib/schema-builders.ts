@@ -15,6 +15,8 @@
  *   https://schema.org/TouristAttraction
  */
 
+import { latinizeCyrillicSlug } from "./cyrillic.js";
+
 const BASE_URL = "https://dropolis.net";
 const SITE_NAME = "Δρόπολη (Dropolis)";
 
@@ -81,7 +83,8 @@ export interface ArticleSchemaInput {
  * dateModified, author, publisher (with logo).
  */
 export function buildNewsArticleSchema(a: ArticleSchemaInput): object {
-  const articleUrl = `${BASE_URL}/news/${a.slug ?? a.id}/`;
+  const canonicalSlug = a.slug ? latinizeCyrillicSlug(a.slug) : String(a.id);
+  const articleUrl = `${BASE_URL}/news/${canonicalSlug}/`;
   const datePublished = a.createdAt.toISOString();
   const dateModified = (a.updatedAt ?? a.createdAt).toISOString();
 

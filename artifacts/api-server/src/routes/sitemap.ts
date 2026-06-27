@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from "express";
 import { db } from "@workspace/db";
 import { articlesTable, villagesTable } from "@workspace/db";
 import { desc, eq } from "drizzle-orm";
+import { latinizeCyrillicSlug } from "../lib/cyrillic.js";
 
 const router = Router();
 
@@ -273,7 +274,7 @@ async function handleSitemapXml(req: Request, res: Response): Promise<void> {
       }
 
       return urlEntry(
-        `${BASE_URL}/news/${a.slug ?? a.id}/`,
+        `${BASE_URL}/news/${a.slug ? latinizeCyrillicSlug(a.slug) : a.id}/`,
         lastmod,
         "monthly",
         "0.8",
