@@ -19,6 +19,27 @@ type EventCreate = {
   website?: string;
 };
 
+const TIME_OPTIONS: string[] = Array.from({ length: 48 }, (_, i) => {
+  const h = Math.floor(i / 2);
+  const m = i % 2 === 0 ? "00" : "30";
+  return `${String(h).padStart(2, "0")}:${m}`;
+});
+
+function TimeSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+    >
+      <option value="">— Χωρίς ώρα —</option>
+      {TIME_OPTIONS.map((t) => (
+        <option key={t} value={t}>{t}</option>
+      ))}
+    </select>
+  );
+}
+
 async function submitEventApi(data: EventCreate): Promise<{ id: number; status: string }> {
   const res = await fetch("/api/events/submit", {
     method: "POST",
@@ -188,8 +209,7 @@ export default function SubmitEvent() {
             <label className="block text-sm font-semibold text-foreground">
               Ώρα <span className="text-muted-foreground font-normal">(προαιρετικό)</span>
             </label>
-            <input type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)}
-              className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50" />
+            <TimeSelect value={eventTime} onChange={setEventTime} />
           </div>
         </div>
 
