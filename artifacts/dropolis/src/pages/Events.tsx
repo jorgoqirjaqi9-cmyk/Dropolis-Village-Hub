@@ -20,6 +20,11 @@ type EventPublic = {
   submittedAt: string;
 };
 
+function formatGreekTime(timeStr: string): string {
+  const hour = parseInt(timeStr.split(":")[0] ?? "0", 10);
+  return `${timeStr} ${hour < 12 ? "πμ" : "μμ"}`;
+}
+
 function formatGreekDate(dateStr: string): string {
   try {
     const [year, month, day] = dateStr.split("-").map(Number);
@@ -189,7 +194,7 @@ export default function Events() {
                     {ev.eventTime && (
                       <span className="flex items-center gap-1 ml-1 text-muted-foreground">
                         <Clock className="w-3 h-3" />
-                        {ev.eventTime}
+                        {formatGreekTime(ev.eventTime)}
                       </span>
                     )}
                   </span>
