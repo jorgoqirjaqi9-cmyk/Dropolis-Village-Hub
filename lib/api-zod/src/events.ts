@@ -15,5 +15,11 @@ export const SubmitEventBody = z.object({
 });
 
 export const UpdateEventSubmissionBody = z.object({
-  status: z.enum(["approved", "rejected"]),
+  status: z.enum(["approved", "rejected"]).optional(),
+  title: z.string().min(3).optional(),
+  description: z.string().min(1).optional(),
+  eventTime: z.string().nullable().optional(),
+  location: z.string().nullable().optional(),
+  contactInfo: z.string().nullable().optional(),
+  imageUrl: z.string().nullable().optional(),
 });

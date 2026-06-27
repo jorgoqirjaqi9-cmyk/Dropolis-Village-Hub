@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { SEO } from "@/components/SEO";
-import { CheckCircle, XCircle, Trash2, RefreshCw, MapPin, User, Calendar, Clock, ExternalLink, AlertCircle, X } from "lucide-react";
+import { CheckCircle, XCircle, Trash2, RefreshCw, MapPin, User, Calendar, Clock, ExternalLink, AlertCircle, X, Pencil, Save } from "lucide-react";
 import { format } from "date-fns";
 import { el } from "date-fns/locale";
 import { AdminLayout, AdminAuthGate, ConfirmModal, useAdminAuth, adminFetch } from "@/components/AdminLayout";
@@ -24,6 +24,20 @@ type EventSubmission = {
 
 type StatusFilter = "pending" | "approved" | "rejected";
 
+type EditFields = {
+  title: string;
+  description: string;
+  eventTime: string;
+  location: string;
+  contactInfo: string;
+};
+
+const TIME_OPTIONS: string[] = Array.from({ length: 48 }, (_, i) => {
+  const h = Math.floor(i / 2);
+  const m = i % 2 === 0 ? "00" : "30";
+  return `${String(h).padStart(2, "0")}:${m}`;
+});
+
 export default function AdminEvents() {
   const { token, authenticated, login, logout } = useAdminAuth();
   const [submissions, setSubmissions] = useState<EventSubmission[]>([]);
@@ -34,6 +48,8 @@ export default function AdminEvents() {
   const [message, setMessage] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editFields, setEditFields] = useState<EditFields>({ title: "", description: "", eventTime: "", location: "", contactInfo: "" });
 
   const fetchSubmissions = useCallback(async (t: string, status: StatusFilter) => {
     setLoading(true); setError(null);
@@ -52,7 +68,49 @@ export default function AdminEvents() {
 
   function changeFilter(s: StatusFilter) {
     setStatusFilter(s);
+    setEditingId(null);
     if (authenticated && token) fetchSubmissions(token, s);
+  }
+
+  function startEdit(sub: EventSubmission) {
+    setEditingId(sub.id);
+    setExpandedId(null);
+    setEditFields({
+      title: sub.title,
+      description: sub.description,
+      eventTime: sub.eventTime ?? "",
+      location: sub.location ?? "",
+      contactInfo: sub.contactInfo ?? "",
+    });
+  }
+
+  function cancelEdit() {
+    setEditingId(null);
+  }
+
+  async function saveEdit(id: number) {
+    setActionLoading(id);
+    try {
+      const res = await adminFetch(`/api/admin/events/${id}`, token, {
+        method: "PATCH",
+        body: JSON.stringify({
+          title: editFields.title.trim(),
+          description: editFields.description.trim(),
+          eventTime: editFields.eventTime || null,
+          location: editFields.location.trim() || null,
+          contactInfo: editFields.contactInfo.trim() || null,
+        }),
+      });
+      if (!res.ok) throw new Error();
+      const updated: EventSubmission = await res.json();
+      setSubmissions(prev => prev.map(s => s.id === id ? updated : s));
+      setEditingId(null);
+      showMsg("✓ Αποθηκεύτηκε.");
+    } catch {
+      setError("Αποτυχία αποθήκευσης.");
+    } finally {
+      setActionLoading(null);
+    }
   }
 
   async function approve(id: number) {
@@ -162,15 +220,101 @@ export default function AdminEvents() {
                         {sub.contactInfo && <span>📞 {sub.contactInfo}</span>}
                       </div>
                     </div>
-                    <button onClick={() => setExpandedId(expandedId === sub.id ? null : sub.id)}
-                      className="text-xs text-primary hover:underline shrink-0">
-                      {expandedId === sub.id ? "Απόκρυψη" : "Εμφάνιση περιγραφής"}
-                    </button>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={() => editingId === sub.id ? cancelEdit() : startEdit(sub)}
+                        className={`flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${editingId === sub.id ? "border-primary text-primary bg-primary/5" : "border-border text-muted-foreground hover:border-primary hover:text-primary"}`}
+                      >
+                        <Pencil className="w-3 h-3" />
+                        {editingId === sub.id ? "Ακύρωση" : "Επεξεργασία"}
+                      </button>
+                      {editingId !== sub.id && (
+                        <button onClick={() => setExpandedId(expandedId === sub.id ? null : sub.id)}
+                          className="text-xs text-primary hover:underline">
+                          {expandedId === sub.id ? "Απόκρυψη" : "Εμφάνιση"}
+                        </button>
+                      )}
+                    </div>
                   </div>
 
-                  {expandedId === sub.id && (
+                  {/* Read-only description preview */}
+                  {expandedId === sub.id && editingId !== sub.id && (
                     <div className="mt-4 p-4 rounded-xl bg-muted/50 text-sm leading-relaxed whitespace-pre-wrap max-h-64 overflow-y-auto">
                       {sub.description}
+                    </div>
+                  )}
+
+                  {/* Inline edit form */}
+                  {editingId === sub.id && (
+                    <div className="mt-4 space-y-3 border border-primary/20 rounded-xl p-4 bg-primary/5">
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">Τίτλος</label>
+                        <input
+                          type="text"
+                          value={editFields.title}
+                          onChange={e => setEditFields(f => ({ ...f, title: e.target.value }))}
+                          className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                          maxLength={200}
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="space-y-1">
+                          <label className="text-xs font-semibold text-foreground">Ώρα</label>
+                          <select
+                            value={editFields.eventTime}
+                            onChange={e => setEditFields(f => ({ ...f, eventTime: e.target.value }))}
+                            className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                          >
+                            <option value="">— Χωρίς ώρα —</option>
+                            {TIME_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
+                          </select>
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-xs font-semibold text-foreground">Τοποθεσία</label>
+                          <input
+                            type="text"
+                            value={editFields.location}
+                            onChange={e => setEditFields(f => ({ ...f, location: e.target.value }))}
+                            className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            maxLength={200}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">Στοιχεία Επικοινωνίας</label>
+                        <input
+                          type="text"
+                          value={editFields.contactInfo}
+                          onChange={e => setEditFields(f => ({ ...f, contactInfo: e.target.value }))}
+                          className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                          maxLength={300}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">Περιγραφή</label>
+                        <textarea
+                          value={editFields.description}
+                          onChange={e => setEditFields(f => ({ ...f, description: e.target.value }))}
+                          rows={6}
+                          className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => saveEdit(sub.id)}
+                          disabled={actionLoading === sub.id || !editFields.title.trim() || !editFields.description.trim()}
+                          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4" />
+                          {actionLoading === sub.id ? "Αποθήκευση…" : "Αποθήκευση"}
+                        </button>
+                        <button
+                          onClick={cancelEdit}
+                          className="flex items-center gap-1.5 px-4 py-2 rounded-xl border border-border text-sm font-medium hover:bg-muted transition-colors"
+                        >
+                          Ακύρωση
+                        </button>
+                      </div>
                     </div>
                   )}
 

@@ -172,13 +172,28 @@ router.patch("/admin/events/:id", requireAdmin, async (req, res) => {
 
   const parseResult = UpdateEventSubmissionBody.safeParse(req.body);
   if (!parseResult.success) {
-    res.status(400).json({ error: "Status deve essere 'approved' o 'rejected'" });
+    res.status(400).json({ error: "Μη έγκυρα δεδομένα" });
+    return;
+  }
+
+  const { status, title, description, eventTime, location, contactInfo, imageUrl } = parseResult.data;
+  const updateFields: Record<string, unknown> = {};
+  if (status !== undefined) { updateFields["status"] = status; updateFields["reviewedAt"] = new Date(); }
+  if (title !== undefined) updateFields["title"] = stripHtml(title);
+  if (description !== undefined) updateFields["description"] = stripHtml(description);
+  if (eventTime !== undefined) updateFields["eventTime"] = eventTime;
+  if (location !== undefined) updateFields["location"] = location ? stripHtml(location) : null;
+  if (contactInfo !== undefined) updateFields["contactInfo"] = contactInfo ? stripHtml(contactInfo) : null;
+  if (imageUrl !== undefined) updateFields["imageUrl"] = imageUrl ?? null;
+
+  if (Object.keys(updateFields).length === 0) {
+    res.status(400).json({ error: "Κανένα πεδίο για ενημέρωση" });
     return;
   }
 
   const [event] = await db
     .update(eventsTable)
-    .set({ status: parseResult.data.status, reviewedAt: new Date() })
+    .set(updateFields)
     .where(eq(eventsTable.id, id))
     .returning();
 
