@@ -359,6 +359,7 @@ const STATIC_META: Record<string, PageMeta> = {
   },
   "/news": {
     title: "Ειδήσεις Δρόπολης — Τελευταία Νέα & Ρεπορτάζ",
+    titleFinal: "Ειδήσεις Δρόπολης — Νέα & Ρεπορτάζ | Dropolis",
     description: "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα 41 χωριά της Βόρειας Ηπείρου. Ελληνική μειονότητα Αλβανία, Αργυρόκαστρο, πολιτισμός, εκπαίδευση.",
     url: `${BASE_URL}/news/`,
     breadcrumbs: [{ name: "Ειδήσεις", item: `${BASE_URL}/news/` }],
@@ -371,6 +372,7 @@ const STATIC_META: Record<string, PageMeta> = {
   },
   "/villages": {
     title: "Τα 41 Χωριά της Δρόπολης — Ιστορία & Πληροφορίες",
+    titleFinal: "41 Χωριά Δρόπολης — Ιστορία | Dropolis",
     description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Δρόπολης (Βόρεια Ήπειρος). Πληθυσμός, ιστορία, παραδόσεις και φωτογραφικό υλικό για κάθε χωριό.",
     url: `${BASE_URL}/villages/`,
     breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages/` }],
@@ -405,6 +407,7 @@ const STATIC_META: Record<string, PageMeta> = {
   },
   "/videos": {
     title: "Βίντεο Δρόπολης — Εκδηλώσεις & Ζωή στα Χωριά",
+    titleFinal: "Βίντεο Δρόπολης — Εκδηλώσεις | Dropolis",
     description: "Δείτε όλα τα τελευταία βίντεο, αφιερώματα, ρεπορτάζ και παραδοσιακές εκδηλώσεις από τα 41 χωριά της Δρόπολης και τη Βόρεια Ήπειρο.",
     url: `${BASE_URL}/videos/`,
     breadcrumbs: [{ name: "Βίντεο", item: `${BASE_URL}/videos/` }],
@@ -475,14 +478,14 @@ const STATIC_META: Record<string, PageMeta> = {
   },
   "/editorial-policy": {
     title: "Συντακτική Πολιτική — Dropolis",
-    description: "Οι συντακτικές αρχές του Dropolis — πολιτική πηγών, χρήση AI και αυτοματισμών, ανεξαρτησία και διαφάνεια.",
+    description: "Η συντακτική πολιτική του Dropolis — πληροφορίες για πηγές, ανεξαρτησία, χρήση AI και διαφάνεια στην ειδησεογραφία για τη Δρόπολη Β. Ηπείρου.",
     url: `${BASE_URL}/editorial-policy/`,
     breadcrumbs: [{ name: "Συντακτική Πολιτική", item: `${BASE_URL}/editorial-policy/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Συντακτική Πολιτική — Dropolis", url: `${BASE_URL}/editorial-policy/`, inLanguage: "el" },
   },
   "/corrections-policy": {
     title: "Πολιτική Διορθώσεων — Dropolis",
-    description: "Πώς μπορείτε να ζητήσετε διόρθωση άρθρου στο Dropolis — διαδικασία αξιολόγησης, χρονοδιάγραμμα και διαφάνεια.",
+    description: "Μάθετε πώς το Dropolis διαχειρίζεται αιτήματα διόρθωσης άρθρων — διαδικασία αξιολόγησης, χρονοδιάγραμμα απόκρισης και δέσμευση για διαφάνεια.",
     url: `${BASE_URL}/corrections-policy/`,
     breadcrumbs: [{ name: "Πολιτική Διορθώσεων", item: `${BASE_URL}/corrections-policy/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Πολιτική Διορθώσεων — Dropolis", url: `${BASE_URL}/corrections-policy/`, inLanguage: "el" },
@@ -496,7 +499,7 @@ const STATIC_META: Record<string, PageMeta> = {
   },
   "/advertise": {
     title: "Διαφήμιση — Dropolis",
-    description: "Πληροφορίες για διαφήμιση και χορηγία στο Dropolis — portal ειδήσεων της ελληνικής μειονότητας στη Βόρεια Ήπειρο.",
+    description: "Πληροφορίες για διαφήμιση και χορηγία στο Dropolis.net — portal ειδήσεων της ελληνικής μειονότητας στη Βόρεια Ήπειρο. Επικοινωνήστε μαζί μας.",
     url: `${BASE_URL}/advertise/`,
     breadcrumbs: [{ name: "Διαφήμιση", item: `${BASE_URL}/advertise/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Διαφήμιση — Dropolis", url: `${BASE_URL}/advertise/`, inLanguage: "el" },
@@ -575,14 +578,14 @@ const STATIC_META: Record<string, PageMeta> = {
   },
   "/faq": {
     title: "Συχνές Ερωτήσεις — Dropolis",
-    description: "Απαντήσεις σε συχνές ερωτήσεις για το Dropolis — πώς να υποβάλετε ειδήσεις, φωτογραφίες και βίντεο από τη Δρόπολη.",
+    description: "Απαντήσεις σε συχνές ερωτήσεις για το Dropolis.net — πώς να υποβάλετε ειδήσεις, φωτογραφίες και βίντεο από τα χωριά της Δρόπολης.",
     url: `${BASE_URL}/faq/`,
     breadcrumbs: [{ name: "Συχνές Ερωτήσεις", item: `${BASE_URL}/faq/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "FAQPage", name: "Συχνές Ερωτήσεις — Dropolis", url: `${BASE_URL}/faq/`, inLanguage: "el" },
   },
   "/events": {
     title: "Εκδηλώσεις & Πανηγύρια — Dropolis",
-    description: "Εκδηλώσεις, πανηγύρια και πολιτιστικές εκδηλώσεις από τα χωριά της Δρόπολης Β. Ηπείρου.",
+    description: "Ανακαλύψτε πανηγύρια, πολιτιστικές εκδηλώσεις και εορτασμούς από τα χωριά της Δρόπολης Β. Ηπείρου. Καταχωρήστε και τη δική σας εκδήλωση.",
     url: `${BASE_URL}/events/`,
     breadcrumbs: [{ name: "Εκδηλώσεις", item: `${BASE_URL}/events/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Εκδηλώσεις & Πανηγύρια — Dropolis", url: `${BASE_URL}/events/`, inLanguage: "el" },
@@ -596,21 +599,21 @@ const STATIC_META: Record<string, PageMeta> = {
   },
   "/submit-news": {
     title: "Στείλτε Είδηση — Dropolis",
-    description: "Υποβάλετε είδηση ή ανακοίνωση από τα χωριά της Δρόπολης. Η ομάδα μας αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
+    description: "Υποβάλετε είδηση ή ανακοίνωση από τα χωριά της Δρόπολης στο Dropolis.net. Η συντακτική ομάδα αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
     url: `${BASE_URL}/submit-news/`,
     breadcrumbs: [{ name: "Στείλτε Είδηση", item: `${BASE_URL}/submit-news/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Στείλτε Είδηση — Dropolis", url: `${BASE_URL}/submit-news/`, inLanguage: "el" },
   },
   "/submit-video": {
     title: "Ανεβάστε Βίντεο — Dropolis",
-    description: "Μοιραστείτε βίντεο από τα χωριά της Δρόπολης — εκδηλώσεις, πολιτισμός, τοπία. Η ομάδα αξιολογεί κάθε υποβολή.",
+    description: "Μοιραστείτε βίντεο από τα χωριά της Δρόπολης — εκδηλώσεις, πολιτισμός, τοπία. Η ομάδα του Dropolis.net αξιολογεί κάθε υποβολή πριν δημοσιευτεί.",
     url: `${BASE_URL}/submit-video/`,
     breadcrumbs: [{ name: "Ανεβάστε Βίντεο", item: `${BASE_URL}/submit-video/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ανεβάστε Βίντεο — Dropolis", url: `${BASE_URL}/submit-video/`, inLanguage: "el" },
   },
   "/upload-photo": {
     title: "Υποβολή Φωτογραφίας — Dropolis",
-    description: "Στείλτε τη δική σας φωτογραφία από τα χωριά της Δρόπολης. Κάθε υποβολή αξιολογείται πριν δημοσιευτεί.",
+    description: "Ανεβάστε τη δική σας φωτογραφία από τα χωριά της Δρόπολης στο Dropolis.net. Κάθε υποβολή αξιολογείται από την ομάδα μας πριν δημοσιευτεί.",
     url: `${BASE_URL}/upload-photo/`,
     noindex: false,
     breadcrumbs: [{ name: "Υποβολή Φωτογραφίας", item: `${BASE_URL}/upload-photo/` }],

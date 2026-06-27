@@ -537,7 +537,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
   {
     path: "/advertise",
     title: "Διαφήμιση",
-    description: "Πληροφορίες για διαφήμιση και χορηγία στο Dropolis — portal ειδήσεων της ελληνικής μειονότητας στη Βόρεια Ήπειρο.",
+    description: "Πληροφορίες για διαφήμιση και χορηγία στο Dropolis.net — portal ειδήσεων της ελληνικής μειονότητας στη Βόρεια Ήπειρο. Επικοινωνήστε μαζί μας.",
     url: `${BASE_URL}/advertise`,
     breadcrumbs: [{ name: "Διαφήμιση", item: `${BASE_URL}/advertise` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Διαφήμιση — Dropolis", url: `${BASE_URL}/advertise`, inLanguage: "el" },
@@ -671,7 +671,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
   {
     path: "/submit-news",
     title: "Στείλτε Είδηση",
-    description: "Υποβάλετε είδηση, ανακοίνωση ή ρεπορτάζ από τη Δρόπολη. Η σύνταξη αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
+    description: "Υποβάλετε είδηση ή ανακοίνωση από τα χωριά της Δρόπολης στο Dropolis.net. Η συντακτική ομάδα αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
     url: `${BASE_URL}/submit-news`,
     breadcrumbs: [{ name: "Στείλτε Είδηση", item: `${BASE_URL}/submit-news` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Στείλτε Είδηση — Dropolis", url: `${BASE_URL}/submit-news`, inLanguage: "el" },
@@ -679,7 +679,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
   {
     path: "/upload-photo",
     title: "Ανέβασε Φωτογραφία",
-    description: "Μοιραστείτε φωτογραφίες από τα χωριά της Δρόπολης. Υποβολή εικόνων για το φωτογραφικό αρχείο του Dropolis.",
+    description: "Ανεβάστε τη δική σας φωτογραφία από τα χωριά της Δρόπολης στο Dropolis.net. Κάθε υποβολή αξιολογείται από την ομάδα μας πριν δημοσιευτεί.",
     url: `${BASE_URL}/upload-photo`,
     breadcrumbs: [{ name: "Υποβολή Φωτογραφίας", item: `${BASE_URL}/upload-photo` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ανέβασε Φωτογραφία — Dropolis", url: `${BASE_URL}/upload-photo`, inLanguage: "el" },
@@ -687,7 +687,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
   {
     path: "/submit-video",
     title: "Ανεβάστε Βίντεο",
-    description: "Μοιραστείτε βίντεο από τη Δρόπολη. Υποβολή YouTube link για το αρχείο βίντεο του Dropolis.",
+    description: "Μοιραστείτε βίντεο από τα χωριά της Δρόπολης — εκδηλώσεις, πολιτισμός, τοπία. Η ομάδα του Dropolis.net αξιολογεί κάθε υποβολή πριν δημοσιευτεί.",
     url: `${BASE_URL}/submit-video`,
     breadcrumbs: [{ name: "Ανεβάστε Βίντεο", item: `${BASE_URL}/submit-video` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Ανεβάστε Βίντεο — Dropolis", url: `${BASE_URL}/submit-video`, inLanguage: "el" },
@@ -826,6 +826,14 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
         ],
       },
     ],
+  },
+  {
+    path: "/events",
+    title: "Εκδηλώσεις & Πανηγύρια",
+    description: "Ανακαλύψτε πανηγύρια, πολιτιστικές εκδηλώσεις και εορτασμούς από τα χωριά της Δρόπολης Β. Ηπείρου. Καταχωρήστε και τη δική σας εκδήλωση.",
+    url: `${BASE_URL}/events`,
+    breadcrumbs: [{ name: "Εκδηλώσεις", item: `${BASE_URL}/events` }],
+    jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Εκδηλώσεις & Πανηγύρια — Dropolis", url: `${BASE_URL}/events`, inLanguage: "el" },
   },
 ];
 
