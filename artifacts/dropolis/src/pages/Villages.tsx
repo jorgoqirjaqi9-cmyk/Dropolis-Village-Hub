@@ -14,6 +14,12 @@ const UNITS = [
   { key: "Δημοτική Ενότητα Πωγωνίου",       label: "Δ.Ε. Πωγωνίου" },
 ];
 
+const UNIT_SHORT: Record<string, { label: string; color: string }> = {
+  "Δημοτική Ενότητα Κάτω Δρόπολης": { label: "Κάτω Δρόπολη", color: "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200" },
+  "Δημοτική Ενότητα Άνω Δρόπολης":  { label: "Άνω Δρόπολη",  color: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200" },
+  "Δημοτική Ενότητα Πωγωνίου":       { label: "Δ.Ε. Πωγωνίου", color: "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200" },
+};
+
 export default function Villages() {
   const { data: villages, isLoading } = useListVillages();
   const [searchTerm, setSearchTerm] = useState(() => {
@@ -180,6 +186,12 @@ export default function Villages() {
                       {village.name}
                     </span>
                   </div>
+
+                  {village.municipalUnit && UNIT_SHORT[village.municipalUnit] && (
+                    <span className={`inline-flex self-start text-[10px] font-semibold px-2 py-0.5 rounded-full mb-2 ${UNIT_SHORT[village.municipalUnit].color}`}>
+                      {UNIT_SHORT[village.municipalUnit].label}
+                    </span>
+                  )}
 
                   <p className="text-muted-foreground text-sm line-clamp-2 mb-4 flex-grow">
                     {(village.description ?? "").replace(/^#{1,6}\s+[^\n]*\n?/, "").replace(/\*\*/g, "").trim()}
