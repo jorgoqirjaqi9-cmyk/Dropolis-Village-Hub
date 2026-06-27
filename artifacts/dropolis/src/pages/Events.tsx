@@ -200,7 +200,7 @@ export default function Events() {
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 flex-1">
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1 whitespace-pre-line">
                   {ev.description}
                 </p>
                 {ev.contactInfo && (
