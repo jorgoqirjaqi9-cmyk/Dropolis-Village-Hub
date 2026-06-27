@@ -33,31 +33,45 @@ for (const [from, to] of Object.entries(PERMANENT_REDIRECTS)) {
 // looks exactly like Latin "a") was stored or linked instead of its Latin
 // counterpart. Issue a 301 to the clean Latin-only slug so crawlers
 // consolidate ranking signals to the canonical URL.
-const CYRILLIC_LOOKALIKES: [RegExp, string][] = [
-  [/\u0430/g, "a"], // а → a
-  [/\u0435/g, "e"], // е → e
-  [/\u043e/g, "o"], // о → o
-  [/\u0440/g, "r"], // р → r
-  [/\u0441/g, "c"], // с → c
-  [/\u0445/g, "x"], // х → x
-  [/\u0443/g, "u"], // у → u
+//
+// IMPORTANT: uses String#includes / String#replaceAll (plain strings, NOT
+// /g regexes) to avoid the global-regex lastIndex state bug that causes
+// alternating pass/fail across requests when reusing module-level regex objects.
+const CYRILLIC_LOOKALIKES: [string, string][] = [
+  ["\u0430", "a"], // а → a  (CYRILLIC SMALL LETTER A)
+  ["\u0435", "e"], // е → e  (CYRILLIC SMALL LETTER IE)
+  ["\u043e", "o"], // о → o  (CYRILLIC SMALL LETTER O)
+  ["\u0440", "r"], // р → r  (CYRILLIC SMALL LETTER ER)
+  ["\u0441", "c"], // с → c  (CYRILLIC SMALL LETTER ES)
+  ["\u0445", "x"], // х → x  (CYRILLIC SMALL LETTER HA)
+  ["\u0443", "u"], // у → u  (CYRILLIC SMALL LETTER U)
 ];
 
 function hasCyrillicLookalike(s: string): boolean {
-  return CYRILLIC_LOOKALIKES.some(([re]) => re.test(s));
+  return CYRILLIC_LOOKALIKES.some(([ch]) => s.includes(ch));
 }
 
 function latinizeCyrillicSlug(s: string): string {
   let result = s;
-  for (const [re, ch] of CYRILLIC_LOOKALIKES) {
-    result = result.replace(re, ch);
+  for (const [from, to] of CYRILLIC_LOOKALIKES) {
+    result = result.replaceAll(from, to);
   }
   return result;
 }
 
+// Express (via parseurl) does NOT decode percent-encoded chars in req.path —
+// %D0%B0 stays as-is, not decoded to the Cyrillic 'а'. Use decodeURIComponent
+// explicitly before checking, with a try/catch for malformed sequences.
 router.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.path.startsWith("/news/") && hasCyrillicLookalike(req.path)) {
-    const clean = latinizeCyrillicSlug(req.path);
+  let path: string;
+  try {
+    path = decodeURIComponent(req.path);
+  } catch {
+    path = req.path;
+  }
+
+  if (path.startsWith("/news/") && hasCyrillicLookalike(path)) {
+    const clean = latinizeCyrillicSlug(path);
     const target = clean.endsWith("/") ? clean : `${clean}/`;
     res.redirect(301, target);
     return;

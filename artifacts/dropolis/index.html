@@ -134,7 +134,7 @@
          setTimeout(2000) after window.load gives React enough time to complete its
          initial render and paint the LCP hero before AdSense runs its Long Tasks. -->
     <script>
-      var NO_ADS_ROUTES = ['/chat','/upload-photo','/submit-news','/submit-video','/privacy','/terms','/cookie-policy','/disclaimer','/diaspora'];
+      var NO_ADS_ROUTES = ['/chat','/upload-photo','/submit-news','/submit-video','/submit-event','/privacy','/terms','/cookie-policy','/disclaimer','/diaspora'];
       function dropolisAdsAllowed(p) {
         if (!p || p === '/') return true;
         for (var i = 0; i < NO_ADS_ROUTES.length; i++) {
