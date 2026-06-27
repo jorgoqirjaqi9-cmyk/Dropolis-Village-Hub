@@ -62,7 +62,7 @@ export default function Events() {
     <div className="container mx-auto px-4 py-8 max-w-5xl space-y-8">
       <SEO
         title="Εκδηλώσεις & Πανηγύρια — Δρόπολη"
-        description="Εκδηλώσεις, πανηγύρια και πολιτιστικές εκδηλώσεις από τα χωριά της Δρόπολης Β. Ηπείρου."
+        description="Ανακαλύψτε πανηγύρια, πολιτιστικές εκδηλώσεις και εορτασμούς από τα χωριά της Δρόπολης Β. Ηπείρου. Καταχωρήστε και τη δική σας εκδήλωση."
         breadcrumbs={[{ name: "Εκδηλώσεις", url: "/events/" }]}
         jsonLd={{
           "@context": "https://schema.org",
@@ -237,6 +237,112 @@ export default function Events() {
           <ChevronRight className="w-4 h-4" />
         </Link>
       </div>
+
+      {/* SEO content section */}
+      <section aria-label="Πληροφορίες για τις εκδηλώσεις της Δρόπολης" className="rounded-2xl border border-border bg-card p-6 md:p-8 space-y-6 text-sm leading-relaxed text-muted-foreground">
+        <h2 className="text-xl md:text-2xl font-serif font-bold text-foreground">
+          Πανηγύρια και Εκδηλώσεις στη Δρόπολη
+        </h2>
+        <p>
+          Η σελίδα Εκδηλώσεις &amp; Πανηγύρια του Dropolis.net συγκεντρώνει ανακοινώσεις από τα 41 χωριά
+          της Δρόπολης και της Βόρειας Ηπείρου. Εδώ προβάλλονται πανηγύρια, πολιτιστικές βραδιές,
+          θρησκευτικοί εορτασμοί, χορευτικές εκδηλώσεις, συναυλίες και κάθε κοινοτική δραστηριότητα
+          που αφορά τα χωριά της περιοχής — από το Άνω ως το Κάτω Δρόπολι.
+        </p>
+
+        <div className="space-y-2">
+          <h3 className="text-base font-semibold text-foreground">Γιατί να καταχωρήσετε την εκδήλωσή σας</h3>
+          <p>
+            Καταχωρώντας μια εκδήλωση στο Dropolis.net, ενημερώνετε άμεσα την κοινότητα — τους κατοίκους
+            που ζουν στα χωριά αλλά και την ομογένεια που βρίσκεται στην Ελλάδα, στη Γερμανία, στην
+            Αυστραλία και σε κάθε γωνιά του κόσμου. Η ανακοίνωση εμφανίζεται στη λίστα εκδηλώσεων, μπορεί
+            να συνδεθεί με το αντίστοιχο{" "}
+            <Link href="/villages/" className="text-primary hover:underline font-medium">
+              χωριό στον κατάλογο
+            </Link>{" "}
+            και να συνοδεύεται από{" "}
+            <Link href="/photos/" className="text-primary hover:underline font-medium">
+              φωτογραφίες
+            </Link>{" "}
+            που αποτυπώνουν τη στιγμή.
+          </p>
+          <p>
+            Κάθε εκδήλωση που δημοσιεύεται γίνεται μέρος του ψηφιακού αρχείου της Δρόπολης. Δεν είναι
+            μόνο ανακοίνωση — είναι τεκμηρίωση. Η καταγραφή δίνει στους νέους της ομογένειας τη
+            δυνατότητα να μάθουν, να παρακολουθήσουν και να συμμετάσχουν ακόμα κι από μακριά.
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="text-base font-semibold text-foreground">Η ζωντανή παράδοση των χωριών</h3>
+          <p>
+            Η παράδοση της Δρόπολης ζει μέσα από τις πλατείες, τις εκκλησίες, τα τραγούδια, τους χορούς
+            και τις οικογενειακές συναντήσεις. Κάθε εκδήλωση είναι μια μικρή μαρτυρία συνέχειας: ενώνει
+            ανθρώπους που ζουν στα χωριά με όσους βρίσκονται σε άλλες πόλεις και χώρες.
+          </p>
+          <p>
+            Τα πανηγύρια στα χωριά της Δρόπολης — από τα Βρυσέρα και τον Άγιο Βασίλη μέχρι τη Λέκλη
+            και τη Σελεβίτσα — διατηρούν ζωντανά έθιμα αιώνων. Αγιασμοί, παραδοσιακά τραγούδια,
+            χορευτικά συγκροτήματα συλλόγων και εκδηλώσεις μνήμης αποτελούν τον πυρήνα της κοινοτικής
+            ζωής. Το Dropolis.net τα καταγράφει και τα κρατά ζωντανά — τόσο σε{" "}
+            <Link href="/news/" className="text-primary hover:underline font-medium">
+              ειδήσεις
+            </Link>{" "}
+            όσο και σε{" "}
+            <Link href="/photos/" className="text-primary hover:underline font-medium">
+              φωτογραφίες
+            </Link>
+            .
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="text-base font-semibold text-foreground">Πώς βοηθά η συμμετοχή της κοινότητας</h3>
+          <p>
+            Μέσα από το Dropolis.net μπορείτε να στείλετε την εκδήλωση του χωριού σας με ημερομηνία, ώρα,
+            τοποθεσία, περιγραφή και φωτογραφία. Μετά τον έλεγχο της ομάδας, η ανακοίνωση εμφανίζεται
+            αμέσως στη σελίδα εκδηλώσεων και μπορεί να συνδεθεί με το αντίστοιχο χωριό στα{" "}
+            <Link href="/villages/" className="text-primary hover:underline font-medium">
+              41 χωριά της Δρόπολης
+            </Link>
+            .
+          </p>
+          <p>
+            Η συμμετοχή κάθε χωριού ενισχύει έναν κοινό ψηφιακό τόπο μνήμης και επικοινωνίας. Όσο
+            περισσότερες εκδηλώσεις καταχωρούνται, τόσο πιο πλούσια γίνεται η εικόνα της σύγχρονης
+            Δρόπολης — για κατοίκους, για απόδημους, για ιστορικούς και για κάθε άνθρωπο που νιώθει
+            δεσμό με αυτή τη γωνιά της Βόρειας Ηπείρου.
+          </p>
+          <p>
+            Αν έχετε μια εκδήλωση να ανακοινώσετε — πανηγύρι, εορτασμό, πολιτιστική βραδιά ή
+            οποιαδήποτε κοινοτική δραστηριότητα — μπορείτε να την{" "}
+            <Link href="/submit-event/" className="text-primary hover:underline font-medium">
+              καταχωρήσετε εδώ
+            </Link>
+            .
+          </p>
+        </div>
+
+        {/* Internal links row */}
+        <div className="pt-2 border-t border-border flex flex-wrap gap-3">
+          <Link href="/submit-event/" className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline font-medium">
+            <CalendarDays className="w-3.5 h-3.5" />
+            Καταχώρηση εκδήλωσης
+          </Link>
+          <Link href="/villages/" className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline font-medium">
+            <ChevronRight className="w-3.5 h-3.5" />
+            41 Χωριά Δρόπολης
+          </Link>
+          <Link href="/photos/" className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline font-medium">
+            <ChevronRight className="w-3.5 h-3.5" />
+            Φωτογραφίες
+          </Link>
+          <Link href="/news/" className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline font-medium">
+            <ChevronRight className="w-3.5 h-3.5" />
+            Ειδήσεις Δρόπολης
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

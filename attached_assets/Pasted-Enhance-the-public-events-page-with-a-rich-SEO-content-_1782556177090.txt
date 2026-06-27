@@ -1,0 +1,23 @@
+Enhance the public /events/ page with a rich SEO content section of 400-600 Greek words placed BELOW the events list/cards and above the footer. Do not change event CRUD/API/admin behavior.
+
+Requirements:
+1) Add a semantic SEO section with proper headings:
+- h2: "Πανηγύρια και Εκδηλώσεις στη Δρόπολη"
+- h3 sections for: "Γιατί να καταχωρήσετε την εκδήλωσή σας", "Η ζωντανή παράδοση των χωριών", "Πώς βοηθά η συμμετοχή της κοινότητας"
+2) The text must be original Greek content, natural and non-spammy, focused on: Δρόπολη, 41 χωριά, Βόρεια Ήπειρος, πανηγύρια, πολιτιστικές εκδηλώσεις, εορτασμοί, χοροί, τραγούδια, ομογένεια, κοινότητα, ανακοινώσεις χωριών.
+3) Include internal links in the text or CTA row to:
+- /submit-event/
+- /villages/
+- /photos/
+- /news/
+4) Keep layout responsive and visually consistent with the existing dark Dropolis design. Use readable paragraphs, not one huge block. No marketing hero, no duplicate cards inside cards.
+5) Add/verify Event page JSON-LD and meta description remain valid (title <= 60, description 120-155). Keep /events/ indexed.
+6) Run typecheck/build/prerender and verify /events/ returns 200 with one H1, valid title/description, and the new h2 visible.
+7) Republish if checks pass and report changed files.
+
+Suggested content direction, rewrite naturally in the component:
+"Η σελίδα Εκδηλώσεις & Πανηγύρια του Dropolis.net συγκεντρώνει ανακοινώσεις από τα χωριά της Δρόπολης και της Βόρειας Ηπείρου. Εδώ μπορούν να προβάλλονται πανηγύρια, πολιτιστικές βραδιές, θρησκευτικοί εορτασμοί, χορευτικές εκδηλώσεις, συναυλίες, συναντήσεις συλλόγων και σημαντικές δράσεις της κοινότητας. Στόχος είναι κάθε χωριό να έχει χώρο για να ενημερώνει έγκαιρα τους κατοίκους, την ομογένεια και όσους αγαπούν τον τόπο.
+
+Η παράδοση της Δρόπολης ζει μέσα από τις πλατείες, τις εκκλησίες, τα τραγούδια, τους χορούς και τις οικογενειακές συναντήσεις. Κάθε εκδήλωση είναι μια μικρή μαρτυρία συνέχειας: ενώνει ανθρώπους που ζουν στα χωριά με όσους βρίσκονται στην Ελλάδα, στην Αλβανία, στην Ευρώπη, στην Αμερική, στον Καναδά και στην Αυστραλία. Όταν μια ανακοίνωση δημοσιεύεται σωστά, βοηθά περισσότερους ανθρώπους να μάθουν πότε και πού γίνεται το πανηγύρι, ποιοι συμμετέχουν και πώς μπορούν να βρεθούν κοντά.
+
+Μέσα από το Dropolis.net μπορείτε να στείλετε την εκδήλωση του χωριού σας με ημερομηνία, ώρα, τοποθεσία, περιγραφή και φωτογραφία. Μετά τον έλεγχο της ομάδας, η ανακοίνωση εμφανίζεται στη σελίδα εκδηλώσεων και μπορεί να συνδεθεί με το αντίστοιχο χωριό, τις φωτογραφίες, τα νέα και το αρχείο της κοινότητας. Έτσι δημιουργείται σταδιακά ένα χρήσιμο ψηφιακό ημερολόγιο για τα 41 χωριά της Δρόπολης, ανοιχτό σε όλους και εύκολο να το βρουν οι μηχανές αναζήτησης."
