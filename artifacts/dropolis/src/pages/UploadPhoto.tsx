@@ -341,7 +341,7 @@ export default function UploadPhoto() {
             maxLength={200}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="π.χ. Πανήγυρι Αγίου Γεωργίου στη Δερβιτσιάνη"
+            placeholder="π.χ. Πανηγύρι Αγίου Γεωργίου στη Δερβιτσιάνη"
             className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>

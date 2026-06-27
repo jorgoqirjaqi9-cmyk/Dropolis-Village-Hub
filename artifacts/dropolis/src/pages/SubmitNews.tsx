@@ -268,7 +268,7 @@ export default function SubmitNews() {
           {errors["imageUrl"] && (
             <p className="text-destructive text-xs flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors["imageUrl"]}</p>
           )}
-          <p className="text-xs text-muted-foreground">Εισάγετε τον σύνδεσμο (URL) μιας εικόνας στο internet που σχετίζεται με την είδηση.</p>
+          <p className="text-xs text-muted-foreground">Εισάγετε τον σύνδεσμο (URL) μιας εικόνας στο διαδίκτυο που σχετίζεται με την είδηση.</p>
         </div>
 
         <hr className="border-border" />

@@ -373,19 +373,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <ol className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-start gap-3">
                 <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">1</span>
-                <span>Πάτα το κουμπί κοινής χρήσης <Share size={14} className="inline" /> στο κάτω μέρος του Safari</span>
+                <span>Πατήστε το κουμπί κοινής χρήσης <Share size={14} className="inline" /> στο κάτω μέρος του Safari</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">2</span>
-                <span>Κύλισε κάτω και επίλεξε <strong className="text-foreground">«Προσθήκη στην οθόνη Αφετηρίας»</strong></span>
+                <span>Κυλήστε κάτω και επιλέξτε <strong className="text-foreground">«Προσθήκη στην οθόνη αφετηρίας»</strong></span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">3</span>
-                <span>Πάτα <strong className="text-foreground">«Προσθήκη»</strong> — η εφαρμογή θα εμφανιστεί στην αρχική οθόνη σου</span>
+                <span>Πατήστε <strong className="text-foreground">«Προσθήκη»</strong> — η εφαρμογή θα εμφανιστεί στην αρχική οθόνη σας</span>
               </li>
             </ol>
             <p className="text-xs text-muted-foreground mt-4 p-3 bg-muted rounded-lg">
-              💡 Λειτουργεί μόνο από τον <strong>Safari</strong>. Αν χρησιμοποιείς Chrome ή Firefox, άνοιξε τη σελίδα στο Safari.
+              💡 Λειτουργεί μόνο από τον <strong>Safari</strong>. Αν χρησιμοποιείτε Chrome ή Firefox, ανοίξτε τη σελίδα στο Safari.
             </p>
           </div>
         </div>

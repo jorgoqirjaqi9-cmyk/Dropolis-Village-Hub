@@ -154,7 +154,7 @@ export default function Home() {
                 Στείλτε Είδηση
               </Link>
               <Link href="/upload-photo/" className="min-h-10 rounded-full border border-amber-400/40 bg-amber-500/20 px-4 py-2 text-sm font-semibold text-amber-100 backdrop-blur transition hover:bg-amber-500/35 focus:outline-none focus:ring-2 focus:ring-amber-400/60">
-                Ανέβασε Φωτογραφία
+                Ανεβάστε Φωτογραφία
               </Link>
               <Link href="/submit-video/" className="min-h-10 rounded-full border border-violet-400/40 bg-violet-500/20 px-4 py-2 text-sm font-semibold text-violet-100 backdrop-blur transition hover:bg-violet-500/35 focus:outline-none focus:ring-2 focus:ring-violet-400/60">
                 Ανεβάστε Βίντεο
@@ -342,7 +342,7 @@ export default function Home() {
             <p className={`text-xs mt-0.5 ${isInstalled ? "text-muted-foreground" : "text-primary-foreground/60"}`}>
               {isInstalled
                 ? "Μπορείτε να ανοίξετε το Dropolis απευθείας από την οθόνη σας."
-                : "Γρήγορη πρόσβαση στις ειδήσεις — χωρίς browser, δουλεύει offline."}
+                : "Γρήγορη πρόσβαση στις ειδήσεις — χωρίς browser, λειτουργεί και εκτός σύνδεσης."}
             </p>
           </div>
           {!isInstalled && (
@@ -363,29 +363,29 @@ export default function Home() {
                 <Smartphone size={20} className="text-primary" /> Εγκατάσταση στο iPhone / iPad
               </DialogTitle>
               <DialogDescription>
-                Το Safari δεν υποστηρίζει αυτόματη εγκατάσταση. Ακολούθησε τα παρακάτω βήματα:
+                Το Safari δεν υποστηρίζει αυτόματη εγκατάσταση. Ακολουθήστε τα παρακάτω βήματα:
               </DialogDescription>
             </DialogHeader>
             <ol className="space-y-4 mt-2">
               <li className="flex items-start gap-3">
                 <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
                 <div>
-                  <p className="text-sm font-medium">Πάτησε το κουμπί Κοινοποίηση</p>
+                  <p className="text-sm font-medium">Πατήστε το κουμπί Κοινοποίηση</p>
                   <p className="text-xs text-muted-foreground mt-0.5">Βρίσκεται στο κάτω μέρος του Safari <span className="inline-block">⬆️</span></p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
                 <div>
-                  <p className="text-sm font-medium">Επίλεξε «Προσθήκη στην οθόνη αφετηρίας»</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Κύλισε προς τα κάτω στο μενού επιλογών</p>
+                  <p className="text-sm font-medium">Επιλέξτε «Προσθήκη στην οθόνη αφετηρίας»</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Κυλήστε προς τα κάτω στο μενού επιλογών</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
                 <div>
-                  <p className="text-sm font-medium">Πάτησε «Προσθήκη»</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Το Dropolis θα εμφανιστεί στην αρχική οθόνη σου</p>
+                  <p className="text-sm font-medium">Πατήστε «Προσθήκη»</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Το Dropolis θα εμφανιστεί στην αρχική οθόνη σας</p>
                 </div>
               </li>
             </ol>
@@ -400,11 +400,11 @@ export default function Home() {
                 <Download size={20} className="text-primary" /> Εγκατάσταση εφαρμογής
               </DialogTitle>
               <DialogDescription>
-                Ο browser σου μπορεί να υποστηρίζει εγκατάσταση ως εφαρμογή.
+                Ο browser σας μπορεί να υποστηρίζει εγκατάσταση ως εφαρμογή.
               </DialogDescription>
             </DialogHeader>
             <div className="mt-2 space-y-3 text-sm text-foreground">
-              <p>Άνοιξε το μενού του browser σου <span className="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">⋮</span> ή <span className="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">≡</span> και επίλεξε:</p>
+              <p>Ανοίξτε το μενού του browser σας <span className="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">⋮</span> ή <span className="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">≡</span> και επιλέξτε:</p>
               <ul className="space-y-2 pl-2">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
@@ -652,12 +652,12 @@ export default function Home() {
 
               <div className="mt-5 pt-5 border-t border-border/50">
                 <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
-                  Έχεις φωτογραφία από κάποιο χωριό της Δρόπολης; Στείλ' την στο φωτογραφικό αρχείο.
+                  Έχετε φωτογραφία από κάποιο χωριό της Δρόπολης; Στείλτε την στο φωτογραφικό αρχείο.
                 </p>
                 <Link href="/upload-photo/">
                   <span className="inline-flex items-center gap-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground px-4 py-2 text-sm font-semibold transition-colors cursor-pointer">
                     <Camera size={14} />
-                    Ανέβασε φωτογραφία χωριού
+                    Ανεβάστε φωτογραφία χωριού
                   </span>
                 </Link>
               </div>

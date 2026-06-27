@@ -52,7 +52,7 @@ export default function Photos() {
       {/* Upload CTA */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-primary/20 bg-primary/5 px-6 py-4">
         <div>
-          <p className="font-semibold text-foreground">Έχεις φωτογραφίες από τη Δρόπολη;</p>
+          <p className="font-semibold text-foreground">Έχετε φωτογραφίες από τη Δρόπολη;</p>
           <p className="text-sm text-muted-foreground mt-0.5">Κάθε υποβολή αξιολογείται από την ομάδα μας πριν δημοσιευτεί.</p>
         </div>
         <Link
@@ -60,7 +60,7 @@ export default function Photos() {
           className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm"
         >
           <Upload className="w-4 h-4" />
-          Ανέβασε τη δική σου φωτογραφία
+          Ανεβάστε τη δική σας φωτογραφία
         </Link>
       </div>
 
