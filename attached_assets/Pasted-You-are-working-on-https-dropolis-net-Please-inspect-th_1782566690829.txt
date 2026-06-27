@@ -1,0 +1,50 @@
+You are working on https://dropolis.net. Please inspect the existing codebase first and make focused production fixes based on this audit.
+
+Audit findings to fix:
+
+1. AdSense zero-width slot error
+Rendered browser logs show:
+adsbygoogle.push() error: No slot size for availableWidth=0
+
+Fix all AdSense components/initialization so adsbygoogle.push({}) is only called when the ad container is visible and has measurable width > 0. Avoid initializing ads inside hidden responsive containers. Use a safe guard with offsetWidth/getBoundingClientRect and, if needed, ResizeObserver or a short retry. Do not push ads for hidden slots. Check homepage and /contact/. Consider adding /contact/ to no-ads routes if it only contains hidden/invalid ad placement.
+
+2. Sitemap media issue
+The sitemap currently puts .mp4 URLs inside image:image / image:loc. Remove video/mp4 URLs from image:loc. If video sitemap support exists or is easy to add safely, use proper video:video markup instead. Otherwise just exclude videos from image sitemap entries.
+
+3. Canonical/slug issue
+There is one URL with a Cyrillic “а” in the slug:
+https://dropolis.net/news/pokoni-ellinofonа-xoria-voreiotera-drapolis/
+
+Create/fix a clean Latin-only slug:
+pokoni-ellinofona-xoria-voreiotera-drapolis
+
+Add a 301 redirect from the old Cyrillic-character URL to the clean URL. Update canonical and sitemap to use the clean URL only.
+
+4. Performance improvements
+Mobile Lighthouse was 74/100. Improve without redesigning:
+- reduce unnecessary main-thread/layout work on homepage
+- lazy-load unused UI/vendor code where reasonable, especially Radix-heavy components if they are not needed above the fold
+- optimize oversized article/thumbnail images and responsive srcsets
+- keep AdSense delayed but safe, as above
+
+5. Accessibility fixes
+Fix Lighthouse accessibility issues:
+- color contrast in header/nav/glass-card areas
+- visible labels that do not match accessible names
+- icon-only/social/language buttons need accurate aria-labels
+- footer inline links need larger tap targets or better spacing
+
+6. Public forms hardening
+Do not change UX heavily, but verify public forms have server-side validation/rate limiting/honeypot handling. Keep no-ads routes for upload/submit/legal pages. Do not add a CAPTCHA unless necessary; if adding one, keep it optional/configurable.
+
+Validation required:
+- Run build/tests.
+- Verify sitemap.xml returns 200 and includes no image:loc .mp4 entries.
+- Verify ads.txt still contains:
+google.com, pub-3960290713410584, DIRECT, f08c47fec0942fa0
+- Verify homepage, /contact/, /privacy/, /upload-photo/, /submit-news/, /submit-video/, /submit-event/ render without console errors.
+- Verify no horizontal overflow on mobile width around 390px.
+- Verify SEO basics remain: title, meta description, canonical, robots, structured data.
+- Summarize files changed and exact fixes made.
+
+Keep changes focused. Do not redesign the site. Do not remove existing content, analytics, legal pages, or consent behavior unless needed for the fixes above.

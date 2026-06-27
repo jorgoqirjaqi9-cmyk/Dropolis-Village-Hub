@@ -264,7 +264,7 @@ async function handleSitemapXml(req: Request, res: Response): Promise<void> {
     </news:news>`);
       }
 
-      if (a.imageUrl && a.title) {
+      if (a.imageUrl && a.title && !/\.(mp4|webm|mov|avi|mkv|ogv)(\?.*)?$/i.test(a.imageUrl)) {
         const absoluteImageUrl = a.imageUrl.startsWith("/") ? `${BASE_URL}${a.imageUrl}` : a.imageUrl;
         parts.push(`    <image:image>
       <image:loc>${escapeXml(absoluteImageUrl)}</image:loc>

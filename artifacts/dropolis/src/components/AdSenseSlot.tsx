@@ -24,7 +24,7 @@ declare global {
 }
 
 const AD_EXCLUDED_PREFIXES = [
-  "/chat", "/upload-photo", "/submit-news", "/submit-video",
+  "/chat", "/upload-photo", "/submit-news", "/submit-video", "/submit-event",
   "/admin", "/privacy", "/terms", "/cookie-policy", "/disclaimer", "/diaspora",
 ];
 
@@ -57,8 +57,13 @@ export function AdSenseSlot({
     // the root cause of the 56 ms forced reflow flagged by Lighthouse: React
     // would commit, run effects, hit the offsetWidth read, and stall the main
     // thread before the hero image could paint.
-    const observer = new ResizeObserver(() => {
-      if (pushed.current || el.offsetWidth <= 0) return;
+    const observer = new ResizeObserver((entries) => {
+      if (pushed.current) return;
+      // Use the ResizeObserver entry's contentRect — more reliable than
+      // el.offsetWidth because it reflects the actual rendered box size and
+      // returns 0 for display:none elements without a forced layout reflow.
+      const w = entries[0]?.contentRect.width ?? 0;
+      if (w <= 0) return;
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
         pushed.current = true;

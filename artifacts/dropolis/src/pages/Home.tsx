@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
 import { Link } from "wouter";
 import { articleUrl } from "@/lib/article-url";
 import { format } from "date-fns";
@@ -10,9 +10,10 @@ import { AdSenseSlot } from "@/components/AdSenseSlot";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Newspaper, Users, Image as ImageIcon, Video as VideoIcon, ChevronDown, ArrowRight, Shield, Globe, Smartphone, Download, X, Camera, CheckCircle2, UsersRound, Map } from "lucide-react";
 import { usePWAInstall } from "@/hooks/use-pwa-install";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { WeatherWidget } from "@/components/WeatherWidget";
 import { OptimizedImg } from "@/components/OptimizedImg";
+
+const PWAInstallDialogs = lazy(() => import("@/components/PWAInstallDialogs"));
 
 const COMMUNITY_CATEGORY = "Ειδήσεις Κοινότητας";
 
@@ -355,70 +356,19 @@ export default function Home() {
           )}
         </div>
 
-        {/* iOS install modal */}
-        <Dialog open={showIOSModal} onOpenChange={setShowIOSModal}>
-          <DialogContent className="max-w-sm">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2 font-serif">
-                <Smartphone size={20} className="text-primary" /> Εγκατάσταση στο iPhone / iPad
-              </DialogTitle>
-              <DialogDescription>
-                Το Safari δεν υποστηρίζει αυτόματη εγκατάσταση. Ακολουθήστε τα παρακάτω βήματα:
-              </DialogDescription>
-            </DialogHeader>
-            <ol className="space-y-4 mt-2">
-              <li className="flex items-start gap-3">
-                <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-                <div>
-                  <p className="text-sm font-medium">Πατήστε το κουμπί Κοινοποίηση</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Βρίσκεται στο κάτω μέρος του Safari <span className="inline-block">⬆️</span></p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-                <div>
-                  <p className="text-sm font-medium">Επιλέξτε «Προσθήκη στην οθόνη αφετηρίας»</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Κυλήστε προς τα κάτω στο μενού επιλογών</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-                <div>
-                  <p className="text-sm font-medium">Πατήστε «Προσθήκη»</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Το Dropolis θα εμφανιστεί στην αρχική οθόνη σας</p>
-                </div>
-              </li>
-            </ol>
-          </DialogContent>
-        </Dialog>
-
-        {/* Generic browser install modal */}
-        <Dialog open={showGenericModal} onOpenChange={setShowGenericModal}>
-          <DialogContent className="max-w-sm">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2 font-serif">
-                <Download size={20} className="text-primary" /> Εγκατάσταση εφαρμογής
-              </DialogTitle>
-              <DialogDescription>
-                Ο browser σας μπορεί να υποστηρίζει εγκατάσταση ως εφαρμογή.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="mt-2 space-y-3 text-sm text-foreground">
-              <p>Ανοίξτε το μενού του browser σας <span className="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">⋮</span> ή <span className="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">≡</span> και επιλέξτε:</p>
-              <ul className="space-y-2 pl-2">
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                  <span><strong>«Install app»</strong> ή <strong>«Εγκατάσταση εφαρμογής»</strong></span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                  <span><strong>«Add to Home screen»</strong> ή <strong>«Προσθήκη στην αρχική»</strong></span>
-                </li>
-              </ul>
-              <p className="text-muted-foreground text-xs">Αν δεν εμφανίζεται αυτή η επιλογή, ο browser σου ενδέχεται να μην υποστηρίζει PWA εγκατάσταση.</p>
-            </div>
-          </DialogContent>
-        </Dialog>
+        {/* PWA install modals — lazy-loaded so Dialog/Radix code is excluded
+            from the critical render path and only fetched when the user taps
+            the install button. */}
+        {(showIOSModal || showGenericModal) && (
+          <Suspense fallback={null}>
+            <PWAInstallDialogs
+              showIOSModal={showIOSModal}
+              setShowIOSModal={setShowIOSModal}
+              showGenericModal={showGenericModal}
+              setShowGenericModal={setShowGenericModal}
+            />
+          </Suspense>
+        )}
 
         {/* Media Mentions Bar */}
         <Reveal className="glass-card rounded-2xl px-6 py-5">

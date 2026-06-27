@@ -405,29 +405,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </p>
             <div className="flex gap-3">
               <a href="https://www.facebook.com/profile.php?id=61590959938071" target="_blank" rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-sm font-bold">
+                aria-label="Dropolis στο Facebook"
+                className="w-11 h-11 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-sm font-bold">
                 f
               </a>
               <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
-                aria-label="YouTube"
-                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                aria-label="Dropolis στο YouTube"
+                className="w-11 h-11 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
                 ▶
               </a>
               <a href="https://www.instagram.com/dropolis_net/" target="_blank" rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                aria-label="Dropolis στο Instagram"
+                className="w-11 h-11 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
                 IG
               </a>
               <a href="https://x.com/dropolis_net" target="_blank" rel="noopener noreferrer"
-                aria-label="X (Twitter)"
-                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                aria-label="Dropolis στο X (Twitter)"
+                className="w-11 h-11 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
                 𝕏
               </a>
 
               <a href="mailto:info@dropolis.net"
-                aria-label="Email"
-                className="w-9 h-9 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
+                aria-label="Αποστολή email στο info@dropolis.net"
+                className="w-11 h-11 rounded-full bg-background/10 hover:bg-secondary/20 flex items-center justify-center transition-colors text-xs font-bold">
                 @
               </a>
             </div>

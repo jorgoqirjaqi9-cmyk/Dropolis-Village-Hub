@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Request, type Response, type NextFunction } from "express";
 
 const router = Router();
 
@@ -24,5 +24,45 @@ for (const [from, to] of Object.entries(PERMANENT_REDIRECTS)) {
     res.redirect(301, to);
   });
 }
+
+// ---------------------------------------------------------------------------
+// Cyrillic-lookalike normalizer for /news/ slugs
+// ---------------------------------------------------------------------------
+// Google Search Console occasionally surfaces article URLs where a visually
+// identical Cyrillic character (e.g. U+0430 CYRILLIC SMALL LETTER A, which
+// looks exactly like Latin "a") was stored or linked instead of its Latin
+// counterpart. Issue a 301 to the clean Latin-only slug so crawlers
+// consolidate ranking signals to the canonical URL.
+const CYRILLIC_LOOKALIKES: [RegExp, string][] = [
+  [/\u0430/g, "a"], // а → a
+  [/\u0435/g, "e"], // е → e
+  [/\u043e/g, "o"], // о → o
+  [/\u0440/g, "r"], // р → r
+  [/\u0441/g, "c"], // с → c
+  [/\u0445/g, "x"], // х → x
+  [/\u0443/g, "u"], // у → u
+];
+
+function hasCyrillicLookalike(s: string): boolean {
+  return CYRILLIC_LOOKALIKES.some(([re]) => re.test(s));
+}
+
+function latinizeCyrillicSlug(s: string): string {
+  let result = s;
+  for (const [re, ch] of CYRILLIC_LOOKALIKES) {
+    result = result.replace(re, ch);
+  }
+  return result;
+}
+
+router.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.path.startsWith("/news/") && hasCyrillicLookalike(req.path)) {
+    const clean = latinizeCyrillicSlug(req.path);
+    const target = clean.endsWith("/") ? clean : `${clean}/`;
+    res.redirect(301, target);
+    return;
+  }
+  next();
+});
 
 export default router;

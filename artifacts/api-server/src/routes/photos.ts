@@ -193,6 +193,10 @@ router.post("/photos/process-upload", submitRateLimit, async (req, res) => {
 // ---------------------------------------------------------------------------
 
 router.post("/photos/submit", submitRateLimit, async (req, res) => {
+  if ((req.body as Record<string, unknown>)?.website) {
+    res.status(200).json({ ok: true });
+    return;
+  }
   const parsed = SubmitPhotoBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Μη έγκυρα δεδομένα υποβολής." });
