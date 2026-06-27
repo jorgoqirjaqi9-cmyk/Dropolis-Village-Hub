@@ -9,6 +9,9 @@ import { Users, Mountain, Camera, Map } from "lucide-react";
 
 const UNITS = [
   { key: "all", label: "Όλα τα Χωριά" },
+  { key: "Δημοτική Ενότητα Κάτω Δρόπολης", label: "Κάτω Δρόπολη" },
+  { key: "Δημοτική Ενότητα Άνω Δρόπολης",  label: "Άνω Δρόπολη" },
+  { key: "Δημοτική Ενότητα Πωγωνίου",       label: "Δ.Ε. Πωγωνίου" },
 ];
 
 export default function Villages() {
@@ -124,6 +127,26 @@ export default function Villages() {
         </div>
       </div>
 
+
+      {/* Municipal unit filter tabs */}
+      <div className="flex flex-wrap gap-2">
+        {UNITS.map(u => (
+          <button
+            key={u.key}
+            onClick={() => setActiveUnit(u.key)}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border ${
+              activeUnit === u.key
+                ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                : "bg-card text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
+            }`}
+          >
+            {u.label}
+            <span className={`ml-1.5 text-xs ${activeUnit === u.key ? "text-primary-foreground/70" : "text-muted-foreground/60"}`}>
+              ({countForUnit(u.key)})
+            </span>
+          </button>
+        ))}
+      </div>
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
