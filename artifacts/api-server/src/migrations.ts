@@ -107,6 +107,47 @@ export async function runMigrations(): Promise<void> {
       SET rich_content = REPLACE(REPLACE(rich_content, 'Ποκονίου', 'Πωγωνίου'), 'Ποκόνι', 'Πωγώνι')
       WHERE rich_content ILIKE '%Ποκόν%' OR rich_content ILIKE '%Ποκον%'
     `);
+    // Data fix: replace Ποκονίου → Πωγωνίου in descriptions
+    await client.query(`
+      UPDATE villages
+      SET description = REPLACE(description, 'Ποκονίου', 'Πωγωνίου')
+      WHERE description ILIKE '%Ποκονίου%'
+    `);
+    // Data fix: remove duplicate "Δημοτική Ενότητα Δημοτική Ενότητα" in rich_content
+    await client.query(`
+      UPDATE villages
+      SET rich_content = REPLACE(rich_content, 'Δημοτική Ενότητα Δημοτική Ενότητα', 'Δημοτική Ενότητα')
+      WHERE rich_content ILIKE '%Δημοτική Ενότητα Δημοτική Ενότητα%'
+    `);
+    // Data fix: specific village descriptions with wrong municipal unit
+    await client.query(`
+      UPDATE villages SET description = 'Χωριό Κάτω Δρόπολης με ελληνόφωνη κοινότητα, παραδοσιακές κοινοτικές δομές και εντυπωσιακό ορεινό τοπίο με θέα στην κοιλάδα του Δρίνου.'
+      WHERE id = 60 AND description ILIKE '%Άνω Δρόπολης%'
+    `);
+    await client.query(`
+      UPDATE villages SET description = 'Η Σωτήρα είναι χωριό Άνω Δρόπολης με ελληνόφωνους κατοίκους, παλαιά εκκλησία αφιερωμένη στον Σωτήρα Χριστό και κεντρική θέση στην παράδοση της πολυφωνικής μουσικής.'
+      WHERE id = 77 AND description ILIKE '%Κάτω Δρόπολης%'
+    `);
+    await client.query(`
+      UPDATE villages SET description = 'Ελληνόφωνο χωριό της Δημοτικής Ενότητας Πωγωνίου με παραδοσιακή εκκλησία, πολυφωνικά τραγούδια και ορεινό τοπίο με κρυστάλλινες πηγές.'
+      WHERE id = 89
+    `);
+    await client.query(`
+      UPDATE villages SET description = 'Ελληνόφωνο χωριό της Δημοτικής Ενότητας Πωγωνίου με αγροτική παράδοση και ειδυλλιακό τοπίο. Τμήμα του Δήμου Δρόπολης με ζωντανή ορθόδοξη κοινότητα.'
+      WHERE id = 91
+    `);
+    await client.query(`
+      UPDATE villages SET description = 'Χωριό της Δημοτικής Ενότητας Κάτω Δρόπολης με πλούσια ιστορία, παραδοσιακή αρχιτεκτονική και ελληνόφωνη κοινότητα με ζωντανά πολιτιστικά ήθη.'
+      WHERE id = 64 AND description ILIKE '%Άνω Δρόπολης%'
+    `);
+    await client.query(`
+      UPDATE villages SET description = 'Χωριό της Δημοτικής Ενότητας Κάτω Δρόπολης με πανοραμική θέα στην κοιλάδα και παραδοσιακά σπίτια διατηρημένα από γενιές ελληνόφωνων κατοίκων.'
+      WHERE id = 58 AND description ILIKE '%Άνω Δρόπολης%'
+    `);
+    await client.query(`
+      UPDATE villages SET description = 'Χωριό της Δημοτικής Ενότητας Κάτω Δρόπολης με παλαιά εκκλησία, ελληνόφωνους κατοίκους και αγροτική παράδοση στην καρδιά της κοιλάδας του Δρίνου.'
+      WHERE id = 52 AND description ILIKE '%Άνω Δρόπολης%'
+    `);
     logger.info("DB migrations applied");
   } catch (err) {
     logger.error({ err }, "Migration failed");
