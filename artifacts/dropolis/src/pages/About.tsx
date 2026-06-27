@@ -217,20 +217,7 @@ export default function About() {
               <p className="text-xs text-muted-foreground">@dropolis_net</p>
             </div>
           </a>
-          <a
-            href="https://www.reddit.com/r/DropolisNet/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glass-card rounded-2xl p-5 flex items-center gap-4 hover:shadow-lg transition-shadow group"
-          >
-            <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center shrink-0 text-orange-500 font-bold text-sm group-hover:bg-orange-500/20 transition-colors">
-              r/
-            </div>
-            <div>
-              <p className="font-semibold text-foreground text-sm">Reddit</p>
-              <p className="text-xs text-muted-foreground">r/DropolisNet</p>
-            </div>
-          </a>
+
         </div>
       </motion.section>
 

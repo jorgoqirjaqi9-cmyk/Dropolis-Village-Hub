@@ -63,7 +63,7 @@ export default function AdminCaptions() {
             <div>
               <p className="text-sm font-medium text-foreground">AI Caption Generator (Gemini)</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Επιλέξτε ένα δημοσιευμένο άρθρο και το AI θα δημιουργήσει περιεχόμενο για Facebook, Instagram και Reddit.
+                Επιλέξτε ένα δημοσιευμένο άρθρο και το AI θα δημιουργήσει περιεχόμενο για Facebook και Instagram.
               </p>
             </div>
           </div>
@@ -139,7 +139,7 @@ export default function AdminCaptions() {
                     <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
                       <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                         <Share2 className="w-4 h-4 text-pink-500" />
-                        Instagram / Reddit Caption
+                        Instagram Caption
                       </div>
                       <button onClick={() => copyText(result.shortCaption, "ig")}
                         className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-lg hover:bg-muted">
