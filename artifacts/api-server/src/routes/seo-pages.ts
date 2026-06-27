@@ -592,7 +592,7 @@ const STATIC_META: Record<string, PageMeta> = {
   },
   "/submit-event": {
     title: "Καταχώρηση Εκδήλωσης — Dropolis",
-    description: "Υποβάλετε εκδήλωση ή πανηγύρι από τα χωριά της Δρόπολης. Η ομάδα μας αξιολογεί κάθε υποβολή πριν τη δημοσίευση.",
+    description: "Καταχωρήστε πανηγύρι, γιορτή ή πολιτιστική εκδήλωση από τα χωριά της Δρόπολης στο Dropolis.net, ώστε να ενημερωθεί έγκαιρα η κοινότητα.",
     url: `${BASE_URL}/submit-event/`,
     breadcrumbs: [{ name: "Καταχώρηση Εκδήλωσης", item: `${BASE_URL}/submit-event/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Καταχώρηση Εκδήλωσης — Dropolis", url: `${BASE_URL}/submit-event/`, inLanguage: "el" },
