@@ -30,6 +30,13 @@ const STATIONS = [
     website: "https://live24.gr/radio/rythmos.jsp",
     websiteLabel: "rythmos949.gr",
   },
+  {
+    id: "studio955",
+    name: "Studio 95.5",
+    streamUrl: "https://play.streams.gr/ic/studio955/stream",
+    website: "https://live24.gr/radio/generic.jsp?sid=3092",
+    websiteLabel: "studio955.gr",
+  },
 ] as const;
 
 // ---------------------------------------------------------------------------
