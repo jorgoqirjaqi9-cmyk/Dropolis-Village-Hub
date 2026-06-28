@@ -243,7 +243,7 @@ export function buildVillageSchema(v: VillageSchemaInput): object[] {
     },
     containedInPlace: {
       "@type": "AdministrativeArea",
-      name: v.municipalUnit ?? "Δήμος Δρόπολης",
+      name: "Δήμος Δρόπολης",
       alternateName: "Dropull Municipality",
       containedInPlace: {
         "@type": "Country",
