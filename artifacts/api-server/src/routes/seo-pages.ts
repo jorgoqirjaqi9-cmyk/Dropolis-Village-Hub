@@ -950,7 +950,7 @@ router.get(["/villages/:id", "/villages/:id/"], async (req, res) => {
         return village.description.slice(0, 155);
       }
       const parts: string[] = [`${village.nameEl}: χωριό της Δρόπολης στη Βόρεια Ήπειρο.`];
-      if (village.municipalUnit) parts.push(`Κοινότητα ${village.municipalUnit}.`);
+      parts.push(`Χωριό του Δήμου Δρόπολης.`);
       if (village.population) parts.push(`Πληθυσμός ${village.population} κάτοικοι.`);
       if (village.elevation) parts.push(`Υψόμετρο ${village.elevation} μ.`);
       parts.push(`Ειδήσεις, φωτογραφίες και ιστορία από τα χωριά της Δρόπολης.`);

@@ -81,7 +81,7 @@ router.post("/admin/bulk-fix", requireAdmin, async (req, res) => {
 
   // 3. Fix village 69 (Βουλιαράτες): trim description to 149 chars
   const village69Desc =
-    "Οι Βουλιαράτες αποτελούν ένα από τα πιο γνωστά χωριά της Άνω Δρόπολης, στην περιοχή της Βόρειας Ηπείρου. Το χωριό συνδέεται στενά με την ιστορία, την";
+    "Οι Βουλιαράτες αποτελούν ένα από τα πιο γνωστά χωριά της Δρόπολης, στην περιοχή της Βόρειας Ηπείρου. Το χωριό συνδέεται στενά με την ιστορία, την";
   await db
     .update(villagesTable)
     .set({ description: village69Desc })
