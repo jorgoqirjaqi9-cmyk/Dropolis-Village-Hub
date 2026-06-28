@@ -132,25 +132,28 @@ export default function VillageDetail() {
       </Link>
 
       <div className="relative rounded-3xl overflow-hidden bg-card shadow-lg border border-card-border">
-        {village.imageUrl && (
-          <div className="aspect-[21/9] w-full relative bg-muted">
-            <OptimizedImg
-              src={village.imageUrl}
-              alt={village.nameEl}
-              priority
-              quality={75}
-              sizes="(max-width: 640px) 100vw, (max-width: 1280px) 80vw, 1200px"
-              width={1200}
-              height={514}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-          </div>
-        )}
-        <div className={`p-8 md:p-12 ${village.imageUrl ? 'absolute bottom-0 left-0 w-full text-white' : ''}`}>
+        {(() => {
+          const img = village.imageUrl || "/village-placeholder.jpg";
+          return (
+            <div className="aspect-[21/9] w-full relative bg-muted">
+              <OptimizedImg
+                src={img}
+                alt={village.nameEl}
+                priority
+                quality={75}
+                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 80vw, 1200px"
+                width={1200}
+                height={514}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+            </div>
+          );
+        })()}
+        <div className="absolute bottom-0 left-0 w-full p-8 md:p-12 text-white">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <span className={`text-xs font-bold uppercase tracking-wider mb-2 block ${village.imageUrl ? 'text-secondary' : 'text-primary'}`}>
+              <span className="text-xs font-bold uppercase tracking-wider mb-2 block text-secondary">
                 {village.name} (Αλβανικά)
               </span>
               <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight">
@@ -158,7 +161,7 @@ export default function VillageDetail() {
               </h1>
             </div>
             
-            <div className={`flex flex-wrap gap-4 ${village.imageUrl ? 'text-white/90' : 'text-muted-foreground'}`}>
+            <div className="flex flex-wrap gap-4 text-white/90">
               {village.population !== null && (
                 <div className="flex items-center gap-2 bg-background/20 backdrop-blur-sm px-4 py-2 rounded-lg border border-white/10">
                   <Users className="w-5 h-5 text-secondary" />

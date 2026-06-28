@@ -171,7 +171,7 @@ export default function Villages() {
               >
                 <div className="aspect-[4/3] overflow-hidden relative bg-muted">
                   <OptimizedImg
-                    src={village.imageUrl || `https://placehold.co/600x450/1e3a5f/ffffff?text=${encodeURIComponent(village.nameEl)}`}
+                    src={village.imageUrl || "/village-placeholder.jpg"}
                     alt={`Χωριό ${village.nameEl}`}
                     width={600}
                     height={450}
