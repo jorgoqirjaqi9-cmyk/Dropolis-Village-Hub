@@ -155,6 +155,65 @@ export async function runMigrations(): Promise<void> {
         installed_at timestamp NOT NULL DEFAULT now()
       )
     `);
+    // ── Global phrase cleanup ──────────────────────────────────────────────────
+    // Replace banned regional sub-municipality names ("Κάτω Δρόπολης",
+    // "Άνω Δρόπολης", "Δημοτική Ενότητα …") with neutral wording.
+    // Uses chained REPLACE so longer forms are substituted first.
+    // All UPDATE statements are idempotent: WHERE guards prevent re-applying.
+    // Runs on every startup; safe to re-run (no-ops when DB is already clean).
+
+    const cleanPhrases = (col: string) =>
+      `REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+        ${col},
+        'Δημοτικής Ενότητας Κάτω Δρόπολης', 'Δήμου Δρόπολης'),
+        'Δημοτικής Ενότητας Άνω Δρόπολης', 'Δήμου Δρόπολης'),
+        'Δημοτική Ενότητας Κάτω Δρόπολης', 'Δήμου Δρόπολης'),
+        'Δημοτική Ενότητα Κάτω Δρόπολης', 'Δήμου Δρόπολης'),
+        'Δημοτική Ενότητα Άνω Δρόπολης', 'Δήμου Δρόπολης'),
+        'Κάτω Δρόπολης', 'Δρόπολης'),
+        'Άνω Δρόπολης', 'Δρόπολης')`;
+
+    const phraseWhere = (col: string) =>
+      `${col} ILIKE '%Κάτω Δρόπολης%' OR ${col} ILIKE '%Άνω Δρόπολης%'`;
+
+    // villages.description
+    await client.query(`
+      UPDATE villages
+      SET description = ${cleanPhrases("description")}
+      WHERE ${phraseWhere("description")}
+    `);
+
+    // villages.rich_content
+    await client.query(`
+      UPDATE villages
+      SET rich_content = ${cleanPhrases("rich_content")}
+      WHERE ${phraseWhere("rich_content")}
+    `);
+
+    // villages.image_url — replace Facebook/CDN URLs for villages 53 and 67
+    await client.query(`
+      UPDATE villages
+      SET image_url = 'https://dropolis.net/og-villages.jpg'
+      WHERE id IN (53, 67)
+        AND (image_url IS NULL OR image_url NOT LIKE 'https://dropolis.net/%')
+    `);
+
+    // articles — clean all text columns
+    for (const col of [
+      "content",
+      "meta_description",
+      "excerpt",
+      "title",
+      "seo_title",
+    ] as const) {
+      await client.query(`
+        UPDATE articles
+        SET ${col} = ${cleanPhrases(col)}
+        WHERE ${phraseWhere(col)}
+      `);
+    }
+    // ── End phrase cleanup ─────────────────────────────────────────────────────
+
     logger.info("DB migrations applied");
   } catch (err) {
     logger.error({ err }, "Migration failed");
