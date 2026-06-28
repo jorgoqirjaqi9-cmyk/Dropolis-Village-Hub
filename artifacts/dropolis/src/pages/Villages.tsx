@@ -72,6 +72,8 @@ export default function Villages() {
         title="41 Χωριά Δρόπολης — Ιστορία, Χάρτης & Πληροφορίες | Βόρεια Ήπειρος"
         standalone
         description="Πλήρης κατάλογος και των 41 χωριών της Δρόπολης (Βόρεια Ήπειρος). Ιστορία, πληθυσμός, φωτογραφίες και χάρτης για κάθε χωριό της ελληνικής μειονότητας."
+        image="/og-villages.jpg"
+        imageAlt="Τα 41 χωριά της Δρόπολης και η ιστορία τους"
         breadcrumbs={[{ name: "Χωριά", url: "/villages/" }]}
         jsonLd={{
           "@context": "https://schema.org",

@@ -64,6 +64,7 @@ export interface SEOProps {
   /** Override og:description / twitter:description separately from meta description */
   ogDescription?: string;
   image?: string;
+  imageAlt?: string;
   type?: "website" | "article";
   article?: {
     author?: string;
@@ -139,6 +140,7 @@ export function SEO({
   description,
   ogDescription,
   image,
+  imageAlt,
   type = "website",
   article,
   jsonLd,
@@ -184,6 +186,7 @@ export function SEO({
     setMeta("property", "og:image:width", "1200");
     setMeta("property", "og:image:height", "630");
     setMeta("property", "og:image:type", "image/jpeg");
+    if (imageAlt) setMeta("property", "og:image:alt", imageAlt);
     setMeta("property", "og:site_name", `${SITE.name} - ${SITE.nameEn}`);
     setMeta("property", "og:locale", SITE.locale);
 
@@ -192,6 +195,7 @@ export function SEO({
     setMeta("name", "twitter:title", fullTitle);
     setMeta("name", "twitter:description", socialDesc);
     setMeta("name", "twitter:image", ogImage);
+    if (imageAlt) setMeta("name", "twitter:image:alt", imageAlt);
 
     if (type === "article" && article) {
       if (article.publishedTime) setMeta("property", "article:published_time", article.publishedTime);

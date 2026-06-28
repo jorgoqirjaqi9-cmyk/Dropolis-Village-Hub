@@ -77,6 +77,8 @@ export default function TraditionalFood() {
         description={PAGE_DESC}
         keywords={PAGE_KW}
         type="website"
+        image="https://dropolis.net/og-gastronomy.jpg"
+        imageAlt="Παραδοσιακή γαστρονομία της Δρόπολης"
         jsonLd={jsonLd}
         breadcrumbs={[
           { name: "Αρχική",             url: "https://dropolis.net/" },

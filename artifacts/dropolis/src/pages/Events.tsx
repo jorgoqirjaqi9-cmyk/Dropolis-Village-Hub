@@ -63,6 +63,8 @@ export default function Events() {
       <SEO
         title="Εκδηλώσεις & Πανηγύρια — Δρόπολη"
         description="Ανακαλύψτε πανηγύρια, πολιτιστικές εκδηλώσεις και εορτασμούς από τα χωριά της Δρόπολης Β. Ηπείρου. Καταχωρήστε και τη δική σας εκδήλωση."
+        image="/og-events.jpg"
+        imageAlt="Πανηγύρια και πολιτιστικές εκδηλώσεις στη Δρόπολη"
         breadcrumbs={[{ name: "Εκδηλώσεις", url: "/events/" }]}
         jsonLd={{
           "@context": "https://schema.org",

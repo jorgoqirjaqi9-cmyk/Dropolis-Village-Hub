@@ -112,12 +112,14 @@ function buildSeoTags(m: Meta): string {
     `<meta property="og:image" content="${img}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
+    m.imageAlt ? `<meta property="og:image:alt" content="${esc(m.imageAlt)}" />` : "",
     `<meta property="og:site_name" content="${esc(SITE_NAME)}" />`,
     `<meta property="og:locale" content="el_GR" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${title}" />`,
     `<meta name="twitter:description" content="${desc}" />`,
     `<meta name="twitter:image" content="${img}" />`,
+    m.imageAlt ? `<meta name="twitter:image:alt" content="${esc(m.imageAlt)}" />` : "",
     ...articleTags,
     ...(m.hreflang ?? []).map(({ lang, href }) =>
       `<link rel="alternate" hreflang="${esc(lang)}" href="${esc(href)}" />`

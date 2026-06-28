@@ -28,6 +28,7 @@ export type Meta = {
   title: string;
   description: string;
   image?: string | null;
+  imageAlt?: string | null;
   url: string;
   type?: string;
   article?: ArticleMeta;
@@ -90,7 +91,8 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     path: "/news",
     title: "Ειδήσεις",
     description: "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα χωριά της Βόρειας Ηπείρου.",
-    image: `${BASE_URL}/og-news.png`,
+    image: `${BASE_URL}/og-news.jpg`,
+    imageAlt: "Ειδήσεις και νέα της Δρόπολης στη Βόρεια Ήπειρο",
     url: `${BASE_URL}/news`,
     breadcrumbs: [{ name: "Ειδήσεις", item: `${BASE_URL}/news` }],
     hreflang: [
@@ -134,6 +136,8 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     path: "/villages",
     title: "Τα Χωριά της Δρόπολης",
     description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Δρόπολης. Πληθυσμός, ιστορία και παραδόσεις.",
+    image: `${BASE_URL}/og-villages.jpg`,
+    imageAlt: "Τα 41 χωριά της Δρόπολης και η ιστορία τους",
     url: `${BASE_URL}/villages`,
     breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages` }],
     hreflang: [
@@ -156,6 +160,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     title: "Φωτογραφίες Δρόπολης | Χωριά, Παράδοση και Ιστορία",
     description: "Φωτογραφικό αρχείο της Δρόπολης με εικόνες από χωριά, τοπία, παραδόσεις, ιστορικά σημεία και την καθημερινότητα της ελληνικής κοινότητας.",
     image: `${BASE_URL}/og-photos.jpg`,
+    imageAlt: "Φωτογραφικό αρχείο της Δρόπολης",
     url: `${BASE_URL}/photos`,
     breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos` }],
     hreflang: [
@@ -179,6 +184,7 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     title: "Βίντεο Δρόπολης | Ρεπορτάζ, Εκδηλώσεις και Ιστορία",
     description: "Βίντεο, ρεπορτάζ, ντοκιμαντέρ και εκδηλώσεις από τη Δρόπολη, τα 41 χωριά της και την ελληνική κοινότητα της Βόρειας Ηπείρου.",
     image: `${BASE_URL}/og-videos.jpg`,
+    imageAlt: "Βίντεο, ρεπορτάζ και εκδηλώσεις από τη Δρόπολη",
     url: `${BASE_URL}/videos`,
     breadcrumbs: [{ name: "Βίντεο", item: `${BASE_URL}/videos` }],
     jsonLd: {
@@ -655,6 +661,8 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     path: "/finiq",
     title: "Δήμος Φοινικαίων | Βόρεια Ήπειρος",
     description: "Ο Δήμος Φοινικαίων (Bashkia Finiq) της Βόρειας Ηπείρου. Κοινότητες, χωριά, φωτογραφίες, βίντεο και νέα από τη Φοινίκη, το Δελβινάκι και την ευρύτερη περιοχή.",
+    image: `${BASE_URL}/og-finiq.jpg`,
+    imageAlt: "Δήμος Φοινικαίων και χωριά της Βορείου Ηπείρου",
     url: `${BASE_URL}/finiq`,
     breadcrumbs: [{ name: "Φοινικαίοι", item: `${BASE_URL}/finiq` }],
     jsonLd: {
@@ -696,6 +704,8 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     path: "/diaspora",
     title: "Έλληνες της Διασποράς | Δρόπολη",
     description: "Σελίδα για Δροπολίτες, Βορειοηπειρώτες και ελληνική ομογένεια ανά τον κόσμο. Μοιραστείτε φωτογραφίες και ιστορίες από τη ζωή σας στο εξωτερικό.",
+    image: `${BASE_URL}/og-diaspora.jpg`,
+    imageAlt: "Ομογένεια και Έλληνες της Διασποράς από τη Δρόπολη",
     url: `${BASE_URL}/diaspora`,
     breadcrumbs: [{ name: "Ομογένεια", item: `${BASE_URL}/diaspora` }],
     jsonLd: {
@@ -710,6 +720,8 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     path: "/paradosiaka-faghta",
     title: "Παραδοσιακά Φαγητά της Δρόπολης: Η Αυθεντική Γαστρονομία της Βορείου Ηπείρου",
     description: "Ανακαλύψτε τα κορυφαία παραδοσιακά φαγητά της Δρόπολης και της Βορείου Ηπείρου. Από την αυθεντική Κασιόπιτα μέχρι τα μελωμένα κρέατα στη γάστρα!",
+    image: `${BASE_URL}/og-gastronomy.jpg`,
+    imageAlt: "Παραδοσιακή γαστρονομία της Δρόπολης",
     url: `${BASE_URL}/paradosiaka-faghta`,
     breadcrumbs: [
       { name: "Αρχική",             item: `${BASE_URL}/` },
@@ -831,6 +843,8 @@ export const STATIC_PRERENDER: StaticPrerender[] = [
     path: "/events",
     title: "Εκδηλώσεις & Πανηγύρια",
     description: "Ανακαλύψτε πανηγύρια, πολιτιστικές εκδηλώσεις και εορτασμούς από τα χωριά της Δρόπολης Β. Ηπείρου. Καταχωρήστε και τη δική σας εκδήλωση.",
+    image: `${BASE_URL}/og-events.jpg`,
+    imageAlt: "Πανηγύρια και πολιτιστικές εκδηλώσεις στη Δρόπολη",
     url: `${BASE_URL}/events`,
     breadcrumbs: [{ name: "Εκδηλώσεις", item: `${BASE_URL}/events` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Εκδηλώσεις & Πανηγύρια — Dropolis", url: `${BASE_URL}/events`, inLanguage: "el" },

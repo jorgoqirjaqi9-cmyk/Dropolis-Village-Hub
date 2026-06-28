@@ -111,7 +111,8 @@ export default function News() {
       <SEO
         title={seoTitle}
         description={seoDescription}
-        image="/og-news.png"
+        image="/og-news.jpg"
+        imageAlt="Ειδήσεις και νέα της Δρόπολης στη Βόρεια Ήπειρο"
         keywords="Δρόπολη ειδήσεις, Βόρεια Ήπειρος νέα, ελληνική μειονότητα Αλβανία, Dropull news, Northern Epirus, Δερόπολη, Δρόπολης χωριά"
         noindex={isMultiFiltered}
         breadcrumbs={[{ name: "Ειδήσεις", url: "/news/" }]}
