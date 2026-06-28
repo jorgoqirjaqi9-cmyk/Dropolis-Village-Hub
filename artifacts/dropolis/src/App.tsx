@@ -236,6 +236,8 @@ function Router() {
               <Route path="/submit-video/" component={SubmitVideo} />
               <Route path="/paradosiaka-faghta" component={TraditionalFood} />
               <Route path="/paradosiaka-faghta/" component={TraditionalFood} />
+              <Route path="/gastronomy" component={TraditionalFood} />
+              <Route path="/gastronomy/" component={TraditionalFood} />
               <Route path="/ta-41-xoria-tis-dropolis" component={Villages41} />
               <Route path="/ta-41-xoria-tis-dropolis/" component={Villages41} />
               <Route path="/dropoli-voreia-ipeiros" component={DropoliVoreiaIpeiros} />
