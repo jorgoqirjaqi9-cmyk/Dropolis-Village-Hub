@@ -23,6 +23,7 @@ import adminSeoRouter from "./admin-seo";
 import adminInternalLinksRouter from "./admin-internal-links";
 import radioRouter from "./radio";
 import eventsRouter from "./events";
+import pwaRouter from "./pwa";
 
 const router: IRouter = Router();
 
@@ -50,5 +51,6 @@ router.use(adminSeoRouter);
 router.use(adminInternalLinksRouter);
 router.use(radioRouter);
 router.use(eventsRouter);
+router.use(pwaRouter);
 
 export default router;

@@ -5,13 +5,27 @@ interface BeforeInstallPromptEvent extends Event {
   readonly userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+function detectPlatform(): string {
+  const ua = navigator.userAgent;
+  if (/iphone|ipad|ipod/i.test(ua)) return "ios";
+  if (/android/i.test(ua)) return "android";
+  return "desktop";
+}
+
+function recordInstall() {
+  fetch("/api/pwa/install", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ platform: detectPlatform() }),
+  }).catch(() => {});
+}
+
 export function usePWAInstall() {
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
-    // Already running as standalone PWA
     const standalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       (navigator as Navigator & { standalone?: boolean }).standalone === true;
@@ -21,19 +35,25 @@ export function usePWAInstall() {
     }
 
     const ua = navigator.userAgent;
-    // iOS Safari: iPhone/iPad/iPod, excluding Chrome iOS and Firefox iOS
     setIsIOS(/iphone|ipad|ipod/i.test(ua) && !/crios/i.test(ua) && !/fxios/i.test(ua));
 
     const handler = (e: Event) => {
       e.preventDefault();
       setPrompt(e as BeforeInstallPromptEvent);
     };
-    window.addEventListener("beforeinstallprompt", handler);
-    window.addEventListener("appinstalled", () => {
+
+    const installedHandler = () => {
       setIsInstalled(true);
       setPrompt(null);
-    });
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+      recordInstall();
+    };
+
+    window.addEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", installedHandler);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+      window.removeEventListener("appinstalled", installedHandler);
+    };
   }, []);
 
   const install = async (): Promise<boolean> => {
@@ -43,6 +63,7 @@ export function usePWAInstall() {
     if (outcome === "accepted") {
       setPrompt(null);
       setIsInstalled(true);
+      recordInstall();
     }
     return outcome === "accepted";
   };

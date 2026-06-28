@@ -148,6 +148,13 @@ export async function runMigrations(): Promise<void> {
       UPDATE villages SET description = 'Χωριό της Δημοτικής Ενότητας Κάτω Δρόπολης με παλαιά εκκλησία, ελληνόφωνους κατοίκους και αγροτική παράδοση στην καρδιά της κοιλάδας του Δρίνου.'
       WHERE id = 52 AND description ILIKE '%Άνω Δρόπολης%'
     `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS pwa_installs (
+        id serial PRIMARY KEY,
+        platform text NOT NULL DEFAULT 'unknown',
+        installed_at timestamp NOT NULL DEFAULT now()
+      )
+    `);
     logger.info("DB migrations applied");
   } catch (err) {
     logger.error({ err }, "Migration failed");

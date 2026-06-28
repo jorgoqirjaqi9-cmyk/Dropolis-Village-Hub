@@ -15,6 +15,7 @@ type DashboardData = {
   photos: { approved: number; pending: number };
   videos: { total: number; pendingSubmissions: number };
   events: { approved: number; pending: number };
+  pwaInstalls: number;
   pendingApprovals: number;
   pendingNewsSubmissions: number;
   latestArticles: { id: number; title: string; category: string; published: boolean; createdAt: string }[];
@@ -151,6 +152,7 @@ export default function AdminDashboard() {
               </div>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <StatCard label="Εκδηλώσεις" value={data.events.approved} icon={CalendarDays} color="primary" sub={data.events.pending > 0 ? `${data.events.pending} αναμένουν` : undefined} href="/admin/events" />
+                <StatCard label="Εγκαταστάσεις PWA" value={data.pwaInstalls ?? 0} icon={Download} color="blue" sub="κινητά & desktop" />
               </div>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

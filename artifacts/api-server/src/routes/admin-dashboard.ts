@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
+import { db, pool } from "@workspace/db";
 import {
   articlesTable, villagesTable, photosTable, videosTable,
   newsSubmissionsTable, submittedVideosTable, eventsTable,
@@ -27,6 +27,7 @@ router.get("/admin/dashboard", requireAdmin, async (req, res) => {
     [recentArticles],
     [approvedEvents],
     [pendingEvents],
+    pwaResult,
     latestArticles,
   ] = await Promise.all([
     db.select({ count: count() }).from(articlesTable),
@@ -42,6 +43,7 @@ router.get("/admin/dashboard", requireAdmin, async (req, res) => {
     db.select({ count: count() }).from(articlesTable).where(gte(articlesTable.createdAt, oneWeekAgo)),
     db.select({ count: count() }).from(eventsTable).where(eq(eventsTable.status, "approved")),
     db.select({ count: count() }).from(eventsTable).where(eq(eventsTable.status, "pending")),
+    pool.query<{ count: string }>("SELECT COUNT(*)::int AS count FROM pwa_installs"),
     db.select({
       id: articlesTable.id, title: articlesTable.title,
       category: articlesTable.category, published: articlesTable.published,
@@ -67,6 +69,7 @@ router.get("/admin/dashboard", requireAdmin, async (req, res) => {
     photos: { approved: approvedPhotos?.count ?? 0, pending: pendingPhotos?.count ?? 0 },
     videos: { total: totalVideos?.count ?? 0, pendingSubmissions: pendingSubmittedVideos?.count ?? 0 },
     events: { approved: approvedEvents?.count ?? 0, pending: pendingEvents?.count ?? 0 },
+    pwaInstalls: Number(pwaResult.rows[0]?.count ?? 0),
     pendingApprovals,
     pendingNewsSubmissions: pendingNews?.count ?? 0,
     latestArticles: latestArticles.map((a) => ({
