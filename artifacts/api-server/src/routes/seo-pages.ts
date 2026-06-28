@@ -106,6 +106,7 @@ interface PageMeta {
   titleFinal?: string;
   description: string;
   image?: string | null;
+  imageAlt?: string | null;
   url: string;
   type?: string;
   article?: ArticleMeta;
@@ -240,7 +241,7 @@ function buildSeoTags(m: PageMeta): string {
     `<meta property="og:image" content="${img}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
-    `<meta property="og:image:alt" content="${desc}" />`,
+    `<meta property="og:image:alt" content="${esc(m.imageAlt ?? m.description.slice(0, 155))}" />`,
     `<meta property="og:site_name" content="${esc(SITE_NAME)}" />`,
     `<meta property="og:locale" content="el_GR" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
@@ -248,6 +249,7 @@ function buildSeoTags(m: PageMeta): string {
     `<meta name="twitter:title" content="${title}" />`,
     `<meta name="twitter:description" content="${desc}" />`,
     `<meta name="twitter:image" content="${img}" />`,
+    `<meta name="twitter:image:alt" content="${esc(m.imageAlt ?? m.description.slice(0, 155))}" />`,
     ...articleTags,
     ...(m.hreflang ?? []).map(({ lang, href }) =>
       `<link rel="alternate" hreflang="${esc(lang)}" href="${esc(href)}" />`
@@ -362,6 +364,8 @@ const STATIC_META: Record<string, PageMeta> = {
     title: "Ειδήσεις Δρόπολης — Τελευταία Νέα & Ρεπορτάζ",
     titleFinal: "Ειδήσεις Δρόπολης — Νέα & Ρεπορτάζ | Dropolis",
     description: "Τελευταία νέα, ρεπορτάζ και ειδήσεις από τη Δρόπολη και τα 41 χωριά της Βόρειας Ηπείρου. Ελληνική μειονότητα Αλβανία, Αργυρόκαστρο, πολιτισμός, εκπαίδευση.",
+    image: `${BASE_URL}/og-news.jpg`,
+    imageAlt: "Ειδήσεις και νέα της Δρόπολης στη Βόρεια Ήπειρο",
     url: `${BASE_URL}/news/`,
     breadcrumbs: [{ name: "Ειδήσεις", item: `${BASE_URL}/news/` }],
     hreflang: [
@@ -375,6 +379,8 @@ const STATIC_META: Record<string, PageMeta> = {
     title: "Τα 41 Χωριά της Δρόπολης — Ιστορία & Πληροφορίες",
     titleFinal: "41 Χωριά Δρόπολης — Ιστορία | Dropolis",
     description: "Ανακαλύψτε και τα 41 ιστορικά χωριά της Δρόπολης (Βόρεια Ήπειρος). Πληθυσμός, ιστορία, παραδόσεις και φωτογραφικό υλικό για κάθε χωριό.",
+    image: `${BASE_URL}/og-villages.jpg`,
+    imageAlt: "Τα 41 χωριά της Δρόπολης και η ιστορία τους",
     url: `${BASE_URL}/villages/`,
     breadcrumbs: [{ name: "Χωριά", item: `${BASE_URL}/villages/` }],
     hreflang: [
@@ -397,6 +403,8 @@ const STATIC_META: Record<string, PageMeta> = {
   "/photos": {
     title: "Φωτογραφίες Δρόπολης — Φωτογραφικό Αρχείο",
     description: "Φωτογραφικό αρχείο από τα χωριά της Δρόπολης — τοπία, παραδοσιακά κτίρια, πολιτιστικές εκδηλώσεις και η καθημερινή ζωή στη Βόρεια Ήπειρο.",
+    image: `${BASE_URL}/og-photos.jpg`,
+    imageAlt: "Φωτογραφικό αρχείο της Δρόπολης",
     url: `${BASE_URL}/photos/`,
     breadcrumbs: [{ name: "Φωτογραφίες", item: `${BASE_URL}/photos/` }],
     hreflang: [
@@ -410,6 +418,8 @@ const STATIC_META: Record<string, PageMeta> = {
     title: "Βίντεο Δρόπολης — Εκδηλώσεις & Ζωή στα Χωριά",
     titleFinal: "Βίντεο Δρόπολης — Εκδηλώσεις | Dropolis",
     description: "Δείτε όλα τα τελευταία βίντεο, αφιερώματα, ρεπορτάζ και παραδοσιακές εκδηλώσεις από τα 41 χωριά της Δρόπολης και τη Βόρεια Ήπειρο.",
+    image: `${BASE_URL}/og-videos.jpg`,
+    imageAlt: "Βίντεο, ρεπορτάζ και εκδηλώσεις από τη Δρόπολη",
     url: `${BASE_URL}/videos/`,
     breadcrumbs: [{ name: "Βίντεο", item: `${BASE_URL}/videos/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "Βίντεο Δρόπολης", url: `${BASE_URL}/videos/`, inLanguage: "el" },
@@ -587,6 +597,8 @@ const STATIC_META: Record<string, PageMeta> = {
   "/events": {
     title: "Εκδηλώσεις & Πανηγύρια — Dropolis",
     description: "Ανακαλύψτε πανηγύρια, πολιτιστικές εκδηλώσεις και εορτασμούς από τα χωριά της Δρόπολης Β. Ηπείρου. Καταχωρήστε και τη δική σας εκδήλωση.",
+    image: `${BASE_URL}/og-events.jpg`,
+    imageAlt: "Πανηγύρια και πολιτιστικές εκδηλώσεις στη Δρόπολη",
     url: `${BASE_URL}/events/`,
     breadcrumbs: [{ name: "Εκδηλώσεις", item: `${BASE_URL}/events/` }],
     jsonLd: { "@context": "https://schema.org", "@type": "WebPage", name: "Εκδηλώσεις & Πανηγύρια — Dropolis", url: `${BASE_URL}/events/`, inLanguage: "el" },
@@ -623,6 +635,8 @@ const STATIC_META: Record<string, PageMeta> = {
   "/diaspora": {
     title: "Έλληνες της Διασποράς | Δρόπολη",
     description: "Σελίδα για Δροπολίτες, Βορειοηπειρώτες και ελληνική ομογένεια ανά τον κόσμο. Μοιραστείτε φωτογραφίες και ιστορίες από τη ζωή σας στο εξωτερικό.",
+    image: `${BASE_URL}/og-diaspora.jpg`,
+    imageAlt: "Ομογένεια και Έλληνες της Διασποράς από τη Δρόπολη",
     url: `${BASE_URL}/diaspora/`,
     noindex: false,
     breadcrumbs: [{ name: "Ομογένεια", item: `${BASE_URL}/diaspora/` }],
@@ -631,6 +645,8 @@ const STATIC_META: Record<string, PageMeta> = {
   "/finiq": {
     title: "Δήμος Φοινικαίων | Βόρεια Ήπειρος",
     description: "Ειδήσεις, νέα και ενημέρωση για τον Δήμο Φοινικαίων. Μάθετε όλα όσα συμβαίνουν στη Φοινίκη και τα χωριά της ελληνικής μειονότητας.",
+    image: `${BASE_URL}/og-finiq.jpg`,
+    imageAlt: "Δήμος Φοινικαίων και χωριά της Βορείου Ηπείρου",
     url: `${BASE_URL}/finiq/`,
     breadcrumbs: [{ name: "Φοινικαίοι", item: `${BASE_URL}/finiq/` }],
     jsonLd: {
@@ -646,9 +662,32 @@ const STATIC_META: Record<string, PageMeta> = {
     bodyH1: "Δήμος Φοινικαίων — Βόρεια Ήπειρος",
     bodyP: "Κοινότητες, χωριά, φωτογραφίες και νέα από τον Δήμο Φοινικαίων (Bashkia Finiq) στη Βόρεια Ήπειρο.",
   },
+  "/gastronomy": {
+    title: "Γαστρονομία της Δρόπολης: Παραδοσιακά Φαγητά & Αυθεντικές Συνταγές",
+    description: "Ανακαλύψτε τα κορυφαία παραδοσιακά φαγητά της Δρόπολης και της Βορείου Ηπείρου. Από την αυθεντική Κασιόπιτα μέχρι τα μελωμένα κρέατα στη γάστρα!",
+    image: `${BASE_URL}/og-gastronomy.jpg`,
+    imageAlt: "Παραδοσιακή γαστρονομία της Δρόπολης",
+    url: `${BASE_URL}/gastronomy/`,
+    breadcrumbs: [
+      { name: "Αρχική",      item: `${BASE_URL}/` },
+      { name: "Γαστρονομία", item: `${BASE_URL}/gastronomy/` },
+    ],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Γαστρονομία της Δρόπολης — Dropolis",
+      url: `${BASE_URL}/gastronomy/`,
+      inLanguage: "el",
+      description: "Παραδοσιακά φαγητά της Δρόπολης, Βορείου Ηπείρου και ελληνικής μειονότητας.",
+    },
+    bodyH1: "Γαστρονομία της Δρόπολης — Παραδοσιακά Φαγητά",
+    bodyP: "Ανακαλύψτε τα κορυφαία παραδοσιακά φαγητά της Δρόπολης — Κασιόπιτα, κρέατα στη γάστρα, πασούλ και άλλες τοπικές συνταγές από τα 41 χωριά της Βορείου Ηπείρου.",
+  },
   "/paradosiaka-faghta": {
     title: "Παραδοσιακά Φαγητά της Δρόπολης: Η Αυθεντική Γαστρονομία της Βορείου Ηπείρου",
     description: "Ανακαλύψτε τα κορυφαία παραδοσιακά φαγητά της Δρόπολης και της Βορείου Ηπείρου. Από την αυθεντική Κασιόπιτα μέχρι τα μελωμένα κρέατα στη γάστρα!",
+    image: `${BASE_URL}/og-gastronomy.jpg`,
+    imageAlt: "Παραδοσιακή γαστρονομία της Δρόπολης",
     url: `${BASE_URL}/paradosiaka-faghta/`,
     breadcrumbs: [
       { name: "Αρχική",             item: `${BASE_URL}/` },
