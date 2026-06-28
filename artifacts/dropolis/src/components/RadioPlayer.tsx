@@ -26,7 +26,7 @@ const STATIONS = [
   {
     id: "rythmos",
     name: "Ρυθμός 94.9",
-    streamUrl: "https://netradio.live24.gr/rythmos949",
+    streamUrl: "https://netradio.live24.gr/rythmos",
     website: "https://live24.gr/radio/rythmos.jsp",
     websiteLabel: "rythmos949.gr",
   },
