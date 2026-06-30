@@ -83,3 +83,9 @@ id = "NdaE0qZF5KA65VNnblDVw"
 uri = "file://attached_assets/stock_images/stock_image_5.jpg"
 type = "image"
 title = "traditional stone village Greece Epirus mountains landscape old houses"
+
+[[outputs]]
+id = "3k-P8ziTNUrZhZS8wl6Py"
+uri = "file://dropolis-latest-source.zip"
+type = "unspecified"
+title = "dropolis-latest-source.zip — Full source export"
