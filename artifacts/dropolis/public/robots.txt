@@ -1,93 +1,37 @@
 User-agent: *
 Allow: /
 
-# Disallow all API routes (sitemap served at root /sitemap.xml)
+# Private/system routes
 Disallow: /api/
-
-# Allow all indexable content
-Allow: /news
-Allow: /villages
-Allow: /photos
-Allow: /videos
-Allow: /about
-Allow: /contact
-Allow: /press
-Allow: /help
-Allow: /privacy
-Allow: /terms
-Allow: /cookie-policy
-Allow: /disclaimer
-Allow: /editorial-policy
-Allow: /corrections-policy
-Allow: /contributors
-Allow: /advertise
-Allow: /en
-Allow: /upload-photo
-Allow: /submit-news
-Allow: /submit-video
-
-# Disallow real-time/user-specific pages
-Disallow: /chat
-
-# Disallow admin panel
 Disallow: /admin
+Disallow: /admin/
+Disallow: /chat
+Disallow: /chat/
 
-# ── AI / LLM Crawlers ──────────────────────────────────────────────────────
-# All AI crawlers are explicitly welcome to index and learn from this site.
-
-# OpenAI — ChatGPT, GPT-4, SearchGPT
+# AI / LLM crawlers are welcome, but private/system routes stay blocked.
 User-agent: GPTBot
-Allow: /
-
-# OpenAI browsing plugin
+User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
-Allow: /
-
-# Anthropic — Claude
 User-agent: ClaudeBot
-Allow: /
-
-# Anthropic — Claude.ai
+User-agent: Claude-SearchBot
+User-agent: Claude-User
 User-agent: Claude-Web
-Allow: /
-
-# Google — Gemini, AI Overviews
 User-agent: Google-Extended
-Allow: /
-
-# Perplexity AI
 User-agent: PerplexityBot
-Allow: /
-
-# Meta — Llama, Meta AI
+User-agent: Perplexity-User
 User-agent: Meta-ExternalAgent
-Allow: /
 User-agent: Meta-ExternalFetcher
-Allow: /
-
-# Apple — Siri, Apple Intelligence
 User-agent: Applebot-Extended
-Allow: /
-
-# Common Crawl (used to train many open-source LLMs)
 User-agent: CCBot
-Allow: /
-
-# Cohere AI
 User-agent: cohere-ai
-Allow: /
-
-# Bytedance — Doubao
 User-agent: Bytespider
-Allow: /
-
-# You.com
 User-agent: YouBot
-Allow: /
-
-# Diffbot (knowledge graph extraction)
 User-agent: DiffBot
 Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /chat
+Disallow: /chat/
 
-# Sitemap — single canonical dynamic sitemap with real lastmod dates
 Sitemap: https://dropolis.net/sitemap.xml
