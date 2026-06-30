@@ -230,6 +230,12 @@ function Router() {
               <Route path="/diaspora/" component={Diaspora} />
               <Route path="/finiq" component={Finiq} />
               <Route path="/finiq/" component={Finiq} />
+              <Route path="/finiq/villages" component={Finiq} />
+              <Route path="/finiq/villages/" component={Finiq} />
+              <Route path="/finiq/photos" component={Finiq} />
+              <Route path="/finiq/photos/" component={Finiq} />
+              <Route path="/finiq/events" component={Finiq} />
+              <Route path="/finiq/events/" component={Finiq} />
               <Route path="/submit-news" component={SubmitNews} />
               <Route path="/submit-news/" component={SubmitNews} />
               <Route path="/submit-video" component={SubmitVideo} />

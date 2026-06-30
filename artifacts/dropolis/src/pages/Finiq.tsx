@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { SEO } from "@/components/SEO";
 import {
   Landmark, Upload, CheckCircle, AlertCircle, ImageIcon, X,
@@ -91,7 +91,110 @@ const MUNICIPAL_UNITS: { name: string; nameAl: string; villages: string[] }[] = 
 
 type Step = "form" | "compressing" | "uploading" | "success" | "error";
 
+type FiniqSection = "villages" | "photos" | "events";
+
+const FINIQ_CTA_LINKS = [
+  { href: "/finiq/villages/", label: "Χωριά Φοινικαίων", icon: MapPin },
+  { href: "/finiq/photos/", label: "Φωτογραφίες", icon: ImageIcon },
+  { href: "/finiq/events/", label: "Εκδηλώσεις", icon: Church },
+  { href: "/upload-photo/", label: "Ανεβάστε φωτογραφία", icon: Upload },
+  { href: "/submit-news/", label: "Στείλτε είδηση", icon: Newspaper },
+];
+
+const FINIQ_SECTION_COPY: Record<FiniqSection, {
+  title: string;
+  description: string;
+  heading: string;
+  body: string;
+  primaryHref: string;
+  primaryLabel: string;
+}> = {
+  villages: {
+    title: "Χωριά Δήμου Φοινικαίων | Βόρεια Ήπειρος",
+    description: "Ξεχωριστός οδηγός για τα χωριά και τις κοινότητες του Δήμου Φοινικαίων στη Βόρεια Ήπειρο, με Φοινίκη, Λιβαδειά, Δίβρη, Αλύκο και Μεσοπόταμο.",
+    heading: "Χωριά και κοινότητες του Δήμου Φοινικαίων",
+    body: "Η ενότητα αυτή θα συγκεντρώνει σταδιακά πληροφορίες, φωτογραφίες, ιστορίες, εκδηλώσεις και κοινοτικές ανακοινώσεις από τα χωριά του Δήμου Φοινικαίων. Στόχος είναι να δημιουργηθεί ξεχωριστό αρχείο για τη Φοινίκη, τη Λιβαδειά, τη Δίβρη, το Αλύκο, το Μεσοπόταμο και τις γύρω κοινότητες της Βορείου Ηπείρου.",
+    primaryHref: "/submit-news/",
+    primaryLabel: "Στείλτε πληροφορία χωριού",
+  },
+  photos: {
+    title: "Φωτογραφίες Δήμου Φοινικαίων | Φοινίκη και χωριά",
+    description: "Φωτογραφικό αρχείο για τον Δήμο Φοινικαίων, τη Φοινίκη και τις κοινότητες της ελληνικής μειονότητας στη Βόρεια Ήπειρο.",
+    heading: "Φωτογραφικό αρχείο Φοινικαίων",
+    body: "Εδώ θα προβάλλονται φωτογραφίες από χωριά, εκκλησίες, τοπία, παλιές οικογενειακές στιγμές, πανηγύρια και πολιτιστικές δράσεις του Δήμου Φοινικαίων. Μέχρι να δημιουργηθεί ξεχωριστή κατηγορία στη βάση δεδομένων, οι φωτογραφίες μπορούν να υποβάλλονται από τη σελίδα αποστολής φωτογραφίας με σαφή αναφορά στο χωριό.",
+    primaryHref: "/upload-photo/",
+    primaryLabel: "Ανεβάστε φωτογραφία",
+  },
+  events: {
+    title: "Εκδηλώσεις Δήμου Φοινικαίων | Πανηγύρια και πολιτισμός",
+    description: "Εκδηλώσεις, πανηγύρια, πολιτιστικές δράσεις και ανακοινώσεις για τον Δήμο Φοινικαίων και τα χωριά του στη Βόρεια Ήπειρο.",
+    heading: "Εκδηλώσεις και πανηγύρια Φοινικαίων",
+    body: "Η σελίδα αυτή θα λειτουργήσει ως ξεχωριστό ημερολόγιο για εκδηλώσεις, πανηγύρια, συλλόγους, θρησκευτικές εορτές και πολιτιστικές δράσεις στα χωριά του Δήμου Φοινικαίων. Οι κάτοικοι και η ομογένεια μπορούν να στέλνουν ανακοινώσεις ώστε να ενημερώνεται έγκαιρα η κοινότητα.",
+    primaryHref: "/submit-news/",
+    primaryLabel: "Στείλτε ανακοίνωση",
+  },
+};
+
+function FiniqCommunitySection({ section }: { section: FiniqSection }) {
+  const copy = FINIQ_SECTION_COPY[section];
+
+  return (
+    <div className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
+      <SEO
+        title={copy.title}
+        description={copy.description}
+        image="/og-finiq.jpg"
+        imageAlt="Δήμος Φοινικαίων και χωριά της Βορείου Ηπείρου"
+        keywords="Δήμος Φοινικαίων, Bashkia Finiq, Φοινίκη, Λιβαδειά, Δίβρη, Αλύκο, Μεσοπόταμο, Βόρεια Ήπειρος, ελληνική μειονότητα"
+        breadcrumbs={[
+          { name: "Φοινικαίοι", url: "/finiq/" },
+          { name: copy.heading, url: `/finiq/${section}/` },
+        ]}
+      />
+
+      <section className="rounded-2xl border bg-gradient-to-br from-amber-800 to-slate-950 p-8 text-white shadow-lg">
+        <p className="mb-3 inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-200">
+          Δήμος Φοινικαίων
+        </p>
+        <h1 className="font-serif text-3xl font-bold md:text-4xl">{copy.heading}</h1>
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/80">
+          Η ενότητα Φοινικαίων είναι ξεχωριστή από τα 41 χωριά της Δρόπολης και είναι αφιερωμένη στα χωριά και τις κοινότητες του Δήμου Φοινικαίων.
+        </p>
+      </section>
+
+      <section className="rounded-2xl border bg-card p-6 shadow-sm">
+        <h2 className="font-serif text-2xl font-bold">Η κοινότητα χτίζει το αρχείο</h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{copy.body}</p>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <Link
+            href={copy.primaryHref}
+            className="inline-flex items-center justify-center rounded-xl bg-amber-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-amber-800"
+          >
+            {copy.primaryLabel}
+          </Link>
+          <Link
+            href="/finiq/"
+            className="inline-flex items-center justify-center rounded-xl border px-5 py-3 text-sm font-semibold transition-colors hover:bg-muted"
+          >
+            Πίσω στον Δήμο Φοινικαίων
+          </Link>
+        </div>
+      </section>
+
+      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {FINIQ_CTA_LINKS.map(({ href, label, icon: Icon }) => (
+          <Link key={href} href={href} className="rounded-xl border bg-card p-4 transition-colors hover:bg-muted/60">
+            <Icon className="mb-3 h-5 w-5 text-amber-600" />
+            <span className="text-sm font-semibold">{label}</span>
+          </Link>
+        ))}
+      </section>
+    </div>
+  );
+}
+
 export default function Finiq() {
+  const [location] = useLocation();
   const [step, setStep] = useState<Step>("form");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -110,6 +213,11 @@ export default function Finiq() {
   const [openUnit, setOpenUnit] = useState<number | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const section = location.replace(/\/$/, "").split("/")[2] as FiniqSection | undefined;
+  if (section === "villages" || section === "photos" || section === "events") {
+    return <FiniqCommunitySection section={section} />;
+  }
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -259,7 +367,19 @@ export default function Finiq() {
             Από τη Φοινίκη ως το Δελβινάκι και από τα βουνά της Τσουκέ ως τις ακτές του Ιονίου, η περιοχή ζει και αναπνέει
             τον ελληνικό πολιτισμό αδιάλειπτα για αιώνες.
           </p>
+          <p className="mt-5 rounded-xl border border-white/15 bg-black/20 px-4 py-3 text-sm leading-relaxed text-white/80">
+            Η ενότητα Φοινικαίων είναι ξεχωριστή από τα 41 χωριά της Δρόπολης και είναι αφιερωμένη στα χωριά και τις κοινότητες του Δήμου Φοινικαίων.
+          </p>
         </div>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {FINIQ_CTA_LINKS.map(({ href, label, icon: Icon }) => (
+          <Link key={href} href={href} className="rounded-xl border bg-card p-4 text-center transition-colors hover:bg-muted/60">
+            <Icon className="mx-auto mb-2 h-5 w-5 text-amber-600" />
+            <span className="text-xs font-semibold">{label}</span>
+          </Link>
+        ))}
       </div>
 
       {/* Info cards */}
@@ -312,6 +432,30 @@ export default function Finiq() {
             Η ελληνική παρουσία στον Δήμο Φοινικαίων είναι βαθιά ριζωμένη: εκκλησίες, σχολεία και τοπωνύμια
             μαρτυρούν αδιάλειπτη ελληνόφωνη κοινότητα, η οποία διατηρεί γλώσσα, ήθη και παραδόσεις ακόμα και
             σήμερα.
+          </p>
+          <p>
+            Η σελίδα αυτή λειτουργεί ως ξεχωριστός κόμβος ενημέρωσης για τον <strong>Δήμο Φοινικαίων</strong> στη
+            <strong> Βόρεια Ήπειρο</strong>. Δεν αντικαθιστά και δεν μπερδεύεται με την ενότητα των 41 χωριών της
+            Δρόπολης· δημιουργήθηκε για να δοθεί χώρος και στα χωριά της Φοινίκης, της Λιβαδειάς, της Δίβρης, του
+            Αλύκου και του Μεσοποτάμου. Ο στόχος είναι να συγκεντρώνονται οργανωμένα πληροφορίες για τις κοινότητες,
+            τις οικογένειες, τις εκκλησίες, τις παλιές φωτογραφίες, τις σύγχρονες εκδηλώσεις και τις ιστορίες που
+            κρατούν ζωντανή τη μνήμη της περιοχής.
+          </p>
+          <p>
+            Η <strong>Φοινίκη</strong> αποτελεί σημείο αναφοράς για την αρχαία ιστορία της περιοχής, ενώ η
+            <strong> Λιβαδειά</strong>, η <strong>Δίβρη</strong>, το <strong>Αλύκο</strong> και το
+            <strong> Μεσοπόταμο</strong> συνδέονται με χωριά και κοινότητες όπου η ελληνική μειονότητα διατηρεί
+            γλώσσα, ορθόδοξη παράδοση, τοπικά έθιμα και ισχυρούς δεσμούς με την ομογένεια. Η αξία αυτής της ενότητας
+            δεν είναι μόνο ενημερωτική· είναι και αρχειακή. Κάθε φωτογραφία από ένα πανηγύρι, κάθε ανακοίνωση συλλόγου,
+            κάθε παλιά μαρτυρία και κάθε νέο από ένα χωριό βοηθά να δημιουργηθεί ένα ψηφιακό αποτύπωμα που μπορούν να
+            βρουν οι νεότερες γενιές, οι ερευνητές, οι ταξιδιώτες και οι άνθρωποι της διασποράς.
+          </p>
+          <p>
+            Μέσα από το Dropolis.net, οι κάτοικοι και οι φίλοι του Δήμου Φοινικαίων μπορούν να στείλουν ειδήσεις,
+            φωτογραφίες, βίντεο και πληροφορίες για εκδηλώσεις. Το περιεχόμενο αξιολογείται πριν δημοσιευτεί, ώστε να
+            παραμένει καθαρό, αξιόπιστο και χρήσιμο. Έτσι η ενότητα μπορεί σταδιακά να εξελιχθεί σε ανεξάρτητο
+            κοινοτικό αρχείο για τον Δήμο Φοινικαίων, με σεβασμό στην ιστορία, στον πολιτισμό και στην ελληνική
+            παρουσία της Βορείου Ηπείρου.
           </p>
         </div>
       </div>

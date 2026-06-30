@@ -53,6 +53,9 @@ const STATIC_ROUTES = [
   // sitemap — adding them keeps both sitemaps in sync.
   { loc: "/diaspora/",              changefreq: "monthly", priority: "0.7" },
   { loc: "/finiq/",                 changefreq: "weekly",  priority: "0.8" },
+  { loc: "/finiq/villages/",        changefreq: "monthly", priority: "0.7" },
+  { loc: "/finiq/photos/",          changefreq: "monthly", priority: "0.7" },
+  { loc: "/finiq/events/",          changefreq: "weekly",  priority: "0.7" },
   { loc: "/paradosiaka-faghta/",          changefreq: "monthly", priority: "0.8" },
   { loc: "/ta-41-xoria-tis-dropolis/",    changefreq: "monthly", priority: "0.9" },
   { loc: "/dropoli-voreia-ipeiros/",      changefreq: "monthly", priority: "0.9" },
